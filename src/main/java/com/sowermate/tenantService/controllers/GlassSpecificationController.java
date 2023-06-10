@@ -20,7 +20,7 @@ public class GlassSpecificationController {
     @ResponseBody
     public ResponseEntity<GlassSpecificationValue> createGlassSpecification(@RequestBody GlassSpecificationValue glassSpecificationValue) throws Exception {
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.createGlassSpecification(glassSpecificationValue);
-        return new ResponseEntity<GlassSpecificationValue>( glassSpecificationValue, HttpStatus.CREATED);
+        return new ResponseEntity<GlassSpecificationValue>( glassSpecificationValue1, HttpStatus.CREATED);
     }
 
     @GetMapping("/{uuid}")

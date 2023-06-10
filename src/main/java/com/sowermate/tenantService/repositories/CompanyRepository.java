@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.repositories;
 
+import com.sowermate.tenantService.entities.AddressEntity;
 import com.sowermate.tenantService.entities.CompanyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,6 +21,7 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer>
 
     public List<CompanyEntity> findAll();
 
+    public List<CompanyEntity> findByCompanyId(int companyId);
     @Transactional
     @Modifying
     @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.companyId = :id")

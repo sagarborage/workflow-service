@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
@@ -55,5 +56,11 @@ public class CompanyEntity  extends CommonEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
     private CompanyTypeEntity companyTypeEntity;
+
+    @OneToMany(mappedBy="companyIdBill",cascade=CascadeType.ALL)
+    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
+
+    @OneToMany(mappedBy="companyIdShip",cascade=CascadeType.ALL)
+    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity1;
 
 }
