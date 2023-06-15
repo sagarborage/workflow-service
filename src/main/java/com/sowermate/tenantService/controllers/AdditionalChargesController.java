@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/additional")
+@RequestMapping("/api/additional")
 public class AdditionalChargesController {
 
     @Autowired

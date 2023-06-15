@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,5 +33,8 @@ public class ServiceRateEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantDetailsEntity tenantDetailsEntity;
+
+    @OneToMany(mappedBy="serviceRateEntity",cascade=CascadeType.ALL)
+    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;
 
 }

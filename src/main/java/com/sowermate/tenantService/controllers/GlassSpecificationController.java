@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/glassSpecification")
+@RequestMapping("/api/glass-specification")
 public class GlassSpecificationController {
 
     @Autowired

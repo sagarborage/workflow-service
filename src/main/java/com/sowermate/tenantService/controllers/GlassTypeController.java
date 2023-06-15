@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/glassType")
+@RequestMapping("/api/glass-type")
 public class GlassTypeController {
 
     //create

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -96,5 +97,12 @@ public class ProFormaInvoiceEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ship_to")
     private  CompanyEntity companyIdShip;
+
+    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+
+    @OneToMany(mappedBy="proFormaInvoiceEntities",cascade=CascadeType.ALL)
+    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;
+
 
 }

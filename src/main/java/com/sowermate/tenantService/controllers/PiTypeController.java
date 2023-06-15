@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/piType")
+@RequestMapping("/api/pi-type")
 public class PiTypeController {
 
     @Autowired

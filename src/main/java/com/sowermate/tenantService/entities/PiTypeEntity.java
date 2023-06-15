@@ -29,4 +29,5 @@ public class PiTypeEntity {
     @OneToMany(mappedBy="piTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
 
+
 }

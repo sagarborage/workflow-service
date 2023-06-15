@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/confirmThrough")
+@RequestMapping("/api/confirm-through")
 public class ConfirmThroughController {
     @Autowired
     private ConfirmThroughService confirmThroughService;

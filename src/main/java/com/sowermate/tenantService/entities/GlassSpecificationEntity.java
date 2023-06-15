@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +25,8 @@ public class GlassSpecificationEntity {
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @OneToMany(mappedBy="glassSpecificationEntity",cascade=CascadeType.ALL)
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
 
 }
