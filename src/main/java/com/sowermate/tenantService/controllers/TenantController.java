@@ -16,11 +16,11 @@ public class TenantController {
     @Autowired
     private TenantService tenantService;
 
-    @RequestMapping(value = "/expense", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<TenantDetailsValue> createTenantDetails(@RequestBody TenantDetailsValue tenantDetailsValue) throws Exception {
            TenantDetailsValue tenantDetailsValue1=tenantService.SaveTenantDetails(tenantDetailsValue);
-        return new ResponseEntity<TenantDetailsValue>( tenantDetailsValue1,HttpStatus.CREATED);
+        return new ResponseEntity<TenantDetailsValue>(tenantDetailsValue1,HttpStatus.CREATED);
     }
 
     @GetMapping("/{uuid}")

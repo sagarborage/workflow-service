@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6fa3cc8a-1b5e-4403-bf56-4e04264560d5",
+		"_postman_id": "15aded00-53ee-428d-836a-9e17499143d9",
 		"name": "workflow-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tenant_id \" : \"5\",\n    \"tenant_name\": \"AMALE\",\n    \"address\": \"Sangola\",\n    \"city\": \"pune\",\n    \"state\": \"maharashtra\",\n    \"country_id\": 1,\n    \"pin_code\": \"416404\",\n    \"phone_number\": \"+919970505865\",\n    \"email_id\": \"satish@gmail.com\",\n    \"activation_date\": \"2022-11-31T18:30:00.000+00:00\",\n    \"expiry_date\": \"2023-04-31T18:30:00.000+00:00\",\n    \"grace_period\": 30,\n    \"isactive\": true\n}\n",
+							"raw": "{\n    \"tenantId \" : \"1\",\n    \"tenantName\": \"Sowermate Technologies Private Limited\",\n    \"address\": \"Swapnapurti CHS, Hadapsar\",\n    \"city\": \"Pune\",\n    \"state\": \"Maharashtra\",\n    \"countryId\": 1,\n    \"pinCode\": \"413028\",\n    \"phoneNumber\": \"9049789010\",\n    \"emailId\": \"borage.suhas@gmail.com\",\n    \"activationDate\": \"2022-11-31T18:30:00.000+00:00\",\n    \"expiryDate\": \"2050-04-31T18:30:00.000+00:00\",\n    \"gracePeriod\": 30,\n    \"isActive\": true\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,14 +23,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/tenants",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/tenants/expense",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"tenants"
+								"tenants",
+								"expense"
 							]
 						}
 					},
@@ -40,7 +39,17 @@
 					"name": "Get Tenat Details",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/tenants/832722c9-484f-4d2c-ab28-e643fe661f20",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"tenants",
+								"832722c9-484f-4d2c-ab28-e643fe661f20"
+							]
+						}
 					},
 					"response": []
 				},
@@ -50,12 +59,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/tenants/1234bdcka5",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/tenants/1234bdcka5",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"tenants",
 								"1234bdcka5"
@@ -71,7 +78,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tenantId\": 1,\n    \"uuid\": \"9a38be8a-5774-4401-a0e1-ee2c0038f0ad\",\n    \"tenantName\": \"satish\",\n    \"address\": \"Sangola\",\n    \"city\": \"pune\",\n    \"state\": \"maharashtra\",\n    \"countryId\": 2,\n    \"pinCode\": \"416405\",\n    \"phoneNumber\": \"+919970505865\",\n    \"emailId\": \"satish@gmail.com\",\n    \"activationDate\": \"2021-11-08T18:30:00.000+00:00\",\n    \"expiryDate\": \"2023-04-21T18:30:00.000+00:00\",\n    \"gracePeriod\": 30,\n    \"isActive\": true\n}",
+							"raw": "{\n    \"tenantId \" : \"1\",\n    \"tenantName\": \"Sowermate Technologies Private Limited\",\n    \"address\": \"Swapnapurti CHS, Hadapsar\",\n    \"city\": \"Pune\",\n    \"state\": \"Maharashtra\",\n    \"countryId\": 1,\n    \"pinCode\": \"413028\",\n    \"phoneNumber\": \"9049789010\",\n    \"emailId\": \"borage.suhas@gmail.com\",\n    \"activationDate\": \"2022-11-31T18:30:00.000+00:00\",\n    \"expiryDate\": \"2050-04-31T18:30:00.000+00:00\",\n    \"gracePeriod\": 30,\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -79,15 +86,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/tenants/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/tenants",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"tenants",
-								""
+								"tenants"
 							]
 						}
 					},
@@ -99,15 +103,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/tenants/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/tenants",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"tenants",
-								""
+								"tenants"
 							]
 						}
 					},
@@ -125,7 +126,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"companyId\": \"1\",\n    \"uuid\": \"124db\",\n    \"tenantId\": \"ef4b1fc2-9298-4afc-9412-6d17667fe379\",\n    \"companyName\": \"Sowermate\",\n    \"cin\": \"10\",\n    \"gstin\": \"12\",\n    \"tan\": \"21\",\n    \"pan\": \"41A04\",\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"createdBy\": \"Satish\",\n    \"updatedBy\": \"Satish\"\n}",
+							"raw": "{\n    \"companyId\": \"1\", // Not Required\n    \"tenantId\": \"7\", // \"832722c9-484f-4d2c-ab28-e643fe661f20\"\n    \"companyName\": \"Sowermate Technologies Private Limited\",\n    \"cin\": \"01\", // \"CIN0000001\"\n    \"gstin\": \"01\",// \"GSTIN0000000\"\n    \"tan\": \"01\", // \"TAN0000000\"\n    \"pan\": \"01\", // \"PAN0000000\"\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -133,12 +134,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/companies/create",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/companies/create",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"companies",
 								"create"
@@ -151,7 +150,17 @@
 					"name": "Get Company",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/companies/832722c9-484f-4d2c-ab28-e643fe661f20",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies",
+								"832722c9-484f-4d2c-ab28-e643fe661f20"
+							]
+						}
 					},
 					"response": []
 				},
@@ -159,7 +168,25 @@
 					"name": "Update Company",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": \"1\", // Not Required\r\n    \"tenantId\": \"7\", // \"832722c9-484f-4d2c-ab28-e643fe661f20\"\r\n    \"companyName\": \"Sowermate Technologies Private Limited\",\r\n    \"cin\": \"01\", // \"CIN0000001\"\r\n    \"gstin\": \"01\",// \"GSTIN0000000\"\r\n    \"tan\": \"01\", // \"TAN0000000\"\r\n    \"pan\": \"01\", // \"PAN0000000\"\r\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\r\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\r\n    \"createdBy\": \"Admin\",\r\n    \"updatedBy\": \"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/companies",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
 					},
 					"response": []
 				},
@@ -169,12 +196,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/companies/34",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/companies/34",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"companies",
 								"34"
@@ -189,15 +214,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/companies/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/companies",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"companies",
-								""
+								"companies"
 							]
 						}
 					},
@@ -232,7 +254,10 @@
 					"name": "GetAddress",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -240,7 +265,10 @@
 					"name": "Update Address",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -248,7 +276,10 @@
 					"name": "Get All Address",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -256,7 +287,10 @@
 					"name": "Delete Address",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -280,12 +314,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/services/create",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/services/create",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"services",
 								"create"
@@ -300,12 +332,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/services/054f83fb-e298-41c9-874e-3d5e85ece2a9",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/services/054f83fb-e298-41c9-874e-3d5e85ece2a9",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"services",
 								"054f83fb-e298-41c9-874e-3d5e85ece2a9"
@@ -320,15 +350,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/services/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/services",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"services",
-								""
+								"services"
 							]
 						}
 					},
@@ -349,15 +376,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/services/abcd-1234",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/services",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"services",
-								"abcd-1234"
+								"services"
 							]
 						}
 					},
@@ -369,12 +393,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/services/abcd-1234",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/services/abcd-1234",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"services",
 								"abcd-1234"
@@ -403,12 +425,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/additional/create",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/additional/create",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"additional",
 								"create"
@@ -423,15 +443,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/additional/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/additional",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"additional",
-								""
+								"additional"
 							]
 						}
 					},
@@ -443,15 +460,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/additional/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/additional",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"additional",
-								""
+								"additional"
 							]
 						}
 					},
@@ -472,15 +486,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/additional/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/additional",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"additional",
-								""
+								"additional"
 							]
 						}
 					},
@@ -492,12 +503,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/additional",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/additional",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"additional"
 							]
@@ -525,12 +534,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassType/create",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassType/create",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassType",
 								"create"
@@ -545,12 +552,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/glassType/d4ab24cb-c0f8-43f3-950f-a79c88d025e6",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassType/d4ab24cb-c0f8-43f3-950f-a79c88d025e6",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassType",
 								"d4ab24cb-c0f8-43f3-950f-a79c88d025e6"
@@ -565,15 +570,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/glassType/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassType",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"glassType",
-								""
+								"glassType"
 							]
 						}
 					},
@@ -608,12 +610,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9091/glassType/d4ab24cb-c0f8-43f3-950f-a79c88d025e6",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassType/d4ab24cb-c0f8-43f3-950f-a79c88d025e6",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassType",
 								"d4ab24cb-c0f8-43f3-950f-a79c88d025e6"
@@ -642,12 +642,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassSpecification/create",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassSpecification/create",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassSpecification",
 								"create"
@@ -674,12 +672,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassSpecification/d2508f78-9ae3-4a98-9c2c-9046c527f32a",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassSpecification/d2508f78-9ae3-4a98-9c2c-9046c527f32a",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassSpecification",
 								"d2508f78-9ae3-4a98-9c2c-9046c527f32a"
@@ -706,15 +702,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassSpecification/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassSpecification",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
-								"glassSpecification",
-								""
+								"glassSpecification"
 							]
 						}
 					},
@@ -735,12 +728,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassSpecification/46",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassSpecification/46",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassSpecification",
 								"46"
@@ -764,12 +755,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassSpecification/d2508f78-9ae3-4a98-9c2c-9046c527f32a",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassSpecification/d2508f78-9ae3-4a98-9c2c-9046c527f32a",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassSpecification",
 								"d2508f78-9ae3-4a98-9c2c-9046c527f32a"
@@ -798,12 +787,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassThickness/create",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassThickness/create",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassThickness",
 								"create"
@@ -830,12 +817,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassThickness/626407f9-54a5-4b8b-9059-b78a3084be46",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassThickness/626407f9-54a5-4b8b-9059-b78a3084be46",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassThickness",
 								"626407f9-54a5-4b8b-9059-b78a3084be46"
@@ -862,12 +847,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassThickness/",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassThickness/",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassThickness",
 								""
@@ -891,12 +874,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassThickness/47",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassThickness/47",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassThickness",
 								"47"
@@ -920,12 +901,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9091/glassThickness/626407f9-54a5-4b8b-9059-b78a3084be46",
-							"protocol": "http",
+							"raw": "{{HOSTED_API}}/glassThickness/626407f9-54a5-4b8b-9059-b78a3084be46",
 							"host": [
-								"localhost"
+								"{{HOSTED_API}}"
 							],
-							"port": "9091",
 							"path": [
 								"glassThickness",
 								"626407f9-54a5-4b8b-9059-b78a3084be46"
@@ -935,6 +914,33 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOSTED_API",
+			"value": "https://gitlab.sowermate.com/workflow-api/",
+			"type": "default"
 		}
 	]
 }
