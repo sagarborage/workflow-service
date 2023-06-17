@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PiTypeService {
 
-    public PiTypeValue CreatePiType(PiTypeValue piTypeValue) throws Exception;
+    public PiTypeValue createPiType(PiTypeValue piTypeValue) throws Exception;
 
     public List<PiTypeValue> getAllPiType() throws Exception;
     public PiTypeValue editPiType(PiTypeValue  piTypeValue) throws Exception;

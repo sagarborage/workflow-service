@@ -20,7 +20,7 @@ public class PiTypeServiceImpl implements PiTypeService {
     @Autowired
     private PiTypeRepository piTypeRepository;
     @Override
-    public PiTypeValue CreatePiType(PiTypeValue piTypeValue) throws Exception {
+    public PiTypeValue createPiType(PiTypeValue piTypeValue) throws Exception {
         PiTypeEntity piTypeEntity=new PiTypeEntity();
         BeanUtils.copyProperties(piTypeValue, piTypeEntity);
         String randomPiTypeId= UUID.randomUUID().toString();

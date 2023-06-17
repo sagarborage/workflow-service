@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TenantService {
 
- public TenantDetailsValue SaveTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception;
+ public TenantDetailsValue saveTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception;
 
  public List<TenantDetailsValue> getAllTenantDetails() throws Exception;
   public TenantDetailsValue editTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception;

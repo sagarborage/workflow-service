@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tenants")
+@RequestMapping("/tenants")
 public class TenantController {
 
     //create
     @Autowired
     private TenantService tenantService;
 
-    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<TenantDetailsValue> createTenantDetails(@RequestBody TenantDetailsValue tenantDetailsValue) throws Exception {
-           TenantDetailsValue tenantDetailsValue1=tenantService.SaveTenantDetails(tenantDetailsValue);
+           TenantDetailsValue tenantDetailsValue1=tenantService.saveTenantDetails(tenantDetailsValue);
         return new ResponseEntity<TenantDetailsValue>(tenantDetailsValue1,HttpStatus.CREATED);
     }
 

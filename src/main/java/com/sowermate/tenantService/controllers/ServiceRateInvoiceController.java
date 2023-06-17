@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/service-rate-invoice")
+@RequestMapping("/service-rate-invoice")
 public class ServiceRateInvoiceController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class ServiceRateInvoiceController {
 
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(ServiceRateInvoiceController.class);
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ServiceRateInvoiceValue> createServiceRateInvoice(@RequestBody ServiceRateInvoiceValue  serviceRateInvoiceValue) {
         try {

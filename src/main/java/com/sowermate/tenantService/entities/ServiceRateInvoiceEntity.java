@@ -38,6 +38,4 @@ public class ServiceRateInvoiceEntity {
     @JoinColumn(name = "service_rate_id")
     private ServiceRateEntity serviceRateEntity;
 
-
-
 }

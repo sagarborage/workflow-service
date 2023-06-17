@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/glass-specification")
+@RequestMapping("/glass-specifications")
 public class GlassSpecificationController {
 
     @Autowired
     private GlassSpecificationService  glassSpecificationService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<GlassSpecificationValue> createGlassSpecification(@RequestBody GlassSpecificationValue glassSpecificationValue) throws Exception {
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.createGlassSpecification(glassSpecificationValue);

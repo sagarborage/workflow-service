@@ -23,7 +23,7 @@ public class AdditionalChargesServiceImpl extends CommonService implements Addit
     @Autowired
     private TenantRepository tenantRepository;
     @Override
-    public AdditionalChargesValue SaveAdditionalCharges(AdditionalChargesValue additionalChargesValue) throws Exception {
+    public AdditionalChargesValue saveAdditionalCharges(AdditionalChargesValue additionalChargesValue) throws Exception {
         AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
         BeanUtils.copyProperties(additionalChargesValue, additionalChargesEntity);
         initCreate(additionalChargesEntity);

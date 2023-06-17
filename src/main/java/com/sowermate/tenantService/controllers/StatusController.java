@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/status")
+@RequestMapping("/statuses")
 public class StatusController {
 
     @Autowired
     private StatusService statusService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<StatusValue> createStatus(@RequestBody StatusValue statusValue) throws Exception {
         StatusValue statusValue1=statusService.createStatus(statusValue);

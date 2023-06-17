@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/address")
+@RequestMapping("/addresses")
 public class AddressController {
 
     @Autowired
@@ -20,7 +20,7 @@ public class AddressController {
 
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(AddressController.class);
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<CommonValue> createAddressDetails(@RequestBody AddressValue addressValue){
         CommonValue commonValue=null;

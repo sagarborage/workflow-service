@@ -14,10 +14,10 @@ public class ConfirmThroughController {
     @Autowired
     private ConfirmThroughService confirmThroughService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ConfirmThroughValue> createConfirmThrough(@RequestBody ConfirmThroughValue confirmThroughValue) throws Exception {
-        ConfirmThroughValue confirmThroughValue1=confirmThroughService.CreateConfirmThrough(confirmThroughValue);
+        ConfirmThroughValue confirmThroughValue1=confirmThroughService.createConfirmThrough(confirmThroughValue);
         return new ResponseEntity<ConfirmThroughValue>( confirmThroughValue1, HttpStatus.CREATED);
     }
     @GetMapping("/{uuid}")

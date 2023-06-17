@@ -20,7 +20,7 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     @Autowired
     private ConfirmThroughRepository confirmThroughRepository;
     @Override
-    public ConfirmThroughValue CreateConfirmThrough(ConfirmThroughValue confirmThroughValue) throws Exception {
+    public ConfirmThroughValue createConfirmThrough(ConfirmThroughValue confirmThroughValue) throws Exception {
         ConfirmThroughEntity confirmThroughEntity=new ConfirmThroughEntity();
         BeanUtils.copyProperties(confirmThroughValue, confirmThroughEntity);
         String randomConfirmThroughId= UUID.randomUUID().toString();

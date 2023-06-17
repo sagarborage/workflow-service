@@ -16,7 +16,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(CompanyController.class);
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<CommonValue> createCompanyDetails(@RequestBody CompanyValue companyValue){
         CommonValue commonValue=null;

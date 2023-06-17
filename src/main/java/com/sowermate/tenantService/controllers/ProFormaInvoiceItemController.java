@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/proforma-invoice-item")
+@RequestMapping("/proforma-invoice-item")
 public class ProFormaInvoiceItemController {
 
     @Autowired
     private ProFormaInvoiceItemService proFormaInvoiceItemService;
 
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(ProFormaInvoiceController.class);
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ProFormaInvoiceItemValue> createProFormInvoiceItem(@RequestBody ProFormaInvoiceItemValue  proFormaInvoiceItemValue) {
         try {

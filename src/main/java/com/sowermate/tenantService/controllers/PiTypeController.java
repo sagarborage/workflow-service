@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pi-type")
+@RequestMapping("/pi-type")
 public class PiTypeController {
 
     @Autowired
     private PiTypeService piTypeService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<PiTypeValue> createPiType(@RequestBody PiTypeValue piTypeValue) throws Exception {
-        PiTypeValue piTypeValue1=piTypeService.CreatePiType(piTypeValue);
+        PiTypeValue piTypeValue1=piTypeService.createPiType(piTypeValue);
         return new ResponseEntity<PiTypeValue>( piTypeValue1, HttpStatus.CREATED);
     }
     @GetMapping("/{uuid}")

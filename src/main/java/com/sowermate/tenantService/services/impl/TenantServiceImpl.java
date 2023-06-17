@@ -20,7 +20,7 @@ public class TenantServiceImpl implements TenantService {
     @Autowired
     private TenantRepository tenantRepository;
     @Override
-    public TenantDetailsValue SaveTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception {
+    public TenantDetailsValue saveTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception {
         TenantDetailsEntity tenantDetailsEntity=new TenantDetailsEntity();
         BeanUtils.copyProperties(tenantDetailsValue, tenantDetailsEntity);
         String randomTenantId= UUID.randomUUID().toString();

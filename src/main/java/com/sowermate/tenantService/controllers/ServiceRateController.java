@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/services")
+@RequestMapping("/service-rates")
 public class ServiceRateController {
     @Autowired
     private ServiceRateService serviceRateService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ServiceRateValue> createServiceRate(@RequestBody ServiceRateValue serviceRateValue) throws Exception {
         ServiceRateValue serviceRateValue1=serviceRateService.createServiceRate(serviceRateValue);

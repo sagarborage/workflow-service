@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/glass-type")
+@RequestMapping("/glass-type")
 public class GlassTypeController {
 
     //create
     @Autowired
     private GlassTypeService glassTypeService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<GlassTypeValue> createGlassType(@RequestBody GlassTypeValue glassTypeValue) throws Exception {
         GlassTypeValue glassTypeValue1=glassTypeService.createGlassType(glassTypeValue);
