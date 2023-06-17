@@ -33,13 +33,13 @@ public class GlassSpecificationController {
         List<GlassSpecificationValue> allGlassSpecificationValues = glassSpecificationService.getAllGlassSpecification();
         return new ResponseEntity<> (allGlassSpecificationValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{glassSpecificationId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassSpecificationValue> deleteGlassSpecification(@PathVariable int glassSpecificationId) throws Exception {
-        GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(glassSpecificationId);
+    public ResponseEntity<GlassSpecificationValue> deleteGlassSpecification(@PathVariable String uuid) throws Exception {
+        GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(uuid);
         return new ResponseEntity<GlassSpecificationValue>(glassSpecificationValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<GlassSpecificationValue> editGlassSpecification(@RequestBody GlassSpecificationValue glassSpecificationValue) throws Exception{
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.editGlassSpecification(glassSpecificationValue);

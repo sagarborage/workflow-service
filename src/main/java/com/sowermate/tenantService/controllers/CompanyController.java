@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/companies")
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
@@ -27,7 +27,7 @@ public class CompanyController {
         }
         return new ResponseEntity<CommonValue>(commonValue,HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<CommonValue> editCompanyDetails(@RequestBody CompanyValue companyValue){
         CommonValue commonValue=null;
@@ -49,13 +49,13 @@ public class CompanyController {
         }
         return new ResponseEntity<>(companyValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{companyId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<CommonValue> deleteCompanyDetails(
-            @PathVariable int companyId) {
+            @PathVariable String uuid) {
         CommonValue commonValue = null;
         try {
-            commonValue = companyService.deleteCompany(companyId);
+            commonValue = companyService.deleteCompany(uuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }

@@ -60,10 +60,10 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
     }
 
     @Override
-    public GlassThicknessValue deleteGlassThickness(int glassThicknessId) throws Exception {
+    public GlassThicknessValue deleteGlassThickness(String uuid) throws Exception {
         GlassThicknessValue glassThicknessValue=new GlassThicknessValue();
-        glassThicknessRepository.softDelete(glassThicknessId);
-       GlassThicknessEntity  glassThicknessEntity =glassThicknessRepository.findByGlassThicknessId(glassThicknessId) .get(0);
+        glassThicknessRepository.softDelete(uuid);
+       GlassThicknessEntity  glassThicknessEntity =glassThicknessRepository.findByUuid(uuid).get(0);
         BeanUtils.copyProperties(glassThicknessEntity ,glassThicknessValue);
         return  glassThicknessValue;
     }

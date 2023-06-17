@@ -13,7 +13,7 @@ public interface GlassSpecificationService {
 
     public GlassSpecificationValue getGlassSpecification(String uuid) throws Exception;
 
-    public GlassSpecificationValue deleteGlassSpecification(int glassSpecificationId) throws Exception;
+    public GlassSpecificationValue deleteGlassSpecification(String uuid) throws Exception;
 
     public List<GlassSpecificationValue> getAllGlassSpecification() throws Exception;
 }

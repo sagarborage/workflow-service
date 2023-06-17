@@ -62,10 +62,10 @@ public class GlassTypeServiceImpl  implements GlassTypeService {
 
 
     @Override
-    public GlassTypeValue deleteGlassType(int glassTypeId) throws Exception {
+    public GlassTypeValue deleteGlassType(String uuid) throws Exception {
         GlassTypeValue glassTypeValue=new GlassTypeValue();
-        glassTypeRepository.softDelete(glassTypeId);
-        GlassTypeEntity glassTypeEntity =glassTypeRepository.findByGlassTypeId(glassTypeId) .get(0);
+        glassTypeRepository.softDelete(uuid);
+        GlassTypeEntity glassTypeEntity =glassTypeRepository.findByUuid(uuid) .get(0);
         BeanUtils.copyProperties(glassTypeEntity ,glassTypeValue);
         return  glassTypeValue;
     }

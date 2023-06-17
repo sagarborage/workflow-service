@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/glass-type")
+@RequestMapping("/glass-types")
 public class GlassTypeController {
 
-    //create
+
     @Autowired
     private GlassTypeService glassTypeService;
 
@@ -35,13 +35,13 @@ public class GlassTypeController {
         return new ResponseEntity<> (allGlassType ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{glassTypeId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassTypeValue> deleteGlassType(@PathVariable int glassTypeId) throws Exception {
-        GlassTypeValue glassTypeValue =glassTypeService.deleteGlassType(glassTypeId);
+    public ResponseEntity<GlassTypeValue> deleteGlassType(@PathVariable String uuid) throws Exception {
+        GlassTypeValue glassTypeValue =glassTypeService.deleteGlassType(uuid);
         return new ResponseEntity<GlassTypeValue>(glassTypeValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<GlassTypeValue> editGlassType(@RequestBody GlassTypeValue glassTypeValue) throws Exception{
         GlassTypeValue glassTypeValue1=glassTypeService.editGlassType(glassTypeValue);

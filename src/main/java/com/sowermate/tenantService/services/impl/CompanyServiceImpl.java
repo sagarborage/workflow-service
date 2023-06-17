@@ -1,4 +1,5 @@
 package com.sowermate.tenantService.services.impl;
+import com.sowermate.tenantService.entities.AddressEntity;
 import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.repositories.AddressRepository;
@@ -65,19 +66,11 @@ public class  CompanyServiceImpl extends CommonService implements CompanyService
 
 
     @Override
-    public CompanyValue deleteCompany(int companyId) throws Exception {
+    public CompanyValue deleteCompany(String uuid) throws Exception {
         CompanyValue companyValue = new CompanyValue();
-
-        companyRepository.softDelete(companyId);
-
-        Optional<CompanyEntity> companyEntityOptional = companyRepository.findById(companyId);
-        if (companyEntityOptional.isPresent()) {
-            CompanyEntity companyEntity = companyEntityOptional.get();
-            BeanUtils.copyProperties(companyEntity, companyValue);
-        } else {
-            throw new Exception("Company not found");
-        }
-
+        companyRepository.softDelete(uuid);
+        CompanyEntity companyEntity= companyRepository.findByUuid(uuid).get(0);
+        BeanUtils.copyProperties(companyEntity, companyValue);
         return companyValue;
     }
 

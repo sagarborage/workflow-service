@@ -79,10 +79,10 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public TenantDetailsValue deleteTenantDetails(int tenantId) throws Exception {
+    public TenantDetailsValue deleteTenantDetails(String uuid) throws Exception {
         TenantDetailsValue tenantDetailsValue=new TenantDetailsValue();
-        tenantRepository.softDelete(tenantId);
-        TenantDetailsEntity tenantDetailsEntity =tenantRepository.findByTenantId(tenantId) .get(0);
+        tenantRepository.softDelete(uuid);
+        TenantDetailsEntity tenantDetailsEntity =tenantRepository.findByUuid(uuid) .get(0);
         BeanUtils.copyProperties(tenantDetailsEntity ,tenantDetailsValue);
         return  tenantDetailsValue;
     }

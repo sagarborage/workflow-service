@@ -13,7 +13,7 @@ public interface TenantService {
 
    public TenantDetailsValue getTenantDetails(String uuid) throws Exception;
 
-  public TenantDetailsValue deleteTenantDetails(int tenantId)throws Exception;
+  public TenantDetailsValue deleteTenantDetails(String uuid)throws Exception;
 
 
 }

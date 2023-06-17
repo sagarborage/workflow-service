@@ -11,7 +11,7 @@ public interface AddressService {
 
     public AddressValue getAddress(String uuid) throws Exception;
 
-    public AddressValue deleteAddress(int addressId) throws Exception;
+    public AddressValue deleteAddress(String uuid) throws Exception;
 
     public List<AddressValue> getAllCompanyAddress() throws Exception;
 
