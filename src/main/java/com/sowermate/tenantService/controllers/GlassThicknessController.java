@@ -33,13 +33,13 @@ public class GlassThicknessController {
         return new ResponseEntity<> (allGlassThicknessValue ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{glassThicknessId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassThicknessValue> deleteGlassThickness(@PathVariable int glassThicknessId) throws Exception {
-        GlassThicknessValue glassThicknessValue =glassThicknessService.deleteGlassThickness(glassThicknessId);
+    public ResponseEntity<GlassThicknessValue> deleteGlassThickness(@PathVariable String uuid) throws Exception {
+        GlassThicknessValue glassThicknessValue =glassThicknessService.deleteGlassThickness(uuid);
         return new ResponseEntity<GlassThicknessValue>(glassThicknessValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<GlassThicknessValue> editGlassThickness(@RequestBody GlassThicknessValue glassThicknessValue) throws Exception{
         GlassThicknessValue glassThicknessValue1=glassThicknessService.editGlassThickness(glassThicknessValue);

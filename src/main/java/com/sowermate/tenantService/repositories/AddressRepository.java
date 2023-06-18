@@ -25,7 +25,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity, String> 
 
     @Transactional
     @Modifying
-    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.addressId = :id")
-    void softDelete(@Param("id") int addressId);
+    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.uuid = :uuid")
+    void softDelete(@Param("uuid") String uuid);
 
 }

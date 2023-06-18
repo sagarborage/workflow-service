@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/proforma-invoice")
+@RequestMapping("/proforma-invoices")
 public class ProFormaInvoiceController {
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
@@ -27,7 +27,7 @@ public class ProFormaInvoiceController {
         }
         return new ResponseEntity<ProFormInvoiceValue>(proFormInvoiceValue, HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ProFormInvoiceValue> editProFormInvoice(@RequestBody ProFormInvoiceValue proFormInvoiceValue){
         ProFormInvoiceValue proFormInvoiceValue1=null;

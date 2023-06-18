@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pi-type")
+@RequestMapping("/pi-types")
 public class PiTypeController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class PiTypeController {
         PiTypeValue piTypeValue =piTypeService.deletePiType(uuid);
         return new ResponseEntity<PiTypeValue>(piTypeValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<PiTypeValue> editPiType(@RequestBody PiTypeValue piTypeValue) throws Exception{
         PiTypeValue  piTypeValue1=piTypeService.editPiType(piTypeValue);

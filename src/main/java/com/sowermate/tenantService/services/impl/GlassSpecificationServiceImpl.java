@@ -61,10 +61,10 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
     }
 
     @Override
-    public GlassSpecificationValue deleteGlassSpecification(int glassSpecificationId) throws Exception {
+    public GlassSpecificationValue deleteGlassSpecification(String uuid) throws Exception {
         GlassSpecificationValue glassSpecificationValue=new GlassSpecificationValue();
-        glassSpecificationRepository.softDelete(glassSpecificationId);
-        GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByGlassSpecificationId(glassSpecificationId) .get(0);
+        glassSpecificationRepository.softDelete(uuid);
+        GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByUuid(uuid).get(0);
         BeanUtils.copyProperties(glassSpecificationEntity ,glassSpecificationValue);
         return  glassSpecificationValue;
     }

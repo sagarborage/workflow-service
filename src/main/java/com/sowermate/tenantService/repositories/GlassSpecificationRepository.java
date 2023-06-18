@@ -17,7 +17,7 @@ public interface GlassSpecificationRepository extends JpaRepository<GlassSpecifi
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassSpecificationEntity g SET g.isActive = false WHERE g.glassSpecificationId = :id")
-    void softDelete(@Param("id") int glassSpecificationId);
+    @Query("UPDATE GlassSpecificationEntity g SET g.isActive = false WHERE g.uuid = :uuid")
+    void softDelete(@Param("uuid") String uuid);
 
 }

@@ -31,7 +31,7 @@ public class AddressController {
         }
         return new ResponseEntity<CommonValue>(commonValue, HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<CommonValue> editAddressDetails(@RequestBody AddressValue addressValue){
         CommonValue commonValue=null;
@@ -53,13 +53,13 @@ public class AddressController {
         }
         return new ResponseEntity<>(addressValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{addressId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<CommonValue> deleteAddressDetails(
-            @PathVariable int addressId) {
+            @PathVariable String uuid) {
         CommonValue commonValue = null;
         try {
-            commonValue = addressService.deleteAddress(addressId);
+            commonValue = addressService.deleteAddress(uuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }

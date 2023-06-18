@@ -61,10 +61,10 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public StatusValue deleteStatus(int statusId) throws Exception {
+    public StatusValue deleteStatus(String uuid) throws Exception {
         StatusValue statusValue=new StatusValue();
-        statusRepository.softDelete(statusId);
-        StatusEntity  statusEntity =statusRepository.findByStatusId(statusId) .get(0);
+        statusRepository.softDelete(uuid);
+        StatusEntity  statusEntity =statusRepository.findByUuid(uuid) .get(0);
         BeanUtils.copyProperties(statusEntity ,statusValue);
         return  statusValue;
     }

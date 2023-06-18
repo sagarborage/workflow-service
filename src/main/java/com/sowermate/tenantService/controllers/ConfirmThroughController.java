@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/confirm-through")
+@RequestMapping("/confirm-through")
 public class ConfirmThroughController {
     @Autowired
     private ConfirmThroughService confirmThroughService;
@@ -38,7 +38,7 @@ public class ConfirmThroughController {
         ConfirmThroughValue confirmThroughValue =confirmThroughService.deleteConfirmThrough(uuid);
         return new ResponseEntity<ConfirmThroughValue>(confirmThroughValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ConfirmThroughValue> editConfirmThroughValue(@RequestBody ConfirmThroughValue confirmThroughValue) throws Exception{
         ConfirmThroughValue  confirmThroughValue1=confirmThroughService.editConfirmThrough(confirmThroughValue);

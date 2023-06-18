@@ -12,7 +12,7 @@ public interface CompanyService {
 
     public CompanyValue getCompany(String uuid) throws Exception;
 
-    public CompanyValue deleteCompany(int companyId) throws Exception;
+    public CompanyValue deleteCompany(String uuid) throws Exception;
 
     public List<CompanyValue> getAllCompany() throws Exception;
 }

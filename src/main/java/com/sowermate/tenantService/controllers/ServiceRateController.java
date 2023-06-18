@@ -38,7 +38,7 @@ public class ServiceRateController {
         ServiceRateValue serviceRateValue =serviceRateService.deleteServiceRate(uuid);
         return new ResponseEntity<ServiceRateValue>(serviceRateValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ServiceRateValue> editServiceRate(@RequestBody ServiceRateValue serviceRateValue) throws Exception{
         ServiceRateValue serviceRateValue1=serviceRateService.editServiceRate(serviceRateValue);

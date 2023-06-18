@@ -13,7 +13,7 @@ public interface StatusService {
 
     public StatusValue getStatus(String uuid) throws Exception;
 
-    public StatusValue deleteStatus(int statusId) throws Exception;
+    public StatusValue deleteStatus(String uuid) throws Exception;
 
     public List<StatusValue> getAllStatus() throws Exception;
 }

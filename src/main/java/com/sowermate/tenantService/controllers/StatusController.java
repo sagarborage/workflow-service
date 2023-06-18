@@ -32,13 +32,13 @@ public class StatusController {
         List<StatusValue> statusValues = statusService.getAllStatus();
         return new ResponseEntity<> (statusValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{statusId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<StatusValue> deleteStatus(@PathVariable int statusId) throws Exception {
-        StatusValue statusValue =statusService.deleteStatus(statusId);
+    public ResponseEntity<StatusValue> deleteStatus(@PathVariable String uuid) throws Exception {
+        StatusValue statusValue =statusService.deleteStatus(uuid);
         return new ResponseEntity<StatusValue>(statusValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<StatusValue> editStatus(@RequestBody StatusValue statusValue) throws Exception{
         StatusValue statusValue1=statusService.editStatus(statusValue);

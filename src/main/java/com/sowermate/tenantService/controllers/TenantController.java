@@ -35,13 +35,13 @@ public class TenantController {
         return new ResponseEntity<> (allTenant ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{tenantId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<TenantDetailsValue> deleteMessage(@PathVariable int tenantId) throws Exception {
-     TenantDetailsValue tenantDetailsValue =tenantService.deleteTenantDetails(tenantId);
+    public ResponseEntity<TenantDetailsValue> deleteMessage(@PathVariable String uuid) throws Exception {
+     TenantDetailsValue tenantDetailsValue =tenantService.deleteTenantDetails(uuid);
      return new ResponseEntity<TenantDetailsValue>(tenantDetailsValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<TenantDetailsValue> editTenantDetails1(@RequestBody TenantDetailsValue tenantDetailsValue) throws Exception{
         TenantDetailsValue tenantDetailsValue1=tenantService.editTenantDetails(tenantDetailsValue);

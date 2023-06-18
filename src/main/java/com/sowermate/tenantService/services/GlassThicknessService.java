@@ -12,7 +12,7 @@ public interface GlassThicknessService {
 
     public GlassThicknessValue getGlassThickness(String uuid) throws Exception;
 
-    public GlassThicknessValue deleteGlassThickness(int glassThicknessId) throws Exception;
+    public GlassThicknessValue deleteGlassThickness(String uuid) throws Exception;
 
     public List<GlassThicknessValue> getAllGlassThickness() throws Exception;
 

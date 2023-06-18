@@ -23,7 +23,7 @@ public interface TenantRepository extends JpaRepository <TenantDetailsEntity, St
 
     @Transactional
     @Modifying
-    @Query("UPDATE TenantDetailsEntity t SET t.isActive = false WHERE t.tenantId = :id")
-    void softDelete(@Param("id") int tenantId);
+    @Query("UPDATE TenantDetailsEntity t SET t.isActive = false WHERE t.uuid = :uuid")
+    void softDelete(@Param("uuid") String uuid);
 
 }

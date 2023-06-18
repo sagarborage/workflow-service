@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/service-rate-invoice")
+@RequestMapping("/service-rate-invoices")
 public class ServiceRateInvoiceController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class ServiceRateInvoiceController {
         }
         return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue, HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ServiceRateInvoiceValue> editServiceRateInvoice(@RequestBody ServiceRateInvoiceValue serviceRateInvoiceValue) {
         ServiceRateInvoiceValue serviceRateInvoiceValue1 = null;

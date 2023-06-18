@@ -17,6 +17,6 @@ public interface StatusRepository extends JpaRepository<StatusEntity, String> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE StatusEntity s SET s.isActive = false WHERE s.statusId = :id")
-    void softDelete(@Param("id") int statusId);
+    @Query("UPDATE StatusEntity s SET s.isActive = false WHERE s.uuid = :uuid")
+    void softDelete(@Param("uuid") String uuid);
 }

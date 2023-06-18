@@ -12,7 +12,7 @@ public interface GlassTypeService {
 
     public GlassTypeValue getGlassType(String uuid) throws Exception;
 
-    public GlassTypeValue deleteGlassType(int glassTypeId) throws Exception;
+    public GlassTypeValue deleteGlassType(String uuid) throws Exception;
 
     public List<GlassTypeValue> getAllGlassType() throws Exception;
 }

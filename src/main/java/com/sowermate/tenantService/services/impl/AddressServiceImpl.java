@@ -48,10 +48,10 @@ public class AddressServiceImpl extends CommonService implements AddressService 
     }
 
     @Override
-    public AddressValue deleteAddress( int addressId) throws Exception {
+    public AddressValue deleteAddress( String uuid) throws Exception {
         AddressValue addressValue=new AddressValue();
-        addressRepository .softDelete(addressId);
-        AddressEntity  addressEntity=addressRepository.findByAddressId(addressId).get(0);
+        addressRepository .softDelete(uuid);
+        AddressEntity  addressEntity=addressRepository.findByUuid(uuid).get(0);
         BeanUtils.copyProperties(addressEntity, addressValue);
         return addressValue;
     }
