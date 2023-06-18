@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CompanyValue extends  CommonValue {
-    private int companyId;
+    private String uuid;
     private String companyName;
     private int cin;
     private int gstin;
@@ -13,8 +13,8 @@ public class CompanyValue extends  CommonValue {
     private String createdBy;
     private String updatedBy;
     private Boolean isActive;
-    private int tenantId;
-    private int addressId;
-    private int companyTypeId;
+    private String tenantUUID;
+    private String addressUUID;
+    private String companyTypeUUID;
 
 }

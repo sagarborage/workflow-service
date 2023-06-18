@@ -5,12 +5,11 @@ import lombok.Data;
 @Data
 public class ProFormaInvoiceItemValue {
 
-    private int proFormaInvoiceItemId;
     private String uuid;
-    private int proFormaInvoiceId;
-    private int glassTypeId;
-    private int glassSpecificationId;
-    private int glassThicknessId;
+    private String proFormaInvoiceUUID;
+    private String glassTypeUUID;
+    private String glassSpecificationUUID;
+    private String glassThicknessUUID;
     private Float widthInch;
     private Float widthMeasurement;
     private Float actualWidth;

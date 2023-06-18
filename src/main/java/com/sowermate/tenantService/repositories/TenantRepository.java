@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TenantRepository extends JpaRepository <TenantDetailsEntity, String> {
-
+    @Query("SELECT t FROM TenantDetailsEntity t WHERE t.uuid = :uuid")
     public List<TenantDetailsEntity> findByUuid(@Param("uuid")String uuid);
 
     public List<TenantDetailsEntity> findByTenantId(int tenantId);

@@ -1,6 +1,8 @@
 package com.sowermate.tenantService.controllers;
+import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.entities.value.TenantDetailsValue;
 import com.sowermate.tenantService.services.TenantService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ public class TenantController {
     @Autowired
     private TenantService tenantService;
 
+    private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(TenantController.class);
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<TenantDetailsValue> createTenantDetails(@RequestBody TenantDetailsValue tenantDetailsValue) throws Exception {
@@ -30,9 +33,15 @@ public class TenantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TenantDetailsValue>> getAllTenantDetails() throws Exception {
-        List<TenantDetailsValue> allTenant = tenantService.getAllTenantDetails();
-        return new ResponseEntity<> (allTenant ,HttpStatus.ACCEPTED);
+    public ResponseEntity<List<TenantDetailsValue>> getAllTenantDetails() {
+        List<TenantDetailsValue> tenantDetailsValues = null;
+        try {
+            tenantDetailsValues = tenantService.getAllTenantDetails();
+            Logger.info("records " + tenantDetailsValues.size());
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(tenantDetailsValues, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)

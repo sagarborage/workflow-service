@@ -36,14 +36,12 @@ public class TenantServiceImpl implements TenantService {
      List<TenantDetailsEntity> tenantDetailsEntities= tenantRepository.findAll();
      for (int i=0; i <tenantDetailsEntities.size(); i++){
        tenantDetailsValue =new TenantDetailsValue();
-       BeanUtils.copyProperties(tenantDetailsEntities.get(i), tenantDetailsValue);
 
+       BeanUtils.copyProperties(tenantDetailsEntities.get(i), tenantDetailsValue);
        tenantDetailsValues.add(tenantDetailsValue);
      }
-
         return tenantDetailsValues;
     }
-
 
     @Override
     public TenantDetailsValue editTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception {

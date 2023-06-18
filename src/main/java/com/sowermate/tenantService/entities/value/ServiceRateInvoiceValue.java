@@ -4,12 +4,10 @@ import lombok.Data;
 
 @Data
 public class ServiceRateInvoiceValue {
-
-    private int serviceRateInvoiceId;
+    private String proFormaInvoiceUUID;
     private String uuid;
+    private String serviceRateUUID;
     private int quantity;
     private int rate;
     private int total;
-    private int proFormaInvoiceId;
-    private int serviceRateId;
 }

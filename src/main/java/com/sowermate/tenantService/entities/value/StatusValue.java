@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class StatusValue {
-    private int statusId;
     private String uuid;
     private String name;
     private Boolean isActive;

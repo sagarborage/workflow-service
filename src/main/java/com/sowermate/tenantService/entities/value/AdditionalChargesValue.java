@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class AdditionalChargesValue extends  CommonValue  {
-
-    private int additionalChargesId;
     private String uuid;
     private float extraMm;
     private float insurance;
@@ -14,6 +12,6 @@ public class AdditionalChargesValue extends  CommonValue  {
     private float gst;
     private String createdBy;
     private String updatedBy;
-    private int tenantId;
+    private String tenantUUID;
 
 }

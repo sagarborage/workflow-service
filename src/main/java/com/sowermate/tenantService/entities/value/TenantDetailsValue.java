@@ -7,7 +7,6 @@ import java.util.Date;
 @Data
 public class TenantDetailsValue {
 
-    private  int tenantId;
     private String uuid;
     private  String tenantName;
     private String  address;

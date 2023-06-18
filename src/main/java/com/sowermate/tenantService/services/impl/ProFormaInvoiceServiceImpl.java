@@ -40,10 +40,10 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         BeanUtils.copyProperties(proFormInvoiceValue ,proFormaInvoiceEntity);
         String randomProFormaInvoiceId= UUID.randomUUID().toString();
         proFormaInvoiceEntity.setUuid(randomProFormaInvoiceId);
-        proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughRepository.findByConfirmThroughId(proFormInvoiceValue.getConfirmThroughId()).get(0));
-        proFormaInvoiceEntity.setPiTypeEntity(piTypeRepository.findByPiTypeId(proFormInvoiceValue.getPiTypeId()).get(0));
-        proFormaInvoiceEntity.setCompanyIdBill(companyRepository.findByCompanyId(proFormInvoiceValue.getIdBillTo()).get(0));
-        proFormaInvoiceEntity.setCompanyIdShip(companyRepository.findByCompanyId(proFormInvoiceValue.getIdShipTo()).get(0));
+        proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughRepository.findByUuid(proFormInvoiceValue.getConfirmThroughUUID()).get(0));
+        proFormaInvoiceEntity.setPiTypeEntity(piTypeRepository.findByUuid(proFormInvoiceValue.getPiTypeUUID()).get(0));
+        proFormaInvoiceEntity.setCompanyIdBill(companyRepository.findByUuid(proFormInvoiceValue.getIdBillToUUID()).get(0));
+        proFormaInvoiceEntity.setCompanyIdShip(companyRepository.findByUuid(proFormInvoiceValue.getIdShipToUUID()).get(0));
         BeanUtils.copyProperties(proFormaInvoiceRepository.save(proFormaInvoiceEntity), proFormInvoiceValue);
         return proFormInvoiceValue;
     }
@@ -52,15 +52,14 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     public ProFormInvoiceValue editProFormInvoice(ProFormInvoiceValue proFormInvoiceValue) throws Exception {
         ProFormaInvoiceEntity proFormaInvoiceEntity=new ProFormaInvoiceEntity();
         BeanUtils.copyProperties(proFormInvoiceValue , proFormaInvoiceEntity);
-        proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughRepository.findByConfirmThroughId(proFormInvoiceValue.getConfirmThroughId()).get(0));
-        proFormaInvoiceEntity.setPiTypeEntity(piTypeRepository.findByPiTypeId(proFormInvoiceValue.getPiTypeId()).get(0));
-        proFormaInvoiceEntity.setCompanyIdBill(companyRepository.findByCompanyId(proFormInvoiceValue.getIdBillTo()).get(0));
-        proFormaInvoiceEntity.setCompanyIdShip(companyRepository.findByCompanyId(proFormInvoiceValue.getIdShipTo()).get(0));
+        proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughRepository.findByUuid(proFormInvoiceValue.getConfirmThroughUUID()).get(0));
+        proFormaInvoiceEntity.setPiTypeEntity(piTypeRepository.findByUuid(proFormInvoiceValue.getPiTypeUUID()).get(0));
+        proFormaInvoiceEntity.setCompanyIdBill(companyRepository.findByUuid(proFormInvoiceValue.getIdBillToUUID()).get(0));
+        proFormaInvoiceEntity.setCompanyIdShip(companyRepository.findByUuid(proFormInvoiceValue.getIdShipToUUID()).get(0));
         proFormaInvoiceEntity.setProFormaInvoiceId(proFormaInvoiceRepository.findByUuid(proFormInvoiceValue.getUuid()).get(0).getProFormaInvoiceId());
         BeanUtils.copyProperties(proFormaInvoiceRepository.save(proFormaInvoiceEntity), proFormInvoiceValue);
         return proFormInvoiceValue;
     }
-
     @Override
     public ProFormInvoiceValue getProFormInvoice(String uuid) throws Exception {
         ProFormInvoiceValue proFormInvoiceValue =new ProFormInvoiceValue();

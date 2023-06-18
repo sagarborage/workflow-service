@@ -6,10 +6,10 @@ import java.util.Date;
 
 @Data
 public class ProFormInvoiceValue {
-    private int proFormaInvoiceId;
+
     private String uuid;
-    private int idBillTo;
-    private int idShipTo;
+    private String idBillToUUID;
+    private String idShipToUUID;
     private int piNumber;
     private Date invoiceDate;
     private Double proFormaInvoiceAmount;
@@ -29,6 +29,6 @@ public class ProFormInvoiceValue {
     private Float previousBalance;
     private int adjustmentAmount;
     private String status;
-    private  int confirmThroughId;
-    private  int piTypeId;
+    private  String confirmThroughUUID;
+    private  String piTypeUUID;
 }

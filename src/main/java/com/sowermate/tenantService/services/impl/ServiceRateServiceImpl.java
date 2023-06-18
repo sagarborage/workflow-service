@@ -26,7 +26,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
         BeanUtils.copyProperties(serviceRateValue, serviceRateEntity);
         String randomTenantId= UUID.randomUUID().toString();
         serviceRateEntity.setUuid(randomTenantId);
-        serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByTenantId(serviceRateValue.getTenantId()).get(0));
+        serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByUuid(serviceRateValue.getTenantUUID()).get(0));
         BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
         return serviceRateValue;
     }
@@ -41,7 +41,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
             List<ServiceRateEntity> matchingServices = serviceRateRepository.findByUuid(serviceRateValue.getUuid());
             if (!matchingServices.isEmpty()) {
                 serviceRateEntity.setServiceRateId(matchingServices.get(0).getServiceRateId());
-                serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByTenantId(serviceRateValue.getTenantId()).get(0));
+                serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByUuid(serviceRateValue.getTenantUUID()).get(0));
                 BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
             } else {
                 throw new Exception("No tenant found with UUID " + serviceRateValue.getUuid());
@@ -55,7 +55,6 @@ public class ServiceRateServiceImpl implements ServiceRateService {
 
     @Override
     public List<ServiceRateValue> getAllServiceRate() throws Exception {
-
             List<ServiceRateValue> serviceRateValues=new ArrayList<>();
             ServiceRateValue serviceRateValue=null;
             List<ServiceRateEntity> serviceRateEntities= serviceRateRepository.findAll();
@@ -68,7 +67,6 @@ public class ServiceRateServiceImpl implements ServiceRateService {
 
             return serviceRateValues;
         }
-
 
     @Override
     public ServiceRateValue getServiceRate(String uuid) throws Exception {

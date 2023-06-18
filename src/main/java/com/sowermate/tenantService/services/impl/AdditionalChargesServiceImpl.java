@@ -27,7 +27,7 @@ public class AdditionalChargesServiceImpl extends CommonService implements Addit
         AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
         BeanUtils.copyProperties(additionalChargesValue, additionalChargesEntity);
         initCreate(additionalChargesEntity);
-        additionalChargesEntity.setTenantDetailsEntities(tenantRepository.findByTenantId(additionalChargesValue.getTenantId()).get(0));
+        additionalChargesEntity.setTenantDetailsEntities(tenantRepository.findByUuid(additionalChargesValue.getTenantUUID()).get(0));
         BeanUtils.copyProperties(additionalChargesRepository.save(additionalChargesEntity), additionalChargesValue);
         return additionalChargesValue;
     }
@@ -53,7 +53,7 @@ public class AdditionalChargesServiceImpl extends CommonService implements Addit
             AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
             BeanUtils.copyProperties(additionalChargesValue , additionalChargesEntity);
             initEdit(additionalChargesEntity);
-            additionalChargesEntity.setTenantDetailsEntities(tenantRepository.findByTenantId(additionalChargesValue.getTenantId()).get(0));
+            additionalChargesEntity.setTenantDetailsEntities(tenantRepository.findByUuid(additionalChargesValue.getTenantUUID()).get(0));
             additionalChargesEntity.setAdditionalChargesId(additionalChargesRepository.findByUuid(additionalChargesValue.getUuid()).get(0).getAdditionalChargesId());
             BeanUtils.copyProperties(additionalChargesRepository.save(additionalChargesEntity), additionalChargesValue);
             return additionalChargesValue;

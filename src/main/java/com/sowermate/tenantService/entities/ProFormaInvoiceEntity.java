@@ -21,9 +21,6 @@ public class ProFormaInvoiceEntity {
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String uuid;
 
-
-
-
     @Column(name = "pi_number")
     private int piNumber;
 

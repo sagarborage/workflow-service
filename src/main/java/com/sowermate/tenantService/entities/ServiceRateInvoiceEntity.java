@@ -11,6 +11,8 @@ import javax.persistence.*;
 @Setter
 public class ServiceRateInvoiceEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_rate_invoice_id", unique = true, nullable = false, updatable = false)
