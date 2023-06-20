@@ -12,13 +12,13 @@ import java.util.List;
 @Repository
 public interface GlassTypeRepository extends JpaRepository <GlassTypeEntity ,String> {
 
-    public List<GlassTypeEntity> findByUuid(@Param("uuid")String uuid);
+    public GlassTypeEntity findByTenantEntity_UuidAndGlassTypeUuid(String tenantUuid, String glassTypeUuid);
 
-    public List<GlassTypeEntity> findByGlassTypeId(int glassTypeId);
+    public List<GlassTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassTypeEntity g SET g.isActive = false WHERE g.uuid = :uuid")
-    void softDelete(@Param("uuid") String uuid);
+    @Query("UPDATE GlassTypeEntity g SET g.isActive = false WHERE g.glassTypeUuid = :glassTypeUuid")
+    void softDelete(@Param("glassTypeUuid") String glassTypeUuid);
 
 }

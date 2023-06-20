@@ -39,7 +39,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         String randomProFormaInvoiceItemId= UUID.randomUUID().toString();
         proFormaInvoiceItemEntity.setUuid(randomProFormaInvoiceItemId);
         proFormaInvoiceItemEntity.setProFormaInvoiceEntity(proFormaInvoiceRepository.findByUuid(proFormaInvoiceItemValue.getProFormaInvoiceUUID()).get(0));
-        proFormaInvoiceItemEntity.setGlassTypeEntity(glassTypeRepository.findByUuid(proFormaInvoiceItemValue.getGlassTypeUUID()).get(0));
+        proFormaInvoiceItemEntity.setGlassTypeEntity(glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(null, proFormaInvoiceItemValue.getGlassTypeUUID()));// Need to pass tenant uuid
         proFormaInvoiceItemEntity.setGlassSpecificationEntity(glassSpecificationRepository.findByUuid(proFormaInvoiceItemValue.getGlassSpecificationUUID()).get(0));
         proFormaInvoiceItemEntity.setGlassThicknessEntity(glassThicknessRepository.findByUuid(proFormaInvoiceItemValue.getGlassThicknessUUID()).get(0));
         BeanUtils.copyProperties(proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity), proFormaInvoiceItemValue);
@@ -50,7 +50,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity=new ProFormaInvoiceItemEntity();
         BeanUtils.copyProperties(proFormaInvoiceItemValue , proFormaInvoiceItemEntity);
         proFormaInvoiceItemEntity.setProFormaInvoiceEntity(proFormaInvoiceRepository.findByUuid(proFormaInvoiceItemValue.getProFormaInvoiceUUID()).get(0));
-        proFormaInvoiceItemEntity.setGlassTypeEntity(glassTypeRepository.findByUuid(proFormaInvoiceItemValue.getGlassTypeUUID()).get(0));
+        proFormaInvoiceItemEntity.setGlassTypeEntity(glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(null, proFormaInvoiceItemValue.getGlassTypeUUID()));// Need to pass tenant uuid
         proFormaInvoiceItemEntity.setGlassSpecificationEntity(glassSpecificationRepository.findByUuid(proFormaInvoiceItemValue.getGlassSpecificationUUID()).get(0));
         proFormaInvoiceItemEntity.setGlassThicknessEntity(glassThicknessRepository.findByUuid(proFormaInvoiceItemValue.getGlassThicknessUUID()).get(0));
         proFormaInvoiceItemEntity.setProFormaInvoiceItemId(proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemValue.getUuid()).get(0).getProFormaInvoiceItemId());

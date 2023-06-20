@@ -13,8 +13,8 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name="tenant_details")
-public class TenantDetailsEntity implements Serializable {
+@Table(name="tenant")
+public class TenantEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
 
@@ -50,13 +50,15 @@ public class TenantDetailsEntity implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy="tenantDetailsEntity",cascade=CascadeType.ALL)
-    private List<CompanyEntity> companyEntity;
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private List<CompanyEntity> companyEntities;
 
-    @OneToMany(mappedBy="tenantDetailsEntities",cascade=CascadeType.ALL)
-    private List<AdditionalChargesEntity> additionalChargesEntity;
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private List<AdditionalChargesEntity> additionalChargesEntities;
 
-    @OneToMany(mappedBy="tenantDetailsEntity",cascade=CascadeType.ALL)
-    private List<ServiceRateEntity> serviceRateEntity;
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private List<ServiceRateEntity> serviceRateEntities;
 
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private  List<GlassTypeEntity> glassTypeEntities;
 }

@@ -32,7 +32,7 @@ public class ServiceRateEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
-    private TenantDetailsEntity tenantDetailsEntity;
+    private TenantEntity tenantEntity;
 
     @OneToMany(mappedBy="serviceRateEntity",cascade=CascadeType.ALL)
     private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;

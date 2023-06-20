@@ -26,7 +26,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
         BeanUtils.copyProperties(serviceRateValue, serviceRateEntity);
         String randomTenantId= UUID.randomUUID().toString();
         serviceRateEntity.setUuid(randomTenantId);
-        serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByUuid(serviceRateValue.getTenantUUID()).get(0));
+        serviceRateEntity.setTenantEntity(tenantRepository.findByUuid(serviceRateValue.getTenantUUID()));
         BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
         return serviceRateValue;
     }
@@ -41,7 +41,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
             List<ServiceRateEntity> matchingServices = serviceRateRepository.findByUuid(serviceRateValue.getUuid());
             if (!matchingServices.isEmpty()) {
                 serviceRateEntity.setServiceRateId(matchingServices.get(0).getServiceRateId());
-                serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByUuid(serviceRateValue.getTenantUUID()).get(0));
+                serviceRateEntity.setTenantEntity(tenantRepository.findByUuid(serviceRateValue.getTenantUUID()));
                 BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
             } else {
                 throw new Exception("No tenant found with UUID " + serviceRateValue.getUuid());

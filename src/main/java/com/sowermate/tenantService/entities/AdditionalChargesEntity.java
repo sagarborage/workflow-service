@@ -42,6 +42,6 @@ public class AdditionalChargesEntity extends CommonEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
-    private TenantDetailsEntity tenantDetailsEntities;
+    private TenantEntity tenantEntity;
 
 }

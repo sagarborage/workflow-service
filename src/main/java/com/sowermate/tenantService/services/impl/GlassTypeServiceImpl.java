@@ -2,7 +2,9 @@ package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.GlassTypeEntity;
 import com.sowermate.tenantService.entities.value.GlassTypeValue;
+import com.sowermate.tenantService.repositories.CompanyRepository;
 import com.sowermate.tenantService.repositories.GlassTypeRepository;
+import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.GlassTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,23 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional(rollbackForClassName = { "Exception" })
-public class GlassTypeServiceImpl  implements GlassTypeService {
+@Transactional(rollbackForClassName = {"Exception"})
+public class GlassTypeServiceImpl implements GlassTypeService {
 
     @Autowired
-    GlassTypeRepository  glassTypeRepository;
+    GlassTypeRepository glassTypeRepository;
+
+    @Autowired
+    TenantRepository tenantRepository;
+
     @Override
     public GlassTypeValue createGlassType(GlassTypeValue glassTypeValue) throws Exception {
 
-        GlassTypeEntity glassTypeEntity=new GlassTypeEntity();
+        GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
         BeanUtils.copyProperties(glassTypeValue, glassTypeEntity);
-        String randomGlassTypeId= UUID.randomUUID().toString();
-        glassTypeEntity.setUuid(randomGlassTypeId);
+        String randomGlassTypeId = UUID.randomUUID().toString();
+        glassTypeEntity.setGlassTypeUuid(randomGlassTypeId);
+        glassTypeEntity.setTenantEntity(tenantRepository.findByUuid(glassTypeValue.getTenantUuid()));
         BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);
         return glassTypeValue;
     }
@@ -36,13 +43,14 @@ public class GlassTypeServiceImpl  implements GlassTypeService {
         BeanUtils.copyProperties(glassTypeValue, glassTypeEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (glassTypeValue.getUuid() != null) {
-            List<GlassTypeEntity> matchingGlassType = glassTypeRepository.findByUuid(glassTypeValue.getUuid());
-            if (!matchingGlassType.isEmpty()) {
-                glassTypeEntity.setGlassTypeId(matchingGlassType.get(0).getGlassTypeId());
+        if (glassTypeValue.getGlassTypeUuid() != null) {
+            GlassTypeEntity matchingGlassType = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(glassTypeValue.getTenantUuid(), glassTypeValue.getGlassTypeUuid());
+            if (matchingGlassType != null) {
+                glassTypeEntity.setGlassTypeId(matchingGlassType.getGlassTypeId());
+                glassTypeEntity.setTenantEntity(tenantRepository.findByUuid(glassTypeValue.getTenantUuid()));
                 BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);
             } else {
-                throw new Exception("No tenant found with UUID " + glassTypeValue.getUuid());
+                throw new Exception("No glass type found with UUID " + glassTypeValue.getGlassTypeUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -52,37 +60,40 @@ public class GlassTypeServiceImpl  implements GlassTypeService {
     }
 
     @Override
-    public GlassTypeValue getGlassType(String uuid) throws Exception {
-        GlassTypeValue glassTypeValue=new GlassTypeValue();
+    public GlassTypeValue getGlassType(String tenantUuid, String glassTypeUuid) throws Exception {
+        GlassTypeValue glassTypeValue = new GlassTypeValue();
 
-        GlassTypeEntity glassTypeEntity =glassTypeRepository.findByUuid(uuid).get(0);
-        BeanUtils.copyProperties(glassTypeEntity ,glassTypeValue);
+        GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
+        BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
+        glassTypeValue.setTenantUuid(tenantUuid);
+        glassTypeValue.setGlassTypeUuid(tenantUuid);
         return glassTypeValue;
     }
 
 
     @Override
-    public GlassTypeValue deleteGlassType(String uuid) throws Exception {
-        GlassTypeValue glassTypeValue=new GlassTypeValue();
-        glassTypeRepository.softDelete(uuid);
-        GlassTypeEntity glassTypeEntity =glassTypeRepository.findByUuid(uuid) .get(0);
-        BeanUtils.copyProperties(glassTypeEntity ,glassTypeValue);
-        return  glassTypeValue;
+    public GlassTypeValue deleteGlassType(String tenantUuid, String glassTypeUuid) throws Exception {
+        GlassTypeValue glassTypeValue = new GlassTypeValue();
+        glassTypeRepository.softDelete(glassTypeUuid);
+        GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
+        BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
+        glassTypeValue.setTenantUuid(tenantUuid);
+        return glassTypeValue;
     }
 
     @Override
-    public List<GlassTypeValue> getAllGlassType() throws Exception {
-        List<GlassTypeValue> glassTypeValues=new ArrayList<>();
-        GlassTypeValue glassTypeValue=null;
-        List<GlassTypeEntity> glassTypeEntities= glassTypeRepository.findAll();
-        for (int i=0; i <glassTypeEntities.size(); i++){
-            glassTypeValue =new GlassTypeValue();
+    public List<GlassTypeValue> getAllGlassType(String tenantUuid) throws Exception {
+        List<GlassTypeValue> glassTypeValues = new ArrayList<>();
+        GlassTypeValue glassTypeValue = null;
+        List<GlassTypeEntity> glassTypeEntities = glassTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
+        for (int i = 0; i < glassTypeEntities.size(); i++) {
+            glassTypeValue = new GlassTypeValue();
             BeanUtils.copyProperties(glassTypeEntities.get(i), glassTypeValue);
-
+            glassTypeValue.setTenantUuid(tenantUuid);
             glassTypeValues.add(glassTypeValue);
         }
 
         return glassTypeValues;
     }
-    }
+}
 

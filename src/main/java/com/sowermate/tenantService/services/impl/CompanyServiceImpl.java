@@ -1,5 +1,4 @@
 package com.sowermate.tenantService.services.impl;
-import com.sowermate.tenantService.entities.AddressEntity;
 import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.repositories.AddressRepository;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(rollbackForClassName= {"Exception"})
@@ -35,7 +33,7 @@ public class  CompanyServiceImpl extends CommonService implements CompanyService
         CompanyEntity companyEntity=new CompanyEntity();
         BeanUtils.copyProperties(companyValue ,companyEntity);
         initCreate(companyEntity);
-        companyEntity.setTenantDetailsEntity(tenantRepository.findByUuid(companyValue.getTenantUUID()).get(0));
+        companyEntity.setTenantEntity(tenantRepository.findByUuid(companyValue.getTenantUUID()));
         companyEntity.setAddressEntity(addressRepository.findByUuid(companyValue.getAddressUUID()).get(0));
         companyEntity.setCompanyTypeEntity(companyTypeRepository.findByUuid(companyValue.getCompanyTypeUUID()).get(0));
         BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
@@ -46,7 +44,7 @@ public class  CompanyServiceImpl extends CommonService implements CompanyService
          CompanyEntity  companyEntity=new CompanyEntity();
          BeanUtils.copyProperties(companyValue , companyEntity);
          initEdit(companyEntity);
-        companyEntity.setTenantDetailsEntity(tenantRepository.findByUuid(companyValue.getTenantUUID()).get(0));
+        companyEntity.setTenantEntity(tenantRepository.findByUuid(companyValue.getTenantUUID()));
         companyEntity.setAddressEntity(addressRepository.findByUuid(companyValue.getAddressUUID()).get(0));
         companyEntity.setCompanyTypeEntity(companyTypeRepository.findByUuid(companyValue.getCompanyTypeUUID()).get(0));
          companyEntity.setCompanyId(companyRepository.findByUuid(companyValue.getUuid()).get(0).getCompanyId());

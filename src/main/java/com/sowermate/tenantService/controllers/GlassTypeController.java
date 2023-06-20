@@ -23,22 +23,22 @@ public class GlassTypeController {
         return new ResponseEntity<GlassTypeValue>( glassTypeValue1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<GlassTypeValue> getSingleGlassType(@PathVariable String uuid) throws Exception {
-        GlassTypeValue glassTypeValue=glassTypeService.getGlassType(uuid);
+    @GetMapping("/{tenantUuid}/{glassTypeUuid}")
+    public ResponseEntity<GlassTypeValue> getSingleGlassType(@PathVariable String tenantUuid, @PathVariable String glassTypeUuid) throws Exception {
+        GlassTypeValue glassTypeValue=glassTypeService.getGlassType(tenantUuid, glassTypeUuid);
         return  new ResponseEntity<>(glassTypeValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<GlassTypeValue>> getAllGlassType() throws Exception {
-        List<GlassTypeValue> allGlassType = glassTypeService.getAllGlassType();
+    @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.GET)
+    public ResponseEntity<List<GlassTypeValue>> getAllGlassType(@PathVariable String tenantUuid) throws Exception {
+        List<GlassTypeValue> allGlassType = glassTypeService.getAllGlassType(tenantUuid);
         return new ResponseEntity<> (allGlassType ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{glassTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassTypeValue> deleteGlassType(@PathVariable String uuid) throws Exception {
-        GlassTypeValue glassTypeValue =glassTypeService.deleteGlassType(uuid);
+    public ResponseEntity<GlassTypeValue> deleteGlassType(@PathVariable String tenantUuid, @PathVariable String glassTypeUuid) throws Exception {
+        GlassTypeValue glassTypeValue =glassTypeService.deleteGlassType(tenantUuid, glassTypeUuid);
         return new ResponseEntity<GlassTypeValue>(glassTypeValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

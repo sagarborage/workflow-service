@@ -47,7 +47,7 @@ public class CompanyEntity  extends CommonEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name ="tenant_id")
-   private TenantDetailsEntity tenantDetailsEntity;
+   private TenantEntity tenantEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
