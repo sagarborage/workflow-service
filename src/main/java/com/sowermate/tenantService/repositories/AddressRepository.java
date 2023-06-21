@@ -16,16 +16,16 @@ import java.util.List;
 public interface AddressRepository extends JpaRepository<AddressEntity, String> {
 
 
-    public List<AddressEntity> findByUuid (@Param("uuid")String uuid);
+    public AddressEntity findByAddressUuid (@Param("addressUuid")String addressUuid);
 
-    public List<AddressEntity> deleteByUuid (@Param("uuid")String uuid);
+   // public AddressEntity deleteByAddressUuid (@Param("addressUuid")String addressUuid);
 
     public List<AddressEntity> findAll();
-    public List<AddressEntity> findByAddressId(int addressId);
+   // public List<AddressEntity> findByAddressId(int addressId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.uuid = :uuid")
-    void softDelete(@Param("uuid") String uuid);
+    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.addressUuid = :addressUuid")
+    void softDelete(@Param("addressUuid") String uuid);
 
 }

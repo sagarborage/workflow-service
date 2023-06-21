@@ -22,9 +22,9 @@ public class AdditionalChargesController {
         AdditionalChargesValue additionalChargesValue1=additionalChargesService.saveAdditionalCharges(additionalChargesValue);
         return new ResponseEntity<AdditionalChargesValue>( additionalChargesValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<AdditionalChargesValue> getAdditionalCharges(@PathVariable String uuid) throws Exception {
-        AdditionalChargesValue additionalChargesValue=additionalChargesService.getAdditionalCharges(uuid);
+    @GetMapping("/{additionalChargesUuid}")
+    public ResponseEntity<AdditionalChargesValue> getAdditionalCharges(@PathVariable String additionalChargesUuid) throws Exception {
+        AdditionalChargesValue additionalChargesValue=additionalChargesService.getAdditionalCharges(additionalChargesUuid);
         return  new ResponseEntity<>(additionalChargesValue, HttpStatus.ACCEPTED);
     }
     @GetMapping
@@ -32,10 +32,10 @@ public class AdditionalChargesController {
         List<AdditionalChargesValue> additionalChargesValues = additionalChargesService.getAllAdditionalCharges();
         return new ResponseEntity<> (additionalChargesValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{additionalChargesUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<AdditionalChargesValue> deleteAdditionalCharges(@PathVariable String uuid) throws Exception {
-        AdditionalChargesValue additionalChargesValue =additionalChargesService.deleteAdditionalCharges(uuid);
+    public ResponseEntity<AdditionalChargesValue> deleteAdditionalCharges(@PathVariable String additionalChargesUuid) throws Exception {
+        AdditionalChargesValue additionalChargesValue =additionalChargesService.deleteAdditionalCharges(additionalChargesUuid);
         return new ResponseEntity<AdditionalChargesValue>(additionalChargesValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

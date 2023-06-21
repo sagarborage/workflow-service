@@ -10,10 +10,10 @@ import java.util.List;
 @Repository
 public interface ServiceRateInvoiceRepository extends JpaRepository<ServiceRateInvoiceEntity, String> {
 
-    @Query("SELECT p FROM ServiceRateInvoiceEntity p WHERE p.uuid = :uuid")
-    public List<ServiceRateInvoiceEntity> findByUuid(@Param("uuid") String uuid);
+    @Query("SELECT s FROM ServiceRateInvoiceEntity s WHERE s.serviceRateInvoiceUuid = :serviceRateInvoiceUuid")
+    public ServiceRateInvoiceEntity findByServiceRateInvoiceUuid(@Param("serviceRateInvoiceUuid") String serviceRateInvoiceUuid);
 
-    public List<ServiceRateInvoiceEntity> deleteByUuid(@Param("uuid")String uuid);
+    public ServiceRateInvoiceEntity deleteByServiceRateInvoiceUuid(@Param("serviceRateInvoiceUuid")String serviceRateInvoiceUuid);
 
     public List<ServiceRateInvoiceEntity> findAll();
     public List<ServiceRateInvoiceEntity> findByServiceRateInvoiceId(int serviceRateInvoiceId);

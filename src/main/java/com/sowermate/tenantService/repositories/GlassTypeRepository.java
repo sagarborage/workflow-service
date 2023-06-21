@@ -12,6 +12,10 @@ import java.util.List;
 @Repository
 public interface GlassTypeRepository extends JpaRepository <GlassTypeEntity ,String> {
 
+    @Query("SELECT g FROM GlassTypeEntity g " +
+            "JOIN g.tenantEntity t " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND g.glassTypeUuid = :glassTypeUuid")
     public GlassTypeEntity findByTenantEntity_UuidAndGlassTypeUuid(String tenantUuid, String glassTypeUuid);
 
     public List<GlassTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);

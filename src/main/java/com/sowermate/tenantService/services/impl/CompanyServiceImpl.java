@@ -14,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional(rollbackForClassName= {"Exception"})
-public class  CompanyServiceImpl extends CommonService implements CompanyService {
+public class  CompanyServiceImpl  implements CompanyService {
     @Autowired
     private CompanyRepository  companyRepository;
     @Autowired
@@ -32,10 +33,11 @@ public class  CompanyServiceImpl extends CommonService implements CompanyService
     public CompanyValue createCompany(CompanyValue companyValue) throws Exception {
         CompanyEntity companyEntity=new CompanyEntity();
         BeanUtils.copyProperties(companyValue ,companyEntity);
-        initCreate(companyEntity);
-        companyEntity.setTenantEntity(tenantRepository.findByUuid(companyValue.getTenantUUID()));
-        companyEntity.setAddressEntity(addressRepository.findByUuid(companyValue.getAddressUUID()).get(0));
-        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByUuid(companyValue.getCompanyTypeUUID()).get(0));
+        String randomCompanyUuid= UUID.randomUUID().toString();
+        companyEntity.setCompanyUuid(randomCompanyUuid);
+        companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
+        companyEntity.setAddressEntity(addressRepository.findByAddressUuid(companyValue.getAddressUuid()));
+        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
         BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;
     }
@@ -43,27 +45,26 @@ public class  CompanyServiceImpl extends CommonService implements CompanyService
     public CompanyValue editCompany(CompanyValue companyValue) throws Exception {
          CompanyEntity  companyEntity=new CompanyEntity();
          BeanUtils.copyProperties(companyValue , companyEntity);
-         initEdit(companyEntity);
-        companyEntity.setTenantEntity(tenantRepository.findByUuid(companyValue.getTenantUUID()));
-        companyEntity.setAddressEntity(addressRepository.findByUuid(companyValue.getAddressUUID()).get(0));
-        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByUuid(companyValue.getCompanyTypeUUID()).get(0));
-         companyEntity.setCompanyId(companyRepository.findByUuid(companyValue.getUuid()).get(0).getCompanyId());
+        companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
+        companyEntity.setAddressEntity(addressRepository.findByAddressUuid(companyValue.getAddressUuid()));
+        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
+         companyEntity.setCompanyId(companyRepository.findByUuid(companyValue.getCompanyUuid()).getCompanyId());
          BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;
     }
     @Override
-    public CompanyValue getCompany(String uuid) throws Exception {
+    public CompanyValue getCompany(String companyUuid) throws Exception {
         CompanyValue companyValue =new CompanyValue();
-        CompanyEntity companyEntity=companyRepository.findByUuid(uuid).get(0);
+        CompanyEntity companyEntity=companyRepository.findByUuid(companyUuid);
         BeanUtils.copyProperties(companyEntity, companyValue);
         return companyValue;
     }
     
     @Override
-    public CompanyValue deleteCompany(String uuid) throws Exception {
+    public CompanyValue deleteCompany(String companyUuid) throws Exception {
         CompanyValue companyValue = new CompanyValue();
-        companyRepository.softDelete(uuid);
-        CompanyEntity companyEntity= companyRepository.findByUuid(uuid).get(0);
+        companyRepository.softDelete(companyUuid);
+        CompanyEntity companyEntity= companyRepository.findByUuid(companyUuid);
         BeanUtils.copyProperties(companyEntity, companyValue);
         return companyValue;
     }

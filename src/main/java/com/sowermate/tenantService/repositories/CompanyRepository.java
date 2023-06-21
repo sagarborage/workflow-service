@@ -14,8 +14,8 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer> {
 
-    @Query("SELECT c FROM CompanyEntity c WHERE c.uuid = :uuid")
-    public List<CompanyEntity> findByUuid(@Param("uuid") String uuid);
+    @Query("SELECT c FROM CompanyEntity c WHERE c.companyUuid = :companyUuid")
+    public CompanyEntity findByUuid(@Param("companyUuid") String companyUuid);
 
    // public List<CompanyEntity> deleteByUuid(@Param("uuid") String uuid);
 
@@ -24,7 +24,7 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer>
     public List<CompanyEntity> findByCompanyId(int companyId);
     @Transactional
     @Modifying
-    @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.uuid = :uuid")
-    void softDelete(@Param("uuid") String uuid);
+    @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.companyUuid = :companyUuid")
+    void softDelete(@Param("companyUuid") String companyUuid);
 
 }

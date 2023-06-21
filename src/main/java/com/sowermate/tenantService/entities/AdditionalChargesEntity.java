@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Setter
 @Getter
 @Entity
 @Table(name="additional_charges")
-public class AdditionalChargesEntity extends CommonEntity {
+public class AdditionalChargesEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
 
@@ -18,6 +20,15 @@ public class AdditionalChargesEntity extends CommonEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="additional_charges_id")
     private int additionalChargesId;
+
+    @Column(name="uuid", unique=true, updatable=false)
+    private String additionalChargesUuid;
+
+    @Column(name="created_dttm")
+    private Date createdDttm;
+
+    @Column(name="updated_dttm")
+    private Date updatedDttm;
 
     @Column(name = "extra_mm")
     private float extraMm;

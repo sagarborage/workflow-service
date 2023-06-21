@@ -2,8 +2,13 @@ package com.sowermate.tenantService.entities.value;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class AddressValue extends  CommonValue{
+public class AddressValue {
+    private String addressUuid;
+    private Date createdDttm;
+    private Date updatedDttm;
     private String  addressLine1;
     private  String addressLine2;
     private  String addressLine3;

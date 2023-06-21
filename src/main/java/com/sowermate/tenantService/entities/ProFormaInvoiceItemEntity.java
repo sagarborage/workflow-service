@@ -16,7 +16,7 @@ public class ProFormaInvoiceItemEntity {
     private int proFormaInvoiceItemId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String proFormaInvoiceItemUuid;
 
     @Column(name = "width_inch")
         private Float widthInch;

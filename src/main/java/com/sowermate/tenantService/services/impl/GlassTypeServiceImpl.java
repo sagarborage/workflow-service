@@ -32,7 +32,7 @@ public class GlassTypeServiceImpl implements GlassTypeService {
         BeanUtils.copyProperties(glassTypeValue, glassTypeEntity);
         String randomGlassTypeId = UUID.randomUUID().toString();
         glassTypeEntity.setGlassTypeUuid(randomGlassTypeId);
-        glassTypeEntity.setTenantEntity(tenantRepository.findByUuid(glassTypeValue.getTenantUuid()));
+        glassTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassTypeValue.getTenantUuid()));
         BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);
         return glassTypeValue;
     }
@@ -47,7 +47,7 @@ public class GlassTypeServiceImpl implements GlassTypeService {
             GlassTypeEntity matchingGlassType = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(glassTypeValue.getTenantUuid(), glassTypeValue.getGlassTypeUuid());
             if (matchingGlassType != null) {
                 glassTypeEntity.setGlassTypeId(matchingGlassType.getGlassTypeId());
-                glassTypeEntity.setTenantEntity(tenantRepository.findByUuid(glassTypeValue.getTenantUuid()));
+                glassTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassTypeValue.getTenantUuid()));
                 BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);
             } else {
                 throw new Exception("No glass type found with UUID " + glassTypeValue.getGlassTypeUuid());
@@ -66,7 +66,7 @@ public class GlassTypeServiceImpl implements GlassTypeService {
         GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
         BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
         glassTypeValue.setTenantUuid(tenantUuid);
-        glassTypeValue.setGlassTypeUuid(tenantUuid);
+        glassTypeValue.setGlassTypeUuid(glassTypeUuid);
         return glassTypeValue;
     }
 

@@ -22,9 +22,9 @@ public class PiTypeController {
         PiTypeValue piTypeValue1=piTypeService.createPiType(piTypeValue);
         return new ResponseEntity<PiTypeValue>( piTypeValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<PiTypeValue> getPiTypeValue(@PathVariable String uuid) throws Exception {
-        PiTypeValue piTypeValue=piTypeService.getPiType(uuid);
+    @GetMapping("/{piTypeUuid}")
+    public ResponseEntity<PiTypeValue> getPiTypeValue(@PathVariable String piTypeUuid) throws Exception {
+        PiTypeValue piTypeValue=piTypeService.getPiType(piTypeUuid);
         return  new ResponseEntity<>(piTypeValue, HttpStatus.ACCEPTED);
     }
 
@@ -34,10 +34,10 @@ public class PiTypeController {
         return new ResponseEntity<> (piTypeValues ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{piTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<PiTypeValue> deletePiType(@PathVariable String uuid) throws Exception {
-        PiTypeValue piTypeValue =piTypeService.deletePiType(uuid);
+    public ResponseEntity<PiTypeValue> deletePiType(@PathVariable String piTypeUuid) throws Exception {
+        PiTypeValue piTypeValue =piTypeService.deletePiType(piTypeUuid);
         return new ResponseEntity<PiTypeValue>(piTypeValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

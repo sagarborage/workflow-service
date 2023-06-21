@@ -18,7 +18,7 @@ public class PiTypeEntity {
     private int piTypeId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String piTypeUuid;
 
     @Column(name = "mm")
     private float mm;
@@ -28,6 +28,10 @@ public class PiTypeEntity {
 
     @OneToMany(mappedBy="piTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
 
 }

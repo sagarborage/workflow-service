@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class PiTypeValue {
 
-    private String uuid;
+    private String  piTypeUuid;
     private float mm;
     private float sqft;
+    private String tenantUuid;
 }

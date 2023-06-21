@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface PiTypeRepository extends JpaRepository<PiTypeEntity, String> {
 
-    public List<PiTypeEntity> findByUuid(@Param("uuid")String uuid);
+    public PiTypeEntity findByPiTypeUuid(@Param("piTypeUuid")String piTypeUuid);
 
-    public List<PiTypeEntity> findByPiTypeId(int piTypeId);
+    public PiTypeEntity findByPiTypeId(int piTypeId);
 
-    public List<PiTypeEntity> deletePiTypeByUuid(@Param("uuid")String uuid);
+    public PiTypeEntity deleteByPiTypeUuid(@Param("piTypeUuid")String piTypeUuid);
 }

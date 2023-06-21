@@ -11,9 +11,9 @@ public interface StatusService {
 
     public StatusValue editStatus(StatusValue statusValue) throws Exception;
 
-    public StatusValue getStatus(String uuid) throws Exception;
+    public StatusValue getStatus(String statusUuid) throws Exception;
 
-    public StatusValue deleteStatus(String uuid) throws Exception;
+    public StatusValue deleteStatus(String statusUuid) throws Exception;
 
     public List<StatusValue> getAllStatus() throws Exception;
 }

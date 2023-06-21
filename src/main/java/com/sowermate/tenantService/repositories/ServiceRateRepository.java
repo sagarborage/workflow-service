@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface ServiceRateRepository extends JpaRepository<ServiceRateEntity, String>{
 
-    public List<ServiceRateEntity> findByUuid(@Param("uuid")String uuid);
-    public List<ServiceRateEntity> deleteServiceByUuid(@Param("uuid")String uuid);
+    public ServiceRateEntity findByServiceRateUuid(@Param("serviceRateUuid")String serviceRateUuid);
+    public ServiceRateEntity deleteByServiceRateUuid(@Param("serviceRateUuid")String serviceRateUuid);
     public List<ServiceRateEntity> findAll();
 
     public List<ServiceRateEntity> findByServiceRateId(int serviceRateId);

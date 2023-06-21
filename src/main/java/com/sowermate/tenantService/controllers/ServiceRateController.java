@@ -22,9 +22,9 @@ public class ServiceRateController {
         return new ResponseEntity<ServiceRateValue>( serviceRateValue1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<ServiceRateValue> getServiceRate(@PathVariable String uuid) throws Exception {
-        ServiceRateValue serviceRateValue=serviceRateService.getServiceRate(uuid);
+    @GetMapping("/{serviceRateUuid}")
+    public ResponseEntity<ServiceRateValue> getServiceRate(@PathVariable String serviceRateUuid) throws Exception {
+        ServiceRateValue serviceRateValue=serviceRateService.getServiceRate(serviceRateUuid);
         return  new ResponseEntity<>(serviceRateValue, HttpStatus.ACCEPTED);
     }
     @GetMapping
@@ -34,8 +34,8 @@ public class ServiceRateController {
     }
     @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ServiceRateValue> deleteServiceRate(@PathVariable String uuid) throws Exception {
-        ServiceRateValue serviceRateValue =serviceRateService.deleteServiceRate(uuid);
+    public ResponseEntity<ServiceRateValue> deleteServiceRate(@PathVariable String serviceRateUuid) throws Exception {
+        ServiceRateValue serviceRateValue =serviceRateService.deleteServiceRate(serviceRateUuid);
         return new ResponseEntity<ServiceRateValue>(serviceRateValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

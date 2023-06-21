@@ -29,6 +29,7 @@ public class GlassTypeEntity  {
 
     @OneToMany(mappedBy="glassTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;

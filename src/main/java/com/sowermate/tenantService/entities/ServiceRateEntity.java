@@ -19,7 +19,7 @@ public class ServiceRateEntity {
     private int serviceRateId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String serviceRateUuid;
 
     @Column(name = "name")
     private String name;

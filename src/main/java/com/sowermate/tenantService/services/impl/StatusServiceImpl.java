@@ -24,8 +24,8 @@ public class StatusServiceImpl implements StatusService {
     public StatusValue createStatus(StatusValue statusValue) throws Exception {
         StatusEntity statusEntity=new StatusEntity();
         BeanUtils.copyProperties(statusValue, statusEntity);
-        String randomStatusId= UUID.randomUUID().toString();
-        statusEntity.setUuid(randomStatusId);
+        String randomStatusUuid= UUID.randomUUID().toString();
+        statusEntity.setStatusUuid(randomStatusUuid);
         BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
         return statusValue;
     }
@@ -36,13 +36,13 @@ public class StatusServiceImpl implements StatusService {
         BeanUtils.copyProperties(statusValue, statusEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (statusValue.getUuid() != null) {
-            List<StatusEntity> matchingStatus = statusRepository.findByUuid(statusValue.getUuid());
-            if (!matchingStatus.isEmpty()) {
-                statusEntity.setStatusId(matchingStatus.get(0).getStatusId());
+        if (statusValue.getStatusUuid() != null) {
+            StatusEntity matchingStatus = statusRepository.findByStatusUuid(statusValue.getStatusUuid());
+            if (matchingStatus !=null) {
+                statusEntity.setStatusId(matchingStatus.getStatusId());
                 BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
             } else {
-                throw new Exception("No tenant found with UUID " + statusValue.getUuid());
+                throw new Exception("No tenant found with UUID " + statusValue.getStatusUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -52,19 +52,19 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public StatusValue getStatus(String uuid) throws Exception {
+    public StatusValue getStatus(String statusUuid) throws Exception {
         StatusValue statusValue=new StatusValue();
 
-        StatusEntity statusEntity =statusRepository.findByUuid(uuid).get(0);
+        StatusEntity statusEntity =statusRepository.findByStatusUuid(statusUuid);
         BeanUtils.copyProperties(statusEntity ,statusValue);
         return statusValue;
     }
 
     @Override
-    public StatusValue deleteStatus(String uuid) throws Exception {
+    public StatusValue deleteStatus(String statusUuid) throws Exception {
         StatusValue statusValue=new StatusValue();
-        statusRepository.softDelete(uuid);
-        StatusEntity  statusEntity =statusRepository.findByUuid(uuid) .get(0);
+        statusRepository.softDelete(statusUuid);
+        StatusEntity  statusEntity =statusRepository.findByStatusUuid(statusUuid) ;
         BeanUtils.copyProperties(statusEntity ,statusValue);
         return  statusValue;
     }

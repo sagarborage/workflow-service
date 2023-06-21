@@ -25,7 +25,7 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
         GlassSpecificationEntity glassSpecificationEntity=new GlassSpecificationEntity();
         BeanUtils.copyProperties(glassSpecificationValue, glassSpecificationEntity);
         String randomGlassSpecificationId= UUID.randomUUID().toString();
-        glassSpecificationEntity.setUuid(randomGlassSpecificationId);
+        glassSpecificationEntity.setGlassSpecificationUuid(randomGlassSpecificationId);
         BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
         return glassSpecificationValue;
     }
@@ -36,13 +36,13 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
         BeanUtils.copyProperties(glassSpecificationValue, glassSpecificationEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (glassSpecificationValue.getUuid() != null) {
-            List<GlassSpecificationEntity> matchingGlassSpecification = glassSpecificationRepository.findByUuid(glassSpecificationValue.getUuid());
-            if (!matchingGlassSpecification.isEmpty()) {
-                glassSpecificationEntity.setGlassSpecificationId(matchingGlassSpecification.get(0).getGlassSpecificationId());
+        if (glassSpecificationValue.getGlassSpecificationUuid() != null) {
+            GlassSpecificationEntity matchingGlassSpecification = glassSpecificationRepository.findByGlassSpecificationUuid(glassSpecificationValue.getGlassSpecificationUuid());
+            if (matchingGlassSpecification !=null)  {
+                glassSpecificationEntity.setGlassSpecificationId(matchingGlassSpecification.getGlassSpecificationId());
                 BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
             } else {
-                throw new Exception("No tenant found with UUID " + glassSpecificationValue.getUuid());
+                throw new Exception("No tenant found with UUID " + glassSpecificationValue.getGlassSpecificationUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -52,19 +52,19 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
     }
 
     @Override
-    public GlassSpecificationValue getGlassSpecification(String uuid) throws Exception {
+    public GlassSpecificationValue getGlassSpecification(String glassSpecificationUuid) throws Exception {
         GlassSpecificationValue glassSpecificationValue=new GlassSpecificationValue();
 
-        GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByUuid(uuid).get(0);
+        GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByGlassSpecificationUuid(glassSpecificationUuid);
         BeanUtils.copyProperties(glassSpecificationEntity ,glassSpecificationValue);
         return glassSpecificationValue;
     }
 
     @Override
-    public GlassSpecificationValue deleteGlassSpecification(String uuid) throws Exception {
+    public GlassSpecificationValue deleteGlassSpecification(String glassSpecificationUuid) throws Exception {
         GlassSpecificationValue glassSpecificationValue=new GlassSpecificationValue();
-        glassSpecificationRepository.softDelete(uuid);
-        GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByUuid(uuid).get(0);
+        glassSpecificationRepository.softDelete(glassSpecificationUuid);
+        GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByGlassSpecificationUuid(glassSpecificationUuid);
         BeanUtils.copyProperties(glassSpecificationEntity ,glassSpecificationValue);
         return  glassSpecificationValue;
     }

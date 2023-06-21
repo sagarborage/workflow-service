@@ -10,9 +10,9 @@ public interface GlassThicknessService {
 
     public GlassThicknessValue editGlassThickness(GlassThicknessValue glassThicknessValue) throws Exception;
 
-    public GlassThicknessValue getGlassThickness(String uuid) throws Exception;
+    public GlassThicknessValue getGlassThickness(String glassThicknessUuid) throws Exception;
 
-    public GlassThicknessValue deleteGlassThickness(String uuid) throws Exception;
+    public GlassThicknessValue deleteGlassThickness(String glassThicknessUuid) throws Exception;
 
     public List<GlassThicknessValue> getAllGlassThickness() throws Exception;
 

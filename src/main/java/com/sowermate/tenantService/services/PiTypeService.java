@@ -11,8 +11,8 @@ public interface PiTypeService {
     public List<PiTypeValue> getAllPiType() throws Exception;
     public PiTypeValue editPiType(PiTypeValue  piTypeValue) throws Exception;
 
-    public PiTypeValue getPiType(String uuid) throws Exception;
+    public PiTypeValue getPiType(String piTypeUuid) throws Exception;
 
-    public PiTypeValue deletePiType(String uuid)throws Exception;
+    public PiTypeValue deletePiType(String piTypeUuid)throws Exception;
 
 }

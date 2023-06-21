@@ -22,25 +22,25 @@ public class AddressController {
 
     @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<CommonValue> createAddressDetails(@RequestBody AddressValue addressValue){
-        CommonValue commonValue=null;
+    public ResponseEntity<AddressValue> createAddressDetails(@RequestBody AddressValue addressValue){
+        AddressValue addressValue1=null;
         try {
-            commonValue=addressService.createAddress(addressValue);
+            addressValue1=addressService.createAddress(addressValue);
         } catch (Exception e) {
             Logger.error("Error while creating Seller:", e);
         }
-        return new ResponseEntity<CommonValue>(commonValue, HttpStatus.CREATED);
+        return new ResponseEntity<AddressValue>(addressValue1, HttpStatus.CREATED);
     }
     @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<CommonValue> editAddressDetails(@RequestBody AddressValue addressValue){
-        CommonValue commonValue=null;
+    public ResponseEntity<AddressValue> editAddressDetails(@RequestBody AddressValue addressValue){
+        AddressValue addressValue1=null;
         try {
-            commonValue=  addressService.editAddress(addressValue);
+            addressValue1=  addressService.editAddress(addressValue);
         } catch (Exception e) {
             Logger.error("Error while editing Seller:", e);
         }
-        return new ResponseEntity<CommonValue>(commonValue,HttpStatus.CREATED);
+        return new ResponseEntity<AddressValue>(addressValue1,HttpStatus.CREATED);
     }
     @GetMapping("/{uuid}")
     public ResponseEntity<AddressValue> getAddressDetails(
@@ -55,15 +55,15 @@ public class AddressController {
     }
     @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CommonValue> deleteAddressDetails(
+    public ResponseEntity<AddressValue> deleteAddressDetails(
             @PathVariable String uuid) {
-        CommonValue commonValue = null;
+        AddressValue addressValue = null;
         try {
-            commonValue = addressService.deleteAddress(uuid);
+            addressValue = addressService.deleteAddress(uuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<CommonValue>(commonValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<AddressValue>(addressValue, HttpStatus.ACCEPTED);
     }
 
     @GetMapping

@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ServiceRateValue {
-    private String uuid;
+    private String serviceRateUuid;
     private String name;
     private float rate;
     private Boolean isActive;
-    private String tenantUUID;
+    private String tenantUuid;
 }

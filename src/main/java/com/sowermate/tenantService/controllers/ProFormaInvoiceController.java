@@ -38,24 +38,24 @@ public class ProFormaInvoiceController {
         }
         return new ResponseEntity<ProFormInvoiceValue>(proFormInvoiceValue1,HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
+    @GetMapping("/{proFormInvoiceUuid}")
     public ResponseEntity<ProFormInvoiceValue> getProFormInvoice(
-            @PathVariable String uuid) {
+            @PathVariable String proFormInvoiceUuid) {
         ProFormInvoiceValue proFormInvoiceValue = null;
         try {
-            proFormInvoiceValue = proFormaInvoiceService.getProFormInvoice(uuid);
+            proFormInvoiceValue = proFormaInvoiceService.getProFormInvoice(proFormInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(proFormInvoiceValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{proFormInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<ProFormInvoiceValue> deleteProFormInvoice(
-            @PathVariable String uuid) {
+            @PathVariable String proFormInvoiceUuid) {
         ProFormInvoiceValue proFormInvoiceValue = null;
         try {
-            proFormInvoiceValue = proFormaInvoiceService.deleteProFormInvoice(uuid);
+            proFormInvoiceValue = proFormaInvoiceService.deleteProFormInvoice(proFormInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }

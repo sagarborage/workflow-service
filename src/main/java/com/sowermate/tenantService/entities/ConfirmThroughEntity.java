@@ -19,7 +19,8 @@ public class ConfirmThroughEntity {
     private int confirmThroughId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String confirmThroughUuid;
+
     @Column(name = "name")
     private String name;
 

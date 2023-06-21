@@ -12,8 +12,8 @@ public interface ServiceRateService {
     public List<ServiceRateValue> getAllServiceRate() throws Exception;
 
 
-    public ServiceRateValue getServiceRate(String uuid) throws Exception;
+    public ServiceRateValue getServiceRate(String serviceRateUuid) throws Exception;
 
-    public ServiceRateValue deleteServiceRate(String uuid)throws Exception;
+    public ServiceRateValue deleteServiceRate(String serviceRateUuid)throws Exception;
 
 }

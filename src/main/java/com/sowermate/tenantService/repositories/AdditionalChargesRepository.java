@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface AdditionalChargesRepository  extends JpaRepository<AdditionalChargesEntity ,String> {
 
-    public List<AdditionalChargesEntity> findByUuid(@Param("uuid")String uuid);
+    public AdditionalChargesEntity findByAdditionalChargesUuid(@Param("additionalChargesUuid")String additionalChargesUuid);
     public List<AdditionalChargesEntity> findAll();
-    public List<AdditionalChargesEntity> deleteAdditionalByUuid(@Param("uuid")String uuid);
+    public AdditionalChargesEntity deleteByAdditionalChargesUuid(@Param("additionalChargesUuid")String additionalChargesUuid);
 
 }

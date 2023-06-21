@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 public interface GlassThicknessRepository  extends JpaRepository<GlassThicknessEntity, String> {
-    public List<GlassThicknessEntity> findByUuid(@Param("uuid")String uuid);
+    public GlassThicknessEntity findByGlassThicknessUuid(@Param("glassThicknessUuid")String glassThicknessUuid);
 
     public List<GlassThicknessEntity> findByGlassThicknessId(int glassThicknessId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.uuid = :uuid")
-    void softDelete(@Param("uuid") String uuid);
+    @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.glassThicknessUuid = :glassThicknessUuid")
+    void softDelete(@Param("glassThicknessUuid") String glassThicknessUuid);
 
 }

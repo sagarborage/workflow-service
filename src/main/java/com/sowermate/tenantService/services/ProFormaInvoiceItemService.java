@@ -11,9 +11,9 @@ public interface ProFormaInvoiceItemService {
 
     public ProFormaInvoiceItemValue editProFormInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) throws Exception;
 
-    public ProFormaInvoiceItemValue getProFormInvoiceItem(String uuid) throws Exception;
+    public ProFormaInvoiceItemValue getProFormInvoiceItem(String ProFormaInvoiceItemUuid) throws Exception;
 
-    public ProFormaInvoiceItemValue deleteProFormInvoiceItem(String uuid) throws Exception;
+    public ProFormaInvoiceItemValue deleteProFormInvoiceItem(String ProFormaInvoiceItemUuid) throws Exception;
 
     public List<ProFormaInvoiceItemValue> getAllProFormInvoiceItem() throws Exception;
 }

@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
 @Transactional(rollbackForClassName= {"Exception"})
-public class AddressServiceImpl extends CommonService implements AddressService {
+public class AddressServiceImpl  implements AddressService {
 
     @Autowired
     private AddressRepository addressRepository;
@@ -24,7 +25,8 @@ public class AddressServiceImpl extends CommonService implements AddressService 
     public AddressValue createAddress(AddressValue addressValue) throws Exception {
         AddressEntity addressEntity=new AddressEntity();
         BeanUtils.copyProperties(addressValue ,addressEntity);
-        initCreate(addressEntity);
+        String randomGlassSpecificationId= UUID.randomUUID().toString();
+        addressEntity.setAddressUuid(randomGlassSpecificationId);
         BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
         return addressValue;
     }
@@ -33,25 +35,24 @@ public class AddressServiceImpl extends CommonService implements AddressService 
     public AddressValue editAddress(AddressValue addressValue) throws Exception {
         AddressEntity  addressEntity=new AddressEntity();
         BeanUtils.copyProperties(addressValue , addressEntity);
-        initEdit(addressEntity);
-        addressEntity.setAddressId(addressRepository.findByUuid(addressValue.getUuid()).get(0).getAddressId());
+        addressEntity.setAddressId(addressRepository.findByAddressUuid(addressValue.getAddressUuid()).getAddressId());
         BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
         return addressValue;
     }
 
     @Override
-    public AddressValue getAddress(String uuid) throws Exception {
+    public AddressValue getAddress(String addressUuid) throws Exception {
         AddressValue addressValue =new AddressValue();
-        AddressEntity addressEntity=addressRepository.findByUuid(uuid).get(0);
+        AddressEntity addressEntity=addressRepository.findByAddressUuid(addressUuid);
         BeanUtils.copyProperties(addressEntity, addressValue);
         return addressValue;
     }
 
     @Override
-    public AddressValue deleteAddress( String uuid) throws Exception {
+    public AddressValue deleteAddress( String addressUuid) throws Exception {
         AddressValue addressValue=new AddressValue();
-        addressRepository .softDelete(uuid);
-        AddressEntity  addressEntity=addressRepository.findByUuid(uuid).get(0);
+        addressRepository .softDelete(addressUuid);
+        AddressEntity  addressEntity=addressRepository.findByAddressUuid(addressUuid);
         BeanUtils.copyProperties(addressEntity, addressValue);
         return addressValue;
     }

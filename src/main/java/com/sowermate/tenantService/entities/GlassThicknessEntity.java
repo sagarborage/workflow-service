@@ -18,7 +18,7 @@ public class GlassThicknessEntity {
     private int glassThicknessId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String glassThicknessUuid;
     @Column(name = "name")
     private String name;
 

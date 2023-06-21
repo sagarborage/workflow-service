@@ -10,9 +10,9 @@ public interface ProFormaInvoiceService {
 
     public ProFormInvoiceValue editProFormInvoice(ProFormInvoiceValue proFormInvoiceValue) throws Exception;
 
-    public ProFormInvoiceValue getProFormInvoice(String uuid) throws Exception;
+    public ProFormInvoiceValue getProFormInvoice(String proFormInvoiceUuid) throws Exception;
 
-    public ProFormInvoiceValue deleteProFormInvoice(String uuid) throws Exception;
+    public ProFormInvoiceValue deleteProFormInvoice(String proFormInvoiceUuid) throws Exception;
 
     public List<ProFormInvoiceValue> getAllProFormInvoice() throws Exception;
 

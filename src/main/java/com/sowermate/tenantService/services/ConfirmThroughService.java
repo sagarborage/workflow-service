@@ -11,8 +11,8 @@ public interface ConfirmThroughService {
     public List<ConfirmThroughValue> getAllConfirmThrough() throws Exception;
     public ConfirmThroughValue editConfirmThrough(ConfirmThroughValue  confirmThroughValue) throws Exception;
 
-    public ConfirmThroughValue getConfirmThrough(String uuid) throws Exception;
+    public ConfirmThroughValue getConfirmThrough(String confirmThroughUuid) throws Exception;
 
-    public ConfirmThroughValue deleteConfirmThrough(String uuid)throws Exception;
+    public ConfirmThroughValue deleteConfirmThrough(String confirmThroughUuid)throws Exception;
 
 }

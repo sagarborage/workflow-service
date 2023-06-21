@@ -23,9 +23,9 @@ public class GlassSpecificationController {
         return new ResponseEntity<GlassSpecificationValue>( glassSpecificationValue1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<GlassSpecificationValue> getSingleGlassSpecification(@PathVariable String uuid) throws Exception {
-        GlassSpecificationValue glassSpecificationValue=glassSpecificationService.getGlassSpecification(uuid);
+    @GetMapping("/{glassSpecificationUuid}")
+    public ResponseEntity<GlassSpecificationValue> getSingleGlassSpecification(@PathVariable String glassSpecificationUuid) throws Exception {
+        GlassSpecificationValue glassSpecificationValue=glassSpecificationService.getGlassSpecification(glassSpecificationUuid);
         return  new ResponseEntity<>(glassSpecificationValue, HttpStatus.ACCEPTED);
     }
     @GetMapping
@@ -33,10 +33,10 @@ public class GlassSpecificationController {
         List<GlassSpecificationValue> allGlassSpecificationValues = glassSpecificationService.getAllGlassSpecification();
         return new ResponseEntity<> (allGlassSpecificationValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{glassSpecificationUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassSpecificationValue> deleteGlassSpecification(@PathVariable String uuid) throws Exception {
-        GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(uuid);
+    public ResponseEntity<GlassSpecificationValue> deleteGlassSpecification(@PathVariable String glassSpecificationUuid) throws Exception {
+        GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(glassSpecificationUuid);
         return new ResponseEntity<GlassSpecificationValue>(glassSpecificationValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

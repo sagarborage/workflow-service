@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.PiTypeEntity;
 import com.sowermate.tenantService.entities.value.PiTypeValue;
 import com.sowermate.tenantService.repositories.PiTypeRepository;
+import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.PiTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,16 @@ public class PiTypeServiceImpl implements PiTypeService {
 
     @Autowired
     private PiTypeRepository piTypeRepository;
+
+    @Autowired
+    private TenantRepository tenantRepository;
     @Override
     public PiTypeValue createPiType(PiTypeValue piTypeValue) throws Exception {
         PiTypeEntity piTypeEntity=new PiTypeEntity();
         BeanUtils.copyProperties(piTypeValue, piTypeEntity);
-        String randomPiTypeId= UUID.randomUUID().toString();
-        piTypeEntity.setUuid(randomPiTypeId);
+        String randomPiTypeUUid= UUID.randomUUID().toString();
+        piTypeEntity.setPiTypeUuid(randomPiTypeUUid);
+        piTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(piTypeValue.getTenantUuid()));
         BeanUtils.copyProperties(piTypeRepository.save(piTypeEntity), piTypeValue);
         return piTypeValue;
 
@@ -51,13 +56,14 @@ public class PiTypeServiceImpl implements PiTypeService {
         BeanUtils.copyProperties(piTypeValue, piTypeEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (piTypeValue.getUuid() != null) {
-            List<PiTypeEntity> matchingPiType = piTypeRepository.findByUuid(piTypeValue.getUuid());
-            if (!matchingPiType.isEmpty()) {
-                piTypeEntity.setPiTypeId(matchingPiType.get(0).getPiTypeId());
+        if (piTypeValue.getPiTypeUuid() != null) {
+            PiTypeEntity matchingPiType = piTypeRepository.findByPiTypeUuid(piTypeValue.getPiTypeUuid());
+            if (matchingPiType!=null) {
+                piTypeEntity.setPiTypeId(matchingPiType.getPiTypeId());
+                piTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(piTypeValue.getTenantUuid()));
                 BeanUtils.copyProperties(piTypeRepository.save(piTypeEntity), piTypeValue);
             } else {
-                throw new Exception("No tenant found with UUID " + piTypeValue.getUuid());
+                throw new Exception("No tenant found with UUID " + piTypeValue.getPiTypeUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -67,19 +73,20 @@ public class PiTypeServiceImpl implements PiTypeService {
     }
 
     @Override
-    public PiTypeValue getPiType(String uuid) throws Exception {
+    public PiTypeValue getPiType(String piTypeUuid) throws Exception {
         PiTypeValue piTypeValue=new PiTypeValue();
 
-        PiTypeEntity piTypeEntity =piTypeRepository.findByUuid(uuid).get(0);
+        PiTypeEntity piTypeEntity =piTypeRepository.findByPiTypeUuid(piTypeUuid);
+
         BeanUtils.copyProperties(piTypeEntity ,piTypeValue);
         return piTypeValue;
     }
 
 
     @Override
-    public PiTypeValue deletePiType(String uuid) throws Exception {
+    public PiTypeValue deletePiType(String piTypeUuid) throws Exception {
         PiTypeValue piTypeValue=new PiTypeValue();
-        PiTypeEntity piTypeEntity =piTypeRepository.deletePiTypeByUuid(uuid) .get(0);
+        PiTypeEntity piTypeEntity =piTypeRepository.deleteByPiTypeUuid(piTypeUuid) ;
         BeanUtils.copyProperties(piTypeEntity ,piTypeValue);
         return  piTypeValue;
 

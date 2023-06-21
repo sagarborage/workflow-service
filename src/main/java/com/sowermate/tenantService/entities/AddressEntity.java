@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 
@@ -12,12 +14,22 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="address")
-public class AddressEntity extends CommonEntity {
+public class AddressEntity implements Serializable {
+
     private static final long serialVersionUID = -241370177952331642L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "address_id", unique = true, nullable = false, updatable = false)
-     int addressId;
+    private int addressId;
+
+    @Column(name="uuid", unique=true, updatable=false)
+    private String addressUuid;
+
+    @Column(name="created_dttm")
+    private Date createdDttm;
+
+    @Column(name="updated_dttm")
+    private Date updatedDttm;
 
     @Column(name = "address_line1")
     private String  addressLine1;

@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface CompanyTypeRepository extends JpaRepository<CompanyTypeEntity ,String> {
 
-    public List<CompanyTypeEntity> findByCompanyTypeId(int companyTypeId);
+  //  public List<CompanyTypeEntity> findByCompanyTypeId(int companyTypeId);
 
-    public List<CompanyTypeEntity> findByUuid(@Param("uuid")String uuid);
+    public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
 
 }

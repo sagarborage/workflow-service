@@ -19,7 +19,7 @@ public class ProFormaInvoiceEntity {
     private int proFormaInvoiceId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String proFormInvoiceUuid;
 
     @Column(name = "pi_number")
     private int piNumber;
