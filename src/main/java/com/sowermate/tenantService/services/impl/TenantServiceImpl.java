@@ -27,6 +27,7 @@ public class TenantServiceImpl implements TenantService {
         String randomTenantUuid = UUID.randomUUID().toString();
         tenantEntity.setUuid(randomTenantUuid);
         BeanUtils.copyProperties(tenantRepository.save(tenantEntity), tenantValue);
+        tenantValue.setTenantUuid(tenantEntity.getUuid());
         return tenantValue;
     }
 
@@ -39,6 +40,7 @@ public class TenantServiceImpl implements TenantService {
             tenantValue = new TenantValue();
 
             BeanUtils.copyProperties(tenantDetailsEntities.get(i), tenantValue);
+            tenantValue.setTenantUuid(tenantDetailsEntities.get(i).getUuid());
             tenantValues.add(tenantValue);
         }
         return tenantValues;
@@ -55,6 +57,7 @@ public class TenantServiceImpl implements TenantService {
             if (matchingTenant != null) {
                 tenantEntity.setTenantId(matchingTenant.getTenantId());
                 BeanUtils.copyProperties(tenantRepository.save(tenantEntity), tenantValue);
+                tenantValue.setTenantUuid(tenantEntity.getUuid());
             } else {
                 throw new Exception("No tenant found with UUID " + tenantValue.getTenantUuid());
             }
@@ -71,8 +74,13 @@ public class TenantServiceImpl implements TenantService {
         TenantValue tenantValue = new TenantValue();
 
         TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
-        BeanUtils.copyProperties(tenantEntity, tenantValue);
-        return tenantValue;
+        if (tenantEntity == null) {
+            return null;
+        } else {
+            BeanUtils.copyProperties(tenantEntity, tenantValue);
+            tenantValue.setTenantUuid(tenantEntity.getUuid());
+            return tenantValue;
+        }
     }
 
     @Override
@@ -81,6 +89,7 @@ public class TenantServiceImpl implements TenantService {
         tenantRepository.softDelete(tenantUuid);
         TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
         BeanUtils.copyProperties(tenantEntity, tenantValue);
+        tenantValue.setTenantUuid(tenantEntity.getUuid());
         return tenantValue;
     }
 

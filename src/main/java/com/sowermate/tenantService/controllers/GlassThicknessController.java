@@ -21,22 +21,23 @@ public class GlassThicknessController {
         return new ResponseEntity<GlassThicknessValue>( glassThicknessValue, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{glassThicknessUuid}")
-    public ResponseEntity<GlassThicknessValue> getSingleGlassThickness(@PathVariable String glassThicknessUuid) throws Exception {
-        GlassThicknessValue glassThicknessValue=glassThicknessService.getGlassThickness(glassThicknessUuid);
+    @GetMapping("/{tenantUuid}/{glassThicknessUuid}")
+    public ResponseEntity<GlassThicknessValue> getSingleGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) throws Exception {
+        GlassThicknessValue glassThicknessValue=glassThicknessService.getGlassThickness(tenantUuid, glassThicknessUuid);
         return  new ResponseEntity<>(glassThicknessValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<GlassThicknessValue>> getAllGlassThickness() throws Exception {
-        List<GlassThicknessValue> allGlassThicknessValue = glassThicknessService.getAllGlassThickness();
+    @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<GlassThicknessValue>> getAllGlassThickness(@PathVariable String tenantUuid) throws Exception {
+        List<GlassThicknessValue> allGlassThicknessValue = glassThicknessService.getAllGlassThickness(tenantUuid);
         return new ResponseEntity<> (allGlassThicknessValue ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{glassThicknessUuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{glassThicknessUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassThicknessValue> deleteGlassThickness(@PathVariable String glassThicknessUuid) throws Exception {
-        GlassThicknessValue glassThicknessValue =glassThicknessService.deleteGlassThickness(glassThicknessUuid);
+    public ResponseEntity<GlassThicknessValue> deleteGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) throws Exception {
+        GlassThicknessValue glassThicknessValue =glassThicknessService.deleteGlassThickness(tenantUuid, glassThicknessUuid);
         return new ResponseEntity<GlassThicknessValue>(glassThicknessValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

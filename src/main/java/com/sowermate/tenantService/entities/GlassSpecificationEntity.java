@@ -30,5 +30,7 @@ public class GlassSpecificationEntity implements Serializable {
 
     @OneToMany(mappedBy="glassSpecificationEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 }

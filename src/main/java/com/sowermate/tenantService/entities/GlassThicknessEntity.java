@@ -28,5 +28,9 @@ public class GlassThicknessEntity {
     @OneToMany(mappedBy="glassThicknessEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 }
 

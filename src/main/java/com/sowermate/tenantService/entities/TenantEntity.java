@@ -63,5 +63,8 @@ public class TenantEntity implements Serializable {
     private  List<GlassTypeEntity> glassTypeEntities;
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private  List<GlassThicknessEntity> glassThicknessEntities;
+
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
     private  List<PiTypeEntity> PiTypeEntities;
 }

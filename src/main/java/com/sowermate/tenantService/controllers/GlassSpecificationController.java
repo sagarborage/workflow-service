@@ -23,20 +23,20 @@ public class GlassSpecificationController {
         return new ResponseEntity<GlassSpecificationValue>( glassSpecificationValue1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{glassSpecificationUuid}")
-    public ResponseEntity<GlassSpecificationValue> getSingleGlassSpecification(@PathVariable String glassSpecificationUuid) throws Exception {
-        GlassSpecificationValue glassSpecificationValue=glassSpecificationService.getGlassSpecification(glassSpecificationUuid);
+    @GetMapping("/{tenantUuid}/{glassSpecificationUuid}")
+    public ResponseEntity<GlassSpecificationValue> getSingleGlassSpecification(@PathVariable String tenantUuid, @PathVariable String  glassSpecificationUuid) throws Exception {
+        GlassSpecificationValue glassSpecificationValue=glassSpecificationService.getGlassSpecification(tenantUuid, glassSpecificationUuid);
         return  new ResponseEntity<>(glassSpecificationValue, HttpStatus.ACCEPTED);
     }
-    @GetMapping
-    public ResponseEntity<List<GlassSpecificationValue>> getAllGlassSpecification() throws Exception {
-        List<GlassSpecificationValue> allGlassSpecificationValues = glassSpecificationService.getAllGlassSpecification();
+    @GetMapping(value = "/{tenantUuid}")
+    public ResponseEntity<List<GlassSpecificationValue>> getAllGlassSpecification(@PathVariable String tenantUuid) throws Exception {
+        List<GlassSpecificationValue> allGlassSpecificationValues = glassSpecificationService.getAllGlassSpecification(tenantUuid);
         return new ResponseEntity<> (allGlassSpecificationValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{glassSpecificationUuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{glassSpecificationUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassSpecificationValue> deleteGlassSpecification(@PathVariable String glassSpecificationUuid) throws Exception {
-        GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(glassSpecificationUuid);
+    public ResponseEntity<GlassSpecificationValue> deleteGlassSpecification(@PathVariable String tenantUuid, @PathVariable String glassSpecificationUuid) throws Exception {
+        GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(tenantUuid, glassSpecificationUuid);
         return new ResponseEntity<GlassSpecificationValue>(glassSpecificationValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ProFormaInvoiceItemValue {
 
+    private String tenantUuid;
     private String ProFormaInvoiceItemUuid;
     private String proFormaInvoiceUUID;
     private String glassTypeUUID;

@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.GlassSpecificationEntity;
+import com.sowermate.tenantService.entities.GlassThicknessEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 public interface GlassSpecificationRepository extends JpaRepository<GlassSpecificationEntity, String> {
-    public GlassSpecificationEntity findByGlassSpecificationUuid(@Param("glassSpecificationUuid")String glassSpecificationUuid);
+    @Query("SELECT g FROM GlassSpecificationEntity g " +
+            "JOIN g.tenantEntity t " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND g.glassSpecificationUuid = :glassSpecificationUuid")
+    public GlassSpecificationEntity findByTenantEntity_UuidAndGlassSpecificationUuid(@Param("tenantUuid") String tenantUuid, @Param("glassSpecificationUuid") String glassSpecificationUuid);
 
-    public GlassSpecificationEntity findByGlassSpecificationId(int glassSpecificationId);
+    public List<GlassSpecificationEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+
 
     @Transactional
     @Modifying
