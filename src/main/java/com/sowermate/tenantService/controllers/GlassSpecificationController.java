@@ -4,13 +4,14 @@ import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.services.GlassSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/glass-specifications")
+@RequestMapping(value = "/glass-specifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class GlassSpecificationController {
 
     @Autowired
@@ -20,6 +21,9 @@ public class GlassSpecificationController {
     @ResponseBody
     public ResponseEntity<GlassSpecificationValue> createGlassSpecification(@RequestBody GlassSpecificationValue glassSpecificationValue) throws Exception {
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.createGlassSpecification(glassSpecificationValue);
+        if (glassSpecificationValue1 == null) {
+            return new ResponseEntity<GlassSpecificationValue>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<GlassSpecificationValue>( glassSpecificationValue1, HttpStatus.CREATED);
     }
 
@@ -45,5 +49,4 @@ public class GlassSpecificationController {
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.editGlassSpecification(glassSpecificationValue);
         return new ResponseEntity<GlassSpecificationValue> (glassSpecificationValue1, HttpStatus.CREATED);
     }
-
 }

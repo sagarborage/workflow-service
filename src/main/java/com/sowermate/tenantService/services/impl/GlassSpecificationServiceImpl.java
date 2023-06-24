@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.GlassSpecificationEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.repositories.GlassSpecificationRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
@@ -30,9 +31,13 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
         BeanUtils.copyProperties(glassSpecificationValue, glassSpecificationEntity);
         String randomGlassSpecificationId= UUID.randomUUID().toString();
         glassSpecificationEntity.setGlassSpecificationUuid(randomGlassSpecificationId);
-        glassSpecificationEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassSpecificationValue.getTenantUuid()));
-        BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
-        return glassSpecificationValue;
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(glassSpecificationValue.getTenantUuid());
+        if (tenantEntity != null) {
+            glassSpecificationEntity.setTenantEntity(tenantEntity);
+            BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
+            return glassSpecificationValue;
+        }
+        return null;
     }
 
     @Override
