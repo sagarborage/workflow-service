@@ -10,4 +10,6 @@ public class ServiceRateInvoiceValue {
     private int quantity;
     private int rate;
     private int total;
+    private String tenantUuid;
+
 }

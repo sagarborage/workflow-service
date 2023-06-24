@@ -1,7 +1,6 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.GlassSpecificationEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.repositories.GlassSpecificationRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
@@ -31,13 +30,9 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
         BeanUtils.copyProperties(glassSpecificationValue, glassSpecificationEntity);
         String randomGlassSpecificationId= UUID.randomUUID().toString();
         glassSpecificationEntity.setGlassSpecificationUuid(randomGlassSpecificationId);
-        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(glassSpecificationValue.getTenantUuid());
-        if (tenantEntity != null) {
-            glassSpecificationEntity.setTenantEntity(tenantEntity);
-            BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
-            return glassSpecificationValue;
-        }
-        return null;
+        glassSpecificationEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassSpecificationValue.getTenantUuid()));
+        BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
+        return glassSpecificationValue;
     }
 
     @Override
@@ -67,7 +62,7 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
         GlassSpecificationValue glassSpecificationValue=new GlassSpecificationValue();
 
         GlassSpecificationEntity glassSpecificationEntity =glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid, glassSpecificationUuid);
-        BeanUtils.copyProperties(glassSpecificationEntity ,glassSpecificationValue);
+        BeanUtils.copyProperties(glassSpecificationEntity, glassSpecificationValue);
         glassSpecificationValue.setTenantUuid(tenantUuid);
         return glassSpecificationValue;
     }

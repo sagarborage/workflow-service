@@ -5,11 +5,11 @@ import java.util.List;
 public interface AdditionalChargesService {
     public AdditionalChargesValue saveAdditionalCharges(AdditionalChargesValue additionalChargesValue) throws Exception;
 
-    public List<AdditionalChargesValue> getAllAdditionalCharges() throws Exception;
+    public List<AdditionalChargesValue> getAllAdditionalCharges(String tenantUuid) throws Exception;
     public AdditionalChargesValue editAdditionalCharges(AdditionalChargesValue  additionalChargesValue) throws Exception;
 
-    public AdditionalChargesValue getAdditionalCharges(String uuid) throws Exception;
+    public AdditionalChargesValue getAdditionalCharges(String tenantUuid,String additionalChargesUuid) throws Exception;
 
-    public AdditionalChargesValue deleteAdditionalCharges(String uuid)throws Exception;
+    public AdditionalChargesValue deleteAdditionalCharges(String tenantUuid,String additionalChargesUuid)throws Exception;
 
 }

@@ -33,4 +33,8 @@ public class CompanyTypeEntity {
     @OneToMany(mappedBy="companyTypeEntity",cascade=CascadeType.ALL)
     private List<CompanyEntity> companyEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
+
 }

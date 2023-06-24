@@ -18,7 +18,6 @@ public class CompanyValue {
     private String updatedBy;
     private Boolean isActive;
     private String tenantUuid;
-    private String addressUuid;
     private String companyTypeUuid;
 
 }

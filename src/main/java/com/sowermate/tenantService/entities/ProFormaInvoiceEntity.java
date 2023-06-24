@@ -95,6 +95,10 @@ public class ProFormaInvoiceEntity {
     @JoinColumn(name = "id_ship_to")
     private  CompanyEntity companyIdShip;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
+
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
 

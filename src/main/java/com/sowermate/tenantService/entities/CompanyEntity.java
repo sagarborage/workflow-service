@@ -59,9 +59,6 @@ public class CompanyEntity {
    @JoinColumn(name ="tenant_id")
    private TenantEntity tenantEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private AddressEntity addressEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")

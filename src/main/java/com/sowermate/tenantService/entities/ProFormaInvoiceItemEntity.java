@@ -73,5 +73,8 @@ public class ProFormaInvoiceItemEntity {
     @JoinColumn(name = "glass_thickness_id")
     private GlassThicknessEntity glassThicknessEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
 }

@@ -80,7 +80,9 @@ public class AddressEntity implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
-    @OneToMany(mappedBy="addressEntity",cascade=CascadeType.ALL)
-    private List<CompanyEntity> companyEntity;
+
 }

@@ -17,5 +17,4 @@ public class AdditionalChargesValue   {
     private String createdBy;
     private String updatedBy;
     private String tenantUuid;
-
 }
