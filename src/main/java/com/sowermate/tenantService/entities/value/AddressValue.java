@@ -7,6 +7,7 @@ import java.util.Date;
 @Data
 public class AddressValue {
     private String addressUuid;
+    private String tenantUuid;
     private Date createdDttm;
     private Date updatedDttm;
     private String  addressLine1;

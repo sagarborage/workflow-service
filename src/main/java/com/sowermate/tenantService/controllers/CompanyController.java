@@ -38,35 +38,35 @@ public class CompanyController {
         }
         return new ResponseEntity< CompanyValue>(companyValue1,HttpStatus.CREATED);
     }
-    @GetMapping("/{companyUuid}")
-    public ResponseEntity<CompanyValue> getCompanyDetails(
+    @GetMapping("/{tenantUuid}/{companyUuid}")
+    public ResponseEntity<CompanyValue> getCompanyDetails(@PathVariable String tenantUuid,
             @PathVariable String companyUuid) {
         CompanyValue companyValue = null;
         try {
-            companyValue = companyService.getCompany(companyUuid);
+            companyValue = companyService.getCompany(tenantUuid,companyUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(companyValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{companyUuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{companyUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CompanyValue> deleteCompanyDetails(
+    public ResponseEntity<CompanyValue> deleteCompanyDetails(@PathVariable String tenantUuid,
             @PathVariable String companyUuid) {
         CompanyValue companyValue = null;
         try {
-            companyValue = companyService.deleteCompany(companyUuid);
+            companyValue = companyService.deleteCompany(tenantUuid,companyUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
         return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<CompanyValue>> getAllCompanies() {
+    @GetMapping (value = "/{tenantUuid}")
+    public ResponseEntity<List<CompanyValue>> getAllCompanies(@PathVariable String tenantUuid) {
         List<CompanyValue> companyValues = null;
         try {
-            companyValues = companyService.getAllCompany();
+            companyValues = companyService.getAllCompany(tenantUuid);
             Logger.info("records " + companyValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

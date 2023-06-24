@@ -9,10 +9,10 @@ public interface AddressService {
 
     public AddressValue editAddress(AddressValue addressValue) throws Exception;
 
-    public AddressValue getAddress(String uuid) throws Exception;
+    public AddressValue getAddress(String tenantUuid,String addressUuid) throws Exception;
 
-    public AddressValue deleteAddress(String uuid) throws Exception;
+    public AddressValue deleteAddress(String tenantUuid,String addressUuid) throws Exception;
 
-    public List<AddressValue> getAllCompanyAddress() throws Exception;
+    public List<AddressValue> getAllCompanyAddress(String tenantUuid) throws Exception;
 
 }

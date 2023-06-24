@@ -36,10 +36,10 @@ public class PiTypeServiceImpl implements PiTypeService {
     }
 
     @Override
-    public List<PiTypeValue> getAllPiType() throws Exception {
+    public List<PiTypeValue> getAllPiType(String tenantUuid) throws Exception {
         List<PiTypeValue> piTypeValues=new ArrayList<>();
         PiTypeValue piTypeValue=null;
-        List<PiTypeEntity> piTypeEntities= piTypeRepository.findAll();
+        List<PiTypeEntity> piTypeEntities= piTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
         for (int i=0; i <piTypeEntities.size(); i++){
             piTypeValue =new PiTypeValue();
             BeanUtils.copyProperties(piTypeEntities.get(i), piTypeValue);
@@ -57,7 +57,7 @@ public class PiTypeServiceImpl implements PiTypeService {
 
         // Check that UUID is not null before searching for the tenant
         if (piTypeValue.getPiTypeUuid() != null) {
-            PiTypeEntity matchingPiType = piTypeRepository.findByPiTypeUuid(piTypeValue.getPiTypeUuid());
+            PiTypeEntity matchingPiType = piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(piTypeValue.getTenantUuid(), piTypeValue.getPiTypeUuid());
             if (matchingPiType!=null) {
                 piTypeEntity.setPiTypeId(matchingPiType.getPiTypeId());
                 piTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(piTypeValue.getTenantUuid()));
@@ -73,10 +73,10 @@ public class PiTypeServiceImpl implements PiTypeService {
     }
 
     @Override
-    public PiTypeValue getPiType(String piTypeUuid) throws Exception {
+    public PiTypeValue getPiType(String tenantUuid,String piTypeUuid) throws Exception {
         PiTypeValue piTypeValue=new PiTypeValue();
 
-        PiTypeEntity piTypeEntity =piTypeRepository.findByPiTypeUuid(piTypeUuid);
+        PiTypeEntity piTypeEntity =piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUuid,piTypeUuid);
 
         BeanUtils.copyProperties(piTypeEntity ,piTypeValue);
         return piTypeValue;
@@ -84,7 +84,7 @@ public class PiTypeServiceImpl implements PiTypeService {
 
 
     @Override
-    public PiTypeValue deletePiType(String piTypeUuid) throws Exception {
+    public PiTypeValue deletePiType(String tenantUuid,String piTypeUuid) throws Exception {
         PiTypeValue piTypeValue=new PiTypeValue();
         PiTypeEntity piTypeEntity =piTypeRepository.deleteByPiTypeUuid(piTypeUuid) ;
         BeanUtils.copyProperties(piTypeEntity ,piTypeValue);

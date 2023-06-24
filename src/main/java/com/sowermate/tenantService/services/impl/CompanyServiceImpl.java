@@ -36,44 +36,43 @@ public class  CompanyServiceImpl  implements CompanyService {
         String randomCompanyUuid= UUID.randomUUID().toString();
         companyEntity.setCompanyUuid(randomCompanyUuid);
         companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
-        companyEntity.setAddressEntity(addressRepository.findByAddressUuid(companyValue.getAddressUuid()));
         companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
         BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;
     }
+
     @Override
     public CompanyValue editCompany(CompanyValue companyValue) throws Exception {
          CompanyEntity  companyEntity=new CompanyEntity();
          BeanUtils.copyProperties(companyValue , companyEntity);
         companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
-        companyEntity.setAddressEntity(addressRepository.findByAddressUuid(companyValue.getAddressUuid()));
         companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
-         companyEntity.setCompanyId(companyRepository.findByUuid(companyValue.getCompanyUuid()).getCompanyId());
+         companyEntity.setCompanyId(companyRepository.findByTenantEntity_UuidAndCompanyUuid( companyValue.getTenantUuid(),companyValue.getCompanyUuid()).getCompanyId());
          BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;
     }
     @Override
-    public CompanyValue getCompany(String companyUuid) throws Exception {
+    public CompanyValue getCompany(String tenantUuid,String companyUuid) throws Exception {
         CompanyValue companyValue =new CompanyValue();
-        CompanyEntity companyEntity=companyRepository.findByUuid(companyUuid);
+        CompanyEntity companyEntity=companyRepository.findByTenantEntity_UuidAndCompanyUuid(tenantUuid,companyUuid);
         BeanUtils.copyProperties(companyEntity, companyValue);
         return companyValue;
     }
     
     @Override
-    public CompanyValue deleteCompany(String companyUuid) throws Exception {
+    public CompanyValue deleteCompany(String tenantUuid,String companyUuid) throws Exception {
         CompanyValue companyValue = new CompanyValue();
         companyRepository.softDelete(companyUuid);
-        CompanyEntity companyEntity= companyRepository.findByUuid(companyUuid);
+        CompanyEntity companyEntity= companyRepository.findByTenantEntity_UuidAndCompanyUuid(tenantUuid,companyUuid);
         BeanUtils.copyProperties(companyEntity, companyValue);
         return companyValue;
     }
 
     @Override
-    public List<CompanyValue> getAllCompany() throws Exception {
+    public List<CompanyValue> getAllCompany(String tenantUuid) throws Exception {
         List<CompanyValue> companyValues = new ArrayList<>();
         CompanyValue companyValue = null;
-        List<CompanyEntity> companyEntities = companyRepository.findAll();
+        List<CompanyEntity> companyEntities = companyRepository.findAllByTenantEntity_Uuid(tenantUuid);
         for (int i = 0; i < companyEntities.size(); i++) {
             companyValue = new CompanyValue();
             BeanUtils.copyProperties(companyEntities.get(i), companyValue);

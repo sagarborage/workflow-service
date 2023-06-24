@@ -42,24 +42,23 @@ public class AddressController {
         }
         return new ResponseEntity<AddressValue>(addressValue1,HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<AddressValue> getAddressDetails(
-            @PathVariable String uuid) {
+    @GetMapping("/{tenantUuid}/{addressUuid}")
+    public ResponseEntity<AddressValue> getAddressDetails(@PathVariable String tenantUuid,
+            @PathVariable String addressUuid) {
         AddressValue addressValue = null;
         try {
-            addressValue = addressService.getAddress(uuid);
+            addressValue = addressService.getAddress(tenantUuid,addressUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(addressValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{addressUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<AddressValue> deleteAddressDetails(
-            @PathVariable String uuid) {
+    public ResponseEntity<AddressValue> deleteAddressDetails(@PathVariable String tenantUuid, @PathVariable String addressUuid) {
         AddressValue addressValue = null;
         try {
-            addressValue = addressService.deleteAddress(uuid);
+            addressValue = addressService.deleteAddress(tenantUuid,addressUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
@@ -67,10 +66,10 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AddressValue>> getAllAddress() {
+    public ResponseEntity<List<AddressValue>> getAllAddress(@PathVariable String tenantUuid) {
         List<AddressValue> addressValues = null;
         try {
-            addressValues = addressService.getAllCompanyAddress();
+            addressValues = addressService.getAllCompanyAddress(tenantUuid);
             Logger.info("records " + addressValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

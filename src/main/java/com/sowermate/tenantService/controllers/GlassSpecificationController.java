@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/glass-specifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/glass-specifications", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GlassSpecificationController {
 
     @Autowired
     private GlassSpecificationService  glassSpecificationService;
 
-    @RequestMapping( method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<GlassSpecificationValue> createGlassSpecification(@RequestBody GlassSpecificationValue glassSpecificationValue) throws Exception {
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.createGlassSpecification(glassSpecificationValue);
@@ -43,7 +43,7 @@ public class GlassSpecificationController {
         GlassSpecificationValue glassSpecificationValue =glassSpecificationService.deleteGlassSpecification(tenantUuid, glassSpecificationUuid);
         return new ResponseEntity<GlassSpecificationValue>(glassSpecificationValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping( method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<GlassSpecificationValue> editGlassSpecification(@RequestBody GlassSpecificationValue glassSpecificationValue) throws Exception{
         GlassSpecificationValue glassSpecificationValue1=glassSpecificationService.editGlassSpecification(glassSpecificationValue);

@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class ProFormInvoiceValue {
-
+    private String tenantUuid;
     private String proFormInvoiceUuid;
     private String idBillToUuid;
     private String idShipToUuid;

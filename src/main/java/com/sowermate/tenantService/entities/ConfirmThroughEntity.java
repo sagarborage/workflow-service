@@ -27,6 +27,9 @@ public class ConfirmThroughEntity {
     @OneToMany(mappedBy="confirmThroughEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
 
 }
