@@ -3,18 +3,19 @@ import com.sowermate.tenantService.entities.value.GlassThicknessValue;
 import com.sowermate.tenantService.services.GlassThicknessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/glass-thickness")
+@RequestMapping(value = "/glass-thickness", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GlassThicknessController {
     @Autowired
     private GlassThicknessService glassThicknessService;
 
-    @RequestMapping( method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<GlassThicknessValue> createGlassThickness(@RequestBody GlassThicknessValue glassThicknessValue) throws Exception {
         GlassThicknessValue glassThicknessValue1=glassThicknessService.createGlassThickness(glassThicknessValue);
@@ -40,7 +41,7 @@ public class GlassThicknessController {
         GlassThicknessValue glassThicknessValue =glassThicknessService.deleteGlassThickness(tenantUuid, glassThicknessUuid);
         return new ResponseEntity<GlassThicknessValue>(glassThicknessValue ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping( method = RequestMethod.PUT)
+    @RequestMapping( method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<GlassThicknessValue> editGlassThickness(@RequestBody GlassThicknessValue glassThicknessValue) throws Exception{
         GlassThicknessValue glassThicknessValue1=glassThicknessService.editGlassThickness(glassThicknessValue);

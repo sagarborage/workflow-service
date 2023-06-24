@@ -1,0 +1,52 @@
+# Spring Boot
+/target/
+
+# Maven
+*.iml
+.idea/
+*.iws
+*.ipr
+*.iws
+.idea_modules/
+
+# Gradle
+.gradle/
+build/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.springBeans
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
+# Logs
+*.log
+log/
+logs/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Compiled files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Miscellaneous
+/bin/
+/release/
+/dist/
+/.settings/
+/*.iml
+*.swp
