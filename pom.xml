@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sowermate.tenant.service</groupId>
-	<artifactId>workflow-Service</artifactId>
+	<artifactId>workflow-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>workflow-Service</name>
+	<name>workflow-service</name>
 	<description>This is work flow service</description>
 	<properties>
 		<java.version>11</java.version>
