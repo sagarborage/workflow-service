@@ -22,20 +22,20 @@ public class AdditionalChargesController {
         AdditionalChargesValue additionalChargesValue1=additionalChargesService.saveAdditionalCharges(additionalChargesValue);
         return new ResponseEntity<AdditionalChargesValue>( additionalChargesValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<AdditionalChargesValue> getAdditionalCharges(@PathVariable String uuid) throws Exception {
-        AdditionalChargesValue additionalChargesValue=additionalChargesService.getAdditionalCharges(uuid);
+    @GetMapping("/{tenantUuid}/{additionalChargesUuid}")
+    public ResponseEntity<AdditionalChargesValue> getAdditionalCharges(@PathVariable String tenantUuid,@PathVariable String additionalChargesUuid) throws Exception {
+        AdditionalChargesValue additionalChargesValue=additionalChargesService.getAdditionalCharges(tenantUuid,additionalChargesUuid);
         return  new ResponseEntity<>(additionalChargesValue, HttpStatus.ACCEPTED);
     }
-    @GetMapping
-    public ResponseEntity<List<AdditionalChargesValue>> getAllAdditionalCharges() throws Exception {
-        List<AdditionalChargesValue> additionalChargesValues = additionalChargesService.getAllAdditionalCharges();
+    @GetMapping("/{tenantUuid}")
+    public ResponseEntity<List<AdditionalChargesValue>> getAllAdditionalCharges(@PathVariable String tenantUuid) throws Exception {
+        List<AdditionalChargesValue> additionalChargesValues = additionalChargesService.getAllAdditionalCharges(tenantUuid);
         return new ResponseEntity<> (additionalChargesValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{additionalChargesUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<AdditionalChargesValue> deleteAdditionalCharges(@PathVariable String uuid) throws Exception {
-        AdditionalChargesValue additionalChargesValue =additionalChargesService.deleteAdditionalCharges(uuid);
+    public ResponseEntity<AdditionalChargesValue> deleteAdditionalCharges(@PathVariable String tenantUuid ,@PathVariable String additionalChargesUuid) throws Exception {
+        AdditionalChargesValue additionalChargesValue =additionalChargesService.deleteAdditionalCharges(tenantUuid,additionalChargesUuid);
         return new ResponseEntity<AdditionalChargesValue>(additionalChargesValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

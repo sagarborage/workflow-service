@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ConfirmThroughValue {
-    private int confirmThroughId;
-    private String uuid;
+    private String tenantUuid;
+    private String confirmThroughUuid;
     private String name;
 
 }

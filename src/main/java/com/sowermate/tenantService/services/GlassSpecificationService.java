@@ -11,9 +11,9 @@ public interface GlassSpecificationService {
 
     public GlassSpecificationValue editGlassSpecification(GlassSpecificationValue glassSpecificationValue) throws Exception;
 
-    public GlassSpecificationValue getGlassSpecification(String uuid) throws Exception;
+    public GlassSpecificationValue getGlassSpecification(String tenantUuid, String glassSpecificationUuid) throws Exception;
 
-    public GlassSpecificationValue deleteGlassSpecification(String uuid) throws Exception;
+    public GlassSpecificationValue deleteGlassSpecification(String tenantUuid, String glassSpecificationUuid) throws Exception;
 
-    public List<GlassSpecificationValue> getAllGlassSpecification() throws Exception;
+    public List<GlassSpecificationValue> getAllGlassSpecification(String tenantUuid) throws Exception;
 }

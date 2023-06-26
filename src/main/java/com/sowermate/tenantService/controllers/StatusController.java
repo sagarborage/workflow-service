@@ -22,8 +22,8 @@ public class StatusController {
         return new ResponseEntity<StatusValue>( statusValue, HttpStatus.CREATED);
     }
     @GetMapping("/{uuid}")
-    public ResponseEntity<StatusValue> getSingleStatus(@PathVariable String uuid) throws Exception {
-        StatusValue statusValue=statusService.getStatus(uuid);
+    public ResponseEntity<StatusValue> getSingleStatus(@PathVariable String statusUuid) throws Exception {
+        StatusValue statusValue=statusService.getStatus(statusUuid);
         return  new ResponseEntity<>(statusValue, HttpStatus.ACCEPTED);
     }
 
@@ -32,10 +32,10 @@ public class StatusController {
         List<StatusValue> statusValues = statusService.getAllStatus();
         return new ResponseEntity<> (statusValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{statusUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<StatusValue> deleteStatus(@PathVariable String uuid) throws Exception {
-        StatusValue statusValue =statusService.deleteStatus(uuid);
+    public ResponseEntity<StatusValue> deleteStatus(@PathVariable String statusUuid) throws Exception {
+        StatusValue statusValue =statusService.deleteStatus(statusUuid);
         return new ResponseEntity<StatusValue>(statusValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

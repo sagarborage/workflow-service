@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 public interface StatusRepository extends JpaRepository<StatusEntity, String> {
-    public List<StatusEntity> findByUuid(@Param("uuid")String uuid);
+    public StatusEntity findByStatusUuid(@Param("statusUuid")String statusUuid);
 
     public List<StatusEntity> findByStatusId(int statusId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE StatusEntity s SET s.isActive = false WHERE s.uuid = :uuid")
-    void softDelete(@Param("uuid") String uuid);
+    @Query("UPDATE StatusEntity s SET s.isActive = false WHERE s.statusUuid = :statusUuid")
+    void softDelete(@Param("statusUuid") String statusUuid);
 }

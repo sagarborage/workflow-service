@@ -5,10 +5,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class TenantDetailsValue {
+public class TenantValue {
 
-    private  int tenantId;
-    private String uuid;
+    private String tenantUuid;
     private  String tenantName;
     private String  address;
     private  String city;

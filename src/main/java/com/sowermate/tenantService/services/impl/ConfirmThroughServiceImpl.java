@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.ConfirmThroughEntity;
 import com.sowermate.tenantService.entities.value.ConfirmThroughValue;
 import com.sowermate.tenantService.repositories.ConfirmThroughRepository;
+import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.ConfirmThroughService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +20,29 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
 
     @Autowired
     private ConfirmThroughRepository confirmThroughRepository;
+
+    @Autowired
+    TenantRepository tenantRepository;
     @Override
     public ConfirmThroughValue createConfirmThrough(ConfirmThroughValue confirmThroughValue) throws Exception {
         ConfirmThroughEntity confirmThroughEntity=new ConfirmThroughEntity();
         BeanUtils.copyProperties(confirmThroughValue, confirmThroughEntity);
-        String randomConfirmThroughId= UUID.randomUUID().toString();
-        confirmThroughEntity.setUuid(randomConfirmThroughId);
+        String randomConfirmThroughUuid= UUID.randomUUID().toString();
+        confirmThroughEntity.setConfirmThroughUuid(randomConfirmThroughUuid);
+        confirmThroughEntity.setTenantEntity(tenantRepository.findByTenantUuid(confirmThroughValue.getTenantUuid()));
         BeanUtils.copyProperties(confirmThroughRepository.save(confirmThroughEntity), confirmThroughValue);
         return confirmThroughValue;
     }
 
     @Override
-    public List<ConfirmThroughValue> getAllConfirmThrough() throws Exception {
+    public List<ConfirmThroughValue> getAllConfirmThrough(String tenantUuid) throws Exception {
         List<ConfirmThroughValue> confirmThroughValues=new ArrayList<>();
         ConfirmThroughValue confirmThroughValue=null;
-        List<ConfirmThroughEntity> confirmThroughEntities= confirmThroughRepository.findAll();
+        List<ConfirmThroughEntity> confirmThroughEntities= confirmThroughRepository.findAllByTenantEntity_Uuid(tenantUuid);
         for (int i=0; i <confirmThroughEntities.size(); i++){
             confirmThroughValue =new ConfirmThroughValue();
             BeanUtils.copyProperties(confirmThroughEntities.get(i), confirmThroughValue);
-
+            confirmThroughValue.setTenantUuid(tenantUuid);
             confirmThroughValues.add(confirmThroughValue);
         }
 
@@ -50,13 +55,13 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
         BeanUtils.copyProperties(confirmThroughValue, confirmThroughEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (confirmThroughValue.getUuid() != null) {
-            List<ConfirmThroughEntity> matchingConfirmThrough = confirmThroughRepository.findByUuid(confirmThroughValue.getUuid());
-            if (!matchingConfirmThrough.isEmpty()) {
-                confirmThroughEntity.setConfirmThroughId(matchingConfirmThrough.get(0).getConfirmThroughId());
+        if (confirmThroughValue.getConfirmThroughUuid() != null) {
+            ConfirmThroughEntity matchingConfirmThrough = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(confirmThroughValue.getTenantUuid(),confirmThroughValue.getConfirmThroughUuid());
+            if (matchingConfirmThrough !=null) {
+                confirmThroughEntity.setConfirmThroughId(matchingConfirmThrough.getConfirmThroughId());
+                confirmThroughEntity.setTenantEntity(tenantRepository.findByTenantUuid(confirmThroughValue.getTenantUuid()));
                 BeanUtils.copyProperties(confirmThroughRepository.save(confirmThroughEntity), confirmThroughValue);
             } else {
-                throw new Exception("No tenant found with UUID " + confirmThroughValue.getUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -66,18 +71,18 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     }
 
     @Override
-    public ConfirmThroughValue getConfirmThrough(String uuid) throws Exception {
+    public ConfirmThroughValue getConfirmThrough(String tenantUuid, String confirmThroughUuid) throws Exception {
         ConfirmThroughValue confirmThroughValue=new ConfirmThroughValue();
-
-        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.findByUuid(uuid).get(0);
+        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid,confirmThroughUuid);
         BeanUtils.copyProperties(confirmThroughEntity ,confirmThroughValue);
+        confirmThroughValue.setTenantUuid(tenantUuid);
         return confirmThroughValue;
     }
 
     @Override
-    public ConfirmThroughValue deleteConfirmThrough(String uuid) throws Exception {
+    public ConfirmThroughValue deleteConfirmThrough( String tenantUuid,  String confirmThroughUuid) throws Exception {
         ConfirmThroughValue confirmThroughValue=new ConfirmThroughValue();
-        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.deleteConfirmThroughByUuid(uuid) .get(0);
+        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.deleteByConfirmThroughUuid( confirmThroughUuid) ;
         BeanUtils.copyProperties(confirmThroughEntity ,confirmThroughValue);
         return  confirmThroughValue;
 

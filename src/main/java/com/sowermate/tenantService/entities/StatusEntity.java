@@ -17,7 +17,7 @@ public class StatusEntity {
     private int statusId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String statusUuid;
     @Column(name = "name")
     private String name;
 

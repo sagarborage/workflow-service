@@ -38,35 +38,35 @@ public class ProFormaInvoiceController {
         }
         return new ResponseEntity<ProFormInvoiceValue>(proFormInvoiceValue1,HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<ProFormInvoiceValue> getProFormInvoice(
-            @PathVariable String uuid) {
+    @GetMapping("/{tenantUuid}/{proFormInvoiceUuid}")
+    public ResponseEntity<ProFormInvoiceValue> getProFormInvoice(@PathVariable String tenantUuid,
+            @PathVariable String proFormInvoiceUuid) {
         ProFormInvoiceValue proFormInvoiceValue = null;
         try {
-            proFormInvoiceValue = proFormaInvoiceService.getProFormInvoice(uuid);
+            proFormInvoiceValue = proFormaInvoiceService.getProFormInvoice(tenantUuid,proFormInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(proFormInvoiceValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{proFormInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ProFormInvoiceValue> deleteProFormInvoice(
-            @PathVariable String uuid) {
+    public ResponseEntity<ProFormInvoiceValue> deleteProFormInvoice(@PathVariable String tenantUuid,
+            @PathVariable String proFormInvoiceUuid) {
         ProFormInvoiceValue proFormInvoiceValue = null;
         try {
-            proFormInvoiceValue = proFormaInvoiceService.deleteProFormInvoice(uuid);
+            proFormInvoiceValue = proFormaInvoiceService.deleteProFormInvoice(tenantUuid,proFormInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
         return new ResponseEntity<ProFormInvoiceValue>(proFormInvoiceValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProFormInvoiceValue>> getAllProFormInvoice() {
+    @GetMapping("/{tenantUuid}")
+    public ResponseEntity<List<ProFormInvoiceValue>> getAllProFormInvoice(@PathVariable String tenantUuid) {
         List<ProFormInvoiceValue> proFormInvoiceValues = null;
         try {
-            proFormInvoiceValues = proFormaInvoiceService.getAllProFormInvoice();
+            proFormInvoiceValues = proFormaInvoiceService.getAllProFormInvoice(tenantUuid);
             Logger.info("records " + proFormInvoiceValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

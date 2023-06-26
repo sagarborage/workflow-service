@@ -16,7 +16,7 @@ public class ProFormaInvoiceItemEntity {
     private int proFormaInvoiceItemId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String proFormaInvoiceItemUuid;
 
     @Column(name = "width_inch")
         private Float widthInch;
@@ -73,5 +73,8 @@ public class ProFormaInvoiceItemEntity {
     @JoinColumn(name = "glass_thickness_id")
     private GlassThicknessEntity glassThicknessEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
 }

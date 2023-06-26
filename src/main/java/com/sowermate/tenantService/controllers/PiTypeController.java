@@ -22,22 +22,22 @@ public class PiTypeController {
         PiTypeValue piTypeValue1=piTypeService.createPiType(piTypeValue);
         return new ResponseEntity<PiTypeValue>( piTypeValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<PiTypeValue> getPiTypeValue(@PathVariable String uuid) throws Exception {
-        PiTypeValue piTypeValue=piTypeService.getPiType(uuid);
+    @GetMapping("/{tenantUuid}/{piTypeUuid}")
+    public ResponseEntity<PiTypeValue> getPiTypeValue(@PathVariable String tenantUuid,@PathVariable String piTypeUuid) throws Exception {
+        PiTypeValue piTypeValue=piTypeService.getPiType(tenantUuid, piTypeUuid);
         return  new ResponseEntity<>(piTypeValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<PiTypeValue>> getAllPiType() throws Exception {
-        List<PiTypeValue> piTypeValues = piTypeService.getAllPiType();
+    @GetMapping("/{tenantUuid}")
+    public ResponseEntity<List<PiTypeValue>> getAllPiType(@PathVariable String tenantUuid) throws Exception {
+        List<PiTypeValue> piTypeValues = piTypeService.getAllPiType(tenantUuid);
         return new ResponseEntity<> (piTypeValues ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{piTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<PiTypeValue> deletePiType(@PathVariable String uuid) throws Exception {
-        PiTypeValue piTypeValue =piTypeService.deletePiType(uuid);
+    public ResponseEntity<PiTypeValue> deletePiType(@PathVariable String tenantUuid,@PathVariable String piTypeUuid) throws Exception {
+        PiTypeValue piTypeValue =piTypeService.deletePiType(tenantUuid,piTypeUuid);
         return new ResponseEntity<PiTypeValue>(piTypeValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

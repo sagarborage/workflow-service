@@ -6,6 +6,7 @@ import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
 import com.sowermate.tenantService.repositories.ServiceRateInvoiceRepository;
 import com.sowermate.tenantService.repositories.ServiceRateRepository;
+import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.ServiceRateInvoiceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,17 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
     @Autowired
     private ServiceRateRepository serviceRateRepository;
 
+    @Autowired
+    private TenantRepository  tenantRepository;
 
     @Override
     public ServiceRateInvoiceValue createServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) throws Exception {
         ServiceRateInvoiceEntity serviceRateInvoiceEntity = new ServiceRateInvoiceEntity();
         BeanUtils.copyProperties(serviceRateInvoiceValue, serviceRateInvoiceEntity);
-        String randomServiceRateInvoiceId = UUID.randomUUID().toString();
-        serviceRateInvoiceEntity.setUuid(randomServiceRateInvoiceId);
-        serviceRateInvoiceEntity.setProFormaInvoiceEntities(proFormaInvoiceRepository.findByProFormaInvoiceId(serviceRateInvoiceValue.getProFormaInvoiceId()).get(0));
-        serviceRateInvoiceEntity.setServiceRateEntity(serviceRateRepository.findByServiceRateId(serviceRateInvoiceValue.getServiceRateId()).get(0));
+        String randomServiceRateInvoiceUuid = UUID.randomUUID().toString();
+        serviceRateInvoiceEntity.setServiceRateInvoiceUuid(randomServiceRateInvoiceUuid);
+        serviceRateInvoiceEntity.setProFormaInvoiceEntities(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormInvoiceUuid(serviceRateInvoiceValue.getTenantUuid(),serviceRateInvoiceValue.getProFormaInvoiceUuid()));
+        serviceRateInvoiceEntity.setServiceRateEntity(serviceRateRepository.findByServiceRateUuid(serviceRateInvoiceValue.getServiceRateUuid()));
         BeanUtils.copyProperties(serviceRateInvoiceRepository.save(serviceRateInvoiceEntity), serviceRateInvoiceValue);
         return serviceRateInvoiceValue;
     }
@@ -46,38 +49,38 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
     public ServiceRateInvoiceValue editServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) throws Exception {
         ServiceRateInvoiceEntity serviceRateInvoiceEntity = new ServiceRateInvoiceEntity();
         BeanUtils.copyProperties(serviceRateInvoiceValue, serviceRateInvoiceEntity);
-        serviceRateInvoiceEntity.setProFormaInvoiceEntities(proFormaInvoiceRepository.findByProFormaInvoiceId(serviceRateInvoiceValue.getProFormaInvoiceId()).get(0));
-        serviceRateInvoiceEntity.setServiceRateEntity(serviceRateRepository.findByServiceRateId(serviceRateInvoiceValue.getServiceRateId()).get(0));
-        serviceRateInvoiceEntity.setServiceRateInvoiceId(serviceRateInvoiceRepository.findByUuid(serviceRateInvoiceValue.getUuid()).get(0).getServiceRateInvoiceId());
+        serviceRateInvoiceEntity.setProFormaInvoiceEntities(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormInvoiceUuid(serviceRateInvoiceValue.getTenantUuid(),serviceRateInvoiceValue.getProFormaInvoiceUuid()));
+        serviceRateInvoiceEntity.setServiceRateEntity(serviceRateRepository.findByServiceRateUuid(serviceRateInvoiceValue.getServiceRateUuid()));
+        serviceRateInvoiceEntity.setServiceRateInvoiceId(serviceRateInvoiceRepository.findByServiceRateInvoiceUuid(serviceRateInvoiceValue.getServiceRateInvoiceUuid()).getServiceRateInvoiceId());
         BeanUtils.copyProperties(serviceRateInvoiceRepository.save(serviceRateInvoiceEntity), serviceRateInvoiceValue);
         return serviceRateInvoiceValue;
     }
 
     @Override
-    public ServiceRateInvoiceValue getServiceRateInvoice(String uuid) throws Exception {
+    public ServiceRateInvoiceValue getServiceRateInvoice(String serviceRateInvoiceUuid) throws Exception {
         ServiceRateInvoiceValue serviceRateInvoiceValue = new ServiceRateInvoiceValue();
-        ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceRepository.findByUuid(uuid).get(0);
+        ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceRepository.findByServiceRateInvoiceUuid(serviceRateInvoiceUuid);
         BeanUtils.copyProperties(serviceRateInvoiceEntity, serviceRateInvoiceValue);
         return serviceRateInvoiceValue;
     }
 
     @Override
-    public ServiceRateInvoiceValue deleteServiceRateInvoice(String uuid) throws Exception {
+    public ServiceRateInvoiceValue deleteServiceRateInvoice(String serviceRateInvoiceUuid) throws Exception {
         ServiceRateInvoiceValue serviceRateInvoiceValue = new ServiceRateInvoiceValue();
-        ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceRepository.deleteByUuid(uuid).get(0);
+        ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceRepository.deleteByServiceRateInvoiceUuid(serviceRateInvoiceUuid);
         BeanUtils.copyProperties(serviceRateInvoiceEntity, serviceRateInvoiceValue);
         return serviceRateInvoiceValue;
     }
 
     @Override
-    public List<ServiceRateInvoiceValue> getAllServiceRateInvoice() throws Exception {
-        List<ServiceRateInvoiceValue> serviceRateInvoiceValues = new ArrayList<>();
-        ServiceRateInvoiceValue serviceRateInvoiceValue = null;
+
+    public List<ServiceRateInvoiceValue> getAllServiceRateInvoice() {
         List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities = serviceRateInvoiceRepository.findAll();
-        for (int i = 0; i < serviceRateInvoiceEntities.size(); i++) {
-            serviceRateInvoiceValue = new ServiceRateInvoiceValue();
-            BeanUtils.copyProperties(serviceRateInvoiceEntities.get(i), serviceRateInvoiceValue);
-            serviceRateInvoiceValues.add(serviceRateInvoiceValue);
+        List<ServiceRateInvoiceValue> serviceRateInvoiceValues = new ArrayList<>();
+        for (ServiceRateInvoiceEntity entity : serviceRateInvoiceEntities) {
+            ServiceRateInvoiceValue value = new ServiceRateInvoiceValue();
+            BeanUtils.copyProperties(entity, value);
+            serviceRateInvoiceValues.add(value);
         }
         return serviceRateInvoiceValues;
     }

@@ -10,9 +10,9 @@ public interface GlassTypeService {
 
     public GlassTypeValue editGlassType(GlassTypeValue glassTypeValue) throws Exception;
 
-    public GlassTypeValue getGlassType(String uuid) throws Exception;
+    public GlassTypeValue getGlassType(String tenantUuid, String glassTypeUuid) throws Exception;
 
-    public GlassTypeValue deleteGlassType(String uuid) throws Exception;
+    public GlassTypeValue deleteGlassType(String tenantUuid, String glassTypeUuid) throws Exception;
 
-    public List<GlassTypeValue> getAllGlassType() throws Exception;
+    public List<GlassTypeValue> getAllGlassType(String tenantUuid) throws Exception;
 }

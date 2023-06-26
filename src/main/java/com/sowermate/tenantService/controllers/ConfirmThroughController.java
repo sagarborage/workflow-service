@@ -20,22 +20,22 @@ public class ConfirmThroughController {
         ConfirmThroughValue confirmThroughValue1=confirmThroughService.createConfirmThrough(confirmThroughValue);
         return new ResponseEntity<ConfirmThroughValue>( confirmThroughValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<ConfirmThroughValue> getConfirmThrough(@PathVariable String uuid) throws Exception {
-        ConfirmThroughValue confirmThroughValue=confirmThroughService.getConfirmThrough(uuid);
+    @GetMapping("/{tenantUuid}/{confirmThroughUuid}")
+    public ResponseEntity<ConfirmThroughValue> getConfirmThrough(@PathVariable String tenantUuid,@PathVariable String confirmThroughUuid) throws Exception {
+        ConfirmThroughValue confirmThroughValue=confirmThroughService.getConfirmThrough(tenantUuid,confirmThroughUuid);
         return  new ResponseEntity<>(confirmThroughValue, HttpStatus.ACCEPTED);
     }
 
     @GetMapping
-    public ResponseEntity<List<ConfirmThroughValue>> getAllConfirmThrough() throws Exception {
-        List<ConfirmThroughValue> confirmThroughValues = confirmThroughService.getAllConfirmThrough();
+    public ResponseEntity<List<ConfirmThroughValue>> getAllConfirmThrough(@PathVariable String tenantUuid) throws Exception {
+        List<ConfirmThroughValue> confirmThroughValues = confirmThroughService.getAllConfirmThrough(tenantUuid);
         return new ResponseEntity<> (confirmThroughValues ,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{confirmThroughUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ConfirmThroughValue> deleteConfirmThrough(@PathVariable String uuid) throws Exception {
-        ConfirmThroughValue confirmThroughValue =confirmThroughService.deleteConfirmThrough(uuid);
+    public ResponseEntity<ConfirmThroughValue> deleteConfirmThrough(@PathVariable String tenantUuid,@PathVariable String confirmThroughUuid) throws Exception {
+        ConfirmThroughValue confirmThroughValue =confirmThroughService.deleteConfirmThrough(tenantUuid,confirmThroughUuid);
         return new ResponseEntity<ConfirmThroughValue>(confirmThroughValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

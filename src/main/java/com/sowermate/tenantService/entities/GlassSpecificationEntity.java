@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name="glass_specification")
-public class GlassSpecificationEntity {
+public class GlassSpecificationEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
     @Id
@@ -19,7 +20,8 @@ public class GlassSpecificationEntity {
     private int glassSpecificationId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String glassSpecificationUuid;
+
     @Column(name = "name")
     private String name;
 
@@ -29,4 +31,7 @@ public class GlassSpecificationEntity {
     @OneToMany(mappedBy="glassSpecificationEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 }

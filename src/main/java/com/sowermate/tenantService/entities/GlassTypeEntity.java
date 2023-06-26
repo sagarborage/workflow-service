@@ -19,7 +19,7 @@ public class GlassTypeEntity  {
 
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String glassTypeUuid;
 
     @Column(name = "glass_name")
     private String glassName;
@@ -30,5 +30,7 @@ public class GlassTypeEntity  {
     @OneToMany(mappedBy="glassTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 }

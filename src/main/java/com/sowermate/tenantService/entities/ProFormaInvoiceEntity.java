@@ -19,10 +19,7 @@ public class ProFormaInvoiceEntity {
     private int proFormaInvoiceId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
-
-
-
+    private String proFormInvoiceUuid;
 
     @Column(name = "pi_number")
     private int piNumber;
@@ -97,6 +94,10 @@ public class ProFormaInvoiceEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ship_to")
     private  CompanyEntity companyIdShip;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;

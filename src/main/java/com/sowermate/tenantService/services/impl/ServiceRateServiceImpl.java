@@ -24,9 +24,9 @@ public class ServiceRateServiceImpl implements ServiceRateService {
     public ServiceRateValue createServiceRate(ServiceRateValue serviceRateValue) throws Exception {
         ServiceRateEntity serviceRateEntity=new ServiceRateEntity();
         BeanUtils.copyProperties(serviceRateValue, serviceRateEntity);
-        String randomTenantId= UUID.randomUUID().toString();
-        serviceRateEntity.setUuid(randomTenantId);
-        serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByTenantId(serviceRateValue.getTenantId()).get(0));
+        String randomTenantUuid= UUID.randomUUID().toString();
+        serviceRateEntity.setServiceRateUuid(randomTenantUuid);
+        serviceRateEntity.setTenantEntity(tenantRepository.findByTenantUuid(serviceRateValue.getTenantUuid()));
         BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
         return serviceRateValue;
     }
@@ -37,14 +37,14 @@ public class ServiceRateServiceImpl implements ServiceRateService {
         BeanUtils.copyProperties(serviceRateValue, serviceRateEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (serviceRateValue.getUuid() != null) {
-            List<ServiceRateEntity> matchingServices = serviceRateRepository.findByUuid(serviceRateValue.getUuid());
-            if (!matchingServices.isEmpty()) {
-                serviceRateEntity.setServiceRateId(matchingServices.get(0).getServiceRateId());
-                serviceRateEntity.setTenantDetailsEntity(tenantRepository.findByTenantId(serviceRateValue.getTenantId()).get(0));
+        if (serviceRateValue.getServiceRateUuid() != null) {
+            ServiceRateEntity matchingServices = serviceRateRepository.findByServiceRateUuid(serviceRateValue.getServiceRateUuid());
+            if (matchingServices !=null) {
+                serviceRateEntity.setServiceRateId(matchingServices.getServiceRateId());
+                serviceRateEntity.setTenantEntity(tenantRepository.findByTenantUuid(serviceRateValue.getTenantUuid()));
                 BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
             } else {
-                throw new Exception("No tenant found with UUID " + serviceRateValue.getUuid());
+                throw new Exception("No tenant found with UUID " + serviceRateValue.getServiceRateUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -55,7 +55,6 @@ public class ServiceRateServiceImpl implements ServiceRateService {
 
     @Override
     public List<ServiceRateValue> getAllServiceRate() throws Exception {
-
             List<ServiceRateValue> serviceRateValues=new ArrayList<>();
             ServiceRateValue serviceRateValue=null;
             List<ServiceRateEntity> serviceRateEntities= serviceRateRepository.findAll();
@@ -69,19 +68,18 @@ public class ServiceRateServiceImpl implements ServiceRateService {
             return serviceRateValues;
         }
 
-
     @Override
-    public ServiceRateValue getServiceRate(String uuid) throws Exception {
+    public ServiceRateValue getServiceRate(String serviceRateUuid) throws Exception {
         ServiceRateValue  serviceRateValue=new ServiceRateValue();
 
-        ServiceRateEntity serviceRateEntity =serviceRateRepository.findByUuid(uuid).get(0);
+        ServiceRateEntity serviceRateEntity =serviceRateRepository.findByServiceRateUuid(serviceRateUuid);
         BeanUtils.copyProperties(serviceRateEntity ,serviceRateValue);
         return serviceRateValue;
     }
     @Override
-    public ServiceRateValue deleteServiceRate(String uuid) throws Exception {
+    public ServiceRateValue deleteServiceRate(String serviceRateUuid) throws Exception {
         ServiceRateValue serviceRateValue=new ServiceRateValue();
-        ServiceRateEntity serviceRateEntity =serviceRateRepository.deleteServiceByUuid(uuid) .get(0);
+        ServiceRateEntity serviceRateEntity =serviceRateRepository.deleteByServiceRateUuid(serviceRateUuid) ;
         BeanUtils.copyProperties(serviceRateEntity ,serviceRateValue);
         return  serviceRateValue;
     }

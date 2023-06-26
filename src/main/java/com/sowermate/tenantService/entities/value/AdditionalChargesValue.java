@@ -2,11 +2,13 @@ package com.sowermate.tenantService.entities.value;
 
 import lombok.Data;
 
-@Data
-public class AdditionalChargesValue extends  CommonValue  {
+import java.util.Date;
 
-    private int additionalChargesId;
-    private String uuid;
+@Data
+public class AdditionalChargesValue   {
+    private String additionalChargesUuid;
+    private Date createdDttm;
+    private Date updatedDttm;
     private float extraMm;
     private float insurance;
     private float adminCharges;
@@ -14,6 +16,5 @@ public class AdditionalChargesValue extends  CommonValue  {
     private float gst;
     private String createdBy;
     private String updatedBy;
-    private int tenantId;
-
+    private String tenantUuid;
 }

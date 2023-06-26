@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.GlassThicknessEntity;
 import com.sowermate.tenantService.entities.value.GlassThicknessValue;
 import com.sowermate.tenantService.repositories.GlassThicknessRepository;
+import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.GlassThicknessService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,17 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
 
     @Autowired
     private GlassThicknessRepository glassThicknessRepository;
+
+    @Autowired
+    TenantRepository tenantRepository;
+
     @Override
     public GlassThicknessValue createGlassThickness(GlassThicknessValue glassThicknessValue) throws Exception {
         GlassThicknessEntity  glassThicknessEntity=new GlassThicknessEntity();
         BeanUtils.copyProperties(glassThicknessValue, glassThicknessEntity);
         String randomGlassThicknessId= UUID.randomUUID().toString();
-        glassThicknessEntity.setUuid(randomGlassThicknessId);
+        glassThicknessEntity.setGlassThicknessUuid(randomGlassThicknessId);
+        glassThicknessEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassThicknessValue.getTenantUuid()));
         BeanUtils.copyProperties(glassThicknessRepository.save(glassThicknessEntity), glassThicknessValue);
         return glassThicknessValue;
     }
@@ -35,13 +41,14 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
         BeanUtils.copyProperties(glassThicknessValue, glassThicknessEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (glassThicknessValue.getUuid() != null) {
-            List<GlassThicknessEntity> matchingGlassThickness = glassThicknessRepository.findByUuid(glassThicknessValue.getUuid());
-            if (!matchingGlassThickness.isEmpty()) {
-                glassThicknessEntity.setGlassThicknessId(matchingGlassThickness.get(0).getGlassThicknessId());
+        if (glassThicknessValue.getGlassThicknessUuid() != null) {
+            GlassThicknessEntity matchingGlassThickness = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(glassThicknessValue.getTenantUuid(), glassThicknessValue.getGlassThicknessUuid());
+            if (matchingGlassThickness!=null) {
+                glassThicknessEntity.setGlassThicknessId(matchingGlassThickness.getGlassThicknessId());
+                glassThicknessEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassThicknessValue.getTenantUuid()));
                 BeanUtils.copyProperties(glassThicknessRepository.save(glassThicknessEntity), glassThicknessValue);
             } else {
-                throw new Exception("No tenant found with UUID " + glassThicknessValue.getUuid());
+                throw new Exception("No tenant found with UUID " + glassThicknessValue.getGlassThicknessUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
@@ -51,32 +58,34 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
     }
 
     @Override
-    public GlassThicknessValue getGlassThickness(String uuid) throws Exception {
+    public GlassThicknessValue getGlassThickness(String tenantUuid, String glassThicknessUuid) throws Exception {
         GlassThicknessValue glassThicknessValue=new GlassThicknessValue();
 
-        GlassThicknessEntity glassThicknessEntity =glassThicknessRepository.findByUuid(uuid).get(0);
+        GlassThicknessEntity glassThicknessEntity =glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid, glassThicknessUuid);
         BeanUtils.copyProperties(glassThicknessEntity ,glassThicknessValue);
+        glassThicknessValue.setTenantUuid(tenantUuid);
         return glassThicknessValue;
     }
 
     @Override
-    public GlassThicknessValue deleteGlassThickness(String uuid) throws Exception {
+    public GlassThicknessValue deleteGlassThickness(String tenantUuid, String glassThicknessUuid) throws Exception {
         GlassThicknessValue glassThicknessValue=new GlassThicknessValue();
-        glassThicknessRepository.softDelete(uuid);
-       GlassThicknessEntity  glassThicknessEntity =glassThicknessRepository.findByUuid(uuid).get(0);
+        glassThicknessRepository.softDelete(glassThicknessUuid);
+       GlassThicknessEntity  glassThicknessEntity =glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid, glassThicknessUuid);
         BeanUtils.copyProperties(glassThicknessEntity ,glassThicknessValue);
+        glassThicknessValue.setTenantUuid(tenantUuid);
         return  glassThicknessValue;
     }
 
     @Override
-    public List<GlassThicknessValue> getAllGlassThickness() throws Exception {
+    public List<GlassThicknessValue> getAllGlassThickness(String tenantUuid) throws Exception {
         List<GlassThicknessValue> glassThicknessValues=new ArrayList<>();
         GlassThicknessValue glassThicknessValue=null;
-        List<GlassThicknessEntity> glassThicknessEntities= glassThicknessRepository.findAll();
+        List<GlassThicknessEntity> glassThicknessEntities= glassThicknessRepository.findAllByTenantEntity_Uuid(tenantUuid);
         for (int i=0; i <glassThicknessEntities.size(); i++){
             glassThicknessValue =new GlassThicknessValue();
             BeanUtils.copyProperties(glassThicknessEntities.get(i), glassThicknessValue);
-
+            glassThicknessValue.setTenantUuid(tenantUuid);
             glassThicknessValues .add(glassThicknessValue);
         }
 

@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.GlassThicknessEntity;
+import com.sowermate.tenantService.entities.GlassTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,13 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 public interface GlassThicknessRepository  extends JpaRepository<GlassThicknessEntity, String> {
-    public List<GlassThicknessEntity> findByUuid(@Param("uuid")String uuid);
+    @Query("SELECT g FROM GlassThicknessEntity g " +
+            "JOIN g.tenantEntity t " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND g.glassThicknessUuid = :glassThicknessUuid")
+    public GlassThicknessEntity findByTenantEntity_UuidAndGlassThicknessUuid(@Param("tenantUuid") String tenantUuid, @Param("glassThicknessUuid") String glassThicknessUuid);
 
-    public List<GlassThicknessEntity> findByGlassThicknessId(int glassThicknessId);
+    public List<GlassThicknessEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.uuid = :uuid")
-    void softDelete(@Param("uuid") String uuid);
+    @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.glassThicknessUuid = :glassThicknessUuid")
+    void softDelete(@Param("glassThicknessUuid") String glassThicknessUuid);
 
 }

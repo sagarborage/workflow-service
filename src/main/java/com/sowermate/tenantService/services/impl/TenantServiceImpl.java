@@ -1,7 +1,7 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.TenantDetailsEntity;
-import com.sowermate.tenantService.entities.value.TenantDetailsValue;
+import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.value.TenantValue;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.TenantService;
 import org.springframework.beans.BeanUtils;
@@ -14,77 +14,83 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional(rollbackForClassName = { "Exception" })
+@Transactional(rollbackForClassName = {"Exception"})
 public class TenantServiceImpl implements TenantService {
 
     @Autowired
     private TenantRepository tenantRepository;
+
     @Override
-    public TenantDetailsValue saveTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception {
-        TenantDetailsEntity tenantDetailsEntity=new TenantDetailsEntity();
-        BeanUtils.copyProperties(tenantDetailsValue, tenantDetailsEntity);
-        String randomTenantId= UUID.randomUUID().toString();
-       tenantDetailsEntity.setUuid(randomTenantId);
-        BeanUtils.copyProperties(tenantRepository.save(tenantDetailsEntity), tenantDetailsValue);
-        return tenantDetailsValue;
+    public TenantValue saveTenantDetails(TenantValue tenantValue) throws Exception {
+        TenantEntity tenantEntity = new TenantEntity();
+        BeanUtils.copyProperties(tenantValue, tenantEntity);
+        String randomTenantUuid = UUID.randomUUID().toString();
+        tenantEntity.setUuid(randomTenantUuid);
+        BeanUtils.copyProperties(tenantRepository.save(tenantEntity), tenantValue);
+        tenantValue.setTenantUuid(tenantEntity.getUuid());
+        return tenantValue;
     }
 
     @Override
-    public List<TenantDetailsValue> getAllTenantDetails() throws Exception  {
-     List<TenantDetailsValue> tenantDetailsValues=new ArrayList<>();
-     TenantDetailsValue tenantDetailsValue=null;
-     List<TenantDetailsEntity> tenantDetailsEntities= tenantRepository.findAll();
-     for (int i=0; i <tenantDetailsEntities.size(); i++){
-       tenantDetailsValue =new TenantDetailsValue();
-       BeanUtils.copyProperties(tenantDetailsEntities.get(i), tenantDetailsValue);
+    public List<TenantValue> getAllTenantDetails() throws Exception {
+        List<TenantValue> tenantValues = new ArrayList<>();
+        TenantValue tenantValue = null;
+        List<TenantEntity> tenantDetailsEntities = tenantRepository.findAll();
+        for (int i = 0; i < tenantDetailsEntities.size(); i++) {
+            tenantValue = new TenantValue();
 
-       tenantDetailsValues.add(tenantDetailsValue);
-     }
-
-        return tenantDetailsValues;
+            BeanUtils.copyProperties(tenantDetailsEntities.get(i), tenantValue);
+            tenantValue.setTenantUuid(tenantDetailsEntities.get(i).getUuid());
+            tenantValues.add(tenantValue);
+        }
+        return tenantValues;
     }
 
-
     @Override
-    public TenantDetailsValue editTenantDetails(TenantDetailsValue tenantDetailsValue) throws Exception {
-        TenantDetailsEntity tenantDetailsEntity = new TenantDetailsEntity();
-        BeanUtils.copyProperties(tenantDetailsValue, tenantDetailsEntity);
+    public TenantValue editTenantDetails(TenantValue tenantValue) throws Exception {
+        TenantEntity tenantEntity = new TenantEntity();
+        BeanUtils.copyProperties(tenantValue, tenantEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (tenantDetailsValue.getUuid() != null) {
-            List<TenantDetailsEntity> matchingTenants = tenantRepository.findByUuid(tenantDetailsValue.getUuid());
-            if (!matchingTenants.isEmpty()) {
-                tenantDetailsEntity.setTenantId(matchingTenants.get(0).getTenantId());
-                BeanUtils.copyProperties(tenantRepository.save(tenantDetailsEntity), tenantDetailsValue);
+        if (tenantValue.getTenantUuid() != null) {
+            TenantEntity matchingTenant = tenantRepository.findByTenantUuid(tenantValue.getTenantUuid());
+            if (matchingTenant != null) {
+                tenantEntity.setTenantId(matchingTenant.getTenantId());
+                BeanUtils.copyProperties(tenantRepository.save(tenantEntity), tenantValue);
+                tenantValue.setTenantUuid(tenantEntity.getUuid());
             } else {
-                throw new Exception("No tenant found with UUID " + tenantDetailsValue.getUuid());
+                throw new Exception("No tenant found with UUID " + tenantValue.getTenantUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
         }
 
-        return tenantDetailsValue;
+        return tenantValue;
     }
 
 
-
-
     @Override
-    public TenantDetailsValue getTenantDetails(String uuid) throws Exception {
-    TenantDetailsValue  tenantDetailsValue=new TenantDetailsValue();
+    public TenantValue getTenantDetails(String tenantUuid) throws Exception {
+        TenantValue tenantValue = new TenantValue();
 
-    TenantDetailsEntity tenantDetailsEntity =tenantRepository.findByUuid(uuid).get(0);
-        BeanUtils.copyProperties(tenantDetailsEntity ,tenantDetailsValue);
-        return tenantDetailsValue;
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
+        if (tenantEntity == null) {
+            return null;
+        } else {
+            BeanUtils.copyProperties(tenantEntity, tenantValue);
+            tenantValue.setTenantUuid(tenantEntity.getUuid());
+            return tenantValue;
+        }
     }
 
     @Override
-    public TenantDetailsValue deleteTenantDetails(String uuid) throws Exception {
-        TenantDetailsValue tenantDetailsValue=new TenantDetailsValue();
-        tenantRepository.softDelete(uuid);
-        TenantDetailsEntity tenantDetailsEntity =tenantRepository.findByUuid(uuid) .get(0);
-        BeanUtils.copyProperties(tenantDetailsEntity ,tenantDetailsValue);
-        return  tenantDetailsValue;
+    public TenantValue deleteTenantDetails(String tenantUuid) throws Exception {
+        TenantValue tenantValue = new TenantValue();
+        tenantRepository.softDelete(tenantUuid);
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
+        BeanUtils.copyProperties(tenantEntity, tenantValue);
+        tenantValue.setTenantUuid(tenantEntity.getUuid());
+        return tenantValue;
     }
 
 }

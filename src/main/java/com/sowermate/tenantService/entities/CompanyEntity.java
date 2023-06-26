@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -12,12 +13,21 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="company")
-public class CompanyEntity  extends CommonEntity {
+public class CompanyEntity {
     private static final long serialVersionUID = -241370177952331642L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id", unique = true, nullable = false, updatable = false)
     private int companyId;
+
+    @Column(name="uuid", unique=true, updatable=false)
+    private String companyUuid;
+
+    @Column(name="created_dttm")
+    private Date createdDttm;
+
+    @Column(name="updated_dttm")
+    private Date updatedDttm;
 
     @Column(name = "company_name")
     private String companyName;
@@ -47,11 +57,8 @@ public class CompanyEntity  extends CommonEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name ="tenant_id")
-   private TenantDetailsEntity tenantDetailsEntity;
+   private TenantEntity tenantEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private AddressEntity addressEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")

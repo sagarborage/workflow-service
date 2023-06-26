@@ -18,55 +18,55 @@ public class CompanyController {
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(CompanyController.class);
     @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<CommonValue> createCompanyDetails(@RequestBody CompanyValue companyValue){
-        CommonValue commonValue=null;
+    public ResponseEntity<CompanyValue> createCompanyDetails(@RequestBody CompanyValue companyValue){
+        CompanyValue companyValue1=null;
         try {
-            commonValue=companyService.createCompany(companyValue);
+            companyValue1=companyService.createCompany(companyValue);
         } catch (Exception e) {
             Logger.error("Error while creating Seller:", e);
         }
-        return new ResponseEntity<CommonValue>(commonValue,HttpStatus.CREATED);
+        return new ResponseEntity<CompanyValue>(companyValue1,HttpStatus.CREATED);
     }
     @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<CommonValue> editCompanyDetails(@RequestBody CompanyValue companyValue){
-        CommonValue commonValue=null;
+    public ResponseEntity<CompanyValue> editCompanyDetails(@RequestBody CompanyValue companyValue){
+        CompanyValue companyValue1=null;
         try {
-            commonValue=  companyService.editCompany(companyValue);
+            companyValue1=  companyService.editCompany(companyValue);
         } catch (Exception e) {
             Logger.error("Error while editing Seller:", e);
         }
-        return new ResponseEntity<CommonValue>(commonValue,HttpStatus.CREATED);
+        return new ResponseEntity< CompanyValue>(companyValue1,HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<CompanyValue> getCompanyDetails(
-            @PathVariable String uuid) {
+    @GetMapping("/{tenantUuid}/{companyUuid}")
+    public ResponseEntity<CompanyValue> getCompanyDetails(@PathVariable String tenantUuid,
+            @PathVariable String companyUuid) {
         CompanyValue companyValue = null;
         try {
-            companyValue = companyService.getCompany(uuid);
+            companyValue = companyService.getCompany(tenantUuid,companyUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(companyValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{companyUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CommonValue> deleteCompanyDetails(
-            @PathVariable String uuid) {
-        CommonValue commonValue = null;
+    public ResponseEntity<CompanyValue> deleteCompanyDetails(@PathVariable String tenantUuid,
+            @PathVariable String companyUuid) {
+        CompanyValue companyValue = null;
         try {
-            commonValue = companyService.deleteCompany(uuid);
+            companyValue = companyService.deleteCompany(tenantUuid,companyUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<CommonValue>(commonValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<CompanyValue>> getAllCompanies() {
+    @GetMapping (value = "/{tenantUuid}")
+    public ResponseEntity<List<CompanyValue>> getAllCompanies(@PathVariable String tenantUuid) {
         List<CompanyValue> companyValues = null;
         try {
-            companyValues = companyService.getAllCompany();
+            companyValues = companyService.getAllCompany(tenantUuid);
             Logger.info("records " + companyValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class GlassThicknessValue {
 
-    private int  glassThicknessId;
-    private String uuid;
+    private String tenantUuid;
+    private String glassThicknessUuid;
     private String name;
     private Boolean isActive;
 }

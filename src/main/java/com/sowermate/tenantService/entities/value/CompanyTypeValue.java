@@ -4,10 +4,9 @@ import lombok.Data;
 
 @Data
 public class CompanyTypeValue {
-
-    private Integer companyTypeId;
+    private String companyTypeUuid;
+    private String tenantUuid;
     private String type;
     private String description;
-    private String uuid;
     private Boolean isActive;
 }

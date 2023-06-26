@@ -10,9 +10,9 @@ public interface CompanyService {
 
     public CompanyValue editCompany(CompanyValue companyValue) throws Exception;
 
-    public CompanyValue getCompany(String uuid) throws Exception;
+    public CompanyValue getCompany(String tenantUuid,String companyUuid) throws Exception;
 
-    public CompanyValue deleteCompany(String uuid) throws Exception;
+    public CompanyValue deleteCompany(String tenantUuid,String companyUuid) throws Exception;
 
-    public List<CompanyValue> getAllCompany() throws Exception;
+    public List<CompanyValue> getAllCompany(String tenantUuid) throws Exception;
 }

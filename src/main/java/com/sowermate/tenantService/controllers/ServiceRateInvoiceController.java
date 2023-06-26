@@ -42,25 +42,25 @@ public class ServiceRateInvoiceController {
         }
         return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{uuid}")
+    @GetMapping("/{serviceRateInvoiceUuid}")
     public ResponseEntity<ServiceRateInvoiceValue> getServiceRateInvoice(
-            @PathVariable String uuid) {
+            @PathVariable String serviceRateInvoiceUuid) {
         ServiceRateInvoiceValue serviceRateInvoiceValue = null;
         try {
-            serviceRateInvoiceValue = serviceRateInvoiceService.getServiceRateInvoice(uuid);
+            serviceRateInvoiceValue = serviceRateInvoiceService.getServiceRateInvoice(serviceRateInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(serviceRateInvoiceValue, HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{serviceRateInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<ServiceRateInvoiceValue> deleteServiceRateInvoice(
-            @PathVariable String uuid) {
+            @PathVariable String serviceRateInvoiceUuid) {
         ServiceRateInvoiceValue serviceRateInvoiceValue = null;
         try {
-            serviceRateInvoiceValue = serviceRateInvoiceService.deleteServiceRateInvoice(uuid);
+            serviceRateInvoiceValue = serviceRateInvoiceService.deleteServiceRateInvoice(serviceRateInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }

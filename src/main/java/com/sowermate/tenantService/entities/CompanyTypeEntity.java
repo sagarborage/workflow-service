@@ -23,7 +23,7 @@ public class CompanyTypeEntity {
     @Column(name = "description")
     private String description;
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+    private String  companyTypeUuid;;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -32,5 +32,9 @@ public class CompanyTypeEntity {
 
     @OneToMany(mappedBy="companyTypeEntity",cascade=CascadeType.ALL)
     private List<CompanyEntity> companyEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
 }
