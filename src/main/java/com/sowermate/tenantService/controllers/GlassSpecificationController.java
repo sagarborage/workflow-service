@@ -26,7 +26,6 @@ public class GlassSpecificationController {
         }
         return new ResponseEntity<GlassSpecificationValue>( glassSpecificationValue1, HttpStatus.CREATED);
     }
-
     @GetMapping("/{tenantUuid}/{glassSpecificationUuid}")
     public ResponseEntity<GlassSpecificationValue> getSingleGlassSpecification(@PathVariable String tenantUuid, @PathVariable String  glassSpecificationUuid) throws Exception {
         GlassSpecificationValue glassSpecificationValue=glassSpecificationService.getGlassSpecification(tenantUuid, glassSpecificationUuid);

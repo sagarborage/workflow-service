@@ -39,12 +39,12 @@ public class ProFormaInvoiceItemController {
         }
         return new ResponseEntity<ProFormaInvoiceItemValue>(proFormaInvoiceItemValue1, HttpStatus.CREATED);
     }
-        @GetMapping("/{tenantUuid}/{ProFormaInvoiceItemUuid}")
+        @GetMapping("/{tenantUuid}/{proFormaInvoiceItemUuid}")
         public ResponseEntity<ProFormaInvoiceItemValue> getProFormInvoiceItem(@PathVariable String tenantUuid,
-                @PathVariable String ProFormaInvoiceItemUuid) {
+                @PathVariable String proFormaInvoiceItemUuid) {
             ProFormaInvoiceItemValue proFormaInvoiceItemValue = null;
             try {
-                proFormaInvoiceItemValue = proFormaInvoiceItemService.getProFormInvoiceItem(tenantUuid,ProFormaInvoiceItemUuid);
+                proFormaInvoiceItemValue = proFormaInvoiceItemService.getProFormInvoiceItem(tenantUuid,proFormaInvoiceItemUuid);
             } catch (Exception e) {
                 Logger.error("Error while getting Seller:", e);
             }
@@ -53,18 +53,18 @@ public class ProFormaInvoiceItemController {
 
     @RequestMapping(value = "/{tenantUuid}/{ProFormaInvoiceItemUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceItemValue> deleteProFormInvoiceItem(@PathVariable String tenantUuid,
+    public ResponseEntity<Integer> deleteProFormInvoiceItem(@PathVariable String tenantUuid,
             @PathVariable String ProFormaInvoiceItemUuid) {
-        ProFormaInvoiceItemValue proFormaInvoiceItemValue = null;
+         int deleteProFormaInvoiceItem=0;
         try {
-            proFormaInvoiceItemValue = proFormaInvoiceItemService.deleteProFormInvoiceItem(tenantUuid,ProFormaInvoiceItemUuid);
+            deleteProFormaInvoiceItem = proFormaInvoiceItemService.deleteProFormInvoiceItem(tenantUuid,ProFormaInvoiceItemUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<ProFormaInvoiceItemValue>(proFormaInvoiceItemValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Integer>(deleteProFormaInvoiceItem, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{tenantUuid}")
+    @GetMapping(value = "/{tenantUuid}")
     public ResponseEntity<List<ProFormaInvoiceItemValue>> getAllProFormInvoiceItem(@PathVariable String tenantUuid) {
         List<ProFormaInvoiceItemValue> proFormaInvoiceItemValues = null;
         try {

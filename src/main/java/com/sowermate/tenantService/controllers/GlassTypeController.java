@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.entities.value.GlassTypeValue;
 import com.sowermate.tenantService.services.GlassTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class GlassTypeController {
     @ResponseBody
     public ResponseEntity<GlassTypeValue> createGlassType(@RequestBody GlassTypeValue glassTypeValue) throws Exception {
         GlassTypeValue glassTypeValue1=glassTypeService.createGlassType(glassTypeValue);
+        if (glassTypeValue1 == null) {
+            return new ResponseEntity<GlassTypeValue>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<GlassTypeValue>( glassTypeValue1, HttpStatus.CREATED);
     }
 

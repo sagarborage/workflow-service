@@ -24,4 +24,8 @@ public class StatusEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
+
 }

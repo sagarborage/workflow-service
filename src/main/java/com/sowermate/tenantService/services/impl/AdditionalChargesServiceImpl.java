@@ -42,6 +42,7 @@ public class AdditionalChargesServiceImpl implements AdditionalChargesService {
         for (int i=0; i <additionalChargesEntities.size(); i++){
             additionalChargesValue =new AdditionalChargesValue();
             BeanUtils.copyProperties(additionalChargesEntities.get(i), additionalChargesValue);
+            additionalChargesValue.setTenantUuid(tenantUuid);
             additionalChargesValues.add(additionalChargesValue);
         }
 
@@ -53,10 +54,16 @@ public class AdditionalChargesServiceImpl implements AdditionalChargesService {
 
             AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
             BeanUtils.copyProperties(additionalChargesValue , additionalChargesEntity);
-            additionalChargesEntity.setTenantEntity(tenantRepository.findByTenantUuid(additionalChargesValue.getTenantUuid()));
+        if (additionalChargesValue.getAdditionalChargesUuid() != null) {
             additionalChargesEntity.setAdditionalChargesId(additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(additionalChargesValue.getTenantUuid(),additionalChargesValue.getAdditionalChargesUuid()).getAdditionalChargesId());
+            additionalChargesEntity.setTenantEntity(tenantRepository.findByTenantUuid(additionalChargesValue.getTenantUuid()));
             BeanUtils.copyProperties(additionalChargesRepository.save(additionalChargesEntity), additionalChargesValue);
-            return additionalChargesValue;
+
+    } else {
+        throw new Exception("UUID cannot be null");
+    }
+
+        return additionalChargesValue;
 
     }
 
@@ -65,15 +72,16 @@ public class AdditionalChargesServiceImpl implements AdditionalChargesService {
         AdditionalChargesValue  additionalChargesValue=new AdditionalChargesValue();
         AdditionalChargesEntity additionalChargesEntity =additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(tenantUuid,additionalChargesUuid);
         BeanUtils.copyProperties(additionalChargesEntity ,additionalChargesValue);
+        additionalChargesValue.setTenantUuid(tenantUuid);
         return additionalChargesValue;
     }
 
 
     @Override
-    public AdditionalChargesValue deleteAdditionalCharges(String tenantUuid,String additionalChargesUuid) throws Exception {
-        AdditionalChargesValue additionalChargesValue=new AdditionalChargesValue();
-        AdditionalChargesEntity additionalChargesEntity =additionalChargesRepository.deleteByAdditionalChargesUuid(additionalChargesUuid) ;
-        BeanUtils.copyProperties(additionalChargesEntity ,additionalChargesValue);
-        return  additionalChargesValue;
+    public int deleteAdditionalCharges(String tenantUuid,String additionalChargesUuid) throws Exception {
+
+      return  additionalChargesRepository.deleteByAdditionalChargesUuid(additionalChargesUuid);
+
+
     }
 }

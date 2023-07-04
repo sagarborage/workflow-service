@@ -43,7 +43,7 @@ public class PiTypeServiceImpl implements PiTypeService {
         for (int i=0; i <piTypeEntities.size(); i++){
             piTypeValue =new PiTypeValue();
             BeanUtils.copyProperties(piTypeEntities.get(i), piTypeValue);
-
+            piTypeValue.setTenantUuid(tenantUuid);
             piTypeValues.add(piTypeValue);
         }
 
@@ -77,18 +77,16 @@ public class PiTypeServiceImpl implements PiTypeService {
         PiTypeValue piTypeValue=new PiTypeValue();
 
         PiTypeEntity piTypeEntity =piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUuid,piTypeUuid);
-
+        piTypeValue.setTenantUuid(tenantUuid);
         BeanUtils.copyProperties(piTypeEntity ,piTypeValue);
         return piTypeValue;
     }
 
 
     @Override
-    public PiTypeValue deletePiType(String tenantUuid,String piTypeUuid) throws Exception {
-        PiTypeValue piTypeValue=new PiTypeValue();
-        PiTypeEntity piTypeEntity =piTypeRepository.deleteByPiTypeUuid(piTypeUuid) ;
-        BeanUtils.copyProperties(piTypeEntity ,piTypeValue);
-        return  piTypeValue;
+    public int deletePiType(String tenantUuid,String piTypeUuid) throws Exception {
+
+      return piTypeRepository.deleteByPiTypeUuid(piTypeUuid) ;
 
     }
 }

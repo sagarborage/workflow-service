@@ -7,10 +7,10 @@ public class ProFormaInvoiceItemValue {
 
     private String tenantUuid;
     private String ProFormaInvoiceItemUuid;
-    private String proFormaInvoiceUUID;
-    private String glassTypeUUID;
-    private String glassSpecificationUUID;
-    private String glassThicknessUUID;
+    private String proFormaInvoiceUuid;
+    private String glassTypeUuid;
+    private String glassSpecificationUuid;
+    private String glassThicknessUuid;
     private Float widthInch;
     private Float widthMeasurement;
     private Float actualWidth;

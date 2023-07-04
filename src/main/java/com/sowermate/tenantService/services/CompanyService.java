@@ -14,5 +14,5 @@ public interface CompanyService {
 
     public CompanyValue deleteCompany(String tenantUuid,String companyUuid) throws Exception;
 
-    public List<CompanyValue> getAllCompany(String tenantUuid) throws Exception;
+    public List<CompanyValue> getAllCompany(String tenantUuid ) throws Exception;
 }

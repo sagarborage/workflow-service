@@ -102,7 +102,7 @@ public class ProFormaInvoiceEntity {
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntities",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
     private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;
 
 

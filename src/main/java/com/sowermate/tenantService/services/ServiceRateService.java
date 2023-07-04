@@ -9,11 +9,11 @@ public interface ServiceRateService {
 
     public ServiceRateValue editServiceRate(ServiceRateValue serviceRateValue) throws Exception;
 
-    public List<ServiceRateValue> getAllServiceRate() throws Exception;
+    public List<ServiceRateValue> getAllServiceRate(String tenantUuid) throws Exception;
 
 
-    public ServiceRateValue getServiceRate(String serviceRateUuid) throws Exception;
+    public ServiceRateValue getServiceRate(String tenantUuid,String serviceRateUuid) throws Exception;
 
-    public ServiceRateValue deleteServiceRate(String serviceRateUuid)throws Exception;
+    public ServiceRateValue deleteServiceRate(String tenantUuid,String serviceRateUuid)throws Exception;
 
 }

@@ -18,10 +18,10 @@ public class AdditionalChargesEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="additional_charges_id")
+    @Column(name="additional_charges_id", unique = true, nullable = false, updatable = false)
     private int additionalChargesId;
 
-    @Column(name="uuid", unique=true, updatable=false)
+    @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String additionalChargesUuid;
 
     @Column(name="created_dttm")

@@ -38,7 +38,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
 
         // Check that UUID is not null before searching for the tenant
         if (serviceRateValue.getServiceRateUuid() != null) {
-            ServiceRateEntity matchingServices = serviceRateRepository.findByServiceRateUuid(serviceRateValue.getServiceRateUuid());
+            ServiceRateEntity matchingServices = serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(serviceRateValue.getTenantUuid(),serviceRateValue.getServiceRateUuid());
             if (matchingServices !=null) {
                 serviceRateEntity.setServiceRateId(matchingServices.getServiceRateId());
                 serviceRateEntity.setTenantEntity(tenantRepository.findByTenantUuid(serviceRateValue.getTenantUuid()));
@@ -54,14 +54,14 @@ public class ServiceRateServiceImpl implements ServiceRateService {
     }
 
     @Override
-    public List<ServiceRateValue> getAllServiceRate() throws Exception {
+    public List<ServiceRateValue> getAllServiceRate(String tenantUuid) throws Exception {
             List<ServiceRateValue> serviceRateValues=new ArrayList<>();
             ServiceRateValue serviceRateValue=null;
-            List<ServiceRateEntity> serviceRateEntities= serviceRateRepository.findAll();
+            List<ServiceRateEntity> serviceRateEntities= serviceRateRepository.findAllByTenantEntity_Uuid(tenantUuid);
             for (int i=0; i <serviceRateEntities.size(); i++){
                 serviceRateValue =new ServiceRateValue();
                 BeanUtils.copyProperties(serviceRateEntities.get(i), serviceRateValue);
-
+                serviceRateValue.setTenantUuid(tenantUuid);
                 serviceRateValues.add(serviceRateValue);
             }
 
@@ -69,17 +69,19 @@ public class ServiceRateServiceImpl implements ServiceRateService {
         }
 
     @Override
-    public ServiceRateValue getServiceRate(String serviceRateUuid) throws Exception {
+    public ServiceRateValue getServiceRate(String tenantUuid,String serviceRateUuid) throws Exception {
         ServiceRateValue  serviceRateValue=new ServiceRateValue();
 
-        ServiceRateEntity serviceRateEntity =serviceRateRepository.findByServiceRateUuid(serviceRateUuid);
+        ServiceRateEntity serviceRateEntity =serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(tenantUuid,serviceRateUuid);
         BeanUtils.copyProperties(serviceRateEntity ,serviceRateValue);
+        serviceRateValue.setTenantUuid(tenantUuid);
         return serviceRateValue;
     }
     @Override
-    public ServiceRateValue deleteServiceRate(String serviceRateUuid) throws Exception {
+    public ServiceRateValue deleteServiceRate(String tenantUuid,String serviceRateUuid) throws Exception {
         ServiceRateValue serviceRateValue=new ServiceRateValue();
-        ServiceRateEntity serviceRateEntity =serviceRateRepository.deleteByServiceRateUuid(serviceRateUuid) ;
+        serviceRateRepository.softDelete(serviceRateUuid);
+        ServiceRateEntity serviceRateEntity =serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(tenantUuid,serviceRateUuid) ;
         BeanUtils.copyProperties(serviceRateEntity ,serviceRateValue);
         return  serviceRateValue;
     }

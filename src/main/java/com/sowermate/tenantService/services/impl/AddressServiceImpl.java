@@ -72,6 +72,7 @@ public class AddressServiceImpl  implements AddressService {
         for (int i = 0; i < addressEntities.size(); i++) {
             addressValue = new AddressValue();
             BeanUtils.copyProperties(addressEntities.get(i), addressValue);
+            addressValue.setTenantUuid(tenantUuid);
             addressValues.add(addressValue);
         }
         return addressValues;

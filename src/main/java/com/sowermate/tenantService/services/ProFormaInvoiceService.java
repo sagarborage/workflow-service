@@ -12,7 +12,7 @@ public interface ProFormaInvoiceService {
 
     public ProFormInvoiceValue getProFormInvoice(String tenantUuid,String proFormInvoiceUuid) throws Exception;
 
-    public ProFormInvoiceValue deleteProFormInvoice(String tenantUuid,String proFormInvoiceUuid) throws Exception;
+    public int deleteProFormInvoice(String tenantUuid,String proFormInvoiceUuid) throws Exception;
 
     public List<ProFormInvoiceValue> getAllProFormInvoice(String tenantUuid) throws Exception;
 

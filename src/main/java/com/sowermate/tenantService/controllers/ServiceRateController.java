@@ -22,20 +22,20 @@ public class ServiceRateController {
         return new ResponseEntity<ServiceRateValue>( serviceRateValue1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{serviceRateUuid}")
-    public ResponseEntity<ServiceRateValue> getServiceRate(@PathVariable String serviceRateUuid) throws Exception {
-        ServiceRateValue serviceRateValue=serviceRateService.getServiceRate(serviceRateUuid);
+    @GetMapping(value = "/{tenantUuid}/{serviceRateUuid}")
+    public ResponseEntity<ServiceRateValue> getServiceRate(@PathVariable String  tenantUuid,@PathVariable String serviceRateUuid) throws Exception {
+        ServiceRateValue serviceRateValue=serviceRateService.getServiceRate(tenantUuid,serviceRateUuid);
         return  new ResponseEntity<>(serviceRateValue, HttpStatus.ACCEPTED);
     }
-    @GetMapping
-    public ResponseEntity<List<ServiceRateValue>> getAllServiceRate() throws Exception {
-        List<ServiceRateValue> serviceRateValues = serviceRateService.getAllServiceRate();
+    @GetMapping(value = "/{tenantUuid}")
+    public ResponseEntity<List<ServiceRateValue>> getAllServiceRate(@PathVariable String  tenantUuid) throws Exception {
+        List<ServiceRateValue> serviceRateValues = serviceRateService.getAllServiceRate(tenantUuid);
         return new ResponseEntity<> (serviceRateValues ,HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{serviceRateUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ServiceRateValue> deleteServiceRate(@PathVariable String serviceRateUuid) throws Exception {
-        ServiceRateValue serviceRateValue =serviceRateService.deleteServiceRate(serviceRateUuid);
+    public ResponseEntity<ServiceRateValue> deleteServiceRate(@PathVariable String  tenantUuid,@PathVariable String serviceRateUuid) throws Exception {
+        ServiceRateValue serviceRateValue =serviceRateService.deleteServiceRate(tenantUuid,serviceRateUuid);
         return new ResponseEntity<ServiceRateValue>(serviceRateValue ,HttpStatus.ACCEPTED);
     }
     @RequestMapping( method = RequestMethod.PUT)

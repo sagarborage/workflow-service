@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class AdditionalChargesValue   {
+    private String tenantUuid;
     private String additionalChargesUuid;
     private Date createdDttm;
     private Date updatedDttm;
@@ -16,5 +17,5 @@ public class AdditionalChargesValue   {
     private float gst;
     private String createdBy;
     private String updatedBy;
-    private String tenantUuid;
+
 }

@@ -83,5 +83,11 @@ public class TenantEntity implements Serializable {
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
     private  List<ProFormaInvoiceItemEntity>  proFormaInvoiceItemEntities;
 
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private  List<StatusEntity>  statusEntities;
+
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private  List<ServiceRateInvoiceEntity>  serviceRateInvoiceEntities;
+
 
 }

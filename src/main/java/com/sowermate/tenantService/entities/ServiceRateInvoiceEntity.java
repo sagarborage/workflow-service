@@ -34,10 +34,13 @@ public class ServiceRateInvoiceEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pro_forma_invoice_id")
-    private ProFormaInvoiceEntity proFormaInvoiceEntities;
+    private ProFormaInvoiceEntity proFormaInvoiceEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_rate_id")
     private ServiceRateEntity serviceRateEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 }

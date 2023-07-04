@@ -10,6 +10,6 @@ public interface AdditionalChargesService {
 
     public AdditionalChargesValue getAdditionalCharges(String tenantUuid,String additionalChargesUuid) throws Exception;
 
-    public AdditionalChargesValue deleteAdditionalCharges(String tenantUuid,String additionalChargesUuid)throws Exception;
+   int deleteAdditionalCharges(String tenantUuid,String additionalChargesUuid)throws Exception;
 
 }

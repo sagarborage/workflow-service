@@ -42,36 +42,36 @@ public class ServiceRateInvoiceController {
         }
         return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{serviceRateInvoiceUuid}")
-    public ResponseEntity<ServiceRateInvoiceValue> getServiceRateInvoice(
+    @GetMapping(value = "/{tenantUuid}/{serviceRateInvoiceUuid}")
+    public ResponseEntity<ServiceRateInvoiceValue> getServiceRateInvoice(@PathVariable String tenantUuid,
             @PathVariable String serviceRateInvoiceUuid) {
         ServiceRateInvoiceValue serviceRateInvoiceValue = null;
         try {
-            serviceRateInvoiceValue = serviceRateInvoiceService.getServiceRateInvoice(serviceRateInvoiceUuid);
+            serviceRateInvoiceValue = serviceRateInvoiceService.getServiceRateInvoice(tenantUuid,serviceRateInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(serviceRateInvoiceValue, HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{serviceRateInvoiceUuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{serviceRateInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ServiceRateInvoiceValue> deleteServiceRateInvoice(
+    public ResponseEntity<Integer> deleteServiceRateInvoice(@PathVariable String tenantUuid,
             @PathVariable String serviceRateInvoiceUuid) {
-        ServiceRateInvoiceValue serviceRateInvoiceValue = null;
+        int rowDeletedCount = 0;
         try {
-            serviceRateInvoiceValue = serviceRateInvoiceService.deleteServiceRateInvoice(serviceRateInvoiceUuid);
+            rowDeletedCount = serviceRateInvoiceService.deleteServiceRateInvoice(tenantUuid,serviceRateInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Integer>(rowDeletedCount, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ServiceRateInvoiceValue>> getAllServiceRateInvoice() {
+    @GetMapping(value = "/{tenantUuid}")
+    public ResponseEntity<List<ServiceRateInvoiceValue>> getAllServiceRateInvoice(@PathVariable String tenantUuid) {
         List<ServiceRateInvoiceValue> serviceRateInvoiceValues = null;
         try {
-           serviceRateInvoiceValues  = serviceRateInvoiceService.getAllServiceRateInvoice();
+           serviceRateInvoiceValues  = serviceRateInvoiceService.getAllServiceRateInvoice(tenantUuid);
             Logger.info("records " + serviceRateInvoiceValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

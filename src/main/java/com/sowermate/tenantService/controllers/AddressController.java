@@ -65,7 +65,7 @@ public class AddressController {
         return new ResponseEntity<AddressValue>(addressValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
+    @GetMapping("/{tenantUuid}")
     public ResponseEntity<List<AddressValue>> getAllAddress(@PathVariable String tenantUuid) {
         List<AddressValue> addressValues = null;
         try {
@@ -76,8 +76,4 @@ public class AddressController {
         }
         return new ResponseEntity<>(addressValues, HttpStatus.ACCEPTED);
     }
-
-
-
-
 }

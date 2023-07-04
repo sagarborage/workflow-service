@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,15 +14,16 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="company")
-public class CompanyEntity {
-    private static final long serialVersionUID = -241370177952331642L;
+public class CompanyEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id", unique = true, nullable = false, updatable = false)
     private int companyId;
 
     @Column(name="uuid", unique=true, updatable=false)
-    private String companyUuid;
+    protected String companyUuid;
 
     @Column(name="created_dttm")
     private Date createdDttm;

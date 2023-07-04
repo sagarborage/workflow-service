@@ -11,9 +11,9 @@ public interface ServiceRateInvoiceService {
 
     public ServiceRateInvoiceValue editServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) throws Exception;
 
-    public ServiceRateInvoiceValue getServiceRateInvoice(String serviceRateInvoiceUuid) throws Exception;
+    public ServiceRateInvoiceValue getServiceRateInvoice(String tenantUuid,String serviceRateInvoiceUuid) throws Exception;
 
-    public ServiceRateInvoiceValue deleteServiceRateInvoice(String serviceRateInvoiceUuid) throws Exception;
+    public int deleteServiceRateInvoice(String tenantUuid,String serviceRateInvoiceUuid) throws Exception;
 
-    public List<ServiceRateInvoiceValue> getAllServiceRateInvoice() throws Exception;
+    public List<ServiceRateInvoiceValue> getAllServiceRateInvoice(String tenantUuid) throws Exception;
 }

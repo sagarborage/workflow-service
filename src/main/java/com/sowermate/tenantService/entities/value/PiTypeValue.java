@@ -6,7 +6,7 @@ import lombok.Data;
 public class PiTypeValue {
 
     private String  piTypeUuid;
+    private String tenantUuid;
     private float mm;
     private float sqft;
-    private String tenantUuid;
 }

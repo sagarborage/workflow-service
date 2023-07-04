@@ -1,6 +1,5 @@
 package com.sowermate.tenantService.repositories;
 
-import com.sowermate.tenantService.entities.AddressEntity;
 import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.CompanyTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +14,6 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer> {
 
-
-
     @Query("SELECT c FROM CompanyEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
@@ -24,7 +21,7 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer>
     public CompanyEntity findByTenantEntity_UuidAndCompanyUuid(String tenantUuid, String companyUuid);
 
    // public List<CompanyEntity> deleteByUuid(@Param("uuid") String uuid);
-
+   @Query("SELECT c FROM CompanyEntity c JOIN FETCH c.companyTypeEntity ct WHERE c.tenantEntity.uuid = :tenantUuid")
     public List<CompanyEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
    // public List<CompanyEntity> findByCompanyId(int companyId);

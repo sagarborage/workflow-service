@@ -80,11 +80,9 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     }
 
     @Override
-    public ConfirmThroughValue deleteConfirmThrough( String tenantUuid,  String confirmThroughUuid) throws Exception {
-        ConfirmThroughValue confirmThroughValue=new ConfirmThroughValue();
-        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.deleteByConfirmThroughUuid( confirmThroughUuid) ;
-        BeanUtils.copyProperties(confirmThroughEntity ,confirmThroughValue);
-        return  confirmThroughValue;
+    public int deleteConfirmThrough( String tenantUuid,  String confirmThroughUuid) throws Exception {
+
+       return confirmThroughRepository.deleteByConfirmThroughUuid( confirmThroughUuid) ;
 
     }
 }

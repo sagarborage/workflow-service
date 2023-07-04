@@ -13,6 +13,6 @@ public interface ConfirmThroughService {
 
     public ConfirmThroughValue getConfirmThrough(String tenantUuid, String confirmThroughUuid) throws Exception;
 
-    public ConfirmThroughValue deleteConfirmThrough(String tenantUuid,String confirmThroughUuid)throws Exception;
+    public int deleteConfirmThrough(String tenantUuid,String confirmThroughUuid)throws Exception;
 
 }
