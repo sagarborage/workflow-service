@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "7f3634ea-41ce-40cc-b40b-8ab3440e0175",
-		"name": "workflow-service Updated",
+		"name": "workflow-service LatestUpdated",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1805,6 +1805,108 @@
 								"confirm-through"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CompanyAddress",
+			"item": [
+				{
+					"name": "Create CompanyAddress",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"companyUuid\": \"fc4366e8-ecf5-4cec-878a-044f2cd23ccb\",\n    \"addressUuid\": \"2cc1e026-d9d6-45df-9bc5-c6861e42641d\",\n    \"addressTypeUuid\": \"abcd1234-34qn-reg65\",\n    \"isActive\":1 \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update CompanyAddress",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyAddressUuid\": \"e1e89724-1b1b-4ac8-97eb-5b90a71c9d6a\",\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"companyUuid\": \"35eeabb9-a829-4321-93c0-285560287d1b\",\n    \"addressUuid\": \"2cc1e026-d9d6-45df-9bc5-c6861e42641d\",\n    \"addressTypeUuid\": \"abcd1234-34qn-reg65\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/e1e89724-1b1b-4ac8-97eb-5b90a71c9d6a",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"e1e89724-1b1b-4ac8-97eb-5b90a71c9d6a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All CompanyAddress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete CompanyAddress",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
