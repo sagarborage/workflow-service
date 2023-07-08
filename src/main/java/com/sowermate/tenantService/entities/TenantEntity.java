@@ -89,5 +89,11 @@ public class TenantEntity implements Serializable {
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
     private  List<ServiceRateInvoiceEntity>  serviceRateInvoiceEntities;
 
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private  List<AddressTypeEntity>  addressTypeEntities;
+
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private  List<CompanyAddressEntity>  companyAddressEntities;
+
 
 }

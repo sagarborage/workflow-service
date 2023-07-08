@@ -72,4 +72,7 @@ public class CompanyEntity implements Serializable {
     @OneToMany(mappedBy="companyIdShip",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity1;
 
+    @OneToMany(mappedBy="companyEntity",cascade=CascadeType.ALL)
+    private List<CompanyAddressEntity> companyAddressEntity;
+
 }

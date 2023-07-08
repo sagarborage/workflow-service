@@ -84,5 +84,7 @@ public class AddressEntity implements Serializable {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    @OneToMany(mappedBy="addressEntity",cascade=CascadeType.ALL)
+    private List<CompanyAddressEntity> companyAddressEntity;
 
 }
