@@ -20,5 +20,8 @@ public interface TenantRepository extends JpaRepository <TenantEntity, String> {
     @Modifying
     @Query("UPDATE TenantEntity t SET t.isActive = false WHERE t.uuid = :tenantUuid")
     void softDelete(@Param("tenantUuid") String tenantUuid);
-
+    /*@Modifying
+    @Query("DELETE FROM TenantEntity t WHERE t.tenantUuid = :tenantUuid")
+    public int deleteByTenantUuid(@Param("tenantUuid")String tenantUuid);
+*/
 }

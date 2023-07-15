@@ -3,6 +3,7 @@ package com.sowermate.tenantService.repositories;
 import com.sowermate.tenantService.entities.CompanyTypeEntity;
 import com.sowermate.tenantService.entities.ConfirmThroughEntity;
 import com.sowermate.tenantService.entities.GlassTypeEntity;
+import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +16,7 @@ public interface CompanyTypeRepository extends JpaRepository<CompanyTypeEntity ,
   // public List<CompanyTypeEntity> findByCompanyTypeId(int companyTypeId);
 
     public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
+
+    public List<CompanyTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
 }

@@ -1,11 +1,7 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.AddressTypeEntity;
 import com.sowermate.tenantService.entities.CompanyAddressEntity;
-import com.sowermate.tenantService.entities.GlassSpecificationEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.value.CompanyAddressValue;
-import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.CompanyAddressService;
 import org.springframework.beans.BeanUtils;

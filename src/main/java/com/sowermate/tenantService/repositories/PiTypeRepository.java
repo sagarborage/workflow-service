@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PiTypeRepository extends JpaRepository<PiTypeEntity, String> {
 
-
+public List<PiTypeEntity> findByPiTypeUuid(@Param("uuid")String uuid);
     @Query("SELECT p FROM PiTypeEntity p " +
             "JOIN p.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
@@ -19,6 +19,8 @@ public interface PiTypeRepository extends JpaRepository<PiTypeEntity, String> {
     public PiTypeEntity findByTenantEntity_UuidAndPiTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("piTypeUuid") String piTypeUuid);
 
     public List<PiTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+
+/*    public List<PiTypeEntity> findByTenantEntity_UuidAndPiTypeUuid(@Param("uuid")String uuid);*/
     @Modifying
     @Query("DELETE FROM PiTypeEntity p WHERE p.piTypeUuid = :piTypeUuid")
     public int deleteByPiTypeUuid(@Param("piTypeUuid")String piTypeUuid);

@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name="pi_type")
 public class PiTypeEntity {
