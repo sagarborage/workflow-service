@@ -5,7 +5,6 @@ import com.sowermate.tenantService.repositories.AddressRepository;
 import com.sowermate.tenantService.repositories.CompanyRepository;
 import com.sowermate.tenantService.repositories.CompanyTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
-import com.sowermate.tenantService.services.CommonService;
 import com.sowermate.tenantService.services.CompanyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class  CompanyServiceImpl  implements CompanyService {
         String randomCompanyUuid= UUID.randomUUID().toString();
         companyEntity.setCompanyUuid(randomCompanyUuid);
         companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
-        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
+       // companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
         BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;
     }
@@ -46,7 +45,7 @@ public class  CompanyServiceImpl  implements CompanyService {
          CompanyEntity  companyEntity=new CompanyEntity();
          BeanUtils.copyProperties(companyValue , companyEntity);
         companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
-        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
+        //companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
          companyEntity.setCompanyId(companyRepository.findByTenantEntity_UuidAndCompanyUuid( companyValue.getTenantUuid(),companyValue.getCompanyUuid()).getCompanyId());
          BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;

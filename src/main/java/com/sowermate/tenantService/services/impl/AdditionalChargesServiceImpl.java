@@ -5,7 +5,6 @@ import com.sowermate.tenantService.entities.value.AdditionalChargesValue;
 import com.sowermate.tenantService.repositories.AdditionalChargesRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.AdditionalChargesService;
-import com.sowermate.tenantService.services.CommonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

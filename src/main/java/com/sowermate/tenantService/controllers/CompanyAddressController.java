@@ -1,8 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
-import com.sowermate.tenantService.entities.value.AddressValue;
-import com.sowermate.tenantService.entities.value.CompanyAddressValue;
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import com.sowermate.tenantService.entities.value.*;
 import com.sowermate.tenantService.services.CompanyAddressService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,59 +15,38 @@ import java.util.List;
 public class CompanyAddressController {
   @Autowired
   private CompanyAddressService companyAddressService;
-  private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(CompanyAddressController.class);
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<CompanyAddressValue> createCompanyAddress(@RequestBody CompanyAddressValue  companyAddressValue) {
-        try {
-            companyAddressValue = companyAddressService.createCompanyAddress(companyAddressValue);
-        } catch (Exception e) {
-            Logger.error("Error while creating Seller:", e);
-        }
-        return new ResponseEntity<CompanyAddressValue>(companyAddressValue, HttpStatus.CREATED);
+    public ResponseEntity<CompanyAddressValue> createCompanyAddress(@RequestBody CompanyAddressValue companyAddressValue) throws Exception {
+        CompanyAddressValue companyAddressValue1=companyAddressService.createCompanyAddress(companyAddressValue);
+        return new ResponseEntity<CompanyAddressValue>( companyAddressValue1, HttpStatus.CREATED);
     }
-    @RequestMapping(method = RequestMethod.PUT)
+    @GetMapping(value = "/{tenantUuid}/{companyAddressUuid}")
+    public ResponseEntity<CompanyAddressValue> getCompanyAddress(@PathVariable String  tenantUuid,@PathVariable String companyAddressUuid) throws Exception {
+        CompanyAddressValue companyAddressValue=companyAddressService.getCompanyAddress(tenantUuid,companyAddressUuid);
+        return  new ResponseEntity<>(companyAddressValue, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(value = "/{tenantUuid}")
+    public ResponseEntity<List<CompanyAddressValue>> getAllCompanyAddress(@PathVariable String  tenantUuid) throws Exception {
+        List<CompanyAddressValue> companyAddressValues = companyAddressService.getAllCompanyAddress(tenantUuid);
+        return new ResponseEntity<> (companyAddressValues ,HttpStatus.ACCEPTED);
+    }
+
+    /*@RequestMapping(value = "/{tenantUuid}/{companyAddressUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CompanyAddressValue> editCompanyAddress(@RequestBody CompanyAddressValue companyAddressValue) {
-
-        try {
-            companyAddressValue = companyAddressService.editCompanyAddress(companyAddressValue);
-        } catch (Exception e) {
-            Logger.error("Error while editing Seller:", e);
-        }
-        return new ResponseEntity<CompanyAddressValue>(companyAddressValue, HttpStatus.CREATED);
+    public ResponseEntity<CompanyAddressValue> deleteCompanyAddress(@PathVariable String  tenantUuid,@PathVariable String companyAddressUuid) throws Exception {
+        CompanyAddressValue companyAddressValue =companyAddressService.deleteCompanyAddress(tenantUuid,companyAddressUuid);
+        return new ResponseEntity<CompanyAddressValue>(companyAddressValue ,HttpStatus.ACCEPTED);
     }
+    */
 
-    @GetMapping("/{tenantUuid}/{companyAddressUuid}")
-    public ResponseEntity<CompanyAddressValue> getCompanyAddress(@PathVariable String tenantUuid,
-                                                          @PathVariable String companyAddressUuid) {
-        CompanyAddressValue companyAddressValue = null;
-        try {
-            companyAddressValue = companyAddressService.getCompanyAddress(tenantUuid,companyAddressUuid);
-        } catch (Exception e) {
-            Logger.error("Error while getting Seller:", e);
-        }
-        return new ResponseEntity<>(companyAddressValue, HttpStatus.ACCEPTED);
-    }
-
-    @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<CompanyAddressValue>> getAllCompanyAddress(@PathVariable String tenantUuid) {
-        List<CompanyAddressValue> companyAddressValues = null;
-        try {
-            companyAddressValues = companyAddressService.getAllCompanyAddress(tenantUuid);
-            Logger.info("records " + companyAddressValues.size());
-        } catch (Exception e) {
-            Logger.error("Error while getting Seller:", e);
-        }
-        return new ResponseEntity<>(companyAddressValues, HttpStatus.ACCEPTED);
-    }
-    @RequestMapping(value = "/{tenantUuid}/{companyAddressUuid}", method = RequestMethod.DELETE)
+    @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<Integer> deleteCompanyAddress(@PathVariable String tenantUuid,@PathVariable String companyAddressUuid) throws Exception {
-        int deleteCompanyAddress=0;
-        deleteCompanyAddress=companyAddressService.deleteCompanyAddress(tenantUuid,companyAddressUuid);
-        return new ResponseEntity<Integer>( deleteCompanyAddress,HttpStatus.ACCEPTED);
+    public ResponseEntity<CompanyAddressValue> editCompanyAddress(@RequestBody CompanyAddressValue companyAddressValue) throws Exception{
+        CompanyAddressValue companyAddressValue1=companyAddressService.editCompanyAddress(companyAddressValue);
+        return new ResponseEntity<CompanyAddressValue> (companyAddressValue1, HttpStatus.CREATED);
     }
 
 }

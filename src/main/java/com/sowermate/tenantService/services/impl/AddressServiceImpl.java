@@ -5,7 +5,6 @@ import com.sowermate.tenantService.entities.value.AddressValue;
 import com.sowermate.tenantService.repositories.AddressRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.AddressService;
-import com.sowermate.tenantService.services.CommonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
