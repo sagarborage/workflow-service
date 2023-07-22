@@ -22,11 +22,8 @@ public class PiTypeEntity {
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String piTypeUuid;
 
-    @Column(name = "mm")
-    private float mm;
-
-    @Column(name = "sqft")
-    private float sqft;
+    @Column(name = "pi_type_name")
+    private String piTypeName;
 
     @OneToMany(mappedBy="piTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
