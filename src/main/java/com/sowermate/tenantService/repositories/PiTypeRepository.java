@@ -1,6 +1,5 @@
 package com.sowermate.tenantService.repositories;
 
-import com.sowermate.tenantService.entities.ConfirmThroughEntity;
 import com.sowermate.tenantService.entities.PiTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,7 +17,7 @@ public List<PiTypeEntity> findByPiTypeUuid(@Param("uuid")String uuid);
             "AND p.piTypeUuid = :piTypeUuid")
     public PiTypeEntity findByTenantEntity_UuidAndPiTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("piTypeUuid") String piTypeUuid);
 
-    public List<PiTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    public List<PiTypeEntity> findAllByTenantEntityUuid(String tenantUuid);
 
 /*    public List<PiTypeEntity> findByTenantEntity_UuidAndPiTypeUuid(@Param("uuid")String uuid);*/
     @Modifying

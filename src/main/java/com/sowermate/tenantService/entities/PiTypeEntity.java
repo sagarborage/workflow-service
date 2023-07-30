@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name="pi_type")
 public class PiTypeEntity {

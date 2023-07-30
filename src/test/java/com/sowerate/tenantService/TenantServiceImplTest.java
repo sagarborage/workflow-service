@@ -4,10 +4,8 @@
 package com.sowerate.tenantService;
 
 import com.sowermate.tenantService.entities.*;
-import com.sowermate.tenantService.entities.value.PiTypeValue;
 import com.sowermate.tenantService.entities.value.TenantValue;
 import com.sowermate.tenantService.repositories.*;
-import com.sowermate.tenantService.services.impl.PiTypeServiceImpl;
 import com.sowermate.tenantService.services.impl.TenantServiceImpl;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -130,7 +128,7 @@ public class TenantServiceImplTest {
         List<PiTypeEntity> piTypeEntities = new ArrayList<PiTypeEntity>();
         piTypeEntities.add(piTypeEntity);
 
-        when(mockPiTypeRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(piTypeEntities);
+        when(mockPiTypeRepository.findAllByTenantEntityUuid(anyString())).thenReturn(piTypeEntities);
 
         //for ConfirmThroughEntity
         ConfirmThroughEntity confirmThroughEntity = prepareConfirmThroughEntity();
@@ -252,7 +250,7 @@ public class TenantServiceImplTest {
         PiTypeEntity piTypeEntity = preparePiTypeEntity();
         List<PiTypeEntity> piTypeEntities = new ArrayList<PiTypeEntity>();
         piTypeEntities.add(piTypeEntity);
-        when(mockPiTypeRepository.findAllByTenantEntity_Uuid(any())).thenReturn(piTypeEntities);
+        when(mockPiTypeRepository.findAllByTenantEntityUuid(any())).thenReturn(piTypeEntities);
 
         //for ConfirmThroughEntity
         ConfirmThroughEntity confirmThroughEntity = prepareConfirmThroughEntity();

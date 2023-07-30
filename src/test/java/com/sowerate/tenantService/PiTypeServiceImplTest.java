@@ -157,7 +157,7 @@ public class PiTypeServiceImplTest {
         PiTypeEntity piTypeEntity = preparePiTypeEntity();
         List<PiTypeEntity> entities = new ArrayList<PiTypeEntity>();
         entities.add(piTypeEntity);
-        when(mockPiTypeRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(entities);
+        when(mockPiTypeRepository.findAllByTenantEntityUuid(anyString())).thenReturn(entities);
         // when
         List<PiTypeValue> result = mockPiTypeServiceImpl.getAllPiType(TEST_UUID);
         // then
