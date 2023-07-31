@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.CompanyEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.repositories.AddressRepository;
 import com.sowermate.tenantService.repositories.CompanyRepository;
@@ -35,7 +36,7 @@ public class  CompanyServiceImpl  implements CompanyService {
         String randomCompanyUuid= UUID.randomUUID().toString();
         companyEntity.setCompanyUuid(randomCompanyUuid);
         companyEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyValue.getTenantUuid()));
-       // companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
+        companyEntity.setCompanyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeUuid()));
         BeanUtils.copyProperties(companyRepository.save(companyEntity), companyValue);
         return companyValue;
     }
@@ -75,10 +76,11 @@ public class  CompanyServiceImpl  implements CompanyService {
         List<CompanyValue> companyValues = new ArrayList<>();
 
         CompanyValue companyValue = null;
-        List<CompanyEntity> companyEntities = companyRepository.findAllByTenantEntity_Uuid(tenantUuid );
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
+        List<CompanyEntity> companyEntities = companyRepository.findAllByTenantEntityTenantId(tenantEntity.getTenantId());
         for (int i = 0; i < companyEntities.size(); i++) {
            companyValue = new CompanyValue();
-            BeanUtils.copyProperties(companyEntities.get(i).getCompanyTypeEntity(), companyValue);
+            //BeanUtils.copyProperties(companyEntities.get(i).getCompanyTypeEntity(), companyValue);
             BeanUtils.copyProperties(companyEntities.get(i), companyValue);
             companyValue.setTenantUuid(tenantUuid);
             companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());

@@ -59,7 +59,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     }
 
     @Override
-    public CompanyTypeValue getAllCompanyType(String tenantUuid) throws Exception {
+    public List<CompanyTypeValue>  getAllCompanyType(String tenantUuid) throws Exception {
         List<CompanyTypeValue> companyTypeValues = new ArrayList<>();
         CompanyTypeValue companyTypeValue = null;
         List<CompanyTypeEntity> companyTypeEntities = companyTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
@@ -70,7 +70,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
             companyTypeValues.add(companyTypeValue);
         }
 
-        return companyTypeValue;
+        return companyTypeValues;
     }
 
     @Override

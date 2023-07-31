@@ -21,7 +21,7 @@ public class TenantController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<TenantValue> createTenantDetails(@RequestBody TenantValue tenantValue) throws Exception {
-           TenantValue tenantValue1 =tenantService.saveTenantDetails(tenantValue);
+           TenantValue tenantValue1 = tenantService.saveTenantDetails(tenantValue);
         return new ResponseEntity<TenantValue>(tenantValue1,HttpStatus.CREATED);
     }
 

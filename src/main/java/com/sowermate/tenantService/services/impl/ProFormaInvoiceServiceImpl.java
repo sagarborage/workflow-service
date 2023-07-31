@@ -33,7 +33,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Autowired
     private TenantRepository tenantRepository;
 
-
     @Override
     public ProFormInvoiceValue createProFormInvoice(ProFormInvoiceValue proFormInvoiceValue) throws Exception {
         ProFormaInvoiceEntity proFormaInvoiceEntity=new ProFormaInvoiceEntity();

@@ -35,13 +35,13 @@ public class CompanyEntity implements Serializable {
     private String companyName;
 
     @Column(name = "CIN")
-    private int cin;
+    private String cin;
 
     @Column(name = "GSTIN")
-    private int gstin;
+    private String gstin;
 
     @Column(name = "TAN")
-    private int tan;
+    private String tan;
 
     @Column(name = "PAN")
     private String pan;

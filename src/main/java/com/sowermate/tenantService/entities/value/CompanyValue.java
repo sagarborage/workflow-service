@@ -8,9 +8,9 @@ import java.util.Date;
 public class CompanyValue {
     private String companyUuid;
     private String companyName;
-    private int cin;
-    private int gstin;
-    private int tan;
+    private String cin;
+    private String gstin;
+    private String tan;
     private String pan;
     protected Date createdDttm;
     protected Date updatedDttm;

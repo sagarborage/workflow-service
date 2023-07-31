@@ -18,7 +18,7 @@ public interface CompanyTypeRepository extends JpaRepository<CompanyTypeEntity ,
 
     public List<CompanyTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);*/
 
-    //   public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
+    public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
 
 
     @Query("SELECT s FROM CompanyTypeEntity s " +
