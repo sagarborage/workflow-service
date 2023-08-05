@@ -25,6 +25,9 @@ public class PiTypeEntity {
     @Column(name = "pi_type_name")
     private String piTypeName;
 
+    @Column(name= "is_active")
+    private Boolean isActive;
+
     @OneToMany(mappedBy="piTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
 

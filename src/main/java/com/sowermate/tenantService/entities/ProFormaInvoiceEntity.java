@@ -79,6 +79,9 @@ public class ProFormaInvoiceEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "confirm_through_id")
     private ConfirmThroughEntity confirmThroughEntity;

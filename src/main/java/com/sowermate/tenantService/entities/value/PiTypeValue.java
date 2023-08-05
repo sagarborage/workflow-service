@@ -8,4 +8,5 @@ public class PiTypeValue {
     private String  piTypeUuid;
     private String tenantUuid;
     private String piTypeName;
+    private Boolean isActive;
 }

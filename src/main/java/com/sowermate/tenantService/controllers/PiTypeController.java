@@ -1,6 +1,5 @@
 package com.sowermate.tenantService.controllers;
 
-import com.sowermate.tenantService.entities.value.AdditionalChargesValue;
 import com.sowermate.tenantService.entities.value.PiTypeValue;
 import com.sowermate.tenantService.services.PiTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +39,11 @@ public class PiTypeController {
 
     @RequestMapping(value = "/{tenantUuid}/{piTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Integer> deletePiType(@PathVariable String tenantUuid,@PathVariable String piTypeUuid) throws Exception {
-       int deletePiType=0;
-        deletePiType=piTypeService.deletePiType(tenantUuid,piTypeUuid);
-        return new ResponseEntity<Integer>(deletePiType ,HttpStatus.ACCEPTED);
+    public ResponseEntity<PiTypeValue> deletePiType(@PathVariable String tenantUuid,@PathVariable String piTypeUuid) throws Exception{
+        PiTypeValue piTypeValue=piTypeService.deletePiType(tenantUuid,piTypeUuid);
+        return new ResponseEntity<PiTypeValue>(piTypeValue ,HttpStatus.ACCEPTED);
     }
+
     @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<PiTypeValue> editPiType(@RequestBody PiTypeValue piTypeValue) throws Exception{

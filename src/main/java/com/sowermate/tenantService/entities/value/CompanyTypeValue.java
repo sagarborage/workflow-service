@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CompanyTypeValue {
-    protected String companyTypeUuid;
+    private String companyTypeUuid;
     private String tenantUuid;
     private String type;
     private String description;

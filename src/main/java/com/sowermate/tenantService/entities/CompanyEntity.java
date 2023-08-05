@@ -1,6 +1,5 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.CommonEntity;
 import lombok.*;
 import org.hibernate.annotations.Type;
 

@@ -1,7 +1,6 @@
 package com.sowermate.tenantService.repositories;
 
-import com.sowermate.tenantService.entities.PiTypeEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+
 import com.sowermate.tenantService.entities.ServiceRateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface ServiceRateRepository extends JpaRepository<ServiceRateEntity, String>{
+public interface ServiceRateRepository extends JpaRepository<ServiceRateEntity, String> {
 
- //   public ServiceRateEntity findByServiceRateUuid(@Param("serviceRateUuid")String serviceRateUuid);
+    //   public ServiceRateEntity findByServiceRateUuid(@Param("serviceRateUuid")String serviceRateUuid);
 
 
     @Query("SELECT s FROM ServiceRateEntity s " +

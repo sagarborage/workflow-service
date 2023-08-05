@@ -86,9 +86,11 @@ public class PiTypeServiceImpl implements PiTypeService {
 
 
     @Override
-    public int deletePiType(String tenantUuid, String piTypeUuid) throws Exception {
-
-        return piTypeRepository.deleteByPiTypeUuid(piTypeUuid);
-
+    public PiTypeValue deletePiType(String tenantUuid,String piTypeUuid) throws Exception{
+        PiTypeValue piTypeValue=new PiTypeValue();
+        piTypeRepository.softDelete(piTypeUuid);
+        PiTypeEntity piTypeEntity =piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUuid,piTypeUuid);
+        BeanUtils.copyProperties(piTypeEntity ,piTypeValue);
+        return piTypeValue;
     }
 }

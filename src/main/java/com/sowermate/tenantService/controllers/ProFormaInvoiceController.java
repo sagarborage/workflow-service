@@ -51,15 +51,10 @@ public class ProFormaInvoiceController {
     }
     @RequestMapping(value = "/{tenantUuid}/{proFormInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Integer> deleteProFormInvoice(@PathVariable String tenantUuid,
-            @PathVariable String proFormInvoiceUuid) {
-          int deleteProFormaInvoice = 0;
-        try {
-            deleteProFormaInvoice = proFormaInvoiceService.deleteProFormInvoice(tenantUuid,proFormInvoiceUuid);
-        } catch (Exception e) {
-            Logger.error("Error while deleting Seller:", e);
-        }
-        return new ResponseEntity<Integer>(deleteProFormaInvoice, HttpStatus.ACCEPTED);
+    public ResponseEntity<ProFormInvoiceValue> deleteProFormInvoice(@PathVariable String tenantUuid,@PathVariable String proFormInvoiceUuid) throws Exception{
+
+        ProFormInvoiceValue proFormInvoiceValue =proFormaInvoiceService.deleteProFormInvoice(tenantUuid,proFormInvoiceUuid);
+        return new ResponseEntity<>(proFormInvoiceValue ,HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{tenantUuid}")

@@ -21,13 +21,15 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer>
     public CompanyEntity findByTenantEntity_UuidAndCompanyUuid(String tenantUuid, String companyUuid);
 
    // public List<CompanyEntity> deleteByUuid(@Param("uuid") String uuid);
-   @Query("SELECT c FROM CompanyEntity c JOIN FETCH c.companyTypeEntity ct WHERE c.tenantEntity.uuid = :tenantUuid")
-    public List<CompanyEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+   //@Query("SELECT c FROM CompanyEntity c JOIN FETCH c.companyTypeEntity ct WHERE c.tenantEntity.uuid = :tenantUuid")
+    //public List<CompanyEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
    // public List<CompanyEntity> findByCompanyId(int companyId);
     @Transactional
     @Modifying
     @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.companyUuid = :companyUuid")
     void softDelete(@Param("companyUuid") String companyUuid);
+
+    public List<CompanyEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
 }

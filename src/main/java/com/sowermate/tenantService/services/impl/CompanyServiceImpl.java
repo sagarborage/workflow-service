@@ -54,7 +54,7 @@ public class  CompanyServiceImpl  implements CompanyService {
     public CompanyValue getCompany(String tenantUuid,String companyUuid) throws Exception {
         CompanyValue companyValue =new CompanyValue();
         CompanyEntity companyEntity=companyRepository.findByTenantEntity_UuidAndCompanyUuid(tenantUuid,companyUuid);
-        BeanUtils.copyProperties(companyEntity.getCompanyTypeEntity(), companyValue);
+        //BeanUtils.copyProperties(companyEntity.getCompanyTypeEntity(), companyValue);
         BeanUtils.copyProperties(companyEntity, companyValue);
         companyValue.setTenantUuid(tenantUuid);
         companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());
@@ -78,7 +78,7 @@ public class  CompanyServiceImpl  implements CompanyService {
         List<CompanyEntity> companyEntities = companyRepository.findAllByTenantEntity_Uuid(tenantUuid );
         for (int i = 0; i < companyEntities.size(); i++) {
            companyValue = new CompanyValue();
-            BeanUtils.copyProperties(companyEntities.get(i).getCompanyTypeEntity(), companyValue);
+            //BeanUtils.copyProperties(companyEntities.get(i).getCompanyTypeEntity(), companyValue);
             BeanUtils.copyProperties(companyEntities.get(i), companyValue);
             companyValue.setTenantUuid(tenantUuid);
             companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());

@@ -31,4 +31,5 @@ public class ProFormInvoiceValue {
     private String status;
     private  String confirmThroughUuid;
     private  String piTypeUuid;
+    private Boolean isActive;
 }

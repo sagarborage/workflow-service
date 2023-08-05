@@ -13,6 +13,6 @@ public interface PiTypeService {
 
     public PiTypeValue getPiType(String tenantUuid,String piTypeUuid) throws Exception;
 
-    public int deletePiType(String tenantUuid,String piTypeUuid)throws Exception;
+    public PiTypeValue deletePiType(String tenantUuid,String piTypeUuid)throws Exception;
 
 }

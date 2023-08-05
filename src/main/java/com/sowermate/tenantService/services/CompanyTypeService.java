@@ -7,7 +7,7 @@ public interface CompanyTypeService {
 
     public CompanyTypeValue editCompanyType(CompanyTypeValue companyTypeValue) throws Exception;
 
-    public CompanyTypeValue getAllCompanyType(String tenantUuid) throws Exception;
+    //public CompanyTypeValue getAllCompanyType(String tenantUuid) throws Exception;
 
     public CompanyTypeValue getCompanyType(String tenantUuid,String companyTypeUuid) throws Exception;
 
