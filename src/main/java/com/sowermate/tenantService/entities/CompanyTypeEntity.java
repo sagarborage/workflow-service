@@ -8,10 +8,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "company_type")
 @Getter
 @Setter
+@Entity
+@Table(name = "company_type")
 public class CompanyTypeEntity  implements Serializable {
 
     private static final long serialVersionUID = 3981140897718611608L;

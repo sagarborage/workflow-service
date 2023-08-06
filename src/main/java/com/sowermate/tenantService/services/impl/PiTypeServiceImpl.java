@@ -26,7 +26,7 @@ public class PiTypeServiceImpl implements PiTypeService {
 
     @Override
     public PiTypeValue createPiType(PiTypeValue piTypeValue) throws Exception {
-        PiTypeEntity piTypeEntity = PiTypeEntity.builder().build();
+        PiTypeEntity piTypeEntity = new PiTypeEntity();
         BeanUtils.copyProperties(piTypeValue, piTypeEntity);
         String randomPiTypeUUid = UUID.randomUUID().toString();
         piTypeEntity.setPiTypeUuid(randomPiTypeUUid);
@@ -53,8 +53,7 @@ public class PiTypeServiceImpl implements PiTypeService {
 
     @Override
     public PiTypeValue editPiType(PiTypeValue piTypeValue) throws Exception {
-        PiTypeEntity piTypeEntity = PiTypeEntity.builder().build();
-        ;
+        PiTypeEntity piTypeEntity = new PiTypeEntity();
         BeanUtils.copyProperties(piTypeValue, piTypeEntity);
 
         // Check that UUID is not null before searching for the tenant

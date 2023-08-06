@@ -26,7 +26,7 @@ public class PiTypeController {
         return new ResponseEntity<PiTypeValue>( piTypeValue1, HttpStatus.CREATED);
     }
     @GetMapping(value ="/{tenantUuid}/{piTypeUuid}")
-    public ResponseEntity<PiTypeValue> getPiTypeValue(@PathVariable String tenantUuid,@PathVariable String piTypeUuid) throws Exception {
+    public ResponseEntity<PiTypeValue> getPiType(@PathVariable String tenantUuid,@PathVariable String piTypeUuid) throws Exception {
         PiTypeValue piTypeValue=piTypeService.getPiType(tenantUuid, piTypeUuid);
         return  new ResponseEntity<>(piTypeValue, HttpStatus.ACCEPTED);
     }

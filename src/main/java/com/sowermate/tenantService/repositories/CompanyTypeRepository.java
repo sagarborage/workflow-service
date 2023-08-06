@@ -12,21 +12,12 @@ import java.util.List;
 @Repository
 public interface CompanyTypeRepository extends JpaRepository<CompanyTypeEntity ,String> {
 
-  /*// public List<CompanyTypeEntity> findByCompanyTypeId(int companyTypeId);
-
-    public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
-
-    public List<CompanyTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);*/
-
-    //   public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
-
-
+    public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid") String companyTypeUuid);
     @Query("SELECT s FROM CompanyTypeEntity s " +
             "JOIN s.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND s.companyTypeUuid = :companyTypeUuid")
     public CompanyTypeEntity findByTenantEntity_UuidAndCompanyTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("companyTypeUuid") String companyTypeUuid);
-    //public List<ServiceRateEntity> findByCompanyTypeId(int companyTypeId);
 
     @Transactional
     @Modifying

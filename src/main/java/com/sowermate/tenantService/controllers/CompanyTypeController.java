@@ -29,11 +29,11 @@ public class CompanyTypeController {
         return  new ResponseEntity<>(companyTypeValue, HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping(value = "/{tenantUuid}")
-//    public ResponseEntity<List<CompanyTypeValue>> getAllCompanyType(@PathVariable String  tenantUuid) throws Exception {
-//        List<CompanyTypeValue> companyTypeValues = companyTypeService.getAllCompanyType(tenantUuid);
-//        return new ResponseEntity<> (companyTypeValues ,HttpStatus.ACCEPTED);
-//    }
+    @GetMapping(value = "/{tenantUuid}")
+    public ResponseEntity<List<CompanyTypeValue>> getAllCompanyType(@PathVariable String  tenantUuid) throws Exception {
+       List<CompanyTypeValue> companyTypeValues = companyTypeService.getAllCompanyType(tenantUuid);
+       return new ResponseEntity<> (companyTypeValues ,HttpStatus.ACCEPTED);
+    }
 
     @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody

@@ -58,20 +58,19 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
         return companyTypeValue;
     }
 
-    //@Override
-    //public List<CompanyTypeValue> getAllCompanyType(String tenantUuid) throws Exception {
-        //List<CompanyTypeValue> companyTypeValues = new ArrayList<>();
-        //CompanyTypeValue companyTypeValue = null;
-        //List<CompanyTypeEntity> companyTypeEntities = companyTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
-        //for (int i = 0; i < companyTypeEntities.size(); i++) {
-          //  companyTypeValue = new CompanyTypeValue();
-          //  BeanUtils.copyProperties(companyTypeEntities.get(i), companyTypeValue);
-          //  companyTypeValue.setTenantUuid(tenantUuid);
-           // companyTypeValues.add(companyTypeValue);
-       // }
-
-        //return companyTypeValues;
-    //}
+    @Override
+    public List<CompanyTypeValue> getAllCompanyType(String tenantUuid) throws Exception{
+        List<CompanyTypeValue> companyTypeValues = new ArrayList<>();
+        CompanyTypeValue companyTypeValue = null;
+        List<CompanyTypeEntity> companyTypeEntities = companyTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
+        for (int i = 0; i < companyTypeEntities.size(); i++){
+            companyTypeValue = new CompanyTypeValue();
+            BeanUtils.copyProperties(companyTypeEntities.get(i),companyTypeValue);
+            companyTypeValue.setTenantUuid(tenantUuid);
+            companyTypeValues.add(companyTypeValue);
+        }
+        return companyTypeValues;
+    }
 
     @Override
     public CompanyTypeValue getCompanyType(String tenantUuid, String companyTypeUuid) throws Exception {
