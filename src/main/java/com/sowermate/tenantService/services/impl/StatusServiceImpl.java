@@ -5,6 +5,7 @@ import com.sowermate.tenantService.entities.StatusEntity;
 import com.sowermate.tenantService.entities.value.StatusValue;
 import com.sowermate.tenantService.repositories.StatusRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.StatusService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class StatusServiceImpl implements StatusService {
     public StatusValue createStatus(StatusValue statusValue) throws Exception {
         StatusEntity statusEntity=new StatusEntity();
         BeanUtils.copyProperties(statusValue, statusEntity);
-        String randomStatusUuid= UUID.randomUUID().toString();
-        statusEntity.setStatusUuid(randomStatusUuid);
+        statusEntity.setStatusUuid(CommonUtils.generateUUID());
         statusEntity.setTenantEntity(tenantRepository.findByTenantUuid(statusValue.getTenantUuid()));
         BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
         return statusValue;

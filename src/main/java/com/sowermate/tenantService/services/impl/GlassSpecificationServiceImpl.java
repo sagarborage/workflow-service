@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.GlassSpecificationEntity;
 import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.repositories.GlassSpecificationRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.GlassSpecificationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
     public GlassSpecificationValue createGlassSpecification(GlassSpecificationValue glassSpecificationValue) throws Exception {
         GlassSpecificationEntity glassSpecificationEntity=new GlassSpecificationEntity();
         BeanUtils.copyProperties(glassSpecificationValue, glassSpecificationEntity);
-        String randomGlassSpecificationId= UUID.randomUUID().toString();
-        glassSpecificationEntity.setGlassSpecificationUuid(randomGlassSpecificationId);
+        glassSpecificationEntity.setGlassSpecificationUuid(CommonUtils.generateUUID());
         glassSpecificationEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassSpecificationValue.getTenantUuid()));
         BeanUtils.copyProperties(glassSpecificationRepository.save(glassSpecificationEntity), glassSpecificationValue);
         return glassSpecificationValue;

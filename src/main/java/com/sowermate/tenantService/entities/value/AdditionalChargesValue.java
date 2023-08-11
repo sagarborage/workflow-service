@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AdditionalChargesValue   {
+public class    AdditionalChargesValue   {
     private String tenantUuid;
     private String additionalChargesUuid;
     private Date createdDttm;

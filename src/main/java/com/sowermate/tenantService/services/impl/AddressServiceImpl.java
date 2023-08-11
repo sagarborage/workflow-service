@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.AddressEntity;
 import com.sowermate.tenantService.entities.value.AddressValue;
 import com.sowermate.tenantService.repositories.AddressRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.AddressService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class AddressServiceImpl  implements AddressService {
     public AddressValue createAddress(AddressValue addressValue) throws Exception {
         AddressEntity addressEntity=new AddressEntity();
         BeanUtils.copyProperties(addressValue ,addressEntity);
-        String randomAddressUuid= UUID.randomUUID().toString();
-        addressEntity.setAddressUuid(randomAddressUuid);
+        addressEntity.setAddressUuid(CommonUtils.generateUUID());
         addressEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressValue.getTenantUuid()));
         BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
         return addressValue;

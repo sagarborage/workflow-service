@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.CompanyAddressEntity;
 import com.sowermate.tenantService.entities.value.CompanyAddressValue;
 import com.sowermate.tenantService.repositories.*;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.CompanyAddressService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,7 @@ public class CompanyAddressServiceImpl implements CompanyAddressService {
     public CompanyAddressValue createCompanyAddress(CompanyAddressValue companyAddressValue) throws Exception {
         CompanyAddressEntity companyAddressEntity = new CompanyAddressEntity();
         BeanUtils.copyProperties(companyAddressValue, companyAddressEntity);
-        String randomCompanyAddressUuid = UUID.randomUUID().toString();
-        companyAddressEntity.setCompanyAddressUuid(randomCompanyAddressUuid);
+        companyAddressEntity.setCompanyAddressUuid(CommonUtils.generateUUID());
         companyAddressEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyAddressValue.getTenantUuid()));
         companyAddressEntity.setAddressTypeEntity(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getAddressTypeUuid()));
         companyAddressEntity.setCompanyEntity(companyRepository.findByTenantEntity_UuidAndCompanyUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getCompanyUuid()));

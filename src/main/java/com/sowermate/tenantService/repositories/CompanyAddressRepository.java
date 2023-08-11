@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.repositories;
 
+import com.sowermate.tenantService.entities.AddressTypeEntity;
 import com.sowermate.tenantService.entities.CompanyAddressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,6 +18,8 @@ public interface    CompanyAddressRepository extends JpaRepository<CompanyAddres
             "WHERE t.uuid = :tenantUuid " +
             "AND c.companyAddressUuid = :companyAddressUuid")
     public CompanyAddressEntity findByTenantEntity_UuidAndCompanyAddressUuid(String tenantUuid, String companyAddressUuid);
+
+    CompanyAddressEntity getCompanyAddressEntityByCompanyAddressUuid(@Param("companyAddressUuid") String companyAddressUuid);
     public List<CompanyAddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Transactional

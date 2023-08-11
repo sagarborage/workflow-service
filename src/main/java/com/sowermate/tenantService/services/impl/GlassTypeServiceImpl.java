@@ -5,6 +5,7 @@ import com.sowermate.tenantService.entities.value.GlassTypeValue;
 import com.sowermate.tenantService.repositories.CompanyRepository;
 import com.sowermate.tenantService.repositories.GlassTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.GlassTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,7 @@ public class GlassTypeServiceImpl implements GlassTypeService {
 
         GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
         BeanUtils.copyProperties(glassTypeValue, glassTypeEntity);
-        String randomGlassTypeId = UUID.randomUUID().toString();
-        glassTypeEntity.setGlassTypeUuid(randomGlassTypeId);
+        glassTypeEntity.setGlassTypeUuid(CommonUtils.generateUUID());
         glassTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassTypeValue.getTenantUuid()));
         BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);
         return glassTypeValue;

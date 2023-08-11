@@ -25,6 +25,8 @@ public interface AddressTypeRepository  extends JpaRepository<AddressTypeEntity,
     public AddressTypeEntity findByTenantEntity_UuidAndAddressTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("addressTypeUuid") String addressTypeUuid);
     //public List<AddressTypeEntity> findByAddressTypeId(int addressTypeId);
 
+    public AddressTypeEntity getAddressTypeEntityByAddressTypeUuid(@Param("addressTypeUuid") String addressTypeUuid);
+
     @Transactional
     @Modifying
     @Query("UPDATE ServiceRateEntity s SET s.isActive = false WHERE s.serviceRateUuid = :serviceRateUuid")

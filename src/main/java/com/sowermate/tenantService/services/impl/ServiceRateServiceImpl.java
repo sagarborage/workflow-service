@@ -3,6 +3,7 @@ import com.sowermate.tenantService.entities.ServiceRateEntity;
 import com.sowermate.tenantService.entities.value.ServiceRateValue;
 import com.sowermate.tenantService.repositories.ServiceRateRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.ServiceRateService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
     public ServiceRateValue createServiceRate(ServiceRateValue serviceRateValue) throws Exception {
         ServiceRateEntity serviceRateEntity=new ServiceRateEntity();
         BeanUtils.copyProperties(serviceRateValue, serviceRateEntity);
-        String randomTenantUuid= UUID.randomUUID().toString();
-        serviceRateEntity.setServiceRateUuid(randomTenantUuid);
+        serviceRateEntity.setServiceRateUuid(CommonUtils.generateUUID());
         serviceRateEntity.setTenantEntity(tenantRepository.findByTenantUuid(serviceRateValue.getTenantUuid()));
         BeanUtils.copyProperties(serviceRateRepository.save(serviceRateEntity), serviceRateValue);
         return serviceRateValue;

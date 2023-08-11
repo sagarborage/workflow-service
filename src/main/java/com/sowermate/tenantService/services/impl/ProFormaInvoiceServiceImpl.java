@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.ProFormInvoiceValue;
 import com.sowermate.tenantService.repositories.*;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     public ProFormInvoiceValue createProFormInvoice(ProFormInvoiceValue proFormInvoiceValue) throws Exception {
         ProFormaInvoiceEntity proFormaInvoiceEntity=new ProFormaInvoiceEntity();
         BeanUtils.copyProperties(proFormInvoiceValue ,proFormaInvoiceEntity);
-        String randomProFormaInvoiceUuid= UUID.randomUUID().toString();
-        proFormaInvoiceEntity.setProFormInvoiceUuid(randomProFormaInvoiceUuid);
+        proFormaInvoiceEntity.setProFormInvoiceUuid(CommonUtils.generateUUID());
         proFormaInvoiceEntity.setTenantEntity(tenantRepository.findByTenantUuid(proFormInvoiceValue.getTenantUuid()));
         proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(proFormInvoiceValue.getTenantUuid(),proFormInvoiceValue.getConfirmThroughUuid()));
         proFormaInvoiceEntity.setPiTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(proFormInvoiceValue.getTenantUuid(),proFormInvoiceValue.getPiTypeUuid()));

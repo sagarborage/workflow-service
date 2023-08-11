@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.GlassThicknessEntity;
 import com.sowermate.tenantService.entities.value.GlassThicknessValue;
 import com.sowermate.tenantService.repositories.GlassThicknessRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.GlassThicknessService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
     public GlassThicknessValue createGlassThickness(GlassThicknessValue glassThicknessValue) throws Exception {
         GlassThicknessEntity  glassThicknessEntity=new GlassThicknessEntity();
         BeanUtils.copyProperties(glassThicknessValue, glassThicknessEntity);
-        String randomGlassThicknessId= UUID.randomUUID().toString();
-        glassThicknessEntity.setGlassThicknessUuid(randomGlassThicknessId);
+        glassThicknessEntity.setGlassThicknessUuid(CommonUtils.generateUUID());
         glassThicknessEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassThicknessValue.getTenantUuid()));
         BeanUtils.copyProperties(glassThicknessRepository.save(glassThicknessEntity), glassThicknessValue);
         return glassThicknessValue;

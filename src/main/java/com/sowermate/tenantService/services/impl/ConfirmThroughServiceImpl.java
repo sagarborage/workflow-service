@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.ConfirmThroughEntity;
 import com.sowermate.tenantService.entities.value.ConfirmThroughValue;
 import com.sowermate.tenantService.repositories.ConfirmThroughRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.ConfirmThroughService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,7 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     public ConfirmThroughValue createConfirmThrough(ConfirmThroughValue confirmThroughValue) throws Exception {
         ConfirmThroughEntity confirmThroughEntity=new ConfirmThroughEntity();
         BeanUtils.copyProperties(confirmThroughValue, confirmThroughEntity);
-        String randomConfirmThroughUuid= UUID.randomUUID().toString();
-        confirmThroughEntity.setConfirmThroughUuid(randomConfirmThroughUuid);
+        confirmThroughEntity.setConfirmThroughUuid(CommonUtils.generateUUID());
         confirmThroughEntity.setTenantEntity(tenantRepository.findByTenantUuid(confirmThroughValue.getTenantUuid()));
         BeanUtils.copyProperties(confirmThroughRepository.save(confirmThroughEntity), confirmThroughValue);
         return confirmThroughValue;

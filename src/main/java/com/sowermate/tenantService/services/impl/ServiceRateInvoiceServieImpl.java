@@ -7,6 +7,7 @@ import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
 import com.sowermate.tenantService.repositories.ServiceRateInvoiceRepository;
 import com.sowermate.tenantService.repositories.ServiceRateRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.ServiceRateInvoiceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,7 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
     public ServiceRateInvoiceValue createServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) throws Exception {
         ServiceRateInvoiceEntity serviceRateInvoiceEntity = new ServiceRateInvoiceEntity();
         BeanUtils.copyProperties(serviceRateInvoiceValue, serviceRateInvoiceEntity);
-        String randomServiceRateInvoiceUuid = UUID.randomUUID().toString();
-        serviceRateInvoiceEntity.setServiceRateInvoiceUuid(randomServiceRateInvoiceUuid);
+        serviceRateInvoiceEntity.setServiceRateInvoiceUuid(CommonUtils.generateUUID());
         serviceRateInvoiceEntity.setTenantEntity(tenantRepository.findByTenantUuid(serviceRateInvoiceValue.getTenantUuid()));
         serviceRateInvoiceEntity.setProFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormInvoiceUuid(serviceRateInvoiceValue.getTenantUuid(),serviceRateInvoiceValue.getProFormaInvoiceUuid()));
         serviceRateInvoiceEntity.setServiceRateEntity(serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(serviceRateInvoiceValue.getTenantUuid(),serviceRateInvoiceValue.getServiceRateUuid()));

@@ -1,10 +1,12 @@
 package com.sowermate.tenantService.entities.value;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressValue {
     private String addressUuid;
     private String tenantUuid;

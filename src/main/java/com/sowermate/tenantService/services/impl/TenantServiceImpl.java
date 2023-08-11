@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.TenantValue;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.TenantService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ public class TenantServiceImpl implements TenantService {
     public TenantValue saveTenantDetails(TenantValue tenantValue) throws Exception {
         TenantEntity tenantEntity = new TenantEntity();
         BeanUtils.copyProperties(tenantValue, tenantEntity);
-        String randomTenantUuid = UUID.randomUUID().toString();
-        tenantEntity.setUuid(randomTenantUuid);
+        tenantEntity.setUuid(CommonUtils.generateUUID());
         BeanUtils.copyProperties(tenantRepository.save(tenantEntity), tenantValue);
         tenantValue.setTenantUuid(tenantEntity.getUuid());
         return tenantValue;

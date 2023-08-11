@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.AdditionalChargesEntity;
 import com.sowermate.tenantService.entities.value.AdditionalChargesValue;
 import com.sowermate.tenantService.repositories.AdditionalChargesRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.AdditionalChargesService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,7 @@ public class AdditionalChargesServiceImpl implements AdditionalChargesService {
     public AdditionalChargesValue saveAdditionalCharges(AdditionalChargesValue additionalChargesValue) throws Exception {
         AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
         BeanUtils.copyProperties(additionalChargesValue, additionalChargesEntity);
-        String randomAdditionalChargesUuid= UUID.randomUUID().toString();
-        additionalChargesEntity.setAdditionalChargesUuid(randomAdditionalChargesUuid);
+        additionalChargesEntity.setAdditionalChargesUuid(CommonUtils.generateUUID());
         additionalChargesEntity.setTenantEntity(tenantRepository.findByTenantUuid(additionalChargesValue.getTenantUuid()));
         BeanUtils.copyProperties(additionalChargesRepository.save(additionalChargesEntity), additionalChargesValue);
         return additionalChargesValue;

@@ -30,4 +30,5 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer>
     @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.companyUuid = :companyUuid")
     void softDelete(@Param("companyUuid") String companyUuid);
 
+    CompanyEntity getCompanyEntityByCompanyUuid(@Param("companyUuid") String companyUuid);
 }

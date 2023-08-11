@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.CompanyTypeEntity;
 import com.sowermate.tenantService.entities.value.CompanyTypeValue;
 import com.sowermate.tenantService.repositories.CompanyTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.CompanyTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     public CompanyTypeValue createCompanyType(CompanyTypeValue companyTypeValue) throws Exception {
         CompanyTypeEntity companyTypeEntity = new CompanyTypeEntity();
         BeanUtils.copyProperties(companyTypeValue, companyTypeEntity);
-        String randomTenantUuid = UUID.randomUUID().toString();
-        companyTypeEntity.setCompanyTypeUuid(randomTenantUuid);
+        companyTypeEntity.setCompanyTypeUuid(CommonUtils.generateUUID());
         companyTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyTypeValue.getTenantUuid()));
         BeanUtils.copyProperties(companyTypeRepository.save(companyTypeEntity), companyTypeValue);
         return companyTypeValue;

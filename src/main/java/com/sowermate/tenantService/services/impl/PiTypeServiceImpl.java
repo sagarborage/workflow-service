@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.PiTypeEntity;
 import com.sowermate.tenantService.entities.value.PiTypeValue;
 import com.sowermate.tenantService.repositories.PiTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.PiTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class PiTypeServiceImpl implements PiTypeService {
     public PiTypeValue createPiType(PiTypeValue piTypeValue) throws Exception {
         PiTypeEntity piTypeEntity = new PiTypeEntity();
         BeanUtils.copyProperties(piTypeValue, piTypeEntity);
-        String randomPiTypeUUid = UUID.randomUUID().toString();
-        piTypeEntity.setPiTypeUuid(randomPiTypeUUid);
+        piTypeEntity.setPiTypeUuid(CommonUtils.generateUUID());
         piTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(piTypeValue.getTenantUuid()));
         BeanUtils.copyProperties(piTypeRepository.save(piTypeEntity), piTypeValue);
         return piTypeValue;

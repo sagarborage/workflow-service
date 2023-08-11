@@ -1,9 +1,11 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.CompanyAddressEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.repositories.*;
+import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.ProFormaInvoiceItemService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +42,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public ProFormaInvoiceItemValue createProFormInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) throws Exception {
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity=new ProFormaInvoiceItemEntity();
         BeanUtils.copyProperties(proFormaInvoiceItemValue ,proFormaInvoiceItemEntity);
-        String randomProFormaInvoiceItemUuid= UUID.randomUUID().toString();
-        proFormaInvoiceItemEntity.setProFormaInvoiceItemUuid(randomProFormaInvoiceItemUuid);
+        proFormaInvoiceItemEntity.setProFormaInvoiceItemUuid(CommonUtils.generateUUID());
         proFormaInvoiceItemEntity.setTenantEntity(tenantRepository.findByTenantUuid(proFormaInvoiceItemValue.getTenantUuid()));
         proFormaInvoiceItemEntity.setProFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormInvoiceUuid(proFormaInvoiceItemValue.getTenantUuid(),proFormaInvoiceItemValue.getProFormaInvoiceUuid()));
         proFormaInvoiceItemEntity.setGlassTypeEntity(glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(proFormaInvoiceItemValue.getTenantUuid(), proFormaInvoiceItemValue.getGlassTypeUuid()));

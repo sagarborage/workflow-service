@@ -1,7 +1,7 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.CommonEntity;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name="company")
+@Table(name = "company")
 public class CompanyEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,13 +22,13 @@ public class CompanyEntity implements Serializable {
     @Column(name = "company_id", unique = true, nullable = false, updatable = false)
     private int companyId;
 
-    @Column(name="uuid", unique=true, updatable=false)
+    @Column(name = "uuid", unique = true, updatable = false)
     protected String companyUuid;
 
-    @Column(name="created_dttm")
+    @Column(name = "created_dttm")
     private Date createdDttm;
 
-    @Column(name="updated_dttm")
+    @Column(name = "updated_dttm")
     private Date updatedDttm;
 
     @Column(name = "company_name")
@@ -58,21 +58,18 @@ public class CompanyEntity implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name ="tenant_id")
-   private TenantEntity tenantEntity;
+    @JoinColumn(name = "tenant_id")
+    private TenantEntity tenantEntity;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
     private CompanyTypeEntity companyTypeEntity;
 
-    @OneToMany(mappedBy="companyIdBill",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
+    @OneToMany(mappedBy = "companyIdBill", cascade = CascadeType.ALL)
+    private List<ProFormaInvoiceEntity> proFormaInvoiceEntities;
 
-    @OneToMany(mappedBy="companyIdShip",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity1;
-
-    @OneToMany(mappedBy="companyEntity",cascade=CascadeType.ALL)
-    private List<CompanyAddressEntity> companyAddressEntity;
+    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL)
+    private List<CompanyAddressEntity> companyAddressEntities;
 
 }
