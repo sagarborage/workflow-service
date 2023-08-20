@@ -18,8 +18,8 @@ public class AddressTypeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_type_id", unique = true, nullable = false, updatable = false)
-    private int addressTypeId;
+    private Integer addressTypeId;
+
     @Column(name = "type")
     private String type;
     @Column(name = "description")

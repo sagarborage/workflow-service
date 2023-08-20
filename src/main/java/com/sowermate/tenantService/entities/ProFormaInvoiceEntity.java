@@ -13,10 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 public class ProFormaInvoiceEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pro_forma_invoice_id", unique = true, nullable = false, updatable = false)
-    private int proFormaInvoiceId;
+    private Integer proFormaInvoiceId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String proFormInvoiceUuid;

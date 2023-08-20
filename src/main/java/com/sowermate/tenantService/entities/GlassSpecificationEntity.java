@@ -14,10 +14,10 @@ import java.util.List;
 public class GlassSpecificationEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "glass_specification_id", unique = true, nullable = false, updatable = false)
-    private int glassSpecificationId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer glassSpecificationId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String glassSpecificationUuid;

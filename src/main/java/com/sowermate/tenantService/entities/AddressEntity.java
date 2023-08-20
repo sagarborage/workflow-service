@@ -18,9 +18,8 @@ public class AddressEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "address_id", unique = true, nullable = false, updatable = false)
-    private int addressId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer addressId;
 
     @Column(name="uuid", unique=true, updatable=false)
     private String addressUuid;
@@ -59,10 +58,10 @@ public class AddressEntity implements Serializable {
     private  String fax;
 
     @Column (name= "primary_phone_number")
-    private  int primaryPhoneNumber;
+    private  String primaryPhoneNumber;
 
     @Column(name = "alternate_phone_number")
-    private  int alternatePhoneNumber;
+    private  String alternatePhoneNumber;
 
     @Column(name =  "email")
     private  String email;

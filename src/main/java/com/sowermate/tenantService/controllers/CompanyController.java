@@ -74,23 +74,4 @@ public class CompanyController {
         }
         return new ResponseEntity<>(companyValues, HttpStatus.ACCEPTED);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

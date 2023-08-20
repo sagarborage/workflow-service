@@ -14,9 +14,8 @@ public class ServiceRateEntity {
     private static final long serialVersionUID = -241370177952331642L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="service_rate_id",unique = true, nullable = false, updatable = false)
-    private int serviceRateId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer serviceRateId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String serviceRateUuid;

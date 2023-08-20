@@ -18,8 +18,7 @@ import org.junit.Before;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
@@ -93,7 +92,7 @@ public class TenantServiceImplTest {
         List<CompanyEntity> companyEntities = new ArrayList<CompanyEntity>();
         companyEntities.add(companyEntity);
 
-        when(mockCompanyRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(companyEntities);
+        when(mockCompanyRepository.findAllByTenantEntityTenantId(anyInt())).thenReturn(companyEntities);
 
         //for AdditionalChargesEntity
         AdditionalChargesEntity additionalChargesEntity = prepareAdditionalChargesEntity();
@@ -220,7 +219,7 @@ public class TenantServiceImplTest {
         CompanyEntity companyEntity = prepareCompanyEntity();
         List<CompanyEntity> companyEntities = new ArrayList<CompanyEntity>();
         companyEntities.add(companyEntity);
-        when(mockCompanyRepository.findAllByTenantEntity_Uuid(any())).thenReturn(companyEntities);
+        when(mockCompanyRepository.findAllByTenantEntityTenantId(anyInt())).thenReturn(companyEntities);
 
         //for AdditionalChargesEntity
         AdditionalChargesEntity additionalChargesEntity = prepareAdditionalChargesEntity();
@@ -387,8 +386,7 @@ public class TenantServiceImplTest {
     }
 
     private CompanyEntity prepareCompanyEntity() {
-        CompanyEntity companyEntity = new CompanyEntity();
-        companyEntity.setCompanyUuid(TEST_UUID);
+        CompanyEntity companyEntity = CompanyEntity.newBuilder().uuid(TEST_UUID).build();
         return companyEntity;
     }
 
@@ -417,7 +415,9 @@ public class TenantServiceImplTest {
     }
 
     private PiTypeEntity preparePiTypeEntity() {
-        return PiTypeEntity.builder().piTypeUuid(TEST_UUID).build();
+        PiTypeEntity piTypeEntity = new PiTypeEntity();
+        piTypeEntity.setPiTypeUuid(TEST_UUID);
+        return piTypeEntity;
     }
 
     private ConfirmThroughEntity prepareConfirmThroughEntity() {

@@ -17,9 +17,8 @@ public class AdditionalChargesEntity implements Serializable {
     private static final long serialVersionUID = -241370177952331642L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="additional_charges_id", unique = true, nullable = false, updatable = false)
-    private int additionalChargesId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer additionalChargesId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String additionalChargesUuid;

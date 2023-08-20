@@ -13,9 +13,8 @@ import java.util.List;
 public class GlassThicknessEntity {
     private static final long serialVersionUID = -241370177952331642L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "glass_thickness_id", unique = true, nullable = false, updatable = false)
-    private int glassThicknessId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer glassThicknessId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String glassThicknessUuid;

@@ -25,10 +25,12 @@ public interface AddressRepository extends JpaRepository<AddressEntity, String> 
     AddressEntity findByTenantEntity_UuidAndAddressUuid(String tenantUuid, String addressUuid);
 
     AddressEntity getAddressEntityByAddressUuid(@Param("addressUuid") String addressUuid);
+    AddressEntity getAddressEntityByAddressId(@Param("addressId") int addressId);
 
    // public AddressEntity deleteByAddressUuid (@Param("addressUuid")String addressUuid);
 
     List<AddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    List<AddressEntity> findAllByTenantEntity_TenantId(int tenantId);
    // public List<AddressEntity> findByAddressId(int addressId);
 
     @Transactional

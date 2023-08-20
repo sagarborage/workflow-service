@@ -10,6 +10,7 @@ import java.util.Date;
 public class AddressValue {
     private String addressUuid;
     private String tenantUuid;
+    private String tenantId;
     private Date createdDttm;
     private Date updatedDttm;
     private String  addressLine1;
@@ -21,8 +22,8 @@ public class AddressValue {
     private  int pinCode;
     private  String workPhone;
     private  String fax;
-    private  int primaryPhoneNumber;
-    private  int alternatePhoneNumber;
+    private  String primaryPhoneNumber;
+    private  String alternatePhoneNumber;
     private  String email;
     private  String website;
     private  String createdBy;

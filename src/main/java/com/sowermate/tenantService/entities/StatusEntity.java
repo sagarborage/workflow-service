@@ -12,9 +12,8 @@ import javax.persistence.*;
 public class StatusEntity {
     private static final long serialVersionUID = -241370177952331642L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "status_id", unique = true, nullable = false, updatable = false)
-    private int statusId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer statusId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String statusUuid;

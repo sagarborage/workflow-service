@@ -128,13 +128,10 @@ public class PiTypeServiceImplTest {
     @Test
     public void testGetPiType_when_requiredParameterPassed_ExpectPiTypeValue() throws Exception {
         //given
-        PiTypeEntity piTypeEntity = PiTypeEntity.builder()
-                .piTypeId(1)
-                .piTypeUuid(TEST_UUID)
-                .mm(3)
-                .sqft(4)
-                .tenantEntity(new TenantEntity())
-                .build();
+        PiTypeEntity piTypeEntity = new PiTypeEntity();
+        piTypeEntity.setPiTypeId(1);
+        piTypeEntity.setPiTypeUuid(TEST_UUID);
+        piTypeEntity.setTenantEntity(new TenantEntity());
 
         when(mockPiTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(anyString(), anyString())).thenReturn(piTypeEntity);
         //when
@@ -191,9 +188,9 @@ public class PiTypeServiceImplTest {
     }
 
     private PiTypeEntity preparePiTypeEntity() {
-        return PiTypeEntity.builder()
-                .piTypeUuid(TEST_UUID)
-                .build();
+        PiTypeEntity piTypeEntity = new PiTypeEntity();
+        piTypeEntity.setPiTypeUuid(TEST_UUID);
+        return piTypeEntity;
     }
 
     private ProFormaInvoiceEntity prepareProFormaInvoiceEntity() {

@@ -12,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackForClassName = {"Exception"})
@@ -64,7 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
                 companyEntity = companyRepository.getCompanyEntityByCompanyUuid(companyValue.getCompanyUuid());
                 BeanUtils.copyProperties(companyValue, companyEntity);
             } else {
-                companyEntity = new CompanyEntity();
+                companyEntity = CompanyEntity.newBuilder().build();
                 BeanUtils.copyProperties(companyValue, companyEntity);
                 companyEntity.setCompanyUuid(CommonUtils.generateUUID());
             }
@@ -121,8 +122,6 @@ public class CompanyServiceImpl implements CompanyService {
         companyAddressEntity.setCompanyEntity(companyEntity);
         companyAddressRepository.save(companyAddressEntity);
 
-        //companyEntity.setCompanyAddressEntities(Arrays.asList(companyAddressEntity));
-
         AddressValue addressValue = new AddressValue();
         BeanUtils.copyProperties(addressEntity, addressValue);
         companyValue.getCompanyAddresses().get(0).setAddress(addressValue);
@@ -170,40 +169,69 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyValue getCompany(String tenantUuid, String companyUuid) throws Exception {
         CompanyValue companyValue = new CompanyValue();
-        CompanyEntity companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyUuid(tenantUuid, companyUuid);
+        CompanyEntity companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUuid, companyUuid);
         BeanUtils.copyProperties(companyEntity.getCompanyTypeEntity(), companyValue);
         BeanUtils.copyProperties(companyEntity, companyValue);
         companyValue.setTenantUuid(tenantUuid);
         companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());
+        companyValue.setCompanyAddresses(Arrays.asList(getCompanyWiseAddressDetails(companyEntity)));
+
         return companyValue;
+    }
+
+    private CompanyAddressValue getCompanyWiseAddressDetails(CompanyEntity companyEntity) {
+        List<CompanyAddressEntity> companyAddressEntities = companyAddressRepository.getCompanyAddressEntityByTenantEntity_TenantIdAndCompanyEntity_CompanyId(companyEntity.getTenantEntity().getTenantId(), companyEntity.getCompanyId());
+        AddressEntity addressEntity = addressRepository.getAddressEntityByAddressId(companyAddressEntities.get(0).getAddressEntity().getAddressId());
+        AddressValue addressDetails = new AddressValue();
+        BeanUtils.copyProperties(addressEntity, addressDetails);
+
+        CompanyAddressValue companyAddressValue = new CompanyAddressValue();
+        BeanUtils.copyProperties(companyEntity.getCompanyAddressEntities().get(0), companyAddressValue);
+
+        companyAddressValue.setAddress(addressDetails);
+        companyAddressValue.setAddressTypeUuid(companyEntity.getCompanyAddressEntities().get(0).getAddressTypeEntity().getAddressTypeUuid());
+        return companyAddressValue;
+    }
+
+    private List<CompanyValue> getTenantWiseAddressDetails(TenantEntity tenantEntity) {
+        List<CompanyEntity> companyEntities =  companyRepository.findAllByTenantEntityTenantId(tenantEntity.getTenantId());
+
+        List<CompanyAddressEntity> companyAddressEntities = companyAddressRepository.getCompanyAddressEntityByTenantEntity_TenantId(tenantEntity.getTenantId());
+        Map<Integer, CompanyAddressEntity> companyAddressMap = companyAddressEntities.stream().collect(Collectors.toMap(addressEntity->addressEntity.getCompanyEntity().getCompanyId(), addressEntity-> addressEntity));
+        List<AddressEntity> addressDetails = addressRepository.findAllByTenantEntity_TenantId(tenantEntity.getTenantId());
+        Map<Integer, AddressEntity> addressDetailsMap = addressDetails.stream().collect(Collectors.toMap(address->address.getAddressId(), address->address));
+
+        return companyEntities.stream().map(entity ->{
+            CompanyValue companyValue = new CompanyValue();
+            BeanUtils.copyProperties(entity.getCompanyTypeEntity(), companyValue);
+            BeanUtils.copyProperties(entity, companyValue);
+            companyValue.setTenantUuid(tenantEntity.getUuid());
+            companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());
+
+            AddressValue addressDetail = new AddressValue();
+            BeanUtils.copyProperties(addressDetailsMap.get(companyAddressMap.get(entity.getCompanyId()).getAddressEntity().getAddressId()), addressDetail);
+
+            CompanyAddressValue companyAddressValue = new CompanyAddressValue();
+            BeanUtils.copyProperties(entity.getCompanyAddressEntities().get(0), companyAddressValue);
+
+            companyAddressValue.setAddress(addressDetail);
+            companyAddressValue.setAddressTypeUuid(entity.getCompanyAddressEntities().get(0).getAddressTypeEntity().getAddressTypeUuid());
+            companyValue.setCompanyAddresses(Arrays.asList(companyAddressValue));
+            return companyValue;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public CompanyValue deleteCompany(String tenantUuid, String companyUuid) throws Exception {
-        CompanyValue companyValue = new CompanyValue();
         companyRepository.softDelete(companyUuid);
-        CompanyEntity companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyUuid(tenantUuid, companyUuid);
-        BeanUtils.copyProperties(companyEntity, companyValue);
-        return companyValue;
+        return getCompany(tenantUuid, companyUuid);
     }
 
     @Override
     public List<CompanyValue> getAllCompany(String tenantUuid) throws Exception {
-        List<CompanyValue> companyValues = new ArrayList<>();
 
-        CompanyValue companyValue = null;
         TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
-        List<CompanyEntity> companyEntities = companyRepository.findAllByTenantEntityTenantId(tenantEntity.getTenantId());
-        for (int i = 0; i < companyEntities.size(); i++) {
-            companyValue = new CompanyValue();
-            //BeanUtils.copyProperties(companyEntities.get(i).getCompanyTypeEntity(), companyValue);
-            BeanUtils.copyProperties(companyEntities.get(i), companyValue);
-            companyValue.setTenantUuid(tenantUuid);
-            companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());
-
-            companyValues.add(companyValue);
-        }
-        return companyValues;
+        return getTenantWiseAddressDetails(tenantEntity);
     }
 }
 

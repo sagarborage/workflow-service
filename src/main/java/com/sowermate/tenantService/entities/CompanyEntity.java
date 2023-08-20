@@ -1,35 +1,36 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
+import net.bytebuddy.implementation.bind.annotation.SuperCall;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 @Getter
 @Setter
 @Entity
+@ToString(callSuper = true)
 @Table(name = "company")
-public class CompanyEntity implements Serializable {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class CompanyEntity extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "company_id", unique = true, nullable = false, updatable = false)
-    private int companyId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer companyId;
 
     @Column(name = "uuid", unique = true, updatable = false)
     protected String companyUuid;
-
-    @Column(name = "created_dttm")
-    private Date createdDttm;
-
-    @Column(name = "updated_dttm")
-    private Date updatedDttm;
 
     @Column(name = "company_name")
     private String companyName;
@@ -46,21 +47,13 @@ public class CompanyEntity implements Serializable {
     @Column(name = "PAN")
     private String pan;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
-
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")

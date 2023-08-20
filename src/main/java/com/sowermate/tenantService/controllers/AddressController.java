@@ -67,7 +67,7 @@ public class AddressController {
 
     @GetMapping("/{tenantUuid}")
     public ResponseEntity<List<AddressValue>> getAllAddress(@PathVariable String tenantUuid) {
-        List<AddressValue> addressValues = null;
+        List<AddressValue> addressValues = null;//ss
         try {
             addressValues = addressService.getAllCompanyAddress(tenantUuid);
             Logger.info("records " + addressValues.size());

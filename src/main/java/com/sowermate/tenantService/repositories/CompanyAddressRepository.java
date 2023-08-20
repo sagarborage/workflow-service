@@ -22,6 +22,9 @@ public interface    CompanyAddressRepository extends JpaRepository<CompanyAddres
     CompanyAddressEntity getCompanyAddressEntityByCompanyAddressUuid(@Param("companyAddressUuid") String companyAddressUuid);
     public List<CompanyAddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
+    public List<CompanyAddressEntity> getCompanyAddressEntityByTenantEntity_TenantIdAndCompanyEntity_CompanyId(int tenantId, int companyId);
+    public List<CompanyAddressEntity> getCompanyAddressEntityByTenantEntity_TenantId(int tenantId);
+
     @Transactional
     @Modifying
     @Query("UPDATE CompanyAddressEntity c SET c.isActive = false WHERE c.companyAddressUuid = :companyAddressUuid")

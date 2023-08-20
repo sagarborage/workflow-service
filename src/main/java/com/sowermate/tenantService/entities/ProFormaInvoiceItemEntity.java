@@ -12,8 +12,7 @@ import javax.persistence.*;
 public class ProFormaInvoiceItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pro_forma_invoice_item_id", unique = true, nullable = false, updatable = false)
-    private int proFormaInvoiceItemId;
+    private Integer proFormaInvoiceItemId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String proFormaInvoiceItemUuid;

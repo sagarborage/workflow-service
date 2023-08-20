@@ -13,9 +13,8 @@ import java.io.Serializable;
 public class CompanyAddressEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "company_address_id", unique = true, nullable = false, updatable = false)
-    private int companyAddressId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer companyAddressId;
 
     @Column(name="uuid", unique=true, updatable=false)
     private String companyAddressUuid;

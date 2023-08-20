@@ -15,8 +15,7 @@ public class ServiceRateInvoiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "service_rate_invoice_id", unique = true, nullable = false, updatable = false)
-    private int serviceRateInvoiceId;
+    private Integer serviceRateInvoiceId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String serviceRateInvoiceUuid;

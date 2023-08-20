@@ -18,8 +18,8 @@ public class CompanyTypeEntity  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_type_id", unique = true, nullable = false, updatable = false)
-    private int companyTypeId;
+    private Integer companyTypeId;
+
     @Column(name = "type")
     private String type;
     @Column(name = "description")

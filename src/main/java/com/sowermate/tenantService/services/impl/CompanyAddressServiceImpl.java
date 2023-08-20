@@ -40,7 +40,7 @@ public class CompanyAddressServiceImpl implements CompanyAddressService {
         companyAddressEntity.setCompanyAddressUuid(CommonUtils.generateUUID());
         companyAddressEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyAddressValue.getTenantUuid()));
         companyAddressEntity.setAddressTypeEntity(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getAddressTypeUuid()));
-        companyAddressEntity.setCompanyEntity(companyRepository.findByTenantEntity_UuidAndCompanyUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getCompanyUuid()));
+        companyAddressEntity.setCompanyEntity(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getCompanyUuid()));
         companyAddressEntity.setAddressEntity(addressRepository.findByTenantEntity_UuidAndAddressUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getAddressUuid()));
         BeanUtils.copyProperties(companyAddressRepository.save(companyAddressEntity), companyAddressValue);
         return companyAddressValue;
@@ -53,7 +53,7 @@ public class CompanyAddressServiceImpl implements CompanyAddressService {
         companyAddressEntity.setCompanyAddressId(companyAddressRepository.findByTenantEntity_UuidAndCompanyAddressUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getCompanyAddressUuid()).getCompanyAddressId());
         companyAddressEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyAddressValue.getTenantUuid()));
         companyAddressEntity.setAddressTypeEntity(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getAddressTypeUuid()));
-        companyAddressEntity.setCompanyEntity(companyRepository.findByTenantEntity_UuidAndCompanyUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getCompanyUuid()));
+        companyAddressEntity.setCompanyEntity(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getCompanyUuid()));
         companyAddressEntity.setAddressEntity(addressRepository.findByTenantEntity_UuidAndAddressUuid(companyAddressValue.getTenantUuid(), companyAddressValue.getAddressUuid()));
         BeanUtils.copyProperties(companyAddressRepository.save(companyAddressEntity), companyAddressValue);
         return companyAddressValue;
