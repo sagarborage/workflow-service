@@ -1,19 +1,25 @@
 package com.sowermate.tenantService.entities;
 
 
+import com.sowermate.tenantService.entities.value.TenantValue;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Setter
-@Getter
 @Entity
-@Table(name="tenant")
+@Getter
+@Setter
+@ToString(callSuper = true)
+@Table(name = "tenant")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class TenantEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
@@ -49,50 +55,75 @@ public class TenantEntity implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private List<CompanyEntity> companyEntities;
+   // @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+   // private List<CompanyEntity> companyEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private List<AdditionalChargesEntity> additionalChargesEntities;
+    private List<AdditionalChargesEntity> additionalChargesEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private List<ServiceRateEntity> serviceRateEntities;
+    private List<ServiceRateEntity> serviceRateEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<GlassTypeEntity> glassTypeEntities;
+    private  List<GlassTypeEntity> glassTypeEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<GlassThicknessEntity> glassThicknessEntities;
+    private  List<GlassThicknessEntity> glassThicknessEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<PiTypeEntity> PiTypeEntities;
+    private  List<PiTypeEntity> PiTypeEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<ConfirmThroughEntity>  confirmThroughEntities;
+    private  List<ConfirmThroughEntity>  confirmThroughEntities;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<CompanyTypeEntity>  companyTypeEntities;
+    private  List<CompanyTypeEntity>  companyTypeEntities;//OK
+
+/*    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    private  List<AddressEntity>  addressEntities;*/
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<AddressEntity>  addressEntities;
+    private  List<ProFormaInvoiceEntity>  proFormaInvoiceEntities;//OK
+
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    //private  List<ProFormaInvoiceItemEntity>  proFormaInvoiceItemEntities;
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<ProFormaInvoiceEntity>  proFormaInvoiceEntities;
+    private  List<StatusEntity>  statusEntities;//OK
+
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    //private  List<ServiceRateInvoiceEntity>  serviceRateInvoiceEntities;
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<ProFormaInvoiceItemEntity>  proFormaInvoiceItemEntities;
+    private  List<AddressTypeEntity>  addressTypeEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<StatusEntity>  statusEntities;
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    //private  List<CompanyAddressEntity>  companyAddressEntities;
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<ServiceRateInvoiceEntity>  serviceRateInvoiceEntities;
-
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<AddressTypeEntity>  addressTypeEntities;
-
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
-    private  List<CompanyAddressEntity>  companyAddressEntities;
-
+    public TenantValue toDTO() {
+        return TenantValue.newBuilder()
+                .tenantId(getTenantId())
+                .uuid(getUuid())
+                .tenantName(getTenantName())
+                .address(getAddress())
+                .city(getCity())
+                .state(getState())
+                .countryId(getCountryId())
+                .pinCode(getPinCode())
+                .phoneNumber(getPhoneNumber())
+                .emailId(getEmailId())
+                .activationDate(getActivationDate())
+                .expiryDate(getExpiryDate())
+                .gracePeriod(getGracePeriod())
+                .isActive(getIsActive())
+/*                .companyTypeValues(getCompanyEntities().stream()
+                        .map(companyEntity -> companyEntity.getCompanyTypeEntity().toDTO())
+                        .collect(Collectors.toList()))*/
+                .additionalChargesValues(getAdditionalChargesEntities().stream()
+                        .map(AdditionalChargesEntity::toDTO)
+                        .collect(Collectors.toList()))
+                // ... (other @OneToMany fields)
+                .build();
+    }
 
 }

@@ -1,7 +1,10 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.CompanyTypeEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.CompanyTypeValue;
+import com.sowermate.tenantService.repositories.CompanyRepository;
 import com.sowermate.tenantService.repositories.CompanyTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackForClassName = {"Exception"})
@@ -25,20 +29,30 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
     @Override
     public CompanyTypeValue createCompanyType(CompanyTypeValue companyTypeValue) throws Exception {
-        CompanyTypeEntity companyTypeEntity = new CompanyTypeEntity();
-        BeanUtils.copyProperties(companyTypeValue, companyTypeEntity);
-        companyTypeEntity.setCompanyTypeUuid(CommonUtils.generateUUID());
-        companyTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyTypeValue.getTenantUuid()));
-        BeanUtils.copyProperties(companyTypeRepository.save(companyTypeEntity), companyTypeValue);
-        return companyTypeValue;
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(companyTypeValue.getTenantValue().getUuid());
+        CompanyEntity companyEntity = companyRepository.getCompanyEntityByCompanyUuid(companyTypeValue.getCompanyValue().getCompanyUuid());
+        CompanyTypeEntity companyTypeEntity = companyTypeValue.toEntity().toBuilder()
+                .companyTypeUuid(CommonUtils.generateUUID())
+                .tenantEntity(tenantEntity)
+                .companyEntity(companyEntity)
+                .build();
+        //CompanyTypeEntity companyTypeEntity = new CompanyTypeEntity();
+        //BeanUtils.copyProperties(companyTypeValue, companyTypeEntity);
+        //companyTypeEntity.setCompanyTypeUuid(CommonUtils.generateUUID());
+        //companyTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyTypeValue.getTenantUuid()));
+        //BeanUtils.copyProperties(companyTypeRepository.save(companyTypeEntity), companyTypeValue);
+        return companyTypeRepository.save(companyTypeEntity).toDTO();
     }
 
 
     @Override
     public CompanyTypeValue editCompanyType(CompanyTypeValue companyTypeValue) throws Exception {
-        CompanyTypeEntity companyTypeEntity = new CompanyTypeEntity();
+/*        CompanyTypeEntity companyTypeEntity = new CompanyTypeEntity();
         BeanUtils.copyProperties(companyTypeValue, companyTypeEntity);
 
         //Check that UUID is not null before searching for the tenant
@@ -46,20 +60,31 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
             CompanyTypeEntity matchingCompanyTypes = companyTypeRepository.findByTenantEntity_UuidAndCompanyTypeUuid(companyTypeValue.getTenantUuid(), companyTypeValue.getCompanyTypeUuid());
             if (matchingCompanyTypes != null) {
                 companyTypeEntity.setCompanyTypeId(matchingCompanyTypes.getCompanyTypeId());
-                companyTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyTypeValue.getTenantUuid()));
+                //companyTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(companyTypeValue.getTenantUuid()));
                 BeanUtils.copyProperties(companyTypeRepository.save(companyTypeEntity), companyTypeValue);
             } else {
                 throw new Exception("No tenant found with UUID " + companyTypeValue.getCompanyTypeUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");
-        }
+        }*/
 
-        return companyTypeValue;
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(companyTypeValue.getTenantValue().getUuid());
+        CompanyEntity companyEntity = companyRepository.getCompanyEntityByCompanyUuid(companyTypeValue.getCompanyValue().getCompanyUuid());
+        CompanyTypeEntity companyTypeTemp = companyTypeRepository.findByCompanyTypeUuid(companyTypeValue.getCompanyTypeUuid());
+
+        CompanyTypeEntity companyTypeEntity = companyTypeValue.toEntity().toBuilder()
+                .companyTypeId(companyTypeTemp.getCompanyTypeId())
+                .tenantEntity(tenantEntity)
+                .companyEntity(companyEntity)
+                .build();
+
+        return companyTypeRepository.save(companyTypeEntity).toDTO();
     }
 
     @Override
     public List<CompanyTypeValue>  getAllCompanyType(String tenantUuid) throws Exception {
+/*
         List<CompanyTypeValue> companyTypeValues = new ArrayList<>();
         CompanyTypeValue companyTypeValue = null;
         List<CompanyTypeEntity> companyTypeEntities = companyTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
@@ -69,27 +94,28 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
             companyTypeValue.setTenantUuid(tenantUuid);
             companyTypeValues.add(companyTypeValue);
         }
-
-        return companyTypeValues;
+*/
+        List<CompanyTypeEntity> companyTypeEntities = companyTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
+        return companyTypeEntities.stream().map(cte -> cte.toDTO()).collect(Collectors.toList());
     }
 
     @Override
     public CompanyTypeValue getCompanyType(String tenantUuid, String companyTypeUuid) throws Exception {
-        CompanyTypeValue companyTypeValue = new CompanyTypeValue();
+        //CompanyTypeValue companyTypeValue = new CompanyTypeValue();
 
+        //CompanyTypeEntity companyTypeEntity = companyTypeRepository.findByTenantEntity_UuidAndCompanyTypeUuid(tenantUuid, companyTypeUuid);
+        //BeanUtils.copyProperties(companyTypeEntity, companyTypeValue);
+        //companyTypeValue.setTenantUuid(tenantUuid);
         CompanyTypeEntity companyTypeEntity = companyTypeRepository.findByTenantEntity_UuidAndCompanyTypeUuid(tenantUuid, companyTypeUuid);
-        BeanUtils.copyProperties(companyTypeEntity, companyTypeValue);
-        companyTypeValue.setTenantUuid(tenantUuid);
-        return companyTypeValue;
+        return companyTypeEntity.toDTO();
     }
 
     @Override
     public CompanyTypeValue deleteCompanyType(String tenantUuid, String companyTypeUuid) throws Exception {
-        CompanyTypeValue companyTypeValue = new CompanyTypeValue();
         companyTypeRepository.softDelete(companyTypeUuid);
         CompanyTypeEntity companyTypeEntity = companyTypeRepository.findByTenantEntity_UuidAndCompanyTypeUuid(tenantUuid, companyTypeUuid);
-        BeanUtils.copyProperties(companyTypeEntity, companyTypeValue);
-        return companyTypeValue;
+        //BeanUtils.copyProperties(companyTypeEntity, companyTypeValue);
+        return companyTypeEntity.toDTO();
     }
 
 }

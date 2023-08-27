@@ -1,15 +1,19 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.GlassThicknessValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="glass_thickness")
+@ToString(callSuper = true)
+@Table(name = "glass_thickness")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class GlassThicknessEntity {
     private static final long serialVersionUID = -241370177952331642L;
     @Id
@@ -25,11 +29,20 @@ public class GlassThicknessEntity {
     private Boolean isActive;
 
     @OneToMany(mappedBy="glassThicknessEntity",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
+
+    public GlassThicknessValue toDTO() {
+        return GlassThicknessValue.newBuilder()
+                .glassThicknessId(getGlassThicknessId())
+                .glassThicknessUuid(getGlassThicknessUuid())
+                .name(getName())
+                .isActive(getIsActive())
+                .build();
+    }
 }
 

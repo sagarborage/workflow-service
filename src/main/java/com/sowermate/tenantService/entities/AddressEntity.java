@@ -1,19 +1,24 @@
 package com.sowermate.tenantService.entities;
 
 import com.sowermate.tenantService.entities.common.CommonEntity;
+import com.sowermate.tenantService.entities.value.AddressValue;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="address")
+@ToString(callSuper = true)
+@Table(name = "address")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class AddressEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
@@ -79,11 +84,33 @@ public class AddressEntity implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
-    private TenantEntity tenantEntity;
-
     @OneToMany(mappedBy="addressEntity",cascade=CascadeType.ALL)
-    private List<CompanyAddressEntity> companyAddressEntity;
+    private List<CompanyAddressEntity> companyAddresses;
+
+    public AddressValue toDTO() {
+        return AddressValue.newBuilder()
+                .addressId(getAddressId())
+                .addressUuid(getAddressUuid())
+                .createdDttm(getCreatedDttm())
+                .updatedDttm(getUpdatedDttm())
+                .addressLine1(getAddressLine1())
+                .addressLine2(getAddressLine2())
+                .addressLine3(getAddressLine3())
+                .city(getCity())
+                .stateCode(getStateCode())
+                .countryCode(getCountryCode())
+                .pinCode(getPinCode())
+                .workPhone(getWorkPhone())
+                .fax(getFax())
+                .primaryPhoneNumber(getPrimaryPhoneNumber())
+                .alternatePhoneNumber(getAlternatePhoneNumber())
+                .email(getEmail())
+                .website(getWebsite())
+                .createdBy(getCreatedBy())
+                .updatedBy(getUpdatedBy())
+                .isActive(getIsActive())
+                .companyAddressValues(getCompanyAddresses().stream().map(a->a.toDTO()).collect(Collectors.toList()))
+                .build();
+    }
 
 }

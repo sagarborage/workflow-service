@@ -25,7 +25,7 @@ public interface AddressTypeRepository  extends JpaRepository<AddressTypeEntity,
     public AddressTypeEntity findByTenantEntity_UuidAndAddressTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("addressTypeUuid") String addressTypeUuid);
     //public List<AddressTypeEntity> findByAddressTypeId(int addressTypeId);
 
-    public AddressTypeEntity getAddressTypeEntityByAddressTypeUuid(@Param("addressTypeUuid") String addressTypeUuid);
+    //public AddressTypeEntity getAddressTypeEntityByAddressTypeUuid(@Param("addressTypeUuid") String addressTypeUuid);
 
     @Transactional
     @Modifying

@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.value.CompanyValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import net.bytebuddy.implementation.bind.annotation.Super;
@@ -13,10 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-
+@Entity
 @Getter
 @Setter
-@Entity
 @ToString(callSuper = true)
 @Table(name = "company")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,14 +55,26 @@ public class CompanyEntity extends BaseEntity {
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
     private CompanyTypeEntity companyTypeEntity;
 
-    @OneToMany(mappedBy = "companyIdBill", cascade = CascadeType.ALL)
-    private List<ProFormaInvoiceEntity> proFormaInvoiceEntities;
+    @OneToMany
+    @JoinColumn(name="company_id")
+    List<CompanyAddressEntity> companyAddressEntities;
 
-    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL)
-    private List<CompanyAddressEntity> companyAddressEntities;
-
+    public CompanyValue toDTO() {
+        return CompanyValue.newBuilder()
+                .companyId(getCompanyId())
+                .companyUuid(getCompanyUuid())
+                .companyName(getCompanyName())
+                .cin(getCin())
+                .gstin(getGstin())
+                .tan(getTan())
+                .pan(getPan())
+                .isActive(getIsActive())
+                .tenantValue(getTenantEntity().toDTO())
+                .companyTypeValue(getCompanyTypeEntity().toDTO())
+                .build();
+    }
 }

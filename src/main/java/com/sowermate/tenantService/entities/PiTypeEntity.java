@@ -1,16 +1,19 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.PiTypeValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="pi_type")
+@ToString(callSuper = true)
+@Table(name = "pi_type")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class PiTypeEntity {
     private static final long serialVersionUID = -241370177952331642L;
 
@@ -31,5 +34,13 @@ public class PiTypeEntity {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    public PiTypeValue toDTO() {
+        return PiTypeValue.newBuilder()
+                .piTypeId(getPiTypeId())
+                .piTypeUuid(getPiTypeUuid())
+                .piTypeName(getPiTypeName())
+                .tenantValue(getTenantEntity().toDTO())
+                .build();
+    }
 
 }

@@ -1,21 +1,25 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.GlassTypeValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="glass_type")
+@ToString(callSuper = true)
+@Table(name = "glass_type")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class GlassTypeEntity  {
     private static final long serialVersionUID = -241370177952331642L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer glassTypeId;
-
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
     private String glassTypeUuid;
@@ -27,9 +31,20 @@ public class GlassTypeEntity  {
     private Boolean isActive;
 
     @OneToMany(mappedBy="glassTypeEntity",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
+
+    public GlassTypeValue toDTO() {
+        return GlassTypeValue.newBuilder()
+                .glassTypeId(getGlassTypeId())
+                .glassTypeUuid(getGlassTypeUuid())
+                .glassName(getGlassName())
+                .isActive(getIsActive())
+                .tenantValue(getTenantEntity().toDTO())
+                .proFormaInvoiceItems(getProFormaInvoiceItems().stream().map(e->e.toDTO()).collect(Collectors.toList()))
+                .build();
+    }
 }

@@ -1,17 +1,33 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import com.sowermate.tenantService.entities.CompanyAddressEntity;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
+@Getter
+@Jacksonized
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyAddressValue {
+
+    private Integer companyAddressId;
     private String companyAddressUuid;
-    private String addressTypeUuid;
-    private String tenantUuid;
-    private String companyUuid;
-    private String addressUuid;
     private Boolean isActive;
 
-    private AddressValue address;
+    private CompanyValue companyValue;
+    private AddressValue addressValue;
+    private AddressTypeValue addressTypeValue;
+
+    public CompanyAddressEntity toEntity() {
+        return CompanyAddressEntity.newBuilder()
+                .companyAddressId(getCompanyAddressId())
+                .companyAddressUuid(getCompanyAddressUuid())
+                .isActive(getIsActive())
+                .companyEntity(null != getCompanyValue() ? getCompanyValue().toEntity() : null)
+                .addressEntity(null != getAddressValue() ? getAddressValue().toEntity() : null)
+                .addressTypeEntity(null != getAddressTypeValue() ? getAddressTypeValue().toEntity() : null)
+                .build();
+    }
 }

@@ -18,7 +18,7 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
             "WHERE t.uuid = :tenantUuid " +
             "AND c.companyUuid = :companyUuid")
     CompanyEntity findByTenantEntity_UuidAndCompanyEntityUuid(String tenantUuid, String companyUuid);
-
+    CompanyEntity findByCompanyUuid(String companyUuid);
     List<CompanyEntity> findAllByTenantEntityTenantId(int tenantId);
 
     @Transactional

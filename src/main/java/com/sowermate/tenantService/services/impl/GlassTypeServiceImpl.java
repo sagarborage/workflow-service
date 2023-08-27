@@ -1,6 +1,8 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.GlassThicknessEntity;
 import com.sowermate.tenantService.entities.GlassTypeEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.GlassTypeValue;
 import com.sowermate.tenantService.repositories.CompanyRepository;
 import com.sowermate.tenantService.repositories.GlassTypeRepository;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackForClassName = {"Exception"})
@@ -29,17 +32,23 @@ public class GlassTypeServiceImpl implements GlassTypeService {
     @Override
     public GlassTypeValue createGlassType(GlassTypeValue glassTypeValue) throws Exception {
 
-        GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(glassTypeValue.getTenantValue().getUuid());
+        GlassTypeEntity glassTypeEntity = glassTypeValue.toEntity().toBuilder()
+                .glassTypeUuid(CommonUtils.generateUUID())
+                .tenantEntity(tenantEntity)
+                .build();
+
+/*        GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
         BeanUtils.copyProperties(glassTypeValue, glassTypeEntity);
         glassTypeEntity.setGlassTypeUuid(CommonUtils.generateUUID());
         glassTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(glassTypeValue.getTenantUuid()));
-        BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);
-        return glassTypeValue;
+        BeanUtils.copyProperties(glassTypeRepository.save(glassTypeEntity), glassTypeValue);*/
+        return glassTypeRepository.save(glassTypeEntity).toDTO();
     }
 
     @Override
     public GlassTypeValue editGlassType(GlassTypeValue glassTypeValue) throws Exception {
-        GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
+/*        GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
         BeanUtils.copyProperties(glassTypeValue, glassTypeEntity);
 
         // Check that UUID is not null before searching for the tenant
@@ -54,46 +63,57 @@ public class GlassTypeServiceImpl implements GlassTypeService {
             }
         } else {
             throw new Exception("UUID cannot be null");
-        }
+        }*/
 
-        return glassTypeValue;
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(glassTypeValue.getTenantValue().getUuid());
+        GlassTypeEntity tempGlassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(glassTypeValue.getTenantValue().getUuid(),
+                glassTypeValue.getGlassTypeUuid());
+        GlassTypeEntity glassTypeEntity = glassTypeValue.toEntity().toBuilder()
+                .glassTypeId(tempGlassTypeEntity.getGlassTypeId())
+                .tenantEntity(tenantEntity)
+                .build();
+
+
+        return glassTypeEntity.toDTO();
     }
 
     @Override
     public GlassTypeValue getGlassType(String tenantUuid, String glassTypeUuid) throws Exception {
-        GlassTypeValue glassTypeValue = new GlassTypeValue();
+/*        GlassTypeValue glassTypeValue = new GlassTypeValue();
 
         GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
         BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
         glassTypeValue.setTenantUuid(tenantUuid);
-        glassTypeValue.setGlassTypeUuid(glassTypeUuid);
-        return glassTypeValue;
+        glassTypeValue.setGlassTypeUuid(glassTypeUuid);*/
+        return glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid).toDTO();
     }
 
 
     @Override
     public GlassTypeValue deleteGlassType(String tenantUuid, String glassTypeUuid) throws Exception {
-        GlassTypeValue glassTypeValue = new GlassTypeValue();
+/*        GlassTypeValue glassTypeValue = new GlassTypeValue();*/
         glassTypeRepository.softDelete(glassTypeUuid);
         GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
-        BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
-        glassTypeValue.setTenantUuid(tenantUuid);
-        return glassTypeValue;
+/*        BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
+        glassTypeValue.setTenantUuid(tenantUuid);*/
+        return glassTypeEntity.toDTO();
     }
 
     @Override
     public List<GlassTypeValue> getAllGlassType(String tenantUuid) throws Exception {
-        List<GlassTypeValue> glassTypeValues = new ArrayList<>();
-        GlassTypeValue glassTypeValue = null;
+/*        List<GlassTypeValue> glassTypeValues = new ArrayList<>();
+        GlassTypeValue glassTypeValue = null;*/
         List<GlassTypeEntity> glassTypeEntities = glassTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
+/*
         for (int i = 0; i < glassTypeEntities.size(); i++) {
             glassTypeValue = new GlassTypeValue();
             BeanUtils.copyProperties(glassTypeEntities.get(i), glassTypeValue);
             glassTypeValue.setTenantUuid(tenantUuid);
             glassTypeValues.add(glassTypeValue);
         }
+*/
 
-        return glassTypeValues;
+        return glassTypeEntities.stream().map(gte -> gte.toDTO()).collect(Collectors.toList());
     }
 }
 

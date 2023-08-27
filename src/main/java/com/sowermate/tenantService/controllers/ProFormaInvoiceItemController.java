@@ -64,11 +64,11 @@ public class ProFormaInvoiceItemController {
         return new ResponseEntity<Integer>(deleteProFormaInvoiceItem, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/{tenantUuid}")
-    public ResponseEntity<List<ProFormaInvoiceItemValue>> getAllProFormInvoiceItem(@PathVariable String tenantUuid) {
+    @GetMapping(value = "/{proFormInvoiceUuid}")
+    public ResponseEntity<List<ProFormaInvoiceItemValue>> getAllProFormInvoiceItem(@PathVariable String proFormInvoiceUuid) {
         List<ProFormaInvoiceItemValue> proFormaInvoiceItemValues = null;
         try {
-            proFormaInvoiceItemValues = proFormaInvoiceItemService.getAllProFormInvoiceItem(tenantUuid);
+            proFormaInvoiceItemValues = proFormaInvoiceItemService.getAllProFormInvoiceItem(proFormInvoiceUuid);
             Logger.info("records " + proFormaInvoiceItemValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

@@ -1,14 +1,18 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "service_rate_invoice")
 @Getter
 @Setter
+@ToString(callSuper = true)
+@Table(name = "service_rate_invoice")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class ServiceRateInvoiceEntity {
 
     private static final long serialVersionUID = 1L;
@@ -42,4 +46,17 @@ public class ServiceRateInvoiceEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
+
+    public ServiceRateInvoiceValue toDTO() {
+        return ServiceRateInvoiceValue.newBuilder()
+                .serviceRateInvoiceId(getServiceRateInvoiceId())
+                .serviceRateInvoiceUuid(getServiceRateInvoiceUuid())
+                .quantity(getQuantity())
+                .rate(getRate())
+                .total(getTotal())
+                .tenantValue(getTenantEntity().toDTO())
+                .proFormaInvoice(getProFormaInvoiceEntity().toDTO())
+                .serviceRate(getServiceRateEntity().toDTO())
+                .build();
+    }
 }

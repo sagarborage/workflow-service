@@ -1,15 +1,18 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.ConfirmThroughValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
-
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="confirm_through")
+@ToString(callSuper = true)
+@Table(name = "confirm_through")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class ConfirmThroughEntity {
 
     private static final long serialVersionUID = -241370177952331642L;
@@ -23,12 +26,21 @@ public class ConfirmThroughEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy="confirmThroughEntity",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
+    @OneToOne(mappedBy="confirmThroughEntity",cascade=CascadeType.ALL)
+    private ProFormaInvoiceEntity proFormaInvoiceEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    public ConfirmThroughValue toDTO() {
+        return ConfirmThroughValue.newBuilder()
+                .confirmThroughId(getConfirmThroughId())
+                .confirmThroughUuid(getConfirmThroughUuid())
+                .name(getName())
+                .tenantValue(getTenantEntity().toDTO())
+                .proFormaInvoice(getProFormaInvoiceEntity().toDTO())
+                .build();
+    }
 
 }

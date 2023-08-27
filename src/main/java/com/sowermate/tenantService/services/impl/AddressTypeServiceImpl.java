@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackForClassName = {"Exception"})
@@ -27,21 +28,28 @@ public class AddressTypeServiceImpl implements AddressTypeService {
 
     @Override
     public AddressTypeValue createAddressType(AddressTypeValue addressTypeValue) throws Exception {
-        AddressTypeEntity addressTypeEntity = new AddressTypeEntity();
-        BeanUtils.copyProperties(addressTypeValue, addressTypeEntity);
-        addressTypeEntity.setAddressTypeUuid(CommonUtils.generateUUID());
-        addressTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantUuid()));
-        BeanUtils.copyProperties(addressTypeRepository.save(addressTypeEntity), addressTypeValue);
-        return addressTypeValue;
+        AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
+                .addressTypeUuid(CommonUtils.generateUUID())
+                .tenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantValue().getUuid()))
+                        .build();
+
+        //addressTypeEntity.setAddressTypeUuid(CommonUtils.generateUUID());
+        //addressTypeEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantUuid()));
+        //BeanUtils.copyProperties(addressTypeRepository.save(addressTypeEntity), addressTypeValue);
+        return addressTypeRepository.save(addressTypeEntity).toDTO();
     }
 
     @Override
     public AddressTypeValue editAddressType(AddressTypeValue addressTypeValue) throws Exception {
-        AddressTypeEntity addressTypeEntity = new AddressTypeEntity();
-        BeanUtils.copyProperties(addressTypeValue, addressTypeEntity);
+        AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
+                .addressTypeId(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(addressTypeValue.getAddressTypeUuid(),
+                        addressTypeValue.getAddressTypeUuid()).getAddressTypeId())
+                .tenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantValue().getUuid()))
+                .build();
+        //BeanUtils.copyProperties(addressTypeValue, addressTypeEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (addressTypeValue.getAddressTypeUuid() != null) {
+/*        if (addressTypeValue.getAddressTypeUuid() != null) {
             AddressTypeEntity matchingAddressTypes = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(addressTypeValue.getTenantUuid(), addressTypeValue.getAddressTypeUuid());
             if (matchingAddressTypes != null) {
                 addressTypeEntity.setAddressTypeId(matchingAddressTypes.getAddressTypeId());
@@ -52,42 +60,43 @@ public class AddressTypeServiceImpl implements AddressTypeService {
             }
         } else {
             throw new Exception("UUID cannot be null");
-        }
+        }*/
 
-        return addressTypeValue;
+        return addressTypeRepository.save(addressTypeEntity).toDTO();
     }
 
     @Override
     public List<AddressTypeValue> getAllAddressType(String tenantUuid) throws Exception {
-        List<AddressTypeValue> addressTypeValues = new ArrayList<>();
-        AddressTypeValue addressTypeValue = null;
+        //List<AddressTypeValue> addressTypeValues = new ArrayList<>();
+        //AddressTypeValue addressTypeValue = null;
         List<AddressTypeEntity> addressTypeEntities = addressTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
+/*
         for (int i = 0; i < addressTypeEntities.size(); i++) {
             addressTypeValue = new AddressTypeValue();
             BeanUtils.copyProperties(addressTypeEntities.get(i), addressTypeValue);
             addressTypeValue.setTenantUuid(tenantUuid);
             addressTypeValues.add(addressTypeValue);
-        }
+        }*/
 
-        return addressTypeValues;
+        return addressTypeEntities.stream().map(entity -> entity.toDTO()).collect(Collectors.toList());
     }
 
     @Override
     public AddressTypeValue getAddressType(String tenantUuid, String addressTypeUuid) throws Exception {
-        AddressTypeValue addressTypeValue = new AddressTypeValue();
+/*        AddressTypeValue addressTypeValue = new AddressTypeValue();
 
         AddressTypeEntity addressTypeEntity = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid);
         BeanUtils.copyProperties(addressTypeEntity, addressTypeValue);
-        addressTypeValue.setTenantUuid(tenantUuid);
-        return addressTypeValue;
+        addressTypeValue.setTenantUuid(tenantUuid);*/
+        return addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid).toDTO();
     }
 
     @Override
     public AddressTypeValue deleteAddressType(String tenantUuid, String addressTypeUuid) throws Exception {
-        AddressTypeValue addressTypeValue = new AddressTypeValue();
+        //AddressTypeValue addressTypeValue = new AddressTypeValue();
         addressTypeRepository.softDelete(addressTypeUuid);
-        AddressTypeEntity addressTypeEntity = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid);
-        BeanUtils.copyProperties(addressTypeEntity, addressTypeValue);
-        return addressTypeValue;
+        //AddressTypeEntity addressTypeEntity = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid);
+        //BeanUtils.copyProperties(addressTypeEntity, addressTypeValue);
+        return addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid).toDTO();
     }
 }

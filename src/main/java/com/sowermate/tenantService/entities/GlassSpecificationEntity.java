@@ -1,16 +1,20 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="glass_specification")
+@ToString(callSuper = true)
+@Table(name = "glass_specification")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class GlassSpecificationEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
@@ -34,4 +38,14 @@ public class GlassSpecificationEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
+
+    public GlassSpecificationValue toDTO() {
+        return GlassSpecificationValue.newBuilder()
+                .glassSpecificationId(getGlassSpecificationId())
+                .glassSpecificationUuid(getGlassSpecificationUuid())
+                .tenantValue(getTenantEntity().toDTO())
+                .name(getName())
+                .isActive(getIsActive())
+                .build();
+    }
 }

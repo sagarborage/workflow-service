@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-
+//TODO: Will decide if want to use this entity or not later
 @Getter
 @Setter
 @Entity

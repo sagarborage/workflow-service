@@ -1,24 +1,28 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pro_forma_invoice_item")
 @Getter
 @Setter
+@ToString(callSuper = true)
+@Table(name = "pro_forma_invoice_item")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class ProFormaInvoiceItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer proFormaInvoiceItemId;
 
     @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String proFormaInvoiceItemUuid;
+    private String uuid;
 
     @Column(name = "width_inch")
-        private Float widthInch;
+    private Float widthInch;
 
     @Column(name = "width_measurement")
     private Float widthMeasurement;
@@ -76,4 +80,27 @@ public class ProFormaInvoiceItemEntity {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    public ProFormaInvoiceItemValue toDTO() {
+        return ProFormaInvoiceItemValue.newBuilder()
+                .proFormaInvoiceItemId(getProFormaInvoiceItemId())
+                .uuid(getUuid())
+                .widthInch(getWidthInch())
+                .widthMeasurement(getWidthMeasurement())
+                .actualWidth(getActualWidth())
+                .chargableWidth(getChargableWidth())
+                .hightInch(getHightInch())
+                .hightMeasurement(getHightMeasurement())
+                .actualHight(getActualHight())
+                .chargableHight(getChargableHight())
+                .extraMm(getExtraMm())
+                .quantity(getQuantity())
+                .sqft(getSqft())
+                .ratePerSqft(getRatePerSqft())
+                .amount(getAmount())
+                .tenantValue(getTenantEntity().toDTO())
+                .glassSpecificationValue(getGlassSpecificationEntity().toDTO())
+                .glassTypeValue(getGlassTypeEntity().toDTO())
+                .glassThicknessValue(getGlassThicknessEntity().toDTO())
+                .build();
+    }
 }

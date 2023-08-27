@@ -22,17 +22,17 @@ public class CompanyAddressController {
         CompanyAddressValue companyAddressValue1=companyAddressService.createCompanyAddress(companyAddressValue);
         return new ResponseEntity<CompanyAddressValue>( companyAddressValue1, HttpStatus.CREATED);
     }
-    @GetMapping(value = "/{tenantUuid}/{companyAddressUuid}")
-    public ResponseEntity<CompanyAddressValue> getCompanyAddress(@PathVariable String  tenantUuid,@PathVariable String companyAddressUuid) throws Exception {
-        CompanyAddressValue companyAddressValue=companyAddressService.getCompanyAddress(tenantUuid,companyAddressUuid);
+    @GetMapping(value = "/{companyAddressUuid}")
+    public ResponseEntity<CompanyAddressValue> getCompanyAddress(@PathVariable String companyAddressUuid) throws Exception {
+        CompanyAddressValue companyAddressValue=companyAddressService.getCompanyAddress(companyAddressUuid);
         return  new ResponseEntity<>(companyAddressValue, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/{tenantUuid}")
+/*    @GetMapping(value = "/{tenantUuid}")
     public ResponseEntity<List<CompanyAddressValue>> getAllCompanyAddress(@PathVariable String  tenantUuid) throws Exception {
         List<CompanyAddressValue> companyAddressValues = companyAddressService.getAllCompanyAddress(tenantUuid);
         return new ResponseEntity<> (companyAddressValues ,HttpStatus.ACCEPTED);
-    }
+    }*/
 
     /*@RequestMapping(value = "/{tenantUuid}/{companyAddressUuid}", method = RequestMethod.DELETE)
     @ResponseBody

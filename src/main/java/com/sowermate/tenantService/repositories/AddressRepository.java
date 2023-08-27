@@ -18,19 +18,19 @@ import java.util.List;
 public interface AddressRepository extends JpaRepository<AddressEntity, String> {
 
 
-    @Query("SELECT a FROM AddressEntity a " +
+/*    @Query("SELECT a FROM AddressEntity a " +
             "JOIN a.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND a.addressUuid = :addressUuid")
-    AddressEntity findByTenantEntity_UuidAndAddressUuid(String tenantUuid, String addressUuid);
+            "AND a.addressUuid = :addressUuid")*/
+    AddressEntity findByAddressUuid(String addressUuid);
 
-    AddressEntity getAddressEntityByAddressUuid(@Param("addressUuid") String addressUuid);
-    AddressEntity getAddressEntityByAddressId(@Param("addressId") int addressId);
+    //AddressEntity getAddressEntityByAddressUuid(@Param("addressUuid") String addressUuid);
+    //AddressEntity getAddressEntityByAddressId(@Param("addressId") int addressId);
 
    // public AddressEntity deleteByAddressUuid (@Param("addressUuid")String addressUuid);
 
-    List<AddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
-    List<AddressEntity> findAllByTenantEntity_TenantId(int tenantId);
+    //List<AddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    //List<AddressEntity> findAllByTenantEntity_TenantId(int tenantId);
    // public List<AddressEntity> findByAddressId(int addressId);
 
     @Transactional

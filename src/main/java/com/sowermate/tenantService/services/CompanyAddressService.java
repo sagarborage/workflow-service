@@ -9,7 +9,7 @@ public interface CompanyAddressService {
 
     public  CompanyAddressValue editCompanyAddress(CompanyAddressValue companyAddressValue) throws  Exception;
 
-    public  CompanyAddressValue getCompanyAddress(String tenantUuid, String companyAddressUuid) throws  Exception;
+    public  CompanyAddressValue getCompanyAddress(String companyAddressUuid) throws  Exception;
 
     public List<CompanyAddressValue> getAllCompanyAddress(String tenantUuid) throws  Exception;
 

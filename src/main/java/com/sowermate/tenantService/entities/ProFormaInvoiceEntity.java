@@ -1,17 +1,21 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "pro_forma_invoice")
 @Getter
 @Setter
+@ToString(callSuper = true)
+@Table(name = "pro_forma_invoice")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class ProFormaInvoiceEntity {
 
     @Id
@@ -79,7 +83,7 @@ public class ProFormaInvoiceEntity {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "confirm_through_id")
     private ConfirmThroughEntity confirmThroughEntity;
 
@@ -100,10 +104,37 @@ public class ProFormaInvoiceEntity {
     private TenantEntity tenantEntity;
 
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
-    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;
+    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities;
 
-
+    public ProFormaInvoiceValue toDTO() {
+        return ProFormaInvoiceValue.newBuilder()
+                .proFormaInvoiceId(getProFormaInvoiceId())
+                .proFormInvoiceUuid(getProFormInvoiceUuid())
+                .piNumber(getPiNumber())
+                .invoiceDate(getInvoiceDate())
+                .proFormaInvoiceAmount(getProFormaInvoiceAmount())
+                .serviceRateInvoiceAmount(getServiceRateInvoiceAmount())
+                .basicAmount(getBasicAmount())
+                .adminCharges(getAdminCharges())
+                .insurancePercent(getInsurancePercent())
+                .insurancePercentAmount(getInsurancePercentAmount())
+                .urgencyPercent(getUrgencyPercent())
+                .urgencyPercentAmount(getUrgencyPercentAmount())
+                .otherCharges(getOtherCharges())
+                .transportCharges(getTransportCharges())
+                .gstCharges(getGstCharges())
+                .grandTotal(getGrandTotal())
+                .roundOffAmount(getRoundOffAmount())
+                .payableAmount(getPayableAmount())
+                .previousBalance(getPreviousBalance())
+                .adjustmentAmount(getAdjustmentAmount())
+                .status(getStatus())
+                .proFormaInvoiceItems(getProFormaInvoiceItemEntities().stream().map(entity -> {
+                   return entity.toDTO();
+                }).collect(Collectors.toList()))
+                .build();
+    }
 }

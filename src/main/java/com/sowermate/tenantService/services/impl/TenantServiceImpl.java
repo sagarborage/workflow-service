@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackForClassName = {"Exception"})
@@ -23,17 +24,19 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public TenantValue saveTenantDetails(TenantValue tenantValue) throws Exception {
-        TenantEntity tenantEntity = new TenantEntity();
-        BeanUtils.copyProperties(tenantValue, tenantEntity);
+        TenantEntity tenantEntity = tenantValue.toEntity().toBuilder()
+                .uuid(CommonUtils.generateUUID())
+                .build();
+/*        BeanUtils.copyProperties(tenantValue, tenantEntity);
         tenantEntity.setUuid(CommonUtils.generateUUID());
         BeanUtils.copyProperties(tenantRepository.save(tenantEntity), tenantValue);
-        tenantValue.setTenantUuid(tenantEntity.getUuid());
-        return tenantValue;
+        tenantValue.setTenantUuid(tenantEntity.getUuid());*/
+        return tenantRepository.save(tenantEntity).toDTO();
     }
 
     @Override
     public List<TenantValue> getAllTenantDetails() throws Exception {
-        List<TenantValue> tenantValues = new ArrayList<>();
+/*        List<TenantValue> tenantValues = new ArrayList<>();
         TenantValue tenantValue = null;
         List<TenantEntity> tenantDetailsEntities = tenantRepository.findAll();
         for (int i = 0; i < tenantDetailsEntities.size(); i++) {
@@ -42,13 +45,13 @@ public class TenantServiceImpl implements TenantService {
             BeanUtils.copyProperties(tenantDetailsEntities.get(i), tenantValue);
             tenantValue.setTenantUuid(tenantDetailsEntities.get(i).getUuid());
             tenantValues.add(tenantValue);
-        }
-        return tenantValues;
+        }*/
+        return tenantRepository.findAll().stream().map(t -> t.toDTO()).collect(Collectors.toList());
     }
 
     @Override
     public TenantValue editTenantDetails(TenantValue tenantValue) throws Exception {
-        TenantEntity tenantEntity = new TenantEntity();
+ /*       TenantEntity tenantEntity = new TenantEntity();
         BeanUtils.copyProperties(tenantValue, tenantEntity);
 
         // Check that UUID is not null before searching for the tenant
@@ -63,15 +66,19 @@ public class TenantServiceImpl implements TenantService {
             }
         } else {
             throw new Exception("UUID cannot be null");
-        }
+        }*/
+        TenantEntity tempTenantEntity = tenantRepository.findByTenantUuid(tenantValue.getUuid());
+        TenantEntity tenantEntity = tenantValue.toEntity().toBuilder()
+                .tenantId(tempTenantEntity.getTenantId())
+                .build();
 
-        return tenantValue;
+        return tenantRepository.save(tenantEntity).toDTO();
     }
 
 
     @Override
     public TenantValue getTenantDetails(String tenantUuid) throws Exception {
-        TenantValue tenantValue = new TenantValue();
+/*        TenantValue tenantValue = new TenantValue();
 
         TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
         if (tenantEntity == null) {
@@ -80,17 +87,18 @@ public class TenantServiceImpl implements TenantService {
             BeanUtils.copyProperties(tenantEntity, tenantValue);
             tenantValue.setTenantUuid(tenantEntity.getUuid());
             return tenantValue;
-        }
+        }*/
+        return tenantRepository.findByTenantUuid(tenantUuid).toDTO();
     }
 
     @Override
     public TenantValue deleteTenantDetails(String tenantUuid) throws Exception {
-        TenantValue tenantValue = new TenantValue();
+        //TenantValue tenantValue = new TenantValue();
         tenantRepository.softDelete(tenantUuid);
-        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
+/*        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(tenantUuid);
         BeanUtils.copyProperties(tenantEntity, tenantValue);
-        tenantValue.setTenantUuid(tenantEntity.getUuid());
-        return tenantValue;
+        tenantValue.setTenantUuid(tenantEntity.getUuid());*/
+        return tenantRepository.findByTenantUuid(tenantUuid).toDTO();
     }
 
 }

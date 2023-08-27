@@ -12,18 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface    CompanyAddressRepository extends JpaRepository<CompanyAddressEntity ,String> {
-    @Query("SELECT c FROM CompanyAddressEntity c " +
+public interface CompanyAddressRepository extends JpaRepository<CompanyAddressEntity ,String> {
+/*    @Query("SELECT c FROM CompanyAddressEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND c.companyAddressUuid = :companyAddressUuid")
-    public CompanyAddressEntity findByTenantEntity_UuidAndCompanyAddressUuid(String tenantUuid, String companyAddressUuid);
+    public CompanyAddressEntity findByTenantEntity_UuidAndCompanyAddressUuid(String tenantUuid, String companyAddressUuid);*/
 
-    CompanyAddressEntity getCompanyAddressEntityByCompanyAddressUuid(@Param("companyAddressUuid") String companyAddressUuid);
-    public List<CompanyAddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    public CompanyAddressEntity findByCompanyAddressUuid(String companyAddressUuid);
 
-    public List<CompanyAddressEntity> getCompanyAddressEntityByTenantEntity_TenantIdAndCompanyEntity_CompanyId(int tenantId, int companyId);
-    public List<CompanyAddressEntity> getCompanyAddressEntityByTenantEntity_TenantId(int tenantId);
+    //CompanyAddressEntity getCompanyAddressEntityByCompanyAddressUuid(@Param("companyAddressUuid") String companyAddressUuid);
+    //public List<CompanyAddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+
+    //public List<CompanyAddressEntity> getCompanyAddressEntityByCompanyEntity_CompanyId(int companyId);
+   // public List<CompanyAddressEntity> getCompanyAddressEntityByTenantEntity_TenantId(int tenantId);
 
     @Transactional
     @Modifying

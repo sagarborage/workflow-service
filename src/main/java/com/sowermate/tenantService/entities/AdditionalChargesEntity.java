@@ -1,17 +1,21 @@
 package com.sowermate.tenantService.entities;
 
 import com.sowermate.tenantService.entities.common.CommonEntity;
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.AdditionalChargesValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Setter
-@Getter
 @Entity
-@Table(name="additional_charges")
+@Getter
+@Setter
+@ToString(callSuper = true)
+@Table(name = "additional_charges")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class AdditionalChargesEntity implements Serializable {
 
     private static final long serialVersionUID = -241370177952331642L;
@@ -54,4 +58,21 @@ public class AdditionalChargesEntity implements Serializable {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+
+    public AdditionalChargesValue toDTO() {
+        return AdditionalChargesValue.newBuilder()
+                .additionalChargesId(getAdditionalChargesId())
+                .additionalChargesUuid(getAdditionalChargesUuid())
+                .createdDttm(getCreatedDttm())
+                .updatedDttm(getUpdatedDttm())
+                .extraMm(getExtraMm())
+                .insurance(getInsurance())
+                .adminCharges(getAdminCharges())
+                .forwardingCharges(getForwardingCharges())
+                .gst(getGst())
+                .createdBy(getCreatedBy())
+                .updatedBy(getUpdatedBy())
+                .tenantValue(getTenantEntity().toDTO())
+                .build();
+    }
 }

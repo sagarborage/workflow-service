@@ -27,53 +27,53 @@ public class AddressServiceImpl  implements AddressService {
     private TenantRepository tenantRepository;
     @Override
     public AddressValue createAddress(AddressValue addressValue) throws Exception {
-        AddressEntity addressEntity=new AddressEntity();
-        BeanUtils.copyProperties(addressValue ,addressEntity);
-        addressEntity.setAddressUuid(CommonUtils.generateUUID());
-        addressEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressValue.getTenantUuid()));
-        BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
-        return addressValue;
+        AddressEntity addressEntity = addressValue.toEntity();
+        addressEntity.toBuilder().addressUuid(CommonUtils.generateUUID());
+        //addressEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressValue.getTenantUuid()));
+        //BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
+        return addressRepository.save(addressEntity).toDTO();
     }
 
     @Override
     public AddressValue editAddress(AddressValue addressValue) throws Exception {
-        AddressEntity  addressEntity=new AddressEntity();
-        BeanUtils.copyProperties(addressValue , addressEntity);
-        addressEntity.setAddressId(addressRepository.findByTenantEntity_UuidAndAddressUuid( addressValue.getTenantUuid(),addressValue.getAddressUuid()).getAddressId());
-        addressEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressValue.getTenantUuid()));
+        AddressEntity  addressEntity = addressValue.toEntity();
+        //BeanUtils.copyProperties(addressValue , addressEntity);
+
+        addressEntity.toBuilder().addressId(addressRepository.findByAddressUuid(addressValue.getAddressUuid()).getAddressId()).build();
+        //addressEntity.setTenantEntity(tenantRepository.findByTenantUuid(addressValue.getTenantUuid()));
         BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
-        return addressValue;
+        return addressRepository.save(addressEntity).toDTO();
     }
 
     @Override
-    public AddressValue getAddress( String tenantUuid,String addressUuid) throws Exception {
-        AddressValue addressValue =new AddressValue();
-        AddressEntity addressEntity=addressRepository.findByTenantEntity_UuidAndAddressUuid(tenantUuid,addressUuid);
-        BeanUtils.copyProperties(addressEntity, addressValue);
-        addressValue.setTenantUuid(tenantUuid);
-        return addressValue;
+    public AddressValue getAddress( String tenantUuid, String addressUuid) throws Exception {
+        //AddressValue addressValue = new AddressValue();
+        AddressEntity addressEntity = addressRepository.findByAddressUuid(addressUuid);
+        //BeanUtils.copyProperties(addressEntity, addressValue);
+        //addressValue.setTenantUuid(tenantUuid);
+        return addressEntity.toDTO();
     }
 
     @Override
     public AddressValue deleteAddress( String tenantUuid,String addressUuid) throws Exception {
-        AddressValue addressValue=new AddressValue();
-        addressRepository .softDelete(addressUuid);
-        AddressEntity  addressEntity=addressRepository.findByTenantEntity_UuidAndAddressUuid(tenantUuid,addressUuid);
-        BeanUtils.copyProperties(addressEntity, addressValue);
-        return addressValue;
+        //AddressValue addressValue=new AddressValue();
+        addressRepository.softDelete(addressUuid);
+        AddressEntity  addressEntity = addressRepository.findByAddressUuid(addressUuid);
+        //BeanUtils.copyProperties(addressEntity, addressValue);
+        return addressEntity.toDTO();
     }
 
     @Override
     public List<AddressValue> getAllCompanyAddress(String tenantUuid) throws Exception {
         List<AddressValue> addressValues = new ArrayList<>();
-        AddressValue addressValue = null;
+/*        AddressValue addressValue = null;
         List<AddressEntity> addressEntities = addressRepository.findAllByTenantEntity_Uuid(tenantUuid);
         for (int i = 0; i < addressEntities.size(); i++) {
             addressValue = new AddressValue();
             BeanUtils.copyProperties(addressEntities.get(i), addressValue);
             addressValue.setTenantUuid(tenantUuid);
             addressValues.add(addressValue);
-        }
+        }*/
         return addressValues;
     }
 }

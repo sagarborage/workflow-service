@@ -73,7 +73,6 @@ CREATE TABLE `additional_charges` (
 CREATE TABLE `address` (
   `address_id` int(10) NOT NULL AUTO_INCREMENT,
   `uuid` varchar(40) DEFAULT NULL,
-  `tenant_id` int(10) NOT NULL,
   `address_line1` varchar(100) DEFAULT NULL,
   `address_line2` varchar(100) DEFAULT NULL,
   `address_line3` varchar(100) DEFAULT NULL,
@@ -93,10 +92,7 @@ CREATE TABLE `address` (
   `updated_by` varchar(100) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`address_id`) USING BTREE,
-  UNIQUE KEY `uuid` (`uuid`),
-  KEY `tenant_id` (`tenant_id`),
-  KEY `address_type_id` (`tenant_id`),
-  CONSTRAINT `address_tenant_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`tenant_id`)
+  UNIQUE KEY `uuid` (`uuid`)
 );
 
 CREATE TABLE `address_type` (
@@ -115,21 +111,18 @@ CREATE TABLE `address_type` (
 CREATE TABLE `company_address` (
   `company_address_id` int(10) NOT NULL AUTO_INCREMENT,
   `uuid` varchar(40) DEFAULT NULL,
-  `tenant_id` int(40) NOT NULL,
   `company_id` int(10) NOT NULL,
   `address_id` int(10) NOT NULL,
   `address_type_id` int(10) NOT NULL,
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`company_address_id`) USING BTREE,
   UNIQUE KEY `UUID` (`uuid`),
-  KEY `fk_company_address_tenant` (`tenant_id`),
   KEY `fk_company_address_address` (`address_id`),
   KEY `fk_company_address_address_type` (`address_type_id`),
   KEY `fk_company_address_company` (`company_id`),
   CONSTRAINT `fk_company_address_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`),
   CONSTRAINT `fk_company_address_address_type` FOREIGN KEY (`address_type_id`) REFERENCES `address_type` (`address_type_id`),
-  CONSTRAINT `fk_company_address_company` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
-  CONSTRAINT `fk_company_address_tenant` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`tenant_id`)
+  CONSTRAINT `fk_company_address_company` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
 );
 
 CREATE TABLE `confirm_through` (
@@ -177,18 +170,15 @@ CREATE TABLE `glass_type` (
   CONSTRAINT `glass_type_tenant_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`tenant_id`)
 );
 
-
-
 CREATE TABLE `pi_type` (
-  `pi_type_id` int(10) NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(50) NOT NULL,
-  `tenant_id` int(10) NOT NULL,
-  `mm` decimal(10,6) DEFAULT NULL,
-  `sqft` decimal(10,6) DEFAULT NULL,
-  PRIMARY KEY (`pi_type_id`) USING BTREE,
-  UNIQUE KEY `uk_pi_type_uuid` (`uuid`),
-  KEY `tenant_id` (`tenant_id`),
-  CONSTRAINT `pi_type_tenant_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`tenant_id`)
+	`pi_type_id` INT(10) NOT NULL AUTO_INCREMENT,
+	`uuid` VARCHAR(50) NOT NULL,
+	`tenant_id` INT(10) NOT NULL,
+	`pi_type_name` VARCHAR(10) NOT NULL,
+	PRIMARY KEY (`pi_type_id`) USING BTREE,
+	UNIQUE INDEX `uk_pi_type_uuid` (`uuid`) USING BTREE,
+	INDEX `tenant_id` (`tenant_id`) USING BTREE,
+	CONSTRAINT `pi_type_tenant_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`tenant_id`)
 );
 
 CREATE TABLE `pro_forma_invoice` (
@@ -247,6 +237,10 @@ CREATE TABLE `pro_forma_invoice_item` (
   `sqft` decimal(20,6) DEFAULT NULL,
   `rate_per_sqft` decimal(20,6) DEFAULT NULL,
   `amount` decimal(20,6) DEFAULT NULL,
+  `optimize` int(5) DEFAULT 0,
+  `cutting` int(5) DEFAULT 0,
+  `toughen` int(5) DEFAULT 0,
+  `dispatch` int(5) DEFAULT 0,
   PRIMARY KEY (`pro_forma_invoice_item_id`) USING BTREE,
   UNIQUE KEY `uk_pro_forma_invoice_item_uuid` (`uuid`),
   KEY `tenant_id` (`tenant_id`),

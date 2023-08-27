@@ -1,17 +1,22 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.AddressTypeValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "address_type")
 @Getter
 @Setter
+@ToString(callSuper = true)
+@Table(name = "address_type")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class AddressTypeEntity implements Serializable {
 
     private static final long serialVersionUID = 3981140897718611608L;
@@ -36,6 +41,17 @@ public class AddressTypeEntity implements Serializable {
     private TenantEntity tenantEntity;
 
     @OneToMany(mappedBy="addressTypeEntity",cascade=CascadeType.ALL)
-    private List<CompanyAddressEntity> companyAddressEntity;
+    private List<CompanyAddressEntity> companyAddresses;
 
+    public AddressTypeValue toDTO() {
+        return AddressTypeValue.newBuilder()
+                .addressTypeId(getAddressTypeId())
+                .addressTypeUuid(getAddressTypeUuid())
+                .type(getType())
+                .description(getDescription())
+                .isActive(getIsActive())
+                .tenantValue(getTenantEntity().toDTO())
+                .companyAddresses(getCompanyAddresses().stream().map(c->c.toDTO()).collect(Collectors.toList()))
+                .build();
+    }
 }

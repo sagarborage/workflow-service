@@ -1,15 +1,19 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.value.CompanyAddressValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="company_address")
+@ToString(callSuper = true)
+@Table(name = "company_address")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class CompanyAddressEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -24,19 +28,26 @@ public class CompanyAddressEntity implements Serializable {
     private Boolean isActive = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
-    private TenantEntity tenantEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="address_type_id")
-    private AddressTypeEntity addressTypeEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="company_id")
     private CompanyEntity companyEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="address_id")
     private AddressEntity addressEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="address_type_id")
+    private AddressTypeEntity addressTypeEntity;
+
+    public CompanyAddressValue toDTO() {
+        return CompanyAddressValue.newBuilder()
+                .companyAddressId(getCompanyAddressId())
+                .companyAddressUuid(getCompanyAddressUuid())
+                .isActive(getIsActive())
+                .companyValue(getCompanyEntity().toDTO())
+                .addressValue(getAddressEntity().toDTO())
+                .addressTypeValue(getAddressTypeEntity().toDTO())
+                .build();
+    }
 
 }
