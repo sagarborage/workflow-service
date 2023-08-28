@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -57,11 +58,11 @@ public class CompanyEntity extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
-    private CompanyTypeEntity companyTypeEntity;
+    private CompanyTypeEntity companyType;
 
-    @OneToMany
-    @JoinColumn(name="company_id")
-    List<CompanyAddressEntity> companyAddressEntities;
+    @OneToMany(mappedBy = "companyEntity")
+    //@JoinColumn(name="company_id")
+    List<CompanyAddressEntity> companyAddresses;
 
     public CompanyValue toDTO() {
         return CompanyValue.newBuilder()
@@ -74,7 +75,8 @@ public class CompanyEntity extends BaseEntity {
                 .pan(getPan())
                 .isActive(getIsActive())
                 .tenantValue(getTenantEntity().toDTO())
-                .companyTypeValue(getCompanyTypeEntity().toDTO())
+                .companyAddresses(getCompanyAddresses().stream().map(e->e.toDTO()).collect(Collectors.toList()))
+                .companyType(getCompanyType().toDTO())
                 .build();
     }
 }

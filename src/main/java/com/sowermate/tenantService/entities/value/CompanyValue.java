@@ -14,6 +14,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Jacksonized
@@ -33,7 +35,7 @@ public class CompanyValue {
     private String pan;
     private Boolean isActive;
     private TenantValue tenantValue;
-    private CompanyTypeValue companyTypeValue;
+    private CompanyTypeValue companyType;
     private List<CompanyAddressValue> companyAddresses;
     protected Date createdDttm;
     protected Date updatedDttm;
@@ -51,9 +53,10 @@ public class CompanyValue {
                 .pan(getPan())
                 .isActive(getIsActive())
                 //.tenantEntity(TenantEntity.fromTenantValue(getTenantEntity()))
-                .tenantEntity(getTenantValue().toEntity())
+                .tenantEntity(Optional.ofNullable(getTenantValue()).map(e->e.toEntity()).orElse(null))
+                .companyAddresses(getCompanyAddresses().stream().map(e->e.toEntity()).collect(Collectors.toList()))
                 //.companyTypeEntity(CompanyTypeEntity.fromCompanyTypeValue(getCompanyTypeEntity()))
-                .companyTypeEntity(getCompanyTypeValue().toEntity())
+                .companyType(getCompanyType().toEntity())
                 .build();
     }
 }

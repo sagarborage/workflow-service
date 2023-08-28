@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.value.AddressValue;
 import com.sowermate.tenantService.entities.value.CompanyAddressValue;
 import com.sowermate.tenantService.entities.value.CompanyValue;
+import com.sowermate.tenantService.mapper.CompanyMapper;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.repositories.Utlity.CommonUtils;
 import com.sowermate.tenantService.services.CompanyService;
@@ -61,7 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyValue getCompany(String tenantUuid, String companyUuid) throws Exception {
         CompanyValue companyValue = CompanyValue.newBuilder().build();
         CompanyEntity companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUuid, companyUuid);
-        BeanUtils.copyProperties(companyEntity.getCompanyTypeEntity(), companyValue);
+        BeanUtils.copyProperties(companyEntity.getCompanyType(), companyValue);
         BeanUtils.copyProperties(companyEntity, companyValue);
         //companyValue.toBuilder().companyTypeUuid(tenantUuid);
         //companyValue.setCompanyTypeUuid(companyValue.getCompanyTypeUuid());
@@ -77,10 +78,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     private CompanyEntity prepareAndSaveEntities(CompanyValue companyValue) {
-        CompanyEntity company = companyValue.toEntity();
+        //CompanyEntity company = companyValue.toEntity();
+        CompanyEntity entity1 = CompanyMapper.INSTANCE.toEntity(companyValue);
         //TenantEntity tenantEntity = tenantRepository.findByTenantUuid(companyValue.getCompanyUuid());
-        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(companyValue.getTenantValue().getUuid())
-        AddressEntity addressEntity = prepareAndSaveAddressEntity(companyValue, tenantEntity);
+        //CompanyEntity ce = CompanyMapper.INSTANCE.toEntity(companyValue);
+        TenantEntity tenantEntity = tenantRepository.findByTenantUuid(companyValue.getTenantValue().getUuid());
+        //AddressEntity addressEntity = prepareAndSaveAddressEntity(companyValue, tenantEntity);
 
         //CompanyEntity companyEntity = prepareAndSaveCompanyEntity(companyValue, tenantEntity);
 
@@ -88,12 +91,12 @@ public class CompanyServiceImpl implements CompanyService {
         CompanyEntity companyEntity = companyValue.toEntity().toBuilder()
                 .companyUuid(CommonUtils.generateUUID())
                 .tenantEntity(tenantEntity)
-                .companyTypeEntity(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyTypeValue().getCompanyTypeUuid()))
-                .companyAddressEntities(companyValue.getCompanyAddresses().stream()
+                .companyType(companyTypeRepository.findByCompanyTypeUuid(companyValue.getCompanyType().getCompanyTypeUuid()))
+/*                .companyAddressEntities(companyValue.getCompanyAddresses().stream()
                         .map(cae-> cae.toEntity().toBuilder().companyAddressUuid(CommonUtils.generateUUID())
                                 .addressEntity(cae.getAddressValue().toEntity().toBuilder().addressUuid(CommonUtils.generateUUID()).build())
                                 .build())
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toList()))*/
                 .build();
 
         return companyRepository.save(companyEntity);
@@ -159,7 +162,7 @@ public class CompanyServiceImpl implements CompanyService {
 */
 /*        if (tenantEntity != null) {
             companyAddressEntity.setTenantEntity(tenantEntity);
-        }*//*
+        }
 
         AddressTypeEntity addressType = addressTypeRepository.getAddressTypeEntityByAddressTypeUuid(companyValue.getCompanyAddresses().get(0).getAddressTypeUuid());
         if (addressType != null) {
@@ -182,7 +185,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         return companyAddressEntity;
     }
-*/
+
     private AddressEntity prepareAndSaveAddressEntity(CompanyValue companyValue, TenantEntity tenantEntity) {
         AddressEntity addressEntity = null;
         if (!companyValue.getCompanyAddresses().isEmpty() &&
@@ -199,9 +202,9 @@ public class CompanyServiceImpl implements CompanyService {
         }
 
 
-/*        if (tenantEntity != null) {
+        if (tenantEntity != null) {
             addressEntity.setTenantEntity(tenantEntity);
-        }*//*
+        }
 
         addressRepository.save(addressEntity);
 

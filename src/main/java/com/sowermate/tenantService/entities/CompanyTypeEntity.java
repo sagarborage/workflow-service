@@ -36,7 +36,7 @@ public class CompanyTypeEntity  implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
     
-    @OneToOne(mappedBy="companyTypeEntity",cascade=CascadeType.ALL)
+    @OneToOne(mappedBy="companyType",cascade=CascadeType.ALL)
     private CompanyEntity companyEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
