@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = false)
 @Table(name = "address_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
@@ -50,7 +50,7 @@ public class AddressTypeEntity implements Serializable {
                 .type(getType())
                 .description(getDescription())
                 .isActive(getIsActive())
-                .tenantValue(getTenantEntity().toDTO())
+                //.tenantValue(getTenantEntity().toDTO())
                 .companyAddresses(getCompanyAddresses().stream().map(c->c.toDTO()).collect(Collectors.toList()))
                 .build();
     }

@@ -12,9 +12,9 @@ public interface CompanyMapper {
     CompanyMapper INSTANCE = Mappers.getMapper(CompanyMapper.class);
 
     //@Mapping(target = "companyAddresses", source = "companyAddresses")
-    CompanyValue toDTO(CompanyEntity companyEntity);
+    //CompanyValue toDTO(CompanyEntity companyEntity);
 
     //@Mapping(target = "companyAddresses", ignore = true)
-    CompanyEntity toEntity(CompanyValue companyValue);
+    //CompanyEntity toEntity(CompanyValue companyValue);
 
 }

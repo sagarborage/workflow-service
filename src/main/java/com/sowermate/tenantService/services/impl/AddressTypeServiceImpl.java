@@ -30,7 +30,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     public AddressTypeValue createAddressType(AddressTypeValue addressTypeValue) throws Exception {
         AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
                 .addressTypeUuid(CommonUtils.generateUUID())
-                .tenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantValue().getUuid()))
+                .tenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantUuid()))
                         .build();
 
         //addressTypeEntity.setAddressTypeUuid(CommonUtils.generateUUID());
@@ -44,7 +44,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
         AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
                 .addressTypeId(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(addressTypeValue.getAddressTypeUuid(),
                         addressTypeValue.getAddressTypeUuid()).getAddressTypeId())
-                .tenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantValue().getUuid()))
+                .tenantEntity(tenantRepository.findByTenantUuid(addressTypeValue.getTenantUuid()))
                 .build();
         //BeanUtils.copyProperties(addressTypeValue, addressTypeEntity);
 

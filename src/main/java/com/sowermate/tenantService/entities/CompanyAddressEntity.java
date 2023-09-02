@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = false)
 @Table(name = "company_address")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
@@ -44,9 +44,9 @@ public class CompanyAddressEntity implements Serializable {
                 .companyAddressId(getCompanyAddressId())
                 .companyAddressUuid(getCompanyAddressUuid())
                 .isActive(getIsActive())
-                .companyValue(getCompanyEntity().toDTO())
+                //.companyValue(getCompanyEntity().toDTO())
                 .addressValue(getAddressEntity().toDTO())
-                .addressTypeValue(getAddressTypeEntity().toDTO())
+                //.addressTypeValue(getAddressTypeEntity().toDTO())
                 .build();
     }
 

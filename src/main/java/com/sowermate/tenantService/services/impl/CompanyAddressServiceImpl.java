@@ -36,12 +36,12 @@ public class CompanyAddressServiceImpl implements CompanyAddressService {
 
     @Override
     public CompanyAddressValue createCompanyAddress(CompanyAddressValue companyAddressValue) throws Exception {
-        CompanyEntity companyEntity = companyRepository.findByCompanyUuid(companyAddressValue.getCompanyValue().getCompanyUuid());
+        CompanyEntity companyEntity = companyRepository.findByCompanyUuid(companyAddressValue.getCompanyUuid());
         CompanyAddressEntity companyAddressEntity = companyAddressValue.toEntity().toBuilder()
                 .companyAddressUuid(CommonUtils.generateUUID())
                 .companyEntity(companyEntity)
                 .addressTypeEntity(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(companyEntity.getTenantEntity().getUuid(),
-                        companyAddressValue.getAddressTypeValue().getAddressTypeUuid()))
+                        companyAddressValue.getAddressTypeUuid()))
                 .addressEntity(addressRepository.findByAddressUuid(companyAddressValue.getAddressValue().getAddressUuid()))
                 .build();
 /*        BeanUtils.copyProperties(companyAddressValue, companyAddressEntity);
@@ -56,11 +56,11 @@ public class CompanyAddressServiceImpl implements CompanyAddressService {
 
     @Override
     public CompanyAddressValue editCompanyAddress(CompanyAddressValue companyAddressValue) throws Exception {
-        CompanyEntity companyEntity = companyRepository.findByCompanyUuid(companyAddressValue.getCompanyValue().getCompanyUuid());
+        CompanyEntity companyEntity = companyRepository.findByCompanyUuid(companyAddressValue.getCompanyUuid());
         CompanyAddressEntity companyAddressEntity = companyAddressValue.toEntity().toBuilder()
                 .companyEntity(companyEntity)
                 .addressTypeEntity(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(companyEntity.getTenantEntity().getUuid(),
-                        companyAddressValue.getAddressTypeValue().getAddressTypeUuid()))
+                        companyAddressValue.getAddressTypeUuid()))
                 .addressEntity(addressRepository.findByAddressUuid(companyAddressValue.getAddressValue().getAddressUuid()))
                 .build();
 /*        CompanyAddressEntity companyAddressEntity = new CompanyAddressEntity();

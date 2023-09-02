@@ -13,11 +13,11 @@ import java.util.List;
 
 @Repository
 public interface CompanyAddressRepository extends JpaRepository<CompanyAddressEntity ,String> {
-/*    @Query("SELECT c FROM CompanyAddressEntity c " +
-            "JOIN c.tenantEntity t " +
-            "WHERE t.uuid = :tenantUuid " +
+    @Query("SELECT c FROM CompanyAddressEntity c " +
+            "JOIN c.companyEntity t " +
+            "WHERE t.companyUuid = :companyUuid " +
             "AND c.companyAddressUuid = :companyAddressUuid")
-    public CompanyAddressEntity findByTenantEntity_UuidAndCompanyAddressUuid(String tenantUuid, String companyAddressUuid);*/
+    public CompanyAddressEntity findByTenantEntity_UuidAndCompanyAddressUuid(String companyUuid, String companyAddressUuid);
 
     public CompanyAddressEntity findByCompanyAddressUuid(String companyAddressUuid);
 

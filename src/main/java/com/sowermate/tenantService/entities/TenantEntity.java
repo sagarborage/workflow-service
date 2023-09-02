@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
 @Table(name = "tenant")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
@@ -55,49 +54,49 @@ public class TenantEntity implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
 
-   // @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+   // @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
    // private List<CompanyEntity> companyEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AdditionalChargesEntity> additionalChargesEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ServiceRateEntity> serviceRateEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<GlassTypeEntity> glassTypeEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<GlassThicknessEntity> glassThicknessEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<PiTypeEntity> PiTypeEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<ConfirmThroughEntity>  confirmThroughEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<CompanyTypeEntity>  companyTypeEntities;//OK
 
-/*    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+/*    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<AddressEntity>  addressEntities;*/
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<ProFormaInvoiceEntity>  proFormaInvoiceEntities;//OK
 
-    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     //private  List<ProFormaInvoiceItemEntity>  proFormaInvoiceItemEntities;
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<StatusEntity>  statusEntities;//OK
 
-    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     //private  List<ServiceRateInvoiceEntity>  serviceRateInvoiceEntities;
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<AddressTypeEntity>  addressTypeEntities;//OK
 
-    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL)
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     //private  List<CompanyAddressEntity>  companyAddressEntities;
 
     public TenantValue toDTO() {
@@ -119,9 +118,9 @@ public class TenantEntity implements Serializable {
 /*                .companyTypeValues(getCompanyEntities().stream()
                         .map(companyEntity -> companyEntity.getCompanyTypeEntity().toDTO())
                         .collect(Collectors.toList()))*/
-                .additionalChargesValues(getAdditionalChargesEntities().stream()
+/*                .additionalChargesValues(getAdditionalChargesEntities().stream()
                         .map(AdditionalChargesEntity::toDTO)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toList()))*/
                 // ... (other @OneToMany fields)
                 .build();
     }

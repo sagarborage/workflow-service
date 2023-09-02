@@ -13,7 +13,7 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = false)
 @Table(name = "company_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
@@ -36,8 +36,8 @@ public class CompanyTypeEntity  implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;
     
-    @OneToOne(mappedBy="companyType",cascade=CascadeType.ALL)
-    private CompanyEntity companyEntity;
+    @OneToMany(mappedBy="companyType",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CompanyEntity> companyEntiies;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
@@ -50,7 +50,7 @@ public class CompanyTypeEntity  implements Serializable {
                 .description(getDescription())
                 .companyTypeUuid(getCompanyTypeUuid())
                 .isActive(getIsActive())
-                .companyValue(Optional.ofNullable(getCompanyEntity()).map(CompanyEntity::toDTO).orElse(null))
+                //.companyValue(Optional.ofNullable(getCompanyEntity()).map(CompanyEntity::toDTO).orElse(null))
                 .build();
     }
 }

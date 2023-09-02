@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities.value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.tenantService.entities.CompanyAddressEntity;
 import com.sowermate.tenantService.entities.CompanyEntity;
@@ -26,16 +27,17 @@ public class CompanyValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Integer companyId;
     protected String companyUuid;
+    private String tenantUuid;
+    private String companyTypeUuid;
     private String companyName;
     private String cin;
     private String gstin;
     private String tan;
     private String pan;
     private Boolean isActive;
-    private TenantValue tenantValue;
-    private CompanyTypeValue companyType;
     private List<CompanyAddressValue> companyAddresses;
     protected Date createdDttm;
     protected Date updatedDttm;
@@ -52,11 +54,9 @@ public class CompanyValue {
                 .tan(getTan())
                 .pan(getPan())
                 .isActive(getIsActive())
-                //.tenantEntity(TenantEntity.fromTenantValue(getTenantEntity()))
-                .tenantEntity(Optional.ofNullable(getTenantValue()).map(e->e.toEntity()).orElse(null))
-                .companyAddresses(getCompanyAddresses().stream().map(e->e.toEntity()).collect(Collectors.toList()))
-                //.companyTypeEntity(CompanyTypeEntity.fromCompanyTypeValue(getCompanyTypeEntity()))
-                .companyType(getCompanyType().toEntity())
+                //.tenantEntity(TenantEntity.newBuilder().uuid(getCompanyUuid()).build())
+                //.companyAddresses(Optional.ofNullable(getCompanyAddresses()).map(e->e.stream().map(el->el.toEntity()).collect(Collectors.toList())).orElse(null))
+                //.companyType(CompanyTypeEntity.newBuilder().companyTypeUuid(getCompanyTypeUuid()).build())
                 .build();
     }
 }

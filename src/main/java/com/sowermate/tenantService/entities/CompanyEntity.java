@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+//@ToString(callSuper = false)
 @Table(name = "company")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
@@ -56,12 +56,12 @@ public class CompanyEntity extends BaseEntity {
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
     private CompanyTypeEntity companyType;
 
-    @OneToMany(mappedBy = "companyEntity")
-    //@JoinColumn(name="company_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="company_id")
     List<CompanyAddressEntity> companyAddresses;
 
     public CompanyValue toDTO() {
@@ -74,9 +74,9 @@ public class CompanyEntity extends BaseEntity {
                 .tan(getTan())
                 .pan(getPan())
                 .isActive(getIsActive())
-                .tenantValue(getTenantEntity().toDTO())
-                .companyAddresses(getCompanyAddresses().stream().map(e->e.toDTO()).collect(Collectors.toList()))
-                .companyType(getCompanyType().toDTO())
+                .tenantUuid(getTenantEntity().getUuid())
+                //.companyAddresses(getCompanyAddresses().stream().map(e->e.toDTO()).collect(Collectors.toList()))
+                .companyTypeUuid(getCompanyType().getCompanyTypeUuid())
                 .build();
     }
 }

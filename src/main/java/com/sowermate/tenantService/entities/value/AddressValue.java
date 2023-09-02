@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities.value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.tenantService.entities.AddressEntity;
 import lombok.Data;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressValue {
-
+    @JsonIgnore
     private Integer addressId;
     private String addressUuid;
     private Date createdDttm;

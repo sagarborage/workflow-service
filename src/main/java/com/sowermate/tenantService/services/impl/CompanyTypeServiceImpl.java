@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
         CompanyTypeEntity companyTypeEntity = companyTypeValue.toEntity().toBuilder()
                 .companyTypeUuid(CommonUtils.generateUUID())
                 .tenantEntity(tenantEntity)
-                .companyEntity(companyEntity)
+                .companyEntiies(Arrays.asList(companyEntity))
                 .build();
         //CompanyTypeEntity companyTypeEntity = new CompanyTypeEntity();
         //BeanUtils.copyProperties(companyTypeValue, companyTypeEntity);
@@ -76,7 +77,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
         CompanyTypeEntity companyTypeEntity = companyTypeValue.toEntity().toBuilder()
                 .companyTypeId(companyTypeTemp.getCompanyTypeId())
                 .tenantEntity(tenantEntity)
-                .companyEntity(companyEntity)
+                .companyEntiies(Arrays.asList(companyEntity))
                 .build();
 
         return companyTypeRepository.save(companyTypeEntity).toDTO();

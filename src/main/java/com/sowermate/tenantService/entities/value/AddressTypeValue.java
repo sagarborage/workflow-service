@@ -16,12 +16,11 @@ import java.util.stream.Collectors;
 public class AddressTypeValue {
 
     private Integer addressTypeId;
+    private String addressTypeUuid;
+    private String tenantUuid;
     private String type;
     private String description;
-    private String addressTypeUuid;
     private Boolean isActive;
-
-    private TenantValue tenantValue;
 
     private List<CompanyAddressValue> companyAddresses;
 
@@ -32,7 +31,7 @@ public class AddressTypeValue {
                 .type(getType())
                 .description(getDescription())
                 .isActive(getIsActive())
-                .tenantEntity(getTenantValue().toEntity())
+                //.tenantEntity(getTenantValue().toEntity())
                 .companyAddresses(getCompanyAddresses().stream().map(a->a.toEntity()).collect(Collectors.toList()))
                 .build();
     }
