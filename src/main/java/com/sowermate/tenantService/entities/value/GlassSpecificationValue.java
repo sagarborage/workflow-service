@@ -12,21 +12,20 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GlassSpecificationValue {
+public class GlassSpecificationValue extends BaseValue {
 
-    private Integer glassSpecificationId;
+    private Long glassSpecificationId;
     private String glassSpecificationUuid;
+    private String tenantUuid;
     private String name;
     private Boolean isActive;
-    private TenantValue tenantValue;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
     public GlassSpecificationEntity toEntity() {
         return GlassSpecificationEntity.newBuilder()
-                .glassSpecificationId(getGlassSpecificationId())
-                .glassSpecificationUuid(getGlassSpecificationUuid())
+                .id(getGlassSpecificationId())
+                .uuid(getGlassSpecificationUuid())
                 .name(getName())
-                .tenantEntity(getTenantValue().toEntity())
                 .isActive(getIsActive())
                 .build();
     }

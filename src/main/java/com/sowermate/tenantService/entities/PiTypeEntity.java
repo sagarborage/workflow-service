@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.PiTypeValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -10,19 +11,11 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = false)
 @Table(name = "pi_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class PiTypeEntity {
+public class PiTypeEntity extends Base {
     private static final long serialVersionUID = -241370177952331642L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer piTypeId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String piTypeUuid;
 
     @Column(name = "pi_type_name")
     private String piTypeName;
@@ -36,10 +29,14 @@ public class PiTypeEntity {
 
     public PiTypeValue toDTO() {
         return PiTypeValue.newBuilder()
-                .piTypeId(getPiTypeId())
-                .piTypeUuid(getPiTypeUuid())
+                .piTypeId(getId())
+                .piTypeUuid(getUuid())
                 .piTypeName(getPiTypeName())
-                .tenantValue(getTenantEntity().toDTO())
+                .isActive(isActive())
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
                 .build();
     }
 

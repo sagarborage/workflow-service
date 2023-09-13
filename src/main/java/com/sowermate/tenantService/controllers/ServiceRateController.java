@@ -17,24 +17,24 @@ public class ServiceRateController {
 
     @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ServiceRateValue> createServiceRate(@RequestBody ServiceRateValue serviceRateValue) throws Exception {
+    public ResponseEntity<ServiceRateValue> createServiceRate(@RequestBody ServiceRateValue serviceRateValue) {
         ServiceRateValue serviceRateValue1=serviceRateService.createServiceRate(serviceRateValue);
         return new ResponseEntity<ServiceRateValue>( serviceRateValue1, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{tenantUuid}/{serviceRateUuid}")
-    public ResponseEntity<ServiceRateValue> getServiceRate(@PathVariable String  tenantUuid,@PathVariable String serviceRateUuid) throws Exception {
+    public ResponseEntity<ServiceRateValue> getServiceRate(@PathVariable String  tenantUuid,@PathVariable String serviceRateUuid) {
         ServiceRateValue serviceRateValue=serviceRateService.getServiceRate(tenantUuid,serviceRateUuid);
         return  new ResponseEntity<>(serviceRateValue, HttpStatus.ACCEPTED);
     }
     @GetMapping(value = "/{tenantUuid}")
-    public ResponseEntity<List<ServiceRateValue>> getAllServiceRate(@PathVariable String  tenantUuid) throws Exception {
+    public ResponseEntity<List<ServiceRateValue>> getAllServiceRate(@PathVariable String  tenantUuid) {
         List<ServiceRateValue> serviceRateValues = serviceRateService.getAllServiceRate(tenantUuid);
         return new ResponseEntity<> (serviceRateValues ,HttpStatus.ACCEPTED);
     }
     @RequestMapping(value = "/{tenantUuid}/{serviceRateUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ServiceRateValue> deleteServiceRate(@PathVariable String  tenantUuid,@PathVariable String serviceRateUuid) throws Exception {
+    public ResponseEntity<ServiceRateValue> deleteServiceRate(@PathVariable String  tenantUuid,@PathVariable String serviceRateUuid) {
         ServiceRateValue serviceRateValue =serviceRateService.deleteServiceRate(tenantUuid,serviceRateUuid);
         return new ResponseEntity<ServiceRateValue>(serviceRateValue ,HttpStatus.ACCEPTED);
     }

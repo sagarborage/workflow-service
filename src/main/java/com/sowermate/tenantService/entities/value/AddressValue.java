@@ -18,12 +18,11 @@ import java.util.stream.Collectors;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AddressValue {
+public class AddressValue extends BaseValue {
     @JsonIgnore
-    private Integer addressId;
+    private Long addressId;
     private String addressUuid;
-    private Date createdDttm;
-    private Date updatedDttm;
+    private String addressTypeUuid;
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
@@ -37,21 +36,14 @@ public class AddressValue {
     private String alternatePhoneNumber;
     private String email;
     private String website;
-    private String createdBy;
-    private String updatedBy;
-    private Boolean isActive;
-
-    private List<CompanyAddressValue> companyAddressValues;
 
     public AddressEntity toEntity() {
         return AddressEntity.newBuilder()
-                .addressId(getAddressId())
-                .addressUuid(getAddressUuid())
-                .createdDttm(getCreatedDttm())
-                .updatedDttm(getUpdatedDttm())
+                .id(getAddressId())
+                .uuid(getAddressUuid())
                 .addressLine1(getAddressLine1())
                 .addressLine2(getAddressLine2())
-                .addressLine3(getAddressLine3())
+                .addressLine3(getAddressLine3())                .isActive(isActive())
                 .city(getCity())
                 .stateCode(getStateCode())
                 .countryCode(getCountryCode())
@@ -62,11 +54,10 @@ public class AddressValue {
                 .alternatePhoneNumber(getAlternatePhoneNumber())
                 .email(getEmail())
                 .website(getWebsite())
+                .createdDatetime(getCreatedDttm())
+                .lastUpdatedDatetime(getUpdatedDttm())
                 .createdBy(getCreatedBy())
-                .updatedBy(getUpdatedBy())
-                .isActive(getIsActive())
-                .companyAddresses(Optional.ofNullable(getCompanyAddressValues()).map(values -> values.stream()
-                        .map(a-> a.toEntity()).collect(Collectors.toList())).orElse(Collections.emptyList()))
+                .lastUpdatedBy(getUpdatedBy())
                 .build();
     }
 }

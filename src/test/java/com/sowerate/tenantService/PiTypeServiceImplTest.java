@@ -58,7 +58,7 @@ public class PiTypeServiceImplTest {
      * @throws Exception when there is problem while createPiType.
      */
     @Test
-    public void testCreatePiTypeWhenPiTypeValueIsPassedExpectPiTypeValueSaved() throws Exception {
+    public void testCreatePiTypeWhenPiTypeValueIsPassedExpectPiTypeValueSaved() {
         //given
         PiTypeValue piTypeValue = preparePiTypeValue();
         PiTypeEntity piTypeEntity = preparePiTypeEntity();
@@ -91,7 +91,7 @@ public class PiTypeServiceImplTest {
      * @throws Exception when there is problem while fetching editPiType.
      */
    /* @Test
-    public void testEditPiTypeWhenPiTypeValueIsPassedExpectAddressValueUpdated() throws Exception {
+    public void testEditPiTypeWhenPiTypeValueIsPassedExpectAddressValueUpdated() {
         //given
         PiTypeValue piTypeValue = preparePiTypeValue();
         PiTypeEntity piTypeEntity = preparePiTypeEntity();
@@ -126,7 +126,7 @@ public class PiTypeServiceImplTest {
      * @throws Exception when there is problem while fetching getPiType by using UUID.
      */
     @Test
-    public void testGetPiType_when_requiredParameterPassed_ExpectPiTypeValue() throws Exception {
+    public void testGetPiType_when_requiredParameterPassed_ExpectPiTypeValue() {
         //given
         PiTypeEntity piTypeEntity = new PiTypeEntity();
         piTypeEntity.setPiTypeId(1);
@@ -149,7 +149,7 @@ public class PiTypeServiceImplTest {
      * @throws Exception when there is problem while fetching getAllPiType by using UUID.
      */
     @Test
-    public void testGetAllPiTypeWhenRequestIsPassedExpectGetAllPiType() throws Exception {
+    public void testGetAllPiTypeWhenRequestIsPassedExpectGetAllPiType() {
         // given
         PiTypeEntity piTypeEntity = preparePiTypeEntity();
         List<PiTypeEntity> entities = new ArrayList<PiTypeEntity>();
@@ -169,12 +169,12 @@ public class PiTypeServiceImplTest {
      * @throws Exception when there is a problem while fetching deletePiType by using UUID.
      */
     @Test
-    public void testDeletePiTypeWhenPiTypeUuidIsPassedExpectPiTypeValueDelete() throws Exception {
+    public void testDeletePiTypeWhenPiTypeUuidIsPassedExpectPiTypeValueDelete() {
         // given
         PiTypeEntity piTypeEntity = preparePiTypeEntity();
         List<PiTypeEntity> entities = Arrays.asList();
 
-        when(mockPiTypeRepository.deleteByPiTypeUuid(any())).thenReturn(1);
+        when(mockPiTypeRepository.deleteByUuid(any())).thenReturn(1);
         // when
         int recordCount = mockPiTypeServiceImpl.deletePiType(TEST_UUID, TEST_UUID);
         // then
@@ -195,7 +195,7 @@ public class PiTypeServiceImplTest {
 
     private ProFormaInvoiceEntity prepareProFormaInvoiceEntity() {
         ProFormaInvoiceEntity proFormaInvoiceEntity = new ProFormaInvoiceEntity();
-        proFormaInvoiceEntity.setProFormInvoiceUuid(TEST_UUID);
+        proFormaInvoiceEntity.setproFormaInvoiceUuid(TEST_UUID);
         return proFormaInvoiceEntity;
     }
 

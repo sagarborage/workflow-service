@@ -18,19 +18,19 @@ public class CompanyTypeController {
 
     @RequestMapping( method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<CompanyTypeValue> createCompanyType(@RequestBody CompanyTypeValue companyTypeValue) throws Exception {
+    public ResponseEntity<CompanyTypeValue> createCompanyType(@RequestBody CompanyTypeValue companyTypeValue) {
         CompanyTypeValue companyTypeValue1=companyTypeService.createCompanyType(companyTypeValue);
         return new ResponseEntity<CompanyTypeValue>( companyTypeValue1, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{tenantUuid}/{companyTypeUuid}")
-    public ResponseEntity<CompanyTypeValue> getCompanyType(@PathVariable String  tenantUuid,@PathVariable String companyTypeUuid) throws Exception {
+    public ResponseEntity<CompanyTypeValue> getCompanyType(@PathVariable String  tenantUuid,@PathVariable String companyTypeUuid) {
         CompanyTypeValue companyTypeValue=companyTypeService.getCompanyType(tenantUuid,companyTypeUuid);
         return  new ResponseEntity<>(companyTypeValue, HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/{tenantUuid}")
-    public ResponseEntity<List<CompanyTypeValue>> getAllCompanyType(@PathVariable String  tenantUuid) throws Exception {
+    public ResponseEntity<List<CompanyTypeValue>> getAllCompanyType(@PathVariable String  tenantUuid) {
         List<CompanyTypeValue> companyTypeValues = companyTypeService.getAllCompanyType(tenantUuid);
         return new ResponseEntity<> (companyTypeValues ,HttpStatus.ACCEPTED);
     }
@@ -44,7 +44,7 @@ public class CompanyTypeController {
 
     @RequestMapping(value = "/{tenantUuid}/{companyTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CompanyTypeValue> deleteCompanyType(@PathVariable String  tenantUuid,@PathVariable String companyTypeUuid) throws Exception {
+    public ResponseEntity<CompanyTypeValue> deleteCompanyType(@PathVariable String  tenantUuid,@PathVariable String companyTypeUuid) {
         CompanyTypeValue companyTypeValue =companyTypeService.deleteCompanyType(tenantUuid,companyTypeUuid);
         return new ResponseEntity<CompanyTypeValue>(companyTypeValue ,HttpStatus.ACCEPTED);
     }

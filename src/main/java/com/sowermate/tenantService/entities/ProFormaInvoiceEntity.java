@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -12,21 +13,13 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = false)
 @Table(name = "pro_forma_invoice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class ProFormaInvoiceEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer proFormaInvoiceId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String proFormInvoiceUuid;
+public class ProFormaInvoiceEntity extends Base {
 
     @Column(name = "pi_number")
-    private int piNumber;
+    private String piNumber;
 
     @Column(name = "invoice_date")
     private Date invoiceDate;
@@ -111,8 +104,8 @@ public class ProFormaInvoiceEntity {
 
     public ProFormaInvoiceValue toDTO() {
         return ProFormaInvoiceValue.newBuilder()
-                .proFormaInvoiceId(getProFormaInvoiceId())
-                .proFormInvoiceUuid(getProFormInvoiceUuid())
+                .proFormaInvoiceId(getId())
+                .proFormaInvoiceUuid(getUuid())
                 .piNumber(getPiNumber())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())
@@ -132,9 +125,13 @@ public class ProFormaInvoiceEntity {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
-                .proFormaInvoiceItems(getProFormaInvoiceItemEntities().stream().map(entity -> {
-                   return entity.toDTO();
-                }).collect(Collectors.toList()))
+                .proFormaInvoiceItems(getProFormaInvoiceItemEntities().stream().map(entity -> entity.toDTO()).collect(Collectors.toList()))
+                .serviceRateInvoices(getServiceRateInvoiceEntities().stream().map(entity->entity.toDTO()).collect(Collectors.toList()))
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }

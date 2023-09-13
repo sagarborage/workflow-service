@@ -21,14 +21,15 @@ public interface ServiceRateRepository extends JpaRepository<ServiceRateEntity, 
     @Query("SELECT s FROM ServiceRateEntity s " +
             "JOIN s.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND s.serviceRateUuid = :serviceRateUuid")
+            "AND s.uuid = :serviceRateUuid")
     public ServiceRateEntity findByTenantEntity_UuidAndServiceRateUuid(@Param("tenantUuid") String tenantUuid, @Param("serviceRateUuid") String serviceRateUuid);
     //public List<ServiceRateEntity> findByServiceRateId(int serviceRateId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ServiceRateEntity s SET s.isActive = false WHERE s.serviceRateUuid = :serviceRateUuid")
+    @Query("UPDATE ServiceRateEntity s SET s.isActive = false WHERE s.uuid = :serviceRateUuid")
     void softDelete(@Param("serviceRateUuid") String serviceRateUuid);
 
     public List<ServiceRateEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    ServiceRateEntity findByUuid(String uuid);
 }

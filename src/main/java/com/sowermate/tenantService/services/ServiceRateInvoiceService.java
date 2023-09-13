@@ -7,13 +7,13 @@ import java.util.List;
 public interface ServiceRateInvoiceService {
 
 
-    public ServiceRateInvoiceValue createServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) throws Exception;
+    public ServiceRateInvoiceValue createServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue);
 
-    public ServiceRateInvoiceValue editServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) throws Exception;
+    public ServiceRateInvoiceValue editServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue);
 
-    public ServiceRateInvoiceValue getServiceRateInvoice(String tenantUuid,String serviceRateInvoiceUuid) throws Exception;
+    public ServiceRateInvoiceValue getServiceRateInvoice(String tenantUuid,String serviceRateInvoiceUuid);
 
-    public int deleteServiceRateInvoice(String tenantUuid,String serviceRateInvoiceUuid) throws Exception;
+    public int deleteServiceRateInvoice(String tenantUuid,String serviceRateInvoiceUuid);
 
-    public List<ServiceRateInvoiceValue> getAllServiceRateInvoice(String tenantUuid) throws Exception;
+    public List<ServiceRateInvoiceValue> getAllServiceRateInvoice(String tenantUuid);
 }

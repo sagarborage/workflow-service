@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TenantValue {
+public class TenantValue extends BaseValue {
 
-    private Integer tenantId;
+    private Long tenantId;
     private String uuid;
     private String tenantName;
     private String address;
@@ -32,10 +32,10 @@ public class TenantValue {
     private Date activationDate;
     private Date expiryDate;
     private int gracePeriod;
-    private Boolean isActive = true;
+    private boolean isActive = true;
 
     private List<CompanyValue> companyValues;
-    private List<AdditionalChargesValue> additionalChargesValues;
+    private AdditionalChargesValue additionalCharges;
     private List<ServiceRateValue> serviceRateValues;
     private List<GlassTypeValue> glassTypeValues;
     private List<GlassThicknessValue> glassThicknessValues;
@@ -48,7 +48,7 @@ public class TenantValue {
 
     public TenantEntity toEntity() {
         return TenantEntity.newBuilder()
-                .tenantId(getTenantId())
+                .id(getTenantId())
                 .uuid(getUuid())
                 .tenantName(getTenantName())
                 .address(getAddress())
@@ -61,13 +61,11 @@ public class TenantValue {
                 .activationDate(getActivationDate())
                 .expiryDate(getExpiryDate())
                 .gracePeriod(getGracePeriod())
-                .isActive(getIsActive())
+                .isActive(isActive())
 /*                .companyEntities(Optional.ofNullable(getCompanyValues()).map(values -> values.stream()
                         .map(CompanyValue::toEntity)
                         .collect(Collectors.toList())).orElse(Collections.emptyList()))*/
-                .additionalChargesEntities(Optional.ofNullable(getAdditionalChargesValues()).map(values -> values.stream()
-                        .map(AdditionalChargesValue::toEntity)
-                        .collect(Collectors.toList())).orElse(Collections.emptyList()))
+                //.additionalChargesEntity(getAdditionalCharges().toEntity())
                 // ... (other @OneToMany fields)
                 .build();
     }

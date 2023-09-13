@@ -17,14 +17,14 @@ public interface ConfirmThroughRepository extends JpaRepository<ConfirmThroughEn
     @Query("SELECT c FROM ConfirmThroughEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND c.confirmThroughUuid = :confirmThroughUuid")
+            "AND c.uuid = :confirmThroughUuid")
     public ConfirmThroughEntity findByTenantEntity_UuidAndConfirmThroughUuid(@Param("tenantUuid") String tenantUuid, @Param("confirmThroughUuid") String confirmThroughUuid);
 
     public List<ConfirmThroughEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
 
     @Modifying
-    @Query("DELETE FROM ConfirmThroughEntity c WHERE c.confirmThroughUuid = :confirmThroughUuid")
+    @Query("DELETE FROM ConfirmThroughEntity c WHERE c.uuid = :confirmThroughUuid")
     int deleteByConfirmThroughUuid(@Param("confirmThroughUuid")String confirmThroughUuid);
 
 

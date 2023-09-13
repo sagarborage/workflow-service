@@ -22,7 +22,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity, String> 
             "JOIN a.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND a.addressUuid = :addressUuid")*/
-    AddressEntity findByAddressUuid(String addressUuid);
+    AddressEntity findByUuid(String addressUuid);
 
     //AddressEntity getAddressEntityByAddressUuid(@Param("addressUuid") String addressUuid);
     //AddressEntity getAddressEntityByAddressId(@Param("addressId") int addressId);
@@ -35,7 +35,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity, String> 
 
     @Transactional
     @Modifying
-    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.addressUuid = :addressUuid")
+    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.uuid = :addressUuid")
     void softDelete(@Param("addressUuid") String addressUuid);
 
 }

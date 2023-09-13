@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.common.CommonEntity;
 import com.sowermate.tenantService.entities.value.AddressValue;
 import lombok.*;
@@ -15,25 +16,12 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = false)
 @Table(name = "address")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class AddressEntity implements Serializable {
+public class AddressEntity extends Base {
 
     private static final long serialVersionUID = -241370177952331642L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer addressId;
-
-    @Column(name="uuid", unique=true, updatable=false)
-    private String addressUuid;
-
-    @Column(name="created_dttm")
-    private Date createdDttm;
-
-    @Column(name="updated_dttm")
-    private Date updatedDttm;
 
     @Column(name = "address_line1")
     private String  addressLine1;
@@ -74,25 +62,18 @@ public class AddressEntity implements Serializable {
     @Column(name= "website")
     private  String website;
 
-    @Column (name = "created_by")
-    private  String createdBy;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_type_id")
+    private AddressTypeEntity addressType;
 
-    @Column (name = "updated_by")
-    private  String updatedBy;
-
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
-
-    @OneToMany(mappedBy="addressEntity",cascade=CascadeType.ALL)
-    private List<CompanyAddressEntity> companyAddresses;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private CompanyEntity company;
 
     public AddressValue toDTO() {
         return AddressValue.newBuilder()
-                .addressId(getAddressId())
-                .addressUuid(getAddressUuid())
-                .createdDttm(getCreatedDttm())
-                .updatedDttm(getUpdatedDttm())
+                .addressId(getId())
+                .addressUuid(getUuid())
                 .addressLine1(getAddressLine1())
                 .addressLine2(getAddressLine2())
                 .addressLine3(getAddressLine3())
@@ -106,10 +87,11 @@ public class AddressEntity implements Serializable {
                 .alternatePhoneNumber(getAlternatePhoneNumber())
                 .email(getEmail())
                 .website(getWebsite())
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getUpdatedBy())
-                .isActive(getIsActive())
-                .companyAddressValues(getCompanyAddresses().stream().map(a->a.toDTO()).collect(Collectors.toList()))
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 

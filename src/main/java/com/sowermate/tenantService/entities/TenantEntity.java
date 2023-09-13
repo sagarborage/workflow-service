@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.entities;
 
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.TenantValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -19,15 +20,10 @@ import java.util.stream.Collectors;
 @Table(name = "tenant")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class TenantEntity implements Serializable {
+public class TenantEntity extends Base {
 
     private static final long serialVersionUID = -241370177952331642L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tenantId;
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
     @Column(name="tenant_name")
     private  String tenantName;
     @Column(name="address")
@@ -50,15 +46,15 @@ public class TenantEntity implements Serializable {
     private  Date expiryDate;
     @Column(name="grace_period")
     private  int gracePeriod;
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
+/*    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
-
-   // @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-   // private List<CompanyEntity> companyEntities;//OK
+    private Boolean isActive = true;*/
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AdditionalChargesEntity> additionalChargesEntities;//OK
+    private List<CompanyEntity> companyEntities;//OK
+
+    @OneToOne(mappedBy="tenantEntity")
+    private AdditionalChargesEntity additionalChargesEntity;//OK
 
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ServiceRateEntity> serviceRateEntities;//OK
@@ -75,8 +71,8 @@ public class TenantEntity implements Serializable {
     @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<ConfirmThroughEntity>  confirmThroughEntities;//OK
 
-    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    private  List<CompanyTypeEntity>  companyTypeEntities;//OK
+    //@OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    //private  List<CompanyTypeEntity>  companyTypeEntities;//OK
 
 /*    @OneToMany(mappedBy="tenantEntity", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private  List<AddressEntity>  addressEntities;*/
@@ -101,7 +97,7 @@ public class TenantEntity implements Serializable {
 
     public TenantValue toDTO() {
         return TenantValue.newBuilder()
-                .tenantId(getTenantId())
+                .tenantId(getId())
                 .uuid(getUuid())
                 .tenantName(getTenantName())
                 .address(getAddress())
@@ -114,7 +110,6 @@ public class TenantEntity implements Serializable {
                 .activationDate(getActivationDate())
                 .expiryDate(getExpiryDate())
                 .gracePeriod(getGracePeriod())
-                .isActive(getIsActive())
 /*                .companyTypeValues(getCompanyEntities().stream()
                         .map(companyEntity -> companyEntity.getCompanyTypeEntity().toDTO())
                         .collect(Collectors.toList()))*/
@@ -122,6 +117,11 @@ public class TenantEntity implements Serializable {
                         .map(AdditionalChargesEntity::toDTO)
                         .collect(Collectors.toList()))*/
                 // ... (other @OneToMany fields)
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 

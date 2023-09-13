@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -11,26 +12,15 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = false)
 @Table(name = "glass_specification")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class GlassSpecificationEntity implements Serializable {
+public class GlassSpecificationEntity extends Base {
 
     private static final long serialVersionUID = -241370177952331642L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer glassSpecificationId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String glassSpecificationUuid;
-
     @Column(name = "name")
     private String name;
-
-    @Column(name = "is_active")
-    private Boolean isActive;
 
     @OneToMany(mappedBy="glassSpecificationEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
@@ -41,11 +31,14 @@ public class GlassSpecificationEntity implements Serializable {
 
     public GlassSpecificationValue toDTO() {
         return GlassSpecificationValue.newBuilder()
-                .glassSpecificationId(getGlassSpecificationId())
-                .glassSpecificationUuid(getGlassSpecificationUuid())
-                .tenantValue(getTenantEntity().toDTO())
+                .glassSpecificationId(getId())
+                .glassSpecificationUuid(getUuid())
                 .name(getName())
-                .isActive(getIsActive())
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }

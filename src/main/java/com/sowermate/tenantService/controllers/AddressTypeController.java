@@ -18,33 +18,33 @@ public class AddressTypeController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AddressTypeValue> createAddressType(@RequestBody AddressTypeValue addressTypeValue) throws Exception {
+    public ResponseEntity<AddressTypeValue> createAddressType(@RequestBody AddressTypeValue addressTypeValue) {
         AddressTypeValue addressTypeValue1 = addressTypeService.createAddressType(addressTypeValue);
         return new ResponseEntity<AddressTypeValue>(addressTypeValue1, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{tenantUuid}/{addressTypeUuid}")
-    public ResponseEntity<AddressTypeValue> getAddressType(@PathVariable String tenantUuid, @PathVariable String addressTypeUuid) throws Exception {
+    public ResponseEntity<AddressTypeValue> getAddressType(@PathVariable String tenantUuid, @PathVariable String addressTypeUuid) {
         AddressTypeValue addressTypeValue = addressTypeService.getAddressType(tenantUuid, addressTypeUuid);
         return new ResponseEntity<>(addressTypeValue, HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/{tenantUuid}")
-    public ResponseEntity<List<AddressTypeValue>> getAllAddressType(@PathVariable String tenantUuid) throws Exception {
+    public ResponseEntity<List<AddressTypeValue>> getAllAddressType(@PathVariable String tenantUuid) {
         List<AddressTypeValue> addressTypeValues = addressTypeService.getAllAddressType(tenantUuid);
         return new ResponseEntity<>(addressTypeValues, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{tenantUuid}/{addressTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<AddressTypeValue> deleteAddressType(@PathVariable String tenantUuid, @PathVariable String addressTypeUuid) throws Exception {
+    public ResponseEntity<AddressTypeValue> deleteAddressType(@PathVariable String tenantUuid, @PathVariable String addressTypeUuid) {
         AddressTypeValue addressTypeValue = addressTypeService.deleteAddressType(tenantUuid, addressTypeUuid);
         return new ResponseEntity<AddressTypeValue>(addressTypeValue, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<AddressTypeValue> editAddressType(@RequestBody AddressTypeValue addressTypeValue) throws Exception {
+    public ResponseEntity<AddressTypeValue> editAddressType(@RequestBody AddressTypeValue addressTypeValue) {
         AddressTypeValue addressTypeValue1 = addressTypeService.editAddressType(addressTypeValue);
         return new ResponseEntity<AddressTypeValue>(addressTypeValue1, HttpStatus.CREATED);
     }

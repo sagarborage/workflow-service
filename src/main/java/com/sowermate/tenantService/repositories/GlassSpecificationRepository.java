@@ -15,7 +15,7 @@ public interface GlassSpecificationRepository extends JpaRepository<GlassSpecifi
     @Query("SELECT g FROM GlassSpecificationEntity g " +
             "JOIN g.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND g.glassSpecificationUuid = :glassSpecificationUuid")
+            "AND g.uuid = :glassSpecificationUuid")
     public GlassSpecificationEntity findByTenantEntity_UuidAndGlassSpecificationUuid(@Param("tenantUuid") String tenantUuid, @Param("glassSpecificationUuid") String glassSpecificationUuid);
 
     public List<GlassSpecificationEntity> findAllByTenantEntity_Uuid(String tenantUuid);
@@ -23,7 +23,7 @@ public interface GlassSpecificationRepository extends JpaRepository<GlassSpecifi
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassSpecificationEntity g SET g.isActive = false WHERE g.glassSpecificationUuid = :glassSpecificationUuid")
+    @Query("UPDATE GlassSpecificationEntity g SET g.isActive = false WHERE g.uuid = :glassSpecificationUuid")
     void softDelete(@Param("glassSpecificationUuid") String glassSpecificationUuid);
 
 }

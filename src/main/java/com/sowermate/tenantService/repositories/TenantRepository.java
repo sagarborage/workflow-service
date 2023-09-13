@@ -13,8 +13,8 @@ import java.util.List;
 
 @Repository
 public interface TenantRepository extends JpaRepository <TenantEntity, String> {
-    @Query("SELECT t FROM TenantEntity t WHERE t.uuid = :tenantUuid")
-    TenantEntity findByTenantUuid(@Param("tenantUuid")String tenantUuid);
+   // @Query("SELECT t FROM TenantEntity t WHERE t.uuid = :tenantUuid")
+    TenantEntity findByUuid(@Param("tenantUuid")String tenantUuid);
 
     @Transactional
     @Modifying

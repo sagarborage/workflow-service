@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.AddressTypeValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,45 +14,36 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = false)
 @Table(name = "address_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class AddressTypeEntity implements Serializable {
+public class AddressTypeEntity extends Base {
 
     private static final long serialVersionUID = 3981140897718611608L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer addressTypeId;
 
     @Column(name = "type")
     private String type;
     @Column(name = "description")
     private String description;
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String  addressTypeUuid;
-
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
+    @OneToMany(mappedBy = "addressType", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AddressEntity> addresses;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToMany(mappedBy="addressTypeEntity",cascade=CascadeType.ALL)
-    private List<CompanyAddressEntity> companyAddresses;
-
     public AddressTypeValue toDTO() {
         return AddressTypeValue.newBuilder()
-                .addressTypeId(getAddressTypeId())
-                .addressTypeUuid(getAddressTypeUuid())
+                .addressTypeId(getId())
+                .addressTypeUuid(getUuid())
                 .type(getType())
                 .description(getDescription())
-                .isActive(getIsActive())
                 //.tenantValue(getTenantEntity().toDTO())
-                .companyAddresses(getCompanyAddresses().stream().map(c->c.toDTO()).collect(Collectors.toList()))
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }

@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface PiTypeService {
 
-    public PiTypeValue createPiType(PiTypeValue piTypeValue) throws Exception;
+    public PiTypeValue createPiType(PiTypeValue piTypeValue);
 
-    public List<PiTypeValue> getAllPiType(String tenantUuid) throws Exception;
-    public PiTypeValue editPiType(PiTypeValue  piTypeValue) throws Exception;
+    public List<PiTypeValue> getAllPiType(String tenantUuid);
+    public PiTypeValue editPiType(PiTypeValue  piTypeValue);
 
-    public PiTypeValue getPiType(String tenantUuid,String piTypeUuid) throws Exception;
+    public PiTypeValue getPiType(String tenantUuid,String piTypeUuid);
 
-    public int deletePiType(String tenantUuid,String piTypeUuid)throws Exception;
+    public int deletePiType(String tenantUuid,String piTypeUuid);
 
 }

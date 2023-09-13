@@ -13,34 +13,32 @@ import java.util.Date;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AdditionalChargesValue   {
-    private Integer additionalChargesId;
+public class AdditionalChargesValue extends BaseValue {
+    private Long additionalChargesId;
     private String additionalChargesUuid;
-    private Date createdDttm;
-    private Date updatedDttm;
+    private String tenantUuid;
     private float extraMm;
     private float insurance;
     private float adminCharges;
     private float forwardingCharges;
     private float gst;
-    private String createdBy;
-    private String updatedBy;
-    private TenantValue tenantValue;
+
 
     public AdditionalChargesEntity toEntity() {
         return AdditionalChargesEntity.newBuilder()
-                .additionalChargesId(getAdditionalChargesId())
-                .additionalChargesUuid(getAdditionalChargesUuid())
-                .createdDttm(getCreatedDttm())
-                .updatedDttm(getUpdatedDttm())
+                .id(getAdditionalChargesId())
+                .uuid(getAdditionalChargesUuid())
                 .extraMm(getExtraMm())
                 .insurance(getInsurance())
                 .adminCharges(getAdminCharges())
                 .forwardingCharges(getForwardingCharges())
                 .gst(getGst())
-                .tenantEntity(getTenantValue().toEntity())
+                //.tenantEntity(getTenantValue().toEntity())
+                .createdDatetime(getCreatedDttm())
+                .lastUpdatedDatetime(getUpdatedDttm())
                 .createdBy(getCreatedBy())
-                .updatedBy(getUpdatedBy())
+                .lastUpdatedBy(getUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }

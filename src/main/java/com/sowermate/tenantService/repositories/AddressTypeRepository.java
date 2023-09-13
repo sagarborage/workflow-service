@@ -15,21 +15,21 @@ import java.util.List;
 @Repository
 public interface AddressTypeRepository  extends JpaRepository<AddressTypeEntity, String> {
 
-    //   public AddressTypeEntity findByAddressTypeUuid(@Param("addressTypeUuid")String addressTypeUuid);
+    //   public AddressTypeEntity findByuuid(@Param("uuid")String uuid);
 
 
     @Query("SELECT s FROM AddressTypeEntity s " +
             "JOIN s.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND s.addressTypeUuid = :addressTypeUuid")
+            "AND s.uuid = :addressTypeUuid")
     public AddressTypeEntity findByTenantEntity_UuidAndAddressTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("addressTypeUuid") String addressTypeUuid);
     //public List<AddressTypeEntity> findByAddressTypeId(int addressTypeId);
 
-    //public AddressTypeEntity getAddressTypeEntityByAddressTypeUuid(@Param("addressTypeUuid") String addressTypeUuid);
+    //public AddressTypeEntity getAddressTypeEntityByuuid(@Param("uuid") String uuid);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ServiceRateEntity s SET s.isActive = false WHERE s.serviceRateUuid = :serviceRateUuid")
+    @Query("UPDATE ServiceRateEntity s SET s.isActive = false WHERE s.uuid = :serviceRateUuid")
     void softDelete(@Param("serviceRateUuid") String serviceRateUuid);
 
     public List<AddressTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);

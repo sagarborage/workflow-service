@@ -16,15 +16,15 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
     @Query("SELECT c FROM CompanyEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND c.companyUuid = :companyUuid")
+            "AND c.uuid = :companyUuid")
     CompanyEntity findByTenantEntity_UuidAndCompanyEntityUuid(String tenantUuid, String companyUuid);
-    CompanyEntity findByCompanyUuid(String companyUuid);
-    List<CompanyEntity> findAllByTenantEntityTenantId(int tenantId);
+    //CompanyEntity findByCompanyUuid(String companyUuid);
+    List<CompanyEntity> findAllByTenantEntityId(Long tenantId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.companyUuid = :companyUuid")
-    void softDelete(@Param("companyUuid") String companyUuid);
+    @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.tenantEntity.uuid = :tenantUuid and c.uuid = :companyUuid")
+    void softDelete(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid);
 
-    CompanyEntity getCompanyEntityByCompanyUuid(@Param("companyUuid") String companyUuid);
+    CompanyEntity getCompanyEntityByUuid(@Param("companyUuid") String companyUuid);
 }

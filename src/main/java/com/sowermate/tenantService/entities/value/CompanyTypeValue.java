@@ -13,8 +13,8 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CompanyTypeValue {
-    private Integer companyTypeId;
+public class CompanyTypeValue extends BaseValue {
+    private Long companyTypeId;
     private String type;
     private String description;
     protected String companyTypeUuid;
@@ -26,10 +26,14 @@ public class CompanyTypeValue {
 
     public CompanyTypeEntity toEntity() {
         return CompanyTypeEntity.newBuilder()
-                .companyTypeId(getCompanyTypeId())
+                .id(getCompanyTypeId())
+                .uuid(getCompanyTypeUuid())
                 .type(getType())
                 .description(getDescription())
-                .companyTypeUuid(getCompanyTypeUuid())
+                .createdDatetime(getCreatedDttm())
+                .lastUpdatedDatetime(getUpdatedDttm())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getUpdatedBy())
                 .isActive(getIsActive())
                 .build();
     }

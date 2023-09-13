@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.repositories;
 
+import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.ServiceRateEntity;
 import com.sowermate.tenantService.entities.ServiceRateInvoiceEntity;
 import com.sowermate.tenantService.entities.StatusEntity;
@@ -21,13 +22,13 @@ public interface ServiceRateInvoiceRepository extends JpaRepository<ServiceRateI
     // public List<ServiceRateInvoiceEntity> findByServiceRateInvoiceId(int serviceRateInvoiceId);
 
     @Query("SELECT s FROM ServiceRateInvoiceEntity s " +
-            "JOIN s.tenantEntity t " +
-            "WHERE t.uuid = :tenantUuid " +
-            "AND s.serviceRateInvoiceUuid = :serviceRateInvoiceUuid")
-    public ServiceRateInvoiceEntity findByTenantEntity_UuidAndServiceRateInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("serviceRateInvoiceUuid") String serviceRateInvoiceUuid);
+            "JOIN s.proFormaInvoiceEntity pfie " +
+            "WHERE pfie.uuid = :proFormaInvoiceUuid " +
+            "AND s.uuid = :serviceRateInvoiceUuid")
+    public ServiceRateInvoiceEntity findByProFormaInvoiceUuidUuidAndServiceRateInvoiceUuid(@Param("proFormaInvoiceUuid") String proFormaInvoiceUuid, @Param("serviceRateInvoiceUuid") String serviceRateInvoiceUuid);
 
 
-    public int deleteByServiceRateInvoiceUuid(@Param("serviceRateInvoiceUuid")String serviceRateInvoiceUuid);
+    public int deleteByUuid(@Param("serviceRateInvoiceUuid")String serviceRateInvoiceUuid);
 
-    public List<ServiceRateInvoiceEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    public List<ServiceRateInvoiceEntity> findAllByProFormaInvoiceEntity_Id(Long proFormaInvoiceId);
 }

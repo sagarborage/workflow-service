@@ -11,10 +11,15 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProFormaInvoiceItemValue {
+public class ProFormaInvoiceItemValue extends BaseValue {
 
-    private Integer proFormaInvoiceItemId;
+    private Long proFormaInvoiceItemId;
     private String uuid;
+    private String proFormaInvoiceUuid;
+    private String glassTypeUuid;
+    private String glassSpecificationUuid;
+    private String glassThicknessUuid;
+    private String tenantUuid;
     private Float widthInch;
     private Float widthMeasurement;
     private Float actualWidth;
@@ -29,15 +34,9 @@ public class ProFormaInvoiceItemValue {
     private Double ratePerSqft;
     private Double amount;
 
-    private ProFormaInvoiceValue proFormaInvoiceValue;
-    private GlassTypeValue glassTypeValue;
-    private GlassSpecificationValue glassSpecificationValue;
-    private GlassThicknessValue glassThicknessValue;
-    private TenantValue tenantValue;
-
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
-                .proFormaInvoiceItemId(getProFormaInvoiceItemId())
+                .id(getProFormaInvoiceItemId())
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
@@ -52,11 +51,12 @@ public class ProFormaInvoiceItemValue {
                 .sqft(getSqft())
                 .ratePerSqft(getRatePerSqft())
                 .amount(getAmount())
-                .tenantEntity(getTenantValue().toEntity())
-                .glassTypeEntity(getGlassTypeValue().toEntity())
-                .glassThicknessEntity(getGlassThicknessValue().toEntity())
-                .glassSpecificationEntity(getGlassSpecificationValue().toEntity())
-                .proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
+                //.tenantEntity(getTenantValue().toEntity())
+                //.glassTypeEntity(getGlassTypeValue().toEntity())
+                //.glassThicknessEntity(getGlassThicknessValue().toEntity())
+                //.glassSpecificationEntity(getGlassSpecificationValue().toEntity())
+                //.proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
+                .isActive(isActive())
                 .build();
     }
 }

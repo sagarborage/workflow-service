@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface ProFormaInvoiceService {
 
-    public ProFormaInvoiceValue createProFormInvoice(ProFormaInvoiceValue proFormInvoiceValue) throws Exception;
+    public ProFormaInvoiceValue createproFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue);
 
-    public ProFormaInvoiceValue editProFormInvoice(ProFormaInvoiceValue proFormInvoiceValue) throws Exception;
+    public ProFormaInvoiceValue editproFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue);
 
-    public ProFormaInvoiceValue getProFormInvoice(String tenantUuid, String proFormInvoiceUuid) throws Exception;
+    public ProFormaInvoiceValue getproFormaInvoice(String tenantUuid, String proFormaInvoiceUuid);
 
-    public int deleteProFormInvoice(String tenantUuid,String proFormInvoiceUuid) throws Exception;
+    public int deleteproFormaInvoice(String tenantUuid,String proFormaInvoiceUuid);
 
-    public List<ProFormaInvoiceValue> getAllProFormInvoice(String tenantUuid) throws Exception;
+    public List<ProFormaInvoiceValue> getAllproFormaInvoice(String tenantUuid);
 
 }

@@ -13,19 +13,19 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GlassTypeValue {
+public class GlassTypeValue extends BaseValue {
 
-    private Integer glassTypeId;
+    private Long glassTypeId;
+    private String tenantUuid;
     private String glassTypeUuid;
     private String glassName;
     private Boolean isActive;
-    private TenantValue tenantValue;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
     public GlassTypeEntity toEntity() {
         return GlassTypeEntity.newBuilder()
-                .glassTypeId(getGlassTypeId())
-                .glassTypeUuid(getGlassTypeUuid())
+                .id(getGlassTypeId())
+                .uuid(getGlassTypeUuid())
                 .glassName(getGlassName())
                 .isActive(getIsActive())
                 .build();

@@ -14,11 +14,16 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProFormaInvoiceValue {
+public class ProFormaInvoiceValue extends BaseValue {
 
-    private Integer proFormaInvoiceId;
-    private String proFormInvoiceUuid;
-    private int piNumber;
+    private Long proFormaInvoiceId;
+    private String proFormaInvoiceUuid;
+    private String tenantUuid;
+    private String confirmThroughUuid;
+    private String piTypeUuid;
+    private String companyBillToUuid;
+    private String companyShipToUuid;
+    private String piNumber;
     private Date invoiceDate;
     private Double proFormaInvoiceAmount;
     private Double serviceRateInvoiceAmount;
@@ -38,20 +43,14 @@ public class ProFormaInvoiceValue {
     private int adjustmentAmount;
     private String status;
 
-    private ConfirmThroughValue confirmThroughValue;
-    private PiTypeValue piTypeValue;
-    private CompanyValue companyIdBill;
-    private CompanyValue companyIdShip;
-    private TenantValue tenantValue;
-
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
     private List<ServiceRateInvoiceValue> serviceRateInvoices;
 
 
     public ProFormaInvoiceEntity toEntity() {
         return ProFormaInvoiceEntity.newBuilder()
-                .proFormaInvoiceId(getProFormaInvoiceId())
-                .proFormInvoiceUuid(getProFormInvoiceUuid())
+                .id(getProFormaInvoiceId())
+                .uuid(getProFormaInvoiceUuid())
                 .piNumber(getPiNumber())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())

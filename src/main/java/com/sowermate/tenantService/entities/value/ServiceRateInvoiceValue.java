@@ -11,28 +11,24 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ServiceRateInvoiceValue {
+public class ServiceRateInvoiceValue extends BaseValue {
 
-    private Integer serviceRateInvoiceId;
-    private String serviceRateInvoiceUuid;
+    private String proFormaInvoiceUuid;
+    private String serviceRateUuid;
     private int quantity;
     private int rate;
     private int total;
 
-    private TenantValue tenantValue;
-    private ProFormaInvoiceValue proFormaInvoice;
-    private ServiceRateValue serviceRate;
-
     public ServiceRateInvoiceEntity toEntity() {
         return ServiceRateInvoiceEntity.newBuilder()
-                .serviceRateInvoiceId(getServiceRateInvoiceId())
-                .serviceRateInvoiceUuid(getServiceRateInvoiceUuid())
+                .id(getId())
+                .uuid(getUuid())
                 .quantity(getQuantity())
                 .rate(getRate())
                 .total(getTotal())
-                .tenantEntity(getTenantValue().toEntity())
-                .proFormaInvoiceEntity(getProFormaInvoice().toEntity())
-                .serviceRateEntity(getServiceRate().toEntity())
+                //.proFormaInvoiceEntity(getProFormaInvoice().toEntity())
+                //.serviceRateEntity(getServiceRate().toEntity())
+                .isActive(isActive())
                 .build();
     }
 }

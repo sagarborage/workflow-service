@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional(rollbackForClassName = { "Exception" })
@@ -26,11 +25,11 @@ public class StatusServiceImpl implements StatusService {
     @Autowired
     private TenantRepository tenantRepository;
     @Override
-    public StatusValue createStatus(StatusValue statusValue) throws Exception {
+    public StatusValue createStatus(StatusValue statusValue) {
         StatusEntity statusEntity=new StatusEntity();
         BeanUtils.copyProperties(statusValue, statusEntity);
         statusEntity.setStatusUuid(CommonUtils.generateUUID());
-        statusEntity.setTenantEntity(tenantRepository.findByTenantUuid(statusValue.getTenantUuid()));
+        statusEntity.setTenantEntity(tenantRepository.findByUuid(statusValue.getTenantUuid()));
         BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
         return statusValue;
     }
@@ -45,7 +44,7 @@ public class StatusServiceImpl implements StatusService {
             StatusEntity matchingStatus = statusRepository.findByTenantEntity_UuidAndStatusUuid(statusValue.getTenantUuid(),statusValue.getStatusUuid());
             if (matchingStatus !=null) {
                 statusEntity.setStatusId(matchingStatus.getStatusId());
-                statusEntity.setTenantEntity(tenantRepository.findByTenantUuid(statusValue.getTenantUuid()));
+                statusEntity.setTenantEntity(tenantRepository.findByUuid(statusValue.getTenantUuid()));
                 BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
             } else {
                 throw new Exception("No tenant found with UUID " + statusValue.getStatusUuid());
@@ -58,7 +57,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public StatusValue getStatus(String tenantUuid,String statusUuid) throws Exception {
+    public StatusValue getStatus(String tenantUuid,String statusUuid) {
         StatusValue statusValue=new StatusValue();
 
         StatusEntity statusEntity =statusRepository.findByTenantEntity_UuidAndStatusUuid(tenantUuid,statusUuid);
@@ -68,7 +67,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public StatusValue deleteStatus(String tenantUuid,String statusUuid) throws Exception {
+    public StatusValue deleteStatus(String tenantUuid,String statusUuid) {
         StatusValue statusValue=new StatusValue();
         statusRepository.softDelete(statusUuid);
         StatusEntity  statusEntity =statusRepository.findByTenantEntity_UuidAndStatusUuid(tenantUuid,statusUuid) ;
@@ -77,7 +76,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public List<StatusValue> getAllStatus(String tenantUuid) throws Exception {
+    public List<StatusValue> getAllStatus(String tenantUuid) {
         List<StatusValue> statusValues=new ArrayList<>();
         StatusValue statusValue=null;
         List<StatusEntity> statusEntities= statusRepository.findAllByTenantEntity_Uuid(tenantUuid);

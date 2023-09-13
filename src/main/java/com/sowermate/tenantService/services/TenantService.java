@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface TenantService {
 
- public TenantValue saveTenantDetails(TenantValue tenantValue) throws Exception;
+ public TenantValue saveTenantDetails(TenantValue tenantValue);
 
- public List<TenantValue> getAllTenantDetails() throws Exception;
-  public TenantValue editTenantDetails(TenantValue tenantValue) throws Exception;
+ public List<TenantValue> getAllTenantDetails();
+  public TenantValue editTenantDetails(TenantValue tenantValue);
 
-   public TenantValue getTenantDetails(String tenantUuid) throws Exception;
+   public TenantValue getTenantDetails(String tenantUuid);
 
-  public TenantValue deleteTenantDetails(String tenantUuid)throws Exception;
+  public TenantValue deleteTenantDetails(String tenantUuid);
 
 
 }

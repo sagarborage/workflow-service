@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,17 +10,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = false)
 @Table(name = "pro_forma_invoice_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class ProFormaInvoiceItemEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer proFormaInvoiceItemId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String uuid;
+public class ProFormaInvoiceItemEntity extends Base{
 
     @Column(name = "width_inch")
     private Float widthInch;
@@ -82,7 +76,7 @@ public class ProFormaInvoiceItemEntity {
 
     public ProFormaInvoiceItemValue toDTO() {
         return ProFormaInvoiceItemValue.newBuilder()
-                .proFormaInvoiceItemId(getProFormaInvoiceItemId())
+                .proFormaInvoiceItemId(getId())
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
@@ -97,10 +91,15 @@ public class ProFormaInvoiceItemEntity {
                 .sqft(getSqft())
                 .ratePerSqft(getRatePerSqft())
                 .amount(getAmount())
-                .tenantValue(getTenantEntity().toDTO())
-                .glassSpecificationValue(getGlassSpecificationEntity().toDTO())
-                .glassTypeValue(getGlassTypeEntity().toDTO())
-                .glassThicknessValue(getGlassThicknessEntity().toDTO())
+                //.tenantValue(getTenantEntity().toDTO())
+                //.glassSpecificationValue(getGlassSpecificationEntity().toDTO())
+                //.glassTypeValue(getGlassTypeEntity().toDTO())
+                //.glassThicknessValue(getGlassThicknessEntity().toDTO())
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }

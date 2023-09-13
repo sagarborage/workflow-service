@@ -18,21 +18,21 @@ public interface CompanyTypeRepository extends JpaRepository<CompanyTypeEntity ,
 
     public List<CompanyTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);*/
 
-    public CompanyTypeEntity findByCompanyTypeUuid(@Param("companyTypeUuid")String companyTypeUuid);
+    public CompanyTypeEntity findByUuid(@Param("companyTypeUuid")String companyTypeUuid);
 
 
-    @Query("SELECT s FROM CompanyTypeEntity s " +
+  /*  @Query("SELECT s FROM CompanyTypeEntity s " +
             "JOIN s.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND s.companyTypeUuid = :companyTypeUuid")
-    public CompanyTypeEntity findByTenantEntity_UuidAndCompanyTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("companyTypeUuid") String companyTypeUuid);
+    public CompanyTypeEntity findByTenantEntity_UuidAndCompanyTypeUuid(@Param("tenantUuid") String tenantUuid, @Param("companyTypeUuid") String companyTypeUuid);*/
     //public List<ServiceRateEntity> findByCompanyTypeId(int companyTypeId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE CompanyTypeEntity s SET s.isActive = false WHERE s.companyTypeUuid = :companyTypeUuid")
+    @Query("UPDATE CompanyTypeEntity s SET s.isActive = false WHERE s.uuid = :companyTypeUuid")
     void softDelete(@Param("companyTypeUuid") String companyTypeUuid);
 
-    public List<CompanyTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    //public List<CompanyTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
 }

@@ -14,25 +14,23 @@ import java.util.stream.Collectors;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GlassThicknessValue {
+public class GlassThicknessValue extends BaseValue {
 
-    private Integer glassThicknessId;
+    private Long glassThicknessId;
     private String glassThicknessUuid;
+    private String tenantUuid;
     private String name;
     private Boolean isActive;
-
-    private TenantValue tenantValue;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
 
     public GlassThicknessEntity toEntity() {
         return GlassThicknessEntity.newBuilder()
-                .glassThicknessId(getGlassThicknessId())
-                .glassThicknessUuid(getGlassThicknessUuid())
+                .id(getGlassThicknessId())
+                .uuid(getGlassThicknessUuid())
                 .name(getName())
                 .isActive(getIsActive())
-                .tenantEntity(getTenantValue().toEntity())
-                .proFormaInvoiceItemEntities(getProFormaInvoiceItems().stream().map(i->i.toEntity()).collect(Collectors.toList()))
+                //.proFormaInvoiceItemEntities(getProFormaInvoiceItems().stream().map(i->i.toEntity()).collect(Collectors.toList()))
                 .build();
     }
 }

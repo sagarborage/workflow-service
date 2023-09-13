@@ -81,7 +81,7 @@ public class TenantServiceImplTest {
      * @throws Exception when there is problem while saveTenantDetails.
      */
     @Test
-    public void testSaveTenantDetailsWhenTenantValueIsPassedExpectTenantDetailsSaved() throws Exception {
+    public void testSaveTenantDetailsWhenTenantValueIsPassedExpectTenantDetailsSaved() {
         //given
         TenantValue tenantValue = prepareTenantValue();
         TenantEntity tenantEntity = prepareTenantEntity();
@@ -206,7 +206,7 @@ public class TenantServiceImplTest {
      * @throws Exception when there is problem while fetching editTenantDetails.
      */
     @Test
-    public void testEditTenantDetailsWhenTenantValueIsPassedExpectAddressValueUpdated() throws Exception {
+    public void testEditTenantDetailsWhenTenantValueIsPassedExpectAddressValueUpdated() {
         //given
         TenantValue tenantValue = prepareTenantValue();
         TenantEntity tenantEntity = prepareTenantEntity();
@@ -319,7 +319,7 @@ public class TenantServiceImplTest {
      * @throws Exception when there is problem while fetching getTenantDetails by using UUID.
      */
     @Test
-    public void testGetTenantDetailsWhenTenantUuidIsPassedExpectTenantDetailsValueGet() throws Exception {
+    public void testGetTenantDetailsWhenTenantUuidIsPassedExpectTenantDetailsValueGet() {
         //given
         TenantEntity tenantEntity = prepareTenantEntity();
         List<TenantEntity> mockedTenantEntities = new ArrayList<>();
@@ -339,7 +339,7 @@ public class TenantServiceImplTest {
      * @throws Exception when there is problem while fetching getAllTenantDetails by using UUID.
      */
     @Test
-    public void testGetAllTenantDetailsWhenRequestIsPassedExpectGetAllTenantDetailsType() throws Exception {
+    public void testGetAllTenantDetailsWhenRequestIsPassedExpectGetAllTenantDetailsType() {
         // given
         TenantEntity tenantEntity = prepareTenantEntity();
         List<TenantEntity> entities = new ArrayList<TenantEntity>();
@@ -359,7 +359,7 @@ public class TenantServiceImplTest {
      * @throws Exception when there is a problem while fetching deleteTenantDetails by using UUID.
      */
    /* @Test
-    public void testDeleteTenantDetailsWhenTenantUuidIsPassedExpectTenantValueDelete() throws Exception {
+    public void testDeleteTenantDetailsWhenTenantUuidIsPassedExpectTenantValueDelete() {
         // given
         TenantEntity tenantEntity = prepareTenantEntity();
         List<TenantEntity> entities = new ArrayList<TenantEntity>();
@@ -426,7 +426,7 @@ public class TenantServiceImplTest {
 
     private ProFormaInvoiceEntity prepareProFormaInvoiceEntity() {
         ProFormaInvoiceEntity proFormaInvoiceEntity = new ProFormaInvoiceEntity();
-        proFormaInvoiceEntity.setProFormInvoiceUuid(TEST_UUID);
+        proFormaInvoiceEntity.setproFormaInvoiceUuid(TEST_UUID);
         return proFormaInvoiceEntity;
     }
 

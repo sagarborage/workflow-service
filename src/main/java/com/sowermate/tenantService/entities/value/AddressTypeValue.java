@@ -13,26 +13,23 @@ import java.util.stream.Collectors;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AddressTypeValue {
+public class AddressTypeValue extends BaseValue {
 
-    private Integer addressTypeId;
+    private Long addressTypeId;
     private String addressTypeUuid;
     private String tenantUuid;
     private String type;
     private String description;
     private Boolean isActive;
 
-    private List<CompanyAddressValue> companyAddresses;
-
     public AddressTypeEntity toEntity() {
         return AddressTypeEntity.newBuilder()
-                .addressTypeId(getAddressTypeId())
-                .addressTypeUuid(getAddressTypeUuid())
+                .id(getAddressTypeId())
+                .uuid(getAddressTypeUuid())
                 .type(getType())
                 .description(getDescription())
                 .isActive(getIsActive())
                 //.tenantEntity(getTenantValue().toEntity())
-                .companyAddresses(getCompanyAddresses().stream().map(a->a.toEntity()).collect(Collectors.toList()))
                 .build();
     }
 }

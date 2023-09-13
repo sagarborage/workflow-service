@@ -5,15 +5,15 @@ import java.util.List;
 
 public interface ServiceRateService {
 
-    public ServiceRateValue createServiceRate(ServiceRateValue serviceRateValue) throws Exception;
+    public ServiceRateValue createServiceRate(ServiceRateValue serviceRateValue);
 
-    public ServiceRateValue editServiceRate(ServiceRateValue serviceRateValue) throws Exception;
+    public ServiceRateValue editServiceRate(ServiceRateValue serviceRateValue);
 
-    public List<ServiceRateValue> getAllServiceRate(String tenantUuid) throws Exception;
+    public List<ServiceRateValue> getAllServiceRate(String tenantUuid);
 
 
-    public ServiceRateValue getServiceRate(String tenantUuid,String serviceRateUuid) throws Exception;
+    public ServiceRateValue getServiceRate(String tenantUuid,String serviceRateUuid);
 
-    public ServiceRateValue deleteServiceRate(String tenantUuid,String serviceRateUuid)throws Exception;
+    public ServiceRateValue deleteServiceRate(String tenantUuid,String serviceRateUuid);
 
 }

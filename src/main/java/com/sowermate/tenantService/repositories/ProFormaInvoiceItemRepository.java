@@ -31,12 +31,12 @@ public interface ProFormaInvoiceItemRepository extends JpaRepository<ProFormaInv
     //TODO: use proFormaInvoiceUuid as well
     public ProFormaInvoiceItemEntity findByUuid(String uuid);
 
-    public List<ProFormaInvoiceItemEntity> findAllByProFormaInvoiceEntity_proFormInvoiceUuid(String proFormInvoiceUuid);
+    public List<ProFormaInvoiceItemEntity> findAllByProFormaInvoiceEntity_uuid(String proFormaInvoiceUuid);
     public List<ProFormaInvoiceItemEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceItemEntity p WHERE p.uuid = :proFormaInvoiceItemUuid")
-    int deleteByProFormaInvoiceItemUuid(@Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
+    int deleteByUuid(@Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
 
 
 }

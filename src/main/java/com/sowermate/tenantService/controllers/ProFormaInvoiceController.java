@@ -16,46 +16,50 @@ public class ProFormaInvoiceController {
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
 
-    private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(ProFormaInvoiceController.class);
-    @RequestMapping( method = RequestMethod.POST)
+    private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ProFormaInvoiceController.class);
+
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceValue> createProFormInvoice(@RequestBody ProFormaInvoiceValue proFormInvoiceValue){
+    public ResponseEntity<ProFormaInvoiceValue> createproFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
         try {
-            proFormInvoiceValue=proFormaInvoiceService.createProFormInvoice(proFormInvoiceValue);
+            proFormaInvoiceValue = proFormaInvoiceService.createproFormaInvoice(proFormaInvoiceValue);
         } catch (Exception e) {
             Logger.error("Error while creating Seller:", e);
         }
-        return new ResponseEntity<ProFormaInvoiceValue>(proFormInvoiceValue, HttpStatus.CREATED);
+        return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue, HttpStatus.CREATED);
     }
-    @RequestMapping( method = RequestMethod.PUT)
+
+    @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceValue> editProFormInvoice(@RequestBody ProFormaInvoiceValue proFormInvoiceValue){
-        ProFormaInvoiceValue proFormInvoiceValue1=null;
+    public ResponseEntity<ProFormaInvoiceValue> editproFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
+        ProFormaInvoiceValue proFormaInvoiceValue1 = null;
         try {
-            proFormInvoiceValue1=  proFormaInvoiceService.editProFormInvoice(proFormInvoiceValue);
+            proFormaInvoiceValue1 = proFormaInvoiceService.editproFormaInvoice(proFormaInvoiceValue);
         } catch (Exception e) {
             Logger.error("Error while editing Seller:", e);
         }
-        return new ResponseEntity<ProFormaInvoiceValue>(proFormInvoiceValue1,HttpStatus.CREATED);
+        return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{tenantUuid}/{proFormInvoiceUuid}")
-    public ResponseEntity<ProFormaInvoiceValue> getProFormInvoice(@PathVariable String tenantUuid,
-                                                                  @PathVariable String proFormInvoiceUuid) {
-        ProFormaInvoiceValue proFormInvoiceValue = null;
+
+    @GetMapping("/{tenantUuid}/{proFormaInvoiceUuid}")
+    public ResponseEntity<ProFormaInvoiceValue> getproFormaInvoice(@PathVariable String tenantUuid,
+                                                                  @PathVariable String proFormaInvoiceUuid) {
+        ProFormaInvoiceValue proFormaInvoiceValue = null;
         try {
-            proFormInvoiceValue = proFormaInvoiceService.getProFormInvoice(tenantUuid,proFormInvoiceUuid);
+            proFormaInvoiceValue = proFormaInvoiceService.getproFormaInvoice(tenantUuid, proFormaInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(proFormInvoiceValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(proFormaInvoiceValue, HttpStatus.ACCEPTED);
     }
-    @RequestMapping(value = "/{tenantUuid}/{proFormInvoiceUuid}", method = RequestMethod.DELETE)
+
+    @RequestMapping(value = "/{tenantUuid}/{proFormaInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Integer> deleteProFormInvoice(@PathVariable String tenantUuid,
-            @PathVariable String proFormInvoiceUuid) {
-          int deleteProFormaInvoice = 0;
+    public ResponseEntity<Integer> deleteproFormaInvoice(@PathVariable String tenantUuid,
+                                                        @PathVariable String proFormaInvoiceUuid) {
+        int deleteProFormaInvoice = 0;
         try {
-            deleteProFormaInvoice = proFormaInvoiceService.deleteProFormInvoice(tenantUuid,proFormInvoiceUuid);
+            deleteProFormaInvoice = proFormaInvoiceService.deleteproFormaInvoice(tenantUuid, proFormaInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
@@ -63,15 +67,15 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<ProFormaInvoiceValue>> getAllProFormInvoice(@PathVariable String tenantUuid) {
-        List<ProFormaInvoiceValue> proFormInvoiceValues = null;
+    public ResponseEntity<List<ProFormaInvoiceValue>> getAllproFormaInvoice(@PathVariable String tenantUuid) {
+        List<ProFormaInvoiceValue> proFormaInvoiceValues = null;
         try {
-            proFormInvoiceValues = proFormaInvoiceService.getAllProFormInvoice(tenantUuid);
-            Logger.info("records " + proFormInvoiceValues.size());
+            proFormaInvoiceValues = proFormaInvoiceService.getAllproFormaInvoice(tenantUuid);
+            Logger.info("records " + proFormaInvoiceValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(proFormInvoiceValues, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(proFormaInvoiceValues, HttpStatus.ACCEPTED);
 
     }
 }

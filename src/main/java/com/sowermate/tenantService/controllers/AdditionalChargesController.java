@@ -20,7 +20,7 @@ public class AdditionalChargesController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<AdditionalChargesValue> createAdditionalCharges(@RequestBody AdditionalChargesValue additionalChargesValue) throws Exception {
+    public ResponseEntity<AdditionalChargesValue> createAdditionalCharges(@RequestBody AdditionalChargesValue additionalChargesValue) {
         AdditionalChargesValue additionalChargesValue1 = additionalChargesService.saveAdditionalCharges(additionalChargesValue);
         if (additionalChargesValue1 == null) {
             return new ResponseEntity<AdditionalChargesValue>(HttpStatus.BAD_REQUEST);
@@ -29,20 +29,20 @@ public class AdditionalChargesController {
     }
 
     @GetMapping("/{tenantUuid}/{additionalChargesUuid}")
-    public ResponseEntity<AdditionalChargesValue> getAdditionalCharges(@PathVariable String tenantUuid, @PathVariable String additionalChargesUuid) throws Exception {
+    public ResponseEntity<AdditionalChargesValue> getAdditionalCharges(@PathVariable String tenantUuid, @PathVariable String additionalChargesUuid) {
         AdditionalChargesValue additionalChargesValue = additionalChargesService.getAdditionalCharges(tenantUuid, additionalChargesUuid);
         return new ResponseEntity<>(additionalChargesValue, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<AdditionalChargesValue>> getAllAdditionalCharges(@PathVariable String tenantUuid) throws Exception {
+    public ResponseEntity<List<AdditionalChargesValue>> getAllAdditionalCharges(@PathVariable String tenantUuid) {
         List<AdditionalChargesValue> additionalChargesValues = additionalChargesService.getAllAdditionalCharges(tenantUuid);
         return new ResponseEntity<>(additionalChargesValues, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{tenantUuid}/{additionalChargesUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Integer> deleteAdditionalCharges(@PathVariable String tenantUuid, @PathVariable String additionalChargesUuid) throws Exception {
+    public ResponseEntity<Integer> deleteAdditionalCharges(@PathVariable String tenantUuid, @PathVariable String additionalChargesUuid) {
         int deleteCharges = 0;
         deleteCharges = additionalChargesService.deleteAdditionalCharges(tenantUuid, additionalChargesUuid);
         return new ResponseEntity<Integer>(deleteCharges, HttpStatus.ACCEPTED);
@@ -50,7 +50,7 @@ public class AdditionalChargesController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<AdditionalChargesValue> editAdditionalCharges(@RequestBody AdditionalChargesValue additionalChargesValue) throws Exception {
+    public ResponseEntity<AdditionalChargesValue> editAdditionalCharges(@RequestBody AdditionalChargesValue additionalChargesValue) {
         AdditionalChargesValue additionalChargesValue1 = additionalChargesService.editAdditionalCharges(additionalChargesValue);
         return new ResponseEntity<AdditionalChargesValue>(additionalChargesValue1, HttpStatus.CREATED);
     }

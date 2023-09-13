@@ -13,22 +13,21 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PiTypeValue {
+public class PiTypeValue extends BaseValue {
 
-    private Integer piTypeId;
+    private Long piTypeId;
     private String piTypeUuid;
     private String piTypeName;
+    private String tenantUuid;
 
     private List<ProFormaInvoiceValue> proFormaInvoices;
 
-    private TenantValue tenantValue;
-
     public PiTypeEntity toEntity() {
         return PiTypeEntity.newBuilder()
-                .piTypeId(getPiTypeId())
-                .piTypeUuid(getPiTypeUuid())
+                .id(getPiTypeId())
+                .uuid(getPiTypeUuid())
                 .piTypeName(getPiTypeName())
-                .tenantEntity(getTenantValue().toEntity())
+                .isActive(isActive())
                 .build();
     }
 }

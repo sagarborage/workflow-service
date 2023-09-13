@@ -20,7 +20,7 @@ public class GlassTypeController {
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<GlassTypeValue> createGlassType(@RequestBody GlassTypeValue glassTypeValue) throws Exception {
+    public ResponseEntity<GlassTypeValue> createGlassType(@RequestBody GlassTypeValue glassTypeValue) {
         GlassTypeValue glassTypeValue1=glassTypeService.createGlassType(glassTypeValue);
         if (glassTypeValue1 == null) {
             return new ResponseEntity<GlassTypeValue>(HttpStatus.BAD_REQUEST);
@@ -29,20 +29,20 @@ public class GlassTypeController {
     }
 
     @GetMapping("/{tenantUuid}/{glassTypeUuid}")
-    public ResponseEntity<GlassTypeValue> getSingleGlassType(@PathVariable String tenantUuid, @PathVariable String glassTypeUuid) throws Exception {
+    public ResponseEntity<GlassTypeValue> getSingleGlassType(@PathVariable String tenantUuid, @PathVariable String glassTypeUuid) {
         GlassTypeValue glassTypeValue=glassTypeService.getGlassType(tenantUuid, glassTypeUuid);
         return  new ResponseEntity<>(glassTypeValue, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.GET)
-    public ResponseEntity<List<GlassTypeValue>> getAllGlassType(@PathVariable String tenantUuid) throws Exception {
+    public ResponseEntity<List<GlassTypeValue>> getAllGlassType(@PathVariable String tenantUuid) {
         List<GlassTypeValue> allGlassType = glassTypeService.getAllGlassType(tenantUuid);
         return new ResponseEntity<> (allGlassType ,HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{tenantUuid}/{glassTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassTypeValue> deleteGlassType(@PathVariable String tenantUuid, @PathVariable String glassTypeUuid) throws Exception {
+    public ResponseEntity<GlassTypeValue> deleteGlassType(@PathVariable String tenantUuid, @PathVariable String glassTypeUuid) {
         GlassTypeValue glassTypeValue =glassTypeService.deleteGlassType(tenantUuid, glassTypeUuid);
         return new ResponseEntity<GlassTypeValue>(glassTypeValue ,HttpStatus.ACCEPTED);
     }

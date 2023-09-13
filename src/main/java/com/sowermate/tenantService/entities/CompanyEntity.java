@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.entities;
 
+import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.CompanyValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,20 +19,12 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-//@ToString(callSuper = false)
 @Table(name = "company")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class CompanyEntity extends BaseEntity {
+public class CompanyEntity extends Base {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer companyId;
-
-    @Column(name = "uuid", unique = true, updatable = false)
-    protected String companyUuid;
 
     @Column(name = "company_name")
     private String companyName;
@@ -48,35 +41,34 @@ public class CompanyEntity extends BaseEntity {
     @Column(name = "PAN")
     private String pan;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_type_id")
     private CompanyTypeEntity companyType;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="company_id")
-    List<CompanyAddressEntity> companyAddresses;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<AddressEntity> addresses;
 
     public CompanyValue toDTO() {
         return CompanyValue.newBuilder()
-                .companyId(getCompanyId())
-                .companyUuid(getCompanyUuid())
+                .companyId(getId())
+                .companyUuid(getUuid())
                 .companyName(getCompanyName())
                 .cin(getCin())
                 .gstin(getGstin())
                 .tan(getTan())
                 .pan(getPan())
-                .isActive(getIsActive())
-                .tenantUuid(getTenantEntity().getUuid())
+                //.tenantUuid(getTenantEntity().getUuid())
                 //.companyAddresses(getCompanyAddresses().stream().map(e->e.toDTO()).collect(Collectors.toList()))
-                .companyTypeUuid(getCompanyType().getCompanyTypeUuid())
+                .companyTypeUuid(getCompanyType().getUuid())
+                .createdDttm(getCreatedDatetime())
+                .updatedDttm(getLastUpdatedDatetime())
+                .createdBy(getCreatedBy())
+                .updatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }
