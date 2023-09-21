@@ -4,12 +4,9 @@ import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.AddressTypeValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -39,10 +36,10 @@ public class AddressTypeEntity extends Base {
                 .type(getType())
                 .description(getDescription())
                 //.tenantValue(getTenantEntity().toDTO())
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

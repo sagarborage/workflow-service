@@ -32,10 +32,13 @@ public class AddressTypeServiceImpl implements AddressTypeService {
 
     @Override
     public AddressTypeValue editAddressType(AddressTypeValue addressTypeValue) {
+        AddressTypeEntity addressTypeEntityTemp = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(addressTypeValue.getAddressTypeUuid(),
+                addressTypeValue.getAddressTypeUuid());
         AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
-                .id(addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(addressTypeValue.getAddressTypeUuid(),
-                        addressTypeValue.getAddressTypeUuid()).getId())
+                .id(addressTypeEntityTemp.getId())
                 .tenantEntity(tenantRepository.findByUuid(addressTypeValue.getTenantUuid()))
+                .createdDateTime(addressTypeEntityTemp.getCreatedDateTime())
+                .createdBy(addressTypeEntityTemp.getCreatedBy())
                 .build();
         return addressTypeRepository.save(addressTypeEntity).toDTO();
     }

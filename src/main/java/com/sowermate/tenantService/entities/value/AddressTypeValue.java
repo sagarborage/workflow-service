@@ -20,7 +20,7 @@ public class AddressTypeValue extends BaseValue {
     private String tenantUuid;
     private String type;
     private String description;
-    private Boolean isActive;
+    private boolean isActive;
 
     public AddressTypeEntity toEntity() {
         return AddressTypeEntity.newBuilder()
@@ -28,7 +28,7 @@ public class AddressTypeValue extends BaseValue {
                 .uuid(getAddressTypeUuid())
                 .type(getType())
                 .description(getDescription())
-                .isActive(getIsActive())
+                .isActive(isActive())
                 //.tenantEntity(getTenantValue().toEntity())
                 .build();
     }

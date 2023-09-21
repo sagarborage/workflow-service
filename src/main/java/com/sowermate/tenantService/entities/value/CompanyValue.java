@@ -30,12 +30,8 @@ public class CompanyValue extends BaseValue {
     private String gstin;
     private String tan;
     private String pan;
-    private Boolean isActive;
+    private boolean isActive;
     private List<AddressValue> addresses;
-    //protected Date createdDttm;
-    //protected Date updatedDttm;
-    //private String createdBy;
-    //private String updatedBy;
 
     public CompanyEntity toEntity() {
         return CompanyEntity.newBuilder()

@@ -33,10 +33,10 @@ public class PiTypeEntity extends Base {
                 .piTypeUuid(getUuid())
                 .piTypeName(getPiTypeName())
                 .isActive(isActive())
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .build();
     }
 

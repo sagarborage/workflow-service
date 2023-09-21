@@ -3,16 +3,9 @@ package com.sowermate.tenantService.entities.value;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.tenantService.entities.AddressEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Jacksonized
@@ -54,10 +47,10 @@ public class AddressValue extends BaseValue {
                 .alternatePhoneNumber(getAlternatePhoneNumber())
                 .email(getEmail())
                 .website(getWebsite())
-                .createdDatetime(getCreatedDttm())
-                .lastUpdatedDatetime(getUpdatedDttm())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .lastUpdatedBy(getUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .build();
     }
 }

@@ -47,6 +47,8 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
         GlassSpecificationEntity glassSpecificationEntity = glassSpecificationValue.toEntity().toBuilder()
                 .id(tempGlassSpecificationEntity.getId())
                 .tenantEntity(tenantEntity)
+                .createdDateTime(tempGlassSpecificationEntity.getCreatedDateTime())
+                .createdBy(tempGlassSpecificationEntity.getCreatedBy())
                 .build();
         return glassSpecificationRepository.save(glassSpecificationEntity).toDTO().toBuilder().tenantUuid(tenantEntity.getUuid()).build();
     }

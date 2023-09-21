@@ -21,7 +21,7 @@ public class StatusEntity {
     private String name;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")

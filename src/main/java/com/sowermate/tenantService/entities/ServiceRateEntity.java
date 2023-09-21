@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -39,10 +38,10 @@ public class ServiceRateEntity extends Base {
                 .rate(getRate())
                 //.tenantValue(getTenantEntity().toDTO())
                 //.serviceRateInvoices(getServiceRateInvoices().stream().map(i->i.toDTO()).collect(Collectors.toList()))
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

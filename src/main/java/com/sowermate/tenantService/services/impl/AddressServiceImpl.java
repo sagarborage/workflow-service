@@ -54,14 +54,6 @@ public class AddressServiceImpl  implements AddressService {
     @Override
     public List<AddressValue> getAllCompanyAddress(String tenantUuid) {
         List<AddressValue> addressValues = new ArrayList<>();
-/*        AddressValue addressValue = null;
-        List<AddressEntity> addressEntities = addressRepository.findAllByTenantEntity_Uuid(tenantUuid);
-        for (int i = 0; i < addressEntities.size(); i++) {
-            addressValue = new AddressValue();
-            BeanUtils.copyProperties(addressEntities.get(i), addressValue);
-            addressValue.setTenantUuid(tenantUuid);
-            addressValues.add(addressValue);
-        }*/
         return addressValues;
     }
 }

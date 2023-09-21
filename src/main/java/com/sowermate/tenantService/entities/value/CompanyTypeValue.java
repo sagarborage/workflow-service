@@ -2,12 +2,9 @@ package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.tenantService.entities.CompanyTypeEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-
-import java.util.List;
 
 @Getter
 @Jacksonized
@@ -18,7 +15,7 @@ public class CompanyTypeValue extends BaseValue {
     private String type;
     private String description;
     protected String companyTypeUuid;
-    private Boolean isActive;
+    private boolean isActive;
 
     private CompanyValue companyValue;
     private TenantValue tenantValue;
@@ -30,11 +27,11 @@ public class CompanyTypeValue extends BaseValue {
                 .uuid(getCompanyTypeUuid())
                 .type(getType())
                 .description(getDescription())
-                .createdDatetime(getCreatedDttm())
-                .lastUpdatedDatetime(getUpdatedDttm())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .lastUpdatedBy(getUpdatedBy())
-                .isActive(getIsActive())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
                 .build();
     }
 }

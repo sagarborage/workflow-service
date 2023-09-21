@@ -20,7 +20,7 @@ public class GlassThicknessValue extends BaseValue {
     private String glassThicknessUuid;
     private String tenantUuid;
     private String name;
-    private Boolean isActive;
+    private boolean isActive;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
 
@@ -29,7 +29,7 @@ public class GlassThicknessValue extends BaseValue {
                 .id(getGlassThicknessId())
                 .uuid(getGlassThicknessUuid())
                 .name(getName())
-                .isActive(getIsActive())
+                .isActive(isActive())
                 //.proFormaInvoiceItemEntities(getProFormaInvoiceItems().stream().map(i->i.toEntity()).collect(Collectors.toList()))
                 .build();
     }

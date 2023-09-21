@@ -4,12 +4,9 @@ import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.CompanyTypeValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -46,10 +43,10 @@ public class CompanyTypeEntity extends Base {
                 .type(getType())
                 .description(getDescription())
                 //.companyValue(Optional.ofNullable(getCompanyEntity()).map(CompanyEntity::toDTO).orElse(null))
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

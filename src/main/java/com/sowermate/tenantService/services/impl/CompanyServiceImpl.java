@@ -76,8 +76,13 @@ public class CompanyServiceImpl implements CompanyService {
         if (null == companyValue.getCompanyUuid()) {
             return companyRepository.save(companyValue.toEntity().toBuilder().tenantEntity(tenantEntity).companyType(companyType).build());
         } else {
-            CompanyEntity tempCompanyEntity = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(companyValue.getTenantUuid(), companyValue.getCompanyUuid());
-            return companyRepository.save(companyValue.toEntity().toBuilder().id(tempCompanyEntity.getId()).tenantEntity(tenantEntity).companyType(companyType).build());
+            CompanyEntity companyEntityTemp = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(companyValue.getTenantUuid(), companyValue.getCompanyUuid());
+            return companyRepository.save(companyValue.toEntity().toBuilder()
+                    .id(companyEntityTemp.getId())
+                    .tenantEntity(tenantEntity).companyType(companyType)
+                    .createdDateTime(companyEntityTemp.getCreatedDateTime())
+                    .createdBy(companyEntityTemp.getCreatedBy())
+                    .build());
         }
     }
 
@@ -88,8 +93,13 @@ public class CompanyServiceImpl implements CompanyService {
             AddressEntity addressEntity = addressValue.toEntity().toBuilder().addressType(addressType).company(companyEntity).build();
             return addressRepository.save(addressEntity);
         } else {
-            AddressEntity tempAddressEntity = addressRepository.findByUuid(addressValue.getAddressUuid());
-            AddressEntity addressEntity = addressValue.toEntity().toBuilder().id(tempAddressEntity.getId()).addressType(addressType).company(companyEntity).build();
+            AddressEntity addressEntityTemp = addressRepository.findByUuid(addressValue.getAddressUuid());
+            AddressEntity addressEntity = addressValue.toEntity().toBuilder()
+                    .id(addressEntityTemp.getId())
+                    .addressType(addressType).company(companyEntity)
+                    .createdDateTime(addressEntityTemp.getCreatedDateTime())
+                    .createdBy(addressEntityTemp.getCreatedBy())
+                    .build();
             return addressRepository.save(addressEntity);
         }
     }

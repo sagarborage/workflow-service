@@ -95,10 +95,10 @@ public class ProFormaInvoiceItemEntity extends Base{
                 //.glassSpecificationValue(getGlassSpecificationEntity().toDTO())
                 //.glassTypeValue(getGlassTypeEntity().toDTO())
                 //.glassThicknessValue(getGlassThicknessEntity().toDTO())
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

@@ -37,8 +37,9 @@ public class TenantServiceImpl implements TenantService {
         TenantEntity tempTenantEntity = tenantRepository.findByUuid(tenantValue.getUuid());
         TenantEntity tenantEntity = tenantValue.toEntity().toBuilder()
                 .id(tempTenantEntity.getId())
+                .createdDateTime(tempTenantEntity.getCreatedDateTime())
+                .createdBy(tempTenantEntity.getCreatedBy())
                 .build();
-
         return tenantRepository.save(tenantEntity).toDTO();
     }
 

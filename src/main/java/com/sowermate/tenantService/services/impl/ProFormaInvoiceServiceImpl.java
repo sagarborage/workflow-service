@@ -35,12 +35,12 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     @Transactional
-    public ProFormaInvoiceValue createproFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
+    public ProFormaInvoiceValue createProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
         String tenantUUID = proFormaInvoiceValue.getTenantUuid();
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUUID);
 
-        if(ObjectUtils.isEmpty(tenantEntity)) {
+        if (ObjectUtils.isEmpty(tenantEntity)) {
             return null;
         } else {
             String piNumber = generatePiNumber(tenantEntity.getId());
@@ -61,7 +61,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     private String generatePiNumber(long tenantId) {
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findFirstByTenantEntityIdOrderByCreatedDatetimeDesc(tenantId);
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(tenantId);
 
         LocalDate currentDate = LocalDate.now();
         String currentMonth = currentDate.getMonth().toString().substring(0, 3);
@@ -79,7 +79,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public ProFormaInvoiceValue editproFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
+    public ProFormaInvoiceValue editProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
 
         String tenantUUID = proFormaInvoiceValue.getTenantUuid();
         ProFormaInvoiceEntity tempProFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(proFormaInvoiceValue.getTenantUuid(),
@@ -90,23 +90,25 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .tenantEntity(tenantRepository.findByUuid(proFormaInvoiceValue.getTenantUuid()))
                 .confirmThroughEntity(confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getProFormaInvoiceUuid()))
                 .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
+                .createdDateTime(tempProFormaInvoiceEntity.getCreatedDateTime())
+                .createdBy(tempProFormaInvoiceEntity.getCreatedBy())
                 .build();
         return proFormaInvoiceEntity.toDTO();
     }
 
     @Override
-    public ProFormaInvoiceValue getproFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
+    public ProFormaInvoiceValue getProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
         return proFormaInvoiceEntity.toDTO();
     }
 
     @Override
-    public int deleteproFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
+    public int deleteProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
         return proFormaInvoiceRepository.deleteByUuid(proFormaInvoiceUuid);
     }
 
     @Override
-    public List<ProFormaInvoiceValue> getAllproFormaInvoice(String tenantUuid) {
+    public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
         List<ProFormaInvoiceEntity> proFormaInvoiceEntities = proFormaInvoiceRepository.findAllByTenantEntity_Id(tenantEntity.getId());
         return proFormaInvoiceEntities.stream().map(pie -> pie.toDTO()).collect(Collectors.toList());

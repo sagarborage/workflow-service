@@ -48,6 +48,8 @@ public class PiTypeServiceImpl implements PiTypeService {
         PiTypeEntity piTypeEntity = piTypeValue.toEntity().toBuilder()
                 .id(tempPiTypeEntity.getId())
                 .tenantEntity(tenantEntity)
+                .createdDateTime(tempPiTypeEntity.getCreatedDateTime())
+                .createdBy(tempPiTypeEntity.getCreatedBy())
                 .build();
         return piTypeRepository.save(piTypeEntity).toDTO();
     }

@@ -63,7 +63,10 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
         ConfirmThroughEntity confirmThroughEntity = confirmThroughValue.toEntity().toBuilder()
                 .id(tempConfirmThroughEntity.getId())
                 .tenantEntity(tenantEntity)
-                .proFormaInvoiceEntity(proFormaInvoiceEntity).build();
+                .proFormaInvoiceEntity(proFormaInvoiceEntity)
+                .createdDateTime(tempConfirmThroughEntity.getCreatedDateTime())
+                .createdBy(tempConfirmThroughEntity.getCreatedBy())
+                .build();
         return confirmThroughRepository.save(confirmThroughEntity).toDTO();
     }
 

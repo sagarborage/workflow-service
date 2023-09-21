@@ -108,6 +108,44 @@ CREATE TABLE address (
   CONSTRAINT address_address_type_id_aatifk_1 FOREIGN KEY (address_type_id) REFERENCES address_type (id)
 );
 
+CREATE TABLE role_type (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  uuid varchar(36) NOT NULL,
+  tenant_id int(10) NOT NULL,
+  name varchar(100) NOT NULL,
+  created_dttm datetime DEFAULT NULL,
+  last_updated_dttm datetime DEFAULT NULL,
+  created_by varchar(100) DEFAULT NULL,
+  last_updated_by varchar(100) DEFAULT NULL,
+  is_active boolean DEFAULT 1,
+  PRIMARY KEY (id),
+  UNIQUE KEY uuid (uuid),
+  KEY tenant_id (tenant_id),
+  CONSTRAINT role_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
+);
+
+CREATE TABLE user (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  uuid varchar(36) NOT NULL,
+  tenant_id int(10) NOT NULL,
+  role_id int(10) NOT NULL,
+  name varchar(100) NOT NULL,
+  password varchar(50) NOT NULL,
+  salt varchar(50) NOT NULL,
+  mobile_number varchar(20) NOT NULL,
+  email_id varchar(50) NOT NULL,
+  created_dttm datetime DEFAULT NULL,
+  last_updated_dttm datetime DEFAULT NULL,
+  created_by varchar(100) DEFAULT NULL,
+  last_updated_by varchar(100) DEFAULT NULL,
+  is_active boolean DEFAULT 1,
+  PRIMARY KEY (id),
+  UNIQUE KEY uuid (uuid),
+  KEY tenant_id (tenant_id),
+  KEY role_id (role_id),
+  CONSTRAINT tenant_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  CONSTRAINT role_type_role_ibfk_1 FOREIGN KEY (role_id) REFERENCES role_type (id)
+);
 
 CREATE TABLE additional_charges (
   id int(10) NOT NULL AUTO_INCREMENT,

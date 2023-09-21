@@ -19,7 +19,7 @@ public class GlassTypeValue extends BaseValue {
     private String tenantUuid;
     private String glassTypeUuid;
     private String glassName;
-    private Boolean isActive;
+    private boolean isActive;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
     public GlassTypeEntity toEntity() {
@@ -27,7 +27,7 @@ public class GlassTypeValue extends BaseValue {
                 .id(getGlassTypeId())
                 .uuid(getGlassTypeUuid())
                 .glassName(getGlassName())
-                .isActive(getIsActive())
+                .isActive(isActive())
                 .build();
     }
     

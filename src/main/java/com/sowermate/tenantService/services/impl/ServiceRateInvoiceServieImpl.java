@@ -29,10 +29,8 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
     @Autowired
     private ServiceRateRepository serviceRateRepository;
 
-
     @Override
     public ServiceRateInvoiceValue createServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) {
-
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByUuid(serviceRateInvoiceValue.getProFormaInvoiceUuid());
         ServiceRateEntity serviceRateEntity = serviceRateRepository.findByUuid(serviceRateInvoiceValue.getServiceRateUuid());
         ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceValue.toEntity().toBuilder()
@@ -44,17 +42,6 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
 
     @Override
     public ServiceRateInvoiceValue editServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) {
-
-/*        String tenantUuid = serviceRateInvoiceValue.getTenantValue().getUuid();
-        ServiceRateInvoiceEntity tempServiceRateInvoiceEntity = serviceRateInvoiceRepository.findByTenantEntity_UuidAndServiceRateInvoiceUuid(tenantUuid,
-                serviceRateInvoiceValue.getServiceRateInvoiceUuid());
-        ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceValue.toEntity().toBuilder()
-                .id(tempServiceRateInvoiceEntity.getId())
-                .tenantEntity(tenantRepository.findByUuid(tenantUuid))
-                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid,
-                        serviceRateInvoiceValue.getProFormaInvoice().getproFormaInvoiceUuid()))
-                .serviceRateEntity(serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(tenantUuid, serviceRateInvoiceValue.getServiceRate().getServiceRateUuid()))
-                .build();*/
         return serviceRateInvoiceValue;
     }
 
@@ -69,7 +56,6 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
     }
 
     @Override
-
     public List<ServiceRateInvoiceValue> getAllServiceRateInvoice(String proFormaInvoiceUuid) {
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByUuid(proFormaInvoiceUuid);
         List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities = serviceRateInvoiceRepository.findAllByProFormaInvoiceEntity_Id(proFormaInvoiceEntity.getId());

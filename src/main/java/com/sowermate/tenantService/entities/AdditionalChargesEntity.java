@@ -45,10 +45,10 @@ public class AdditionalChargesEntity extends Base {
                 .adminCharges(getAdminCharges())
                 .forwardingCharges(getForwardingCharges())
                 .gst(getGst())
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

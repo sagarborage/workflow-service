@@ -4,17 +4,9 @@ import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.CompanyValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import net.bytebuddy.implementation.bind.annotation.Super;
-import net.bytebuddy.implementation.bind.annotation.SuperCall;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -64,10 +56,10 @@ public class CompanyEntity extends Base {
                 //.tenantUuid(getTenantEntity().getUuid())
                 //.companyAddresses(getCompanyAddresses().stream().map(e->e.toDTO()).collect(Collectors.toList()))
                 .companyTypeUuid(getCompanyType().getUuid())
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

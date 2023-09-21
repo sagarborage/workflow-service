@@ -39,6 +39,8 @@ public class ServiceRateServiceImpl implements ServiceRateService {
         ServiceRateEntity serviceRateEntity = serviceRateValue.toEntity().toBuilder()
                 .id(tempServiceRateEntity.getId())
                 .tenantEntity(tenantEntity)
+                .createdDateTime(tempServiceRateEntity.getCreatedDateTime())
+                .createdBy(tempServiceRateEntity.getCreatedBy())
                 .build();
         return serviceRateRepository.save(serviceRateEntity).toDTO().toBuilder().tenantUuid(tenantEntity.getUuid()).build();
     }

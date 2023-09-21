@@ -41,6 +41,8 @@ public class GlassTypeServiceImpl implements GlassTypeService {
                 glassTypeValue.getGlassTypeUuid());
         GlassTypeEntity glassTypeEntity = glassTypeValue.toEntity().toBuilder()
                 .id(tempGlassTypeEntity.getId())
+                .createdDateTime(tempGlassTypeEntity.getCreatedDateTime())
+                .createdBy(tempGlassTypeEntity.getCreatedBy())
                 .tenantEntity(tenantEntity)
                 .build();
         return glassTypeRepository.save(glassTypeEntity).toDTO();
@@ -48,40 +50,20 @@ public class GlassTypeServiceImpl implements GlassTypeService {
 
     @Override
     public GlassTypeValue getGlassType(String tenantUuid, String glassTypeUuid) {
-/*        GlassTypeValue glassTypeValue = new GlassTypeValue();
-
-        GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
-        BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
-        glassTypeValue.setTenantUuid(tenantUuid);
-        glassTypeValue.setGlassTypeUuid(glassTypeUuid);*/
         return glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid).toDTO();
     }
 
 
     @Override
     public GlassTypeValue deleteGlassType(String tenantUuid, String glassTypeUuid) {
-/*        GlassTypeValue glassTypeValue = new GlassTypeValue();*/
         glassTypeRepository.softDelete(glassTypeUuid);
         GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid, glassTypeUuid);
-/*        BeanUtils.copyProperties(glassTypeEntity, glassTypeValue);
-        glassTypeValue.setTenantUuid(tenantUuid);*/
         return glassTypeEntity.toDTO();
     }
 
     @Override
     public List<GlassTypeValue> getAllGlassType(String tenantUuid) {
-/*        List<GlassTypeValue> glassTypeValues = new ArrayList<>();
-        GlassTypeValue glassTypeValue = null;*/
         List<GlassTypeEntity> glassTypeEntities = glassTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
-/*
-        for (int i = 0; i < glassTypeEntities.size(); i++) {
-            glassTypeValue = new GlassTypeValue();
-            BeanUtils.copyProperties(glassTypeEntities.get(i), glassTypeValue);
-            glassTypeValue.setTenantUuid(tenantUuid);
-            glassTypeValues.add(glassTypeValue);
-        }
-*/
-
         return glassTypeEntities.stream().map(gte -> gte.toDTO()).collect(Collectors.toList());
     }
 }

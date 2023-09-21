@@ -127,10 +127,10 @@ public class ProFormaInvoiceEntity extends Base {
                 .status(getStatus())
                 .proFormaInvoiceItems(getProFormaInvoiceItemEntities().stream().map(entity -> entity.toDTO()).collect(Collectors.toList()))
                 .serviceRateInvoices(getServiceRateInvoiceEntities().stream().map(entity->entity.toDTO()).collect(Collectors.toList()))
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

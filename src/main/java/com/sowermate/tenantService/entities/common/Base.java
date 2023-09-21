@@ -1,6 +1,5 @@
 package com.sowermate.tenantService.entities.common;
 
-import com.sowermate.tenantService.entities.value.BaseValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,11 +26,11 @@ public class Base {
     @Column(name = "created_by")
     private String createdBy;
     @Column(name = "created_dttm")
-    private LocalDateTime createdDatetime;
+    private LocalDateTime createdDateTime;
     @Column(name = "last_updated_by")
     private String lastUpdatedBy;
     @Column(name = "last_updated_dttm")
-    private LocalDateTime lastUpdatedDatetime;
+    private LocalDateTime lastUpdatedDateTime;
     @Column(name = "is_active")
     private boolean isActive;
 
@@ -40,11 +39,11 @@ public class Base {
         if(uuid == null) {
             uuid = UUID.randomUUID().toString();
         }
-        if(createdDatetime == null) {
-            createdDatetime = LocalDateTime.now();
+        if(createdDateTime == null) {
+            createdDateTime = LocalDateTime.now();
         }
-        if(lastUpdatedDatetime == null) {
-            lastUpdatedDatetime = LocalDateTime.now();
+        if(lastUpdatedDateTime == null) {
+            lastUpdatedDateTime = LocalDateTime.now();
         }
         if(createdBy == null) {
             createdBy = "ADMIN";
@@ -56,6 +55,7 @@ public class Base {
 
     @PreUpdate
     public void autofillUpdate() {
-        lastUpdatedDatetime = LocalDateTime.now();
+        lastUpdatedDateTime = LocalDateTime.now();
+        lastUpdatedBy = "ADMIN";
     }
 }

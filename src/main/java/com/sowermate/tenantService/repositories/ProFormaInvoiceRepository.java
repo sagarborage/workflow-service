@@ -31,7 +31,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     Optional<ProFormaInvoiceEntity> findById(String proFormaInvoiceId);
 
-    ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDatetimeDesc(long id);
+    ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
 
     ProFormaInvoiceEntity findByUuid(String uuid);
     List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);

@@ -38,10 +38,14 @@ public class AdditionalChargesServiceImpl implements AdditionalChargesService {
 
     @Override
     public AdditionalChargesValue editAdditionalCharges(AdditionalChargesValue additionalChargesValue) {
+
+        AdditionalChargesEntity additionalChargesEntityTemp = additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(additionalChargesValue.getTenantUuid(),
+                additionalChargesValue.getAdditionalChargesUuid());
         AdditionalChargesEntity additionalChargesEntity = additionalChargesValue.toEntity().toBuilder()
                 .tenantEntity(tenantRepository.findByUuid(additionalChargesValue.getTenantUuid()))
-                .id(additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(additionalChargesValue.getTenantUuid(),
-                        additionalChargesValue.getAdditionalChargesUuid()).getId())
+                .id(additionalChargesEntityTemp.getId())
+                .createdDateTime(additionalChargesEntityTemp.getCreatedDateTime())
+                .createdBy(additionalChargesEntityTemp.getCreatedBy())
                 .build();
         return additionalChargesRepository.save(additionalChargesEntity).toDTO();
     }

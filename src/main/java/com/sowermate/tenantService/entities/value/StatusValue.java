@@ -7,5 +7,5 @@ public class StatusValue {
     private String statusUuid;
     private String tenantUuid;
     private String name;
-    private Boolean isActive;
+    private boolean isActive;
 }

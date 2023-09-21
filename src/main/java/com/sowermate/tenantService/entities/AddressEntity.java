@@ -1,17 +1,11 @@
 package com.sowermate.tenantService.entities;
 
 import com.sowermate.tenantService.entities.common.Base;
-import com.sowermate.tenantService.entities.common.CommonEntity;
 import com.sowermate.tenantService.entities.value.AddressValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -87,10 +81,10 @@ public class AddressEntity extends Base {
                 .alternatePhoneNumber(getAlternatePhoneNumber())
                 .email(getEmail())
                 .website(getWebsite())
-                .createdDttm(getCreatedDatetime())
-                .updatedDttm(getLastUpdatedDatetime())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
-                .updatedBy(getLastUpdatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(isActive())
                 .build();
     }

@@ -42,6 +42,8 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
         GlassThicknessEntity glassThicknessEntity = glassThicknessValue.toEntity().toBuilder()
                 .id(tempGlassThicknessEntity.getId())
                 .tenantEntity(tenantEntity)
+                .createdDateTime(tempGlassThicknessEntity.getCreatedDateTime())
+                .createdBy(tempGlassThicknessEntity.getCreatedBy())
                 .build();
         return glassThicknessRepository.save(glassThicknessEntity).toDTO().toBuilder().tenantUuid(tenantEntity.getUuid()).build();
     }
