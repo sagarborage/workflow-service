@@ -1,30 +1,24 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.PiTypeValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="pi_type")
-public class PiTypeEntity {
+@Table(name = "pi_type")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class PiTypeEntity extends Base {
     private static final long serialVersionUID = -241370177952331642L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pi_type_id", unique = true, nullable = false, updatable = false)
-    private int piTypeId;
 
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String piTypeUuid;
-
-    @Column(name = "mm")
-    private float mm;
-
-    @Column(name = "sqft")
-    private float sqft;
+    @Column(name = "pi_type_name")
+    private String piTypeName;
 
     @OneToMany(mappedBy="piTypeEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
@@ -33,5 +27,17 @@ public class PiTypeEntity {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    public PiTypeValue toDTO() {
+        return PiTypeValue.newBuilder()
+                .piTypeId(getId())
+                .piTypeUuid(getUuid())
+                .piTypeName(getPiTypeName())
+                .isActive(isActive())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .build();
+    }
 
 }

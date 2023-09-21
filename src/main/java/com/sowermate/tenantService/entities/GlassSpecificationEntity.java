@@ -1,32 +1,25 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="glass_specification")
-public class GlassSpecificationEntity implements Serializable {
+@Table(name = "glass_specification")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class GlassSpecificationEntity extends Base {
 
     private static final long serialVersionUID = -241370177952331642L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "glass_specification_id", unique = true, nullable = false, updatable = false)
-    private int glassSpecificationId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String glassSpecificationUuid;
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "is_active")
-    private Boolean isActive;
 
     @OneToMany(mappedBy="glassSpecificationEntity",cascade=CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
@@ -34,4 +27,17 @@ public class GlassSpecificationEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
+
+    public GlassSpecificationValue toDTO() {
+        return GlassSpecificationValue.newBuilder()
+                .glassSpecificationId(getId())
+                .glassSpecificationUuid(getUuid())
+                .name(getName())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

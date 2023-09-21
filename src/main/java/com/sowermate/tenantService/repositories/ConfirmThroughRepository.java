@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.ConfirmThroughEntity;
 import com.sowermate.tenantService.entities.GlassSpecificationEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,14 +17,15 @@ public interface ConfirmThroughRepository extends JpaRepository<ConfirmThroughEn
     @Query("SELECT c FROM ConfirmThroughEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND c.confirmThroughUuid = :confirmThroughUuid")
+            "AND c.uuid = :confirmThroughUuid")
     public ConfirmThroughEntity findByTenantEntity_UuidAndConfirmThroughUuid(@Param("tenantUuid") String tenantUuid, @Param("confirmThroughUuid") String confirmThroughUuid);
 
     public List<ConfirmThroughEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
 
-
-    public ConfirmThroughEntity deleteByConfirmThroughUuid(@Param("confirmThroughUuid")String confirmThroughUuid);
+    @Modifying
+    @Query("DELETE FROM ConfirmThroughEntity c WHERE c.uuid = :confirmThroughUuid")
+    int deleteByConfirmThroughUuid(@Param("confirmThroughUuid")String confirmThroughUuid);
 
 
 

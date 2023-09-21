@@ -1,79 +1,64 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.AdditionalChargesEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.AdditionalChargesValue;
 import com.sowermate.tenantService.repositories.AdditionalChargesRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.AdditionalChargesService;
-import com.sowermate.tenantService.services.CommonService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional(rollbackForClassName = { "Exception" })
+@Transactional(rollbackForClassName = {"Exception"})
 public class AdditionalChargesServiceImpl implements AdditionalChargesService {
     @Autowired
-    private AdditionalChargesRepository  additionalChargesRepository;
+    private AdditionalChargesRepository additionalChargesRepository;
 
     @Autowired
     private TenantRepository tenantRepository;
+
     @Override
-    public AdditionalChargesValue saveAdditionalCharges(AdditionalChargesValue additionalChargesValue) throws Exception {
-        AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
-        BeanUtils.copyProperties(additionalChargesValue, additionalChargesEntity);
-        String randomAdditionalChargesUuid= UUID.randomUUID().toString();
-        additionalChargesEntity.setAdditionalChargesUuid(randomAdditionalChargesUuid);
-        additionalChargesEntity.setTenantEntity(tenantRepository.findByTenantUuid(additionalChargesValue.getTenantUuid()));
-        BeanUtils.copyProperties(additionalChargesRepository.save(additionalChargesEntity), additionalChargesValue);
-        return additionalChargesValue;
+    public AdditionalChargesValue saveAdditionalCharges(AdditionalChargesValue additionalChargesValue) {
+        AdditionalChargesEntity additionalChargesEntity = additionalChargesValue.toEntity().toBuilder()
+                .tenantEntity(tenantRepository.findByUuid(additionalChargesValue.getTenantUuid())).build();
+            return additionalChargesRepository.save(additionalChargesEntity).toDTO();
     }
 
     @Override
-    public List<AdditionalChargesValue> getAllAdditionalCharges(String tenantUuid) throws Exception {
-        List<AdditionalChargesValue> additionalChargesValues=new ArrayList<>();
-        AdditionalChargesValue additionalChargesValue=null;
-        List<AdditionalChargesEntity> additionalChargesEntities= additionalChargesRepository.findAllByTenantEntity_Uuid(tenantUuid);
-        for (int i=0; i <additionalChargesEntities.size(); i++){
-            additionalChargesValue =new AdditionalChargesValue();
-            BeanUtils.copyProperties(additionalChargesEntities.get(i), additionalChargesValue);
-            additionalChargesValues.add(additionalChargesValue);
-        }
-
-        return additionalChargesValues;
+    public List<AdditionalChargesValue> getAllAdditionalCharges(String tenantUuid) {
+        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
+        List<AdditionalChargesEntity> additionalChargesEntities = additionalChargesRepository.findByTenantEntityId(tenantEntity.getId());
+        return additionalChargesEntities.stream().map(additionalCharges -> additionalCharges.toDTO()).collect(Collectors.toList());
     }
 
     @Override
-    public AdditionalChargesValue editAdditionalCharges(AdditionalChargesValue additionalChargesValue) throws Exception {
+    public AdditionalChargesValue editAdditionalCharges(AdditionalChargesValue additionalChargesValue) {
 
-            AdditionalChargesEntity additionalChargesEntity=new AdditionalChargesEntity();
-            BeanUtils.copyProperties(additionalChargesValue , additionalChargesEntity);
-            additionalChargesEntity.setTenantEntity(tenantRepository.findByTenantUuid(additionalChargesValue.getTenantUuid()));
-            additionalChargesEntity.setAdditionalChargesId(additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(additionalChargesValue.getTenantUuid(),additionalChargesValue.getAdditionalChargesUuid()).getAdditionalChargesId());
-            BeanUtils.copyProperties(additionalChargesRepository.save(additionalChargesEntity), additionalChargesValue);
-            return additionalChargesValue;
-
+        AdditionalChargesEntity additionalChargesEntityTemp = additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(additionalChargesValue.getTenantUuid(),
+                additionalChargesValue.getAdditionalChargesUuid());
+        AdditionalChargesEntity additionalChargesEntity = additionalChargesValue.toEntity().toBuilder()
+                .tenantEntity(tenantRepository.findByUuid(additionalChargesValue.getTenantUuid()))
+                .id(additionalChargesEntityTemp.getId())
+                .createdDateTime(additionalChargesEntityTemp.getCreatedDateTime())
+                .createdBy(additionalChargesEntityTemp.getCreatedBy())
+                .build();
+        return additionalChargesRepository.save(additionalChargesEntity).toDTO();
     }
 
     @Override
-    public AdditionalChargesValue getAdditionalCharges(String tenantUuid,String additionalChargesUuid) throws Exception {
-        AdditionalChargesValue  additionalChargesValue=new AdditionalChargesValue();
-        AdditionalChargesEntity additionalChargesEntity =additionalChargesRepository.findByTenantEntity_UuidAndAdditionalChargesUuid(tenantUuid,additionalChargesUuid);
-        BeanUtils.copyProperties(additionalChargesEntity ,additionalChargesValue);
-        return additionalChargesValue;
+    public AdditionalChargesValue getAdditionalCharges(String tenantUuid, String additionalChargesUuid) {
+        AdditionalChargesEntity additionalChargesEntity = additionalChargesRepository
+                .findByTenantEntity_UuidAndAdditionalChargesUuid(tenantUuid, additionalChargesUuid);
+        return additionalChargesEntity.toDTO();
     }
 
-
     @Override
-    public AdditionalChargesValue deleteAdditionalCharges(String tenantUuid,String additionalChargesUuid) throws Exception {
-        AdditionalChargesValue additionalChargesValue=new AdditionalChargesValue();
-        AdditionalChargesEntity additionalChargesEntity =additionalChargesRepository.deleteByAdditionalChargesUuid(additionalChargesUuid) ;
-        BeanUtils.copyProperties(additionalChargesEntity ,additionalChargesValue);
-        return  additionalChargesValue;
+    public int deleteAdditionalCharges(String tenantUuid, String additionalChargesUuid) {
+        return additionalChargesRepository.deleteByAdditionalChargesUuid(additionalChargesUuid);
     }
 }

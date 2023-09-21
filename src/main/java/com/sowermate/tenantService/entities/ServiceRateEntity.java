@@ -1,25 +1,21 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.ServiceRateValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name = "service_rate")
-public class ServiceRateEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class ServiceRateEntity extends Base {
     private static final long serialVersionUID = -241370177952331642L;
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="service_rate_id",unique = true, nullable = false, updatable = false)
-    private int serviceRateId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String serviceRateUuid;
 
     @Column(name = "name")
     private String name;
@@ -27,14 +23,26 @@ public class ServiceRateEntity {
     @Column(name = "rate")
     private float rate;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
     @OneToMany(mappedBy="serviceRateEntity",cascade=CascadeType.ALL)
-    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;
+    private List<ServiceRateInvoiceEntity> serviceRateInvoices;
 
+    public ServiceRateValue toDTO() {
+        return ServiceRateValue.newBuilder()
+                .serviceRateId(getId())
+                .serviceRateUuid(getUuid())
+                .name(getName())
+                .rate(getRate())
+                //.tenantValue(getTenantEntity().toDTO())
+                //.serviceRateInvoices(getServiceRateInvoices().stream().map(i->i.toDTO()).collect(Collectors.toList()))
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

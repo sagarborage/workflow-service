@@ -1,19 +1,19 @@
 package com.sowermate.tenantService.services;
 
-import com.sowermate.tenantService.entities.value.ProFormInvoiceValue;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 
 import java.util.List;
 
 public interface ProFormaInvoiceService {
 
-    public ProFormInvoiceValue createProFormInvoice(ProFormInvoiceValue proFormInvoiceValue) throws Exception;
+    public ProFormaInvoiceValue createProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue);
 
-    public ProFormInvoiceValue editProFormInvoice(ProFormInvoiceValue proFormInvoiceValue) throws Exception;
+    public ProFormaInvoiceValue editProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue);
 
-    public ProFormInvoiceValue getProFormInvoice(String tenantUuid,String proFormInvoiceUuid) throws Exception;
+    public ProFormaInvoiceValue getProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid);
 
-    public ProFormInvoiceValue deleteProFormInvoice(String tenantUuid,String proFormInvoiceUuid) throws Exception;
+    public int deleteProFormaInvoice(String tenantUuid,String proFormaInvoiceUuid);
 
-    public List<ProFormInvoiceValue> getAllProFormInvoice(String tenantUuid) throws Exception;
+    public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
 
 }
