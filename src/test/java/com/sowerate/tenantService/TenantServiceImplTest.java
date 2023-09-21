@@ -65,8 +65,8 @@ public class TenantServiceImplTest {
     private ServiceRateInvoiceRepository mockServiceRateInvoiceRepository;
     @Mock
     private AddressTypeRepository mockAddressTypeRepository;
-    @Mock
-    private CompanyAddressRepository mockCompanyAddressRepository;
+/*    @Mock
+    private CompanyAddressRepository mockCompanyAddressRepository;*/
 
     @Before
     public void init() {
@@ -95,11 +95,11 @@ public class TenantServiceImplTest {
         //when(mockCompanyRepository.findAllByTenantEntityTenantId(anyInt())).thenReturn(companyEntities);
 
         //for AdditionalChargesEntity
-        AdditionalChargesEntity additionalChargesEntity = prepareAdditionalChargesEntity();
+/*        AdditionalChargesEntity additionalChargesEntity = prepareAdditionalChargesEntity();
         List<AdditionalChargesEntity> additionalChargesEntities = new ArrayList<AdditionalChargesEntity>();
         additionalChargesEntities.add(additionalChargesEntity);
 
-        when(mockAdditionalChargesRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(additionalChargesEntities);
+        //when(mockAdditionalChargesRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(additionalChargesEntities);
 
         //for ServiceRateEntity
         ServiceRateEntity serviceRateEntity = prepareServiceRateEntity();
@@ -141,7 +141,7 @@ public class TenantServiceImplTest {
         List<CompanyTypeEntity> companyTypeEntities = new ArrayList<CompanyTypeEntity>();
         companyTypeEntities.add(companyTypeEntity);
 
-        when(mockCompanyTypeRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(companyTypeEntities);
+        //when(mockCompanyTypeRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(companyTypeEntities);
 
         //for AddressEntity
         AddressEntity addressEntity = prepareAddressEntity();
@@ -155,7 +155,7 @@ public class TenantServiceImplTest {
         List<ProFormaInvoiceEntity> proFormaInvoiceEntities = new ArrayList<ProFormaInvoiceEntity>();
         proFormaInvoiceEntities.add(proFormaInvoiceEntity);
 
-        when(mockProFormaInvoiceRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(proFormaInvoiceEntities);
+        //when(mockProFormaInvoiceRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(proFormaInvoiceEntities);
 
         //for ProFormaInvoiceItemEntity
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = prepareProFormaInvoiceItemEntity();
@@ -176,19 +176,19 @@ public class TenantServiceImplTest {
         List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities = new ArrayList<ServiceRateInvoiceEntity>();
         serviceRateInvoiceEntities.add(serviceRateInvoiceEntity);
 
-        when(mockServiceRateInvoiceRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(serviceRateInvoiceEntities);
+        //when(mockServiceRateInvoiceRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(serviceRateInvoiceEntities);
 
         //for AddressTypeEntity
         AddressTypeEntity addressTypeEntity = prepareAddressTypeEntity();
         List<AddressTypeEntity> addressTypeEntities = new ArrayList<AddressTypeEntity>();
-        addressTypeEntities.add(addressTypeEntity);
+        addressTypeEntities.add(addressTypeEntity);*/
 
-        when(mockAddressTypeRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(addressTypeEntities);
+        //when(mockAddressTypeRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(addressTypeEntities);
 
         //for CompanyAddressEntity
-        CompanyAddressEntity companyAddressEntity = prepareCompanyAddressEntity();
-        List<CompanyAddressEntity> companyAddressEntities = new ArrayList<CompanyAddressEntity>();
-        companyAddressEntities.add(companyAddressEntity);
+        //CompanyAddressEntity companyAddressEntity = prepareCompanyAddressEntity();
+        //List<CompanyAddressEntity> companyAddressEntities = new ArrayList<CompanyAddressEntity>();
+        //companyAddressEntities.add(companyAddressEntity);
 
         //when(mockCompanyAddressRepository.findAllByTenantEntity_Uuid(anyString())).thenReturn(companyAddressEntities);
 
@@ -213,7 +213,7 @@ public class TenantServiceImplTest {
         when(mockTenantRepository.save(any(TenantEntity.class))).thenReturn(tenantEntity);
         List<TenantEntity> entities = new ArrayList<TenantEntity>();
         entities.add(tenantEntity);
-        when(mockTenantRepository.findByTenantUuid(any())).thenReturn(tenantEntity);
+        //when(mockTenantRepository.findByTenantUuid(any())).thenReturn(tenantEntity);
 
         //for CompanyEntity
         //CompanyEntity companyEntity = prepareCompanyEntity();
@@ -222,7 +222,7 @@ public class TenantServiceImplTest {
         //when(mockCompanyRepository.findAllByTenantEntityTenantId(anyInt())).thenReturn(companyEntities);
 
         //for AdditionalChargesEntity
-        AdditionalChargesEntity additionalChargesEntity = prepareAdditionalChargesEntity();
+/*        AdditionalChargesEntity additionalChargesEntity = prepareAdditionalChargesEntity();
         List<AdditionalChargesEntity> additionalChargesEntities = new ArrayList<AdditionalChargesEntity>();
         additionalChargesEntities.add(additionalChargesEntity);
         //when(mockAdditionalChargesRepository.findAllByTenantEntity_Uuid(any())).thenReturn(additionalChargesEntities);
@@ -261,7 +261,7 @@ public class TenantServiceImplTest {
         CompanyTypeEntity companyTypeEntity = prepareCompanyTypeEntity();
         List<CompanyTypeEntity> companyTypeEntities = new ArrayList<CompanyTypeEntity>();
         companyTypeEntities.add(companyTypeEntity);
-        when(mockCompanyTypeRepository.findAllByTenantEntity_Uuid(any())).thenReturn(companyTypeEntities);
+        //when(mockCompanyTypeRepository.findAllByTenantEntity_Uuid(any())).thenReturn(companyTypeEntities);
 
         //for AddressEntity
         AddressEntity addressEntity = prepareAddressEntity();
@@ -273,7 +273,7 @@ public class TenantServiceImplTest {
         ProFormaInvoiceEntity proFormaInvoiceEntity = prepareProFormaInvoiceEntity();
         List<ProFormaInvoiceEntity> proFormaInvoiceEntities = new ArrayList<ProFormaInvoiceEntity>();
         proFormaInvoiceEntities.add(proFormaInvoiceEntity);
-        when(mockProFormaInvoiceRepository.findAllByTenantEntity_Uuid(any())).thenReturn(proFormaInvoiceEntities);
+        //when(mockProFormaInvoiceRepository.findAllByTenantEntity_Uuid(any())).thenReturn(proFormaInvoiceEntities);
 
         //for ProFormaInvoiceItemEntity
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = prepareProFormaInvoiceItemEntity();
@@ -297,12 +297,12 @@ public class TenantServiceImplTest {
         AddressTypeEntity addressTypeEntity = prepareAddressTypeEntity();
         List<AddressTypeEntity> addressTypeEntities = new ArrayList<AddressTypeEntity>();
         addressTypeEntities.add(addressTypeEntity);
-        when(mockAddressTypeRepository.findAllByTenantEntity_Uuid(any())).thenReturn(addressTypeEntities);
+        when(mockAddressTypeRepository.findAllByTenantEntity_Uuid(any())).thenReturn(addressTypeEntities);*/
 
         //for CompanyAddressEntity
-        CompanyAddressEntity companyAddressEntity = prepareCompanyAddressEntity();
-        List<CompanyAddressEntity> companyAddressEntities = new ArrayList<CompanyAddressEntity>();
-        companyAddressEntities.add(companyAddressEntity);
+        //CompanyAddressEntity companyAddressEntity = prepareCompanyAddressEntity();
+        //List<CompanyAddressEntity> companyAddressEntities = new ArrayList<CompanyAddressEntity>();
+        //companyAddressEntities.add(companyAddressEntity);
         //when(mockCompanyAddressRepository.findAllByTenantEntity_Uuid(any())).thenReturn(companyAddressEntities);
 
         //when
@@ -324,7 +324,7 @@ public class TenantServiceImplTest {
         TenantEntity tenantEntity = prepareTenantEntity();
         List<TenantEntity> mockedTenantEntities = new ArrayList<>();
         mockedTenantEntities.add(tenantEntity);
-        when(mockTenantRepository.findByTenantUuid(anyString())).thenReturn(tenantEntity);
+        //when(mockTenantRepository.findByTenantUuid(anyString())).thenReturn(tenantEntity);
         //when
         TenantValue result = mockTenantServiceImpl.getTenantDetails(TEST_UUID);
         //then
@@ -344,7 +344,7 @@ public class TenantServiceImplTest {
         TenantEntity tenantEntity = prepareTenantEntity();
         List<TenantEntity> entities = new ArrayList<TenantEntity>();
         entities.add(tenantEntity);
-        when(mockTenantRepository.findByTenantUuid(anyString())).thenReturn(tenantEntity);
+        //when(mockTenantRepository.findByTenantUuid(anyString())).thenReturn(tenantEntity);
         // when
         List<TenantValue> result = mockTenantServiceImpl.getAllTenantDetails();
         // then
@@ -380,23 +380,25 @@ public class TenantServiceImplTest {
         return TenantEntity.newBuilder().build().toBuilder().uuid(TEST_UUID).build();
     }
 
-    private AdditionalChargesEntity prepareAdditionalChargesEntity() {
+/*    private AdditionalChargesEntity prepareAdditionalChargesEntity() {
         return AdditionalChargesEntity.newBuilder().build().toBuilder().additionalChargesUuid(TEST_UUID).build();
-    }
+    }*/
 
-    private ServiceRateEntity prepareServiceRateEntity() {
+/*    private ServiceRateEntity prepareServiceRateEntity() {
         ServiceRateEntity serviceRateEntity = new ServiceRateEntity();
         serviceRateEntity.setServiceRateUuid(TEST_UUID);
         return serviceRateEntity;
-    }
+    }*/
 
+/*
     private GlassTypeEntity prepareGlassTypeEntity() {
         GlassTypeEntity glassTypeEntity = new GlassTypeEntity();
         glassTypeEntity.setGlassTypeUuid(TEST_UUID);
         return glassTypeEntity;
     }
+*/
 
-    private GlassThicknessEntity prepareGlassThicknessEntity() {
+/*    private GlassThicknessEntity prepareGlassThicknessEntity() {
         GlassThicknessEntity glassThicknessEntity = new GlassThicknessEntity();
         glassThicknessEntity.setGlassThicknessUuid(TEST_UUID);
         return glassThicknessEntity;
@@ -412,9 +414,9 @@ public class TenantServiceImplTest {
         ConfirmThroughEntity confirmThroughEntity = new ConfirmThroughEntity();
         confirmThroughEntity.setConfirmThroughUuid(TEST_UUID);
         return confirmThroughEntity;
-    }
+    }*/
 
-    private CompanyTypeEntity prepareCompanyTypeEntity() {
+  /*  private CompanyTypeEntity prepareCompanyTypeEntity() {
         return CompanyTypeEntity.newBuilder().build().toBuilder().companyTypeUuid(TEST_UUID).build();
     }
 
@@ -458,5 +460,5 @@ public class TenantServiceImplTest {
         CompanyAddressEntity companyAddressEntity = new CompanyAddressEntity();
         companyAddressEntity.setCompanyAddressUuid(TEST_UUID);
         return companyAddressEntity;
-    }
+    }*/
 }
