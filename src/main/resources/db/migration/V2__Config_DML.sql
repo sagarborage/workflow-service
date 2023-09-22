@@ -20,6 +20,10 @@ INSERT INTO `company_type` (`uuid`, `tenant_id`, `type`, `description`, `is_acti
 INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `CIN`, `GSTIN`, `TAN`, `PAN`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
 
+INSERT INTO `address` (`uuid`, `company_id`, `address_type_id`, `address_line1`, `address_line2`, `address_line3`, `city`, `state_code`, `country_code`, `pin_code`, `work_phone`, `fax`, `primary_phone_number`, `alternate_phone_number`, `email`, `website`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('28efd0b3-a0ba-4805-b432-5543013c0e73', 1, 2, 'Hadapsar, near Dmart', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
+
+
 INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c', 1, 'Glass Test', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', NULL, 1);
 

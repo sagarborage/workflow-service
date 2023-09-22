@@ -8,6 +8,7 @@ import com.sowermate.tenantService.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -106,6 +107,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     private List<CompanyValue> getTenantWiseAddressDetails(TenantEntity tenantEntity) {
         List<CompanyEntity> companyEntities = companyRepository.findAllByTenantEntityId(tenantEntity.getId());
-        return companyEntities.stream().map(ce -> ce.toDTO().toBuilder().addresses(Arrays.asList(ce.getAddresses().get(0).toDTO())).build()).collect(Collectors.toList());
+        return companyEntities.stream().map(
+                ce -> ce.toDTO().toBuilder()
+                        .addresses(ObjectUtils.isEmpty(ce.getAddresses()) ?
+                                null : Arrays.asList(ce.getAddresses().get(0).toDTO()))
+                        .build()
+                ).collect(Collectors.toList());
     }
 }
