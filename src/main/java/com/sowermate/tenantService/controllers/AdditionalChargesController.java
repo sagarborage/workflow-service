@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/additional-charges")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AdditionalChargesController {
 
     @Autowired

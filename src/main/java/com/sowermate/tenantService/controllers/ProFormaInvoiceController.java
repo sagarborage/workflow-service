@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/proforma-invoices")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProFormaInvoiceController {
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/address-types")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AddressTypeController {
 
     @Autowired

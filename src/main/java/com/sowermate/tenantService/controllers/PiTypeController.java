@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pi-types")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PiTypeController {
 
     @Autowired

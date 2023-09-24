@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping(value = "/glass-types", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class GlassTypeController {
 
 
