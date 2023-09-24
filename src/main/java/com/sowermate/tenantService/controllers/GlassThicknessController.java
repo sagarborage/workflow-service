@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/glass-thickness", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class GlassThicknessController {
     @Autowired
     private GlassThicknessService glassThicknessService;
