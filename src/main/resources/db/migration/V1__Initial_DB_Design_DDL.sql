@@ -337,10 +337,7 @@ CREATE TABLE `service_rate_invoice` (
 	INDEX `FK_service_rate_invoice_pro_forma_invoice` (`pro_forma_invoice_id`) USING BTREE,
 	INDEX `FK_service_rate_invoice_service_rate` (`service_rate_id`) USING BTREE,
 	CONSTRAINT `service_rate_invoice_invoice_ibfk_1` FOREIGN KEY (`pro_forma_invoice_id`) REFERENCES `pro_forma_invoice` (`id`)
-)
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB
-;
+);
 
 
 CREATE TABLE service_rate (
