@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 //@Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter  {
+public class SecurityConfig/* extends WebSecurityConfigurerAdapter */ {
 
     // Inject the cors.allowedOrigins property into the origins list
 /*    @Value("#{'${cors.allowedOrigins}'.split(',')}")
