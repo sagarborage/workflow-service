@@ -12,11 +12,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     // Inject the cors.allowedOrigins property into the origins list
-    @Value("#{'${cors.allowedOrigins}'.split(',')}")
+/*    @Value("#{'${cors.allowedOrigins}'.split(',')}")
     private List<String> allowedOrigins;
 
     @Value("#{'${cors.allowedMethods}'.split(',')}")
@@ -41,5 +41,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
+    }*/
 }
