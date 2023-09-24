@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/service-rates")
+@CrossOrigin("*")
 public class ServiceRateController {
     @Autowired
     private ServiceRateService serviceRateService;

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/glass-thickness", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin("*")
 public class GlassThicknessController {
     @Autowired
     private GlassThicknessService glassThicknessService;

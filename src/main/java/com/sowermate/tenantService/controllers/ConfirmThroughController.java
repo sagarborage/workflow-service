@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/confirm-through")
+@CrossOrigin("*")
 public class ConfirmThroughController {
     @Autowired
     private ConfirmThroughService confirmThroughService;

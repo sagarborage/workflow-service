@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin("*")
 public class UserController {
 
 

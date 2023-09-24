@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/company_types")
+@CrossOrigin("*")
 public class CompanyTypeController {
 
     @Autowired

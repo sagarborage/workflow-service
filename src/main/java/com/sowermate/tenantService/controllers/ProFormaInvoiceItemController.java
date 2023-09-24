@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/proforma-invoice-items")
+@CrossOrigin("*")
 public class ProFormaInvoiceItemController {
 
     @Autowired

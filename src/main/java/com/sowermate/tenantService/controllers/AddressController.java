@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/addresses")
+@CrossOrigin("*")
 public class AddressController {
 
     @Autowired

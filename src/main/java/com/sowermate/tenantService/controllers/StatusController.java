@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/statuses")
+@CrossOrigin("*")
 public class StatusController {
 
     @Autowired

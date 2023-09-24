@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/proforma-invoices")
+@CrossOrigin("*")
 public class ProFormaInvoiceController {
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
