@@ -48,7 +48,7 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(companyValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(companyValue, HttpStatus.OK);
     }
     @RequestMapping(value = "/{tenantUuid}/{companyUuid}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -60,7 +60,7 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.OK);
     }
 
     @GetMapping (value = "/{tenantUuid}")
@@ -72,6 +72,6 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(companyValues, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(companyValues, HttpStatus.OK);
     }
 }
