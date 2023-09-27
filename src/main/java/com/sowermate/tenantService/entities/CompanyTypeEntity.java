@@ -32,9 +32,9 @@ public class CompanyTypeEntity extends Base {
     @OneToMany(mappedBy="companyType",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CompanyEntity> companyEntiies;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name ="tenant_id")
-    //private TenantEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="tenant_id")
+    private TenantEntity tenantEntity;
 
     public CompanyTypeValue toDTO() {
         return CompanyTypeValue.newBuilder()

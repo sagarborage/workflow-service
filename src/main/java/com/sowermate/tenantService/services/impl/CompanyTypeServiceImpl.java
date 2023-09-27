@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackForClassName = {"Exception"})
@@ -58,7 +59,8 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 
     @Override
     public List<CompanyTypeValue> getAllCompanyType(String tenantUuid) {
-        return null;
+        List<CompanyTypeEntity> companyTypeEntities = companyTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
+        return companyTypeEntities.stream().map(e -> e.toDTO()).collect(Collectors.toList());
     }
 
     @Override
