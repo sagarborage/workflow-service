@@ -20,9 +20,9 @@ public class AddressValue extends BaseValue {
     private String addressLine2;
     private String addressLine3;
     private String city;
-    private int stateCode;
-    private int countryCode;
-    private int pinCode;
+    private String stateCode;
+    private String countryCode;
+    private String pinCode;
     private String workPhone;
     private String fax;
     private String primaryPhoneNumber;

@@ -30,13 +30,13 @@ public class AddressEntity extends Base {
     private  String city;
 
     @Column(name = "state_code")
-    private  int stateCode;
+    private  String stateCode;
 
     @Column (name = "country_code")
-    private  int countryCode;
+    private  String countryCode;
 
     @Column (name = "pin_code")
-    private  int pinCode;
+    private  String pinCode;
 
     @Column (name = "work_phone")
     private  String workPhone;
