@@ -6,8 +6,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,7 +24,7 @@ public class ProFormaInvoiceEntity extends Base {
     private String piNumber;
 
     @Column(name = "invoice_date")
-    private Date invoiceDate;
+    private LocalDateTime invoiceDate;
 
     @Column(name = "pro_forma_invoice_amount")
     private Double proFormaInvoiceAmount;
@@ -125,8 +127,8 @@ public class ProFormaInvoiceEntity extends Base {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
-                .proFormaInvoiceItems(getProFormaInvoiceItemEntities().stream().map(entity -> entity.toDTO()).collect(Collectors.toList()))
-                .serviceRateInvoices(getServiceRateInvoiceEntities().stream().map(entity->entity.toDTO()).collect(Collectors.toList()))
+                .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))
+                .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity->entity.toDTO()).collect(Collectors.toList())).orElse(null))
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())

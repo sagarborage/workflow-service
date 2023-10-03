@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ProFormaInvoiceValue extends BaseValue {
     private String companyBillToUuid;
     private String companyShipToUuid;
     private String piNumber;
-    private Date invoiceDate;
+    private LocalDateTime invoiceDate;
     private Double proFormaInvoiceAmount;
     private Double serviceRateInvoiceAmount;
     private Double basicAmount;
@@ -70,6 +71,7 @@ public class ProFormaInvoiceValue extends BaseValue {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
+                .isActive(isActive())
                 .build();
     }
 }

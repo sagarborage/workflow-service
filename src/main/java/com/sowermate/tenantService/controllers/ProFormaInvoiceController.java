@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.slf4j.LoggerFactory;
@@ -65,8 +66,8 @@ public class ProFormaInvoiceController {
         }
         return new ResponseEntity<Integer>(deleteProFormaInvoice, HttpStatus.ACCEPTED);
     }
-
-    @GetMapping("/{tenantUuid}")
+    //TODO: Remove this code lateron
+/*    @GetMapping("/{tenantUuid}")
     public ResponseEntity<List<ProFormaInvoiceValue>> getAllproFormaInvoice(@PathVariable String tenantUuid) {
         List<ProFormaInvoiceValue> proFormaInvoiceValues = null;
         try {
@@ -76,6 +77,17 @@ public class ProFormaInvoiceController {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(proFormaInvoiceValues, HttpStatus.ACCEPTED);
+    }*/
 
+    @GetMapping("/{tenantUuid}")
+    public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllproFormaInvoice(@PathVariable String tenantUuid) {
+        List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
+        try {
+            proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid);
+            Logger.info("records " + proFormaInvoiceMinimals.size());
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(proFormaInvoiceMinimals, HttpStatus.ACCEPTED);
     }
 }

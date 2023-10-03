@@ -2,6 +2,7 @@ package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +57,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                     .companyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyBillToUuid()))
                     .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyShipToUuid()))
                     .piNumber(piNumber)
+                    .invoiceDate(LocalDateTime.now())
                     .build();
             return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
         }
@@ -106,11 +109,16 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     public int deleteProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
         return proFormaInvoiceRepository.deleteByUuid(proFormaInvoiceUuid);
     }
-
-    @Override
+    //TODO: Remove this code lateron
+/*    @Override
     public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
         List<ProFormaInvoiceEntity> proFormaInvoiceEntities = proFormaInvoiceRepository.findAllByTenantEntity_Id(tenantEntity.getId());
         return proFormaInvoiceEntities.stream().map(pie -> pie.toDTO()).collect(Collectors.toList());
+    }*/
+
+    @Override
+    public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid) {
+        return  proFormaInvoiceRepository.findAllByTenantEntity_Id(tenantUuid);
     }
 }
