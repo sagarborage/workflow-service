@@ -119,6 +119,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid) {
-        return  proFormaInvoiceRepository.findAllByTenantEntity_Id(tenantUuid);
+        return  proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid);
     }
 }

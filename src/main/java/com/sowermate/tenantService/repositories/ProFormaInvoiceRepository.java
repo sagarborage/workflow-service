@@ -36,8 +36,6 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
 
     ProFormaInvoiceEntity findByUuid(String uuid);
-
-    //TODO: Remove this code lateron
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
 
     @Query("SELECT pfie.uuid as uuid, " +
@@ -48,7 +46,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pfie.status as status FROM ProFormaInvoiceEntity pfie " +
             " JOIN pfie.companyIdBill c where  " +
             "pfie.tenantEntity.uuid = :tenantUuid ORDER BY pfie.invoiceDate DESC")
-    List<ProFormaInvoiceMinimal> findAllByTenantEntity_Id(@Param("tenantUuid") String tenantUuid);
+    List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
