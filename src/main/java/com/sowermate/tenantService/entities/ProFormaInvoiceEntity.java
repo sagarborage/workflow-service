@@ -1,31 +1,30 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "pro_forma_invoice")
 @Getter
 @Setter
-public class ProFormaInvoiceEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pro_forma_invoice_id", unique = true, nullable = false, updatable = false)
-    private int proFormaInvoiceId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String proFormInvoiceUuid;
+@Table(name = "pro_forma_invoice")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class ProFormaInvoiceEntity extends Base {
 
     @Column(name = "pi_number")
-    private int piNumber;
+    private String piNumber;
 
     @Column(name = "invoice_date")
-    private Date invoiceDate;
+    private LocalDateTime invoiceDate;
 
     @Column(name = "pro_forma_invoice_amount")
     private Double proFormaInvoiceAmount;
@@ -79,7 +78,7 @@ public class ProFormaInvoiceEntity {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "confirm_through_id")
     private ConfirmThroughEntity confirmThroughEntity;
 
@@ -100,10 +99,44 @@ public class ProFormaInvoiceEntity {
     private TenantEntity tenantEntity;
 
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntities",cascade=CascadeType.ALL)
-    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntity;
+    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
+    private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities;
 
-
+    public ProFormaInvoiceValue toDTO() {
+        return ProFormaInvoiceValue.newBuilder()
+                .proFormaInvoiceId(getId())
+                .proFormaInvoiceUuid(getUuid())
+                .companyBillToUuid(getCompanyIdBill().getUuid())
+                .companyShipToUuid(getCompanyIdShip().getUuid())
+                .piTypeUuid(getPiTypeEntity().getUuid())
+                .piNumber(getPiNumber())
+                .invoiceDate(getInvoiceDate())
+                .proFormaInvoiceAmount(getProFormaInvoiceAmount())
+                .serviceRateInvoiceAmount(getServiceRateInvoiceAmount())
+                .basicAmount(getBasicAmount())
+                .adminCharges(getAdminCharges())
+                .insurancePercent(getInsurancePercent())
+                .insurancePercentAmount(getInsurancePercentAmount())
+                .urgencyPercent(getUrgencyPercent())
+                .urgencyPercentAmount(getUrgencyPercentAmount())
+                .otherCharges(getOtherCharges())
+                .transportCharges(getTransportCharges())
+                .gstCharges(getGstCharges())
+                .grandTotal(getGrandTotal())
+                .roundOffAmount(getRoundOffAmount())
+                .payableAmount(getPayableAmount())
+                .previousBalance(getPreviousBalance())
+                .adjustmentAmount(getAdjustmentAmount())
+                .status(getStatus())
+                .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))
+                .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity->entity.toDTO()).collect(Collectors.toList())).orElse(null))
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

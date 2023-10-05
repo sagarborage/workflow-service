@@ -13,12 +13,15 @@ import java.util.List;
 
 @Repository
 public interface TenantRepository extends JpaRepository <TenantEntity, String> {
-    @Query("SELECT t FROM TenantEntity t WHERE t.uuid = :tenantUuid")
-    TenantEntity findByTenantUuid(@Param("tenantUuid")String tenantUuid);
+   // @Query("SELECT t FROM TenantEntity t WHERE t.uuid = :tenantUuid")
+    TenantEntity findByUuid(@Param("tenantUuid")String tenantUuid);
 
     @Transactional
     @Modifying
     @Query("UPDATE TenantEntity t SET t.isActive = false WHERE t.uuid = :tenantUuid")
     void softDelete(@Param("tenantUuid") String tenantUuid);
-
+    /*@Modifying
+    @Query("DELETE FROM TenantEntity t WHERE t.tenantUuid = :tenantUuid")
+    public int deleteByTenantUuid(@Param("tenantUuid")String tenantUuid);
+*/
 }

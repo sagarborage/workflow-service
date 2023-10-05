@@ -1,40 +1,53 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Type;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.CompanyTypeValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "company_type")
 @Getter
 @Setter
-public class CompanyTypeEntity {
+@Table(name = "company_type")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class CompanyTypeEntity extends Base {
 
+    private static final long serialVersionUID = 3981140897718611608L;
 
-    @Id
+/*    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_type_id", unique = true, nullable = false, updatable = false)
-    private Integer companyTypeId;
+    private Integer companyTypeId;*/
+
     @Column(name = "type")
     private String type;
     @Column(name = "description")
     private String description;
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String  companyTypeUuid;;
-
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
-
-
-    @OneToMany(mappedBy="companyTypeEntity",cascade=CascadeType.ALL)
-    private List<CompanyEntity> companyEntity;
+/*    @Column(name="uuid", unique=true,nullable=false, updatable=false)
+    protected String  companyTypeUuid;*/
+    
+    @OneToMany(mappedBy="companyType",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CompanyEntity> companyEntiies;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    public CompanyTypeValue toDTO() {
+        return CompanyTypeValue.newBuilder()
+                .companyTypeId(getId())
+                .companyTypeUuid(getUuid())
+                .type(getType())
+                .description(getDescription())
+                //.companyValue(Optional.ofNullable(getCompanyEntity()).map(CompanyEntity::toDTO).orElse(null))
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

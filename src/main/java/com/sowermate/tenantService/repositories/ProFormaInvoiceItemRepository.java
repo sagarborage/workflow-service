@@ -20,17 +20,23 @@ public interface ProFormaInvoiceItemRepository extends JpaRepository<ProFormaInv
   //  public List<ProFormaInvoiceItemEntity> findAll();
   //  public List<ProFormaInvoiceItemEntity> findByProFormaInvoiceItemId(int proFormaInvoiceItemId);
 
+/*
     @Query("SELECT p FROM ProFormaInvoiceItemEntity p " +
             "JOIN p.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND p.proFormaInvoiceItemUuid = :proFormaInvoiceItemUuid")
     public ProFormaInvoiceItemEntity findByTenantEntity_UuidAndProFormaInvoiceItemUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
+*/
 
-    public List<ProFormaInvoiceEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    //TODO: use proFormaInvoiceUuid as well
+    public ProFormaInvoiceItemEntity findByUuid(String uuid);
+
+    public List<ProFormaInvoiceItemEntity> findAllByProFormaInvoiceEntity_uuid(String proFormaInvoiceUuid);
+    public List<ProFormaInvoiceItemEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Modifying
-    @Query("DELETE FROM ProFormaInvoiceItemEntity p WHERE p.proFormaInvoiceItemUuid = :proFormaInvoiceItemUuid")
-    void deleteByProFormaInvoiceItemUuid(@Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
+    @Query("DELETE FROM ProFormaInvoiceItemEntity p WHERE p.uuid = :proFormaInvoiceItemUuid")
+    int deleteByUuid(@Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
 
 
 }

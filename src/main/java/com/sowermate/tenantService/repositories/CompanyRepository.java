@@ -1,8 +1,6 @@
 package com.sowermate.tenantService.repositories;
 
-import com.sowermate.tenantService.entities.AddressEntity;
 import com.sowermate.tenantService.entities.CompanyEntity;
-import com.sowermate.tenantService.entities.CompanyTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,24 +11,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer> {
-
-
+public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     @Query("SELECT c FROM CompanyEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND c.companyUuid = :companyUuid")
-    public CompanyEntity findByTenantEntity_UuidAndCompanyUuid(String tenantUuid, String companyUuid);
+            "AND c.uuid = :companyUuid")
+    CompanyEntity findByTenantEntity_UuidAndCompanyEntityUuid(String tenantUuid, String companyUuid);
+    //CompanyEntity findByCompanyUuid(String companyUuid);
+    List<CompanyEntity> findAllByTenantEntityId(Long tenantId);
 
-   // public List<CompanyEntity> deleteByUuid(@Param("uuid") String uuid);
-
-    public List<CompanyEntity> findAllByTenantEntity_Uuid(String tenantUuid);
-
-   // public List<CompanyEntity> findByCompanyId(int companyId);
     @Transactional
     @Modifying
-    @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.companyUuid = :companyUuid")
-    void softDelete(@Param("companyUuid") String companyUuid);
+    @Query("UPDATE CompanyEntity c SET c.isActive = false WHERE c.tenantEntity.uuid = :tenantUuid and c.uuid = :companyUuid")
+    void softDelete(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid);
 
+    CompanyEntity getCompanyEntityByUuid(@Param("companyUuid") String companyUuid);
 }

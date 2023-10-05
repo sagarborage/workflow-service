@@ -1,6 +1,14 @@
 # workflow-service
 
+local-env config
+DB_PASSWORD=root;DB_USERNAME=root;SPRING_PROFILES_ACTIVE=local;DB_URL=jdbc:mysql://localhost:3306/workflow
 
+Grant privileges if any error related to access
+mysql -u root -p
+GRANT ALL PRIVILEGES ON workflow.* TO 'sborage1'@'localhost' IDENTIFIED BY 'root';
+FLUSH PRIVILEGES;
+EXIT;
+sudo service mariadb restart;
 
 ## Getting started
 

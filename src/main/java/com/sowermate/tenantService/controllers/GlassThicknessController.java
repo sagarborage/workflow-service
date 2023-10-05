@@ -1,4 +1,5 @@
 package com.sowermate.tenantService.controllers;
+import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.entities.value.GlassThicknessValue;
 import com.sowermate.tenantService.services.GlassThicknessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +18,30 @@ public class GlassThicknessController {
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<GlassThicknessValue> createGlassThickness(@RequestBody GlassThicknessValue glassThicknessValue) throws Exception {
+    public ResponseEntity<GlassThicknessValue> createGlassThickness(@RequestBody GlassThicknessValue glassThicknessValue) {
         GlassThicknessValue glassThicknessValue1=glassThicknessService.createGlassThickness(glassThicknessValue);
-        return new ResponseEntity<GlassThicknessValue>( glassThicknessValue, HttpStatus.CREATED);
+        if (glassThicknessValue1 == null) {
+            return new ResponseEntity<GlassThicknessValue>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<GlassThicknessValue>( glassThicknessValue1, HttpStatus.CREATED);
     }
 
     @GetMapping("/{tenantUuid}/{glassThicknessUuid}")
-    public ResponseEntity<GlassThicknessValue> getSingleGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) throws Exception {
+    public ResponseEntity<GlassThicknessValue> getSingleGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) {
         GlassThicknessValue glassThicknessValue=glassThicknessService.getGlassThickness(tenantUuid, glassThicknessUuid);
         return  new ResponseEntity<>(glassThicknessValue, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<GlassThicknessValue>> getAllGlassThickness(@PathVariable String tenantUuid) throws Exception {
+    public ResponseEntity<List<GlassThicknessValue>> getAllGlassThickness(@PathVariable String tenantUuid) {
         List<GlassThicknessValue> allGlassThicknessValue = glassThicknessService.getAllGlassThickness(tenantUuid);
         return new ResponseEntity<> (allGlassThicknessValue ,HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{tenantUuid}/{glassThicknessUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<GlassThicknessValue> deleteGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) throws Exception {
+    public ResponseEntity<GlassThicknessValue> deleteGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) {
         GlassThicknessValue glassThicknessValue =glassThicknessService.deleteGlassThickness(tenantUuid, glassThicknessUuid);
         return new ResponseEntity<GlassThicknessValue>(glassThicknessValue ,HttpStatus.ACCEPTED);
     }

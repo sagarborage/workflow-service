@@ -15,14 +15,14 @@ public interface GlassThicknessRepository  extends JpaRepository<GlassThicknessE
     @Query("SELECT g FROM GlassThicknessEntity g " +
             "JOIN g.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND g.glassThicknessUuid = :glassThicknessUuid")
+            "AND g.uuid = :glassThicknessUuid")
     public GlassThicknessEntity findByTenantEntity_UuidAndGlassThicknessUuid(@Param("tenantUuid") String tenantUuid, @Param("glassThicknessUuid") String glassThicknessUuid);
 
     public List<GlassThicknessEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.glassThicknessUuid = :glassThicknessUuid")
+    @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.uuid = :glassThicknessUuid")
     void softDelete(@Param("glassThicknessUuid") String glassThicknessUuid);
 
 }

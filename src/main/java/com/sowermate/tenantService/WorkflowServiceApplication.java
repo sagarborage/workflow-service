@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TenantServiceApplication {
+public class WorkflowServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TenantServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WorkflowServiceApplication.class, args);
+    }
 
 }

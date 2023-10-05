@@ -19,19 +19,20 @@ public class ServiceRateInvoiceController {
     private ServiceRateInvoiceService serviceRateInvoiceService;
 
 
-    private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(ServiceRateInvoiceController.class);
+    private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ServiceRateInvoiceController.class);
 
-    @RequestMapping( method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ServiceRateInvoiceValue> createServiceRateInvoice(@RequestBody ServiceRateInvoiceValue  serviceRateInvoiceValue) {
+    public ResponseEntity<ServiceRateInvoiceValue> createServiceRateInvoice(@RequestBody ServiceRateInvoiceValue serviceRateInvoiceValue) {
         try {
-            serviceRateInvoiceValue =serviceRateInvoiceService.createServiceRateInvoice(serviceRateInvoiceValue);
+            serviceRateInvoiceValue = serviceRateInvoiceService.createServiceRateInvoice(serviceRateInvoiceValue);
         } catch (Exception e) {
             Logger.error("Error while creating Seller:", e);
         }
         return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue, HttpStatus.CREATED);
     }
-    @RequestMapping( method = RequestMethod.PUT)
+
+    @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ServiceRateInvoiceValue> editServiceRateInvoice(@RequestBody ServiceRateInvoiceValue serviceRateInvoiceValue) {
         ServiceRateInvoiceValue serviceRateInvoiceValue1 = null;
@@ -42,36 +43,37 @@ public class ServiceRateInvoiceController {
         }
         return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue1, HttpStatus.CREATED);
     }
-    @GetMapping("/{serviceRateInvoiceUuid}")
-    public ResponseEntity<ServiceRateInvoiceValue> getServiceRateInvoice(
-            @PathVariable String serviceRateInvoiceUuid) {
+
+    @GetMapping(value = "/{proFormaInvoiceUuid}/{serviceRateInvoiceUuid}")
+    public ResponseEntity<ServiceRateInvoiceValue> getServiceRateInvoice(@PathVariable String proFormaInvoiceUuid,
+                                                                         @PathVariable String serviceRateInvoiceUuid) {
         ServiceRateInvoiceValue serviceRateInvoiceValue = null;
         try {
-            serviceRateInvoiceValue = serviceRateInvoiceService.getServiceRateInvoice(serviceRateInvoiceUuid);
+            serviceRateInvoiceValue = serviceRateInvoiceService.getServiceRateInvoice(proFormaInvoiceUuid, serviceRateInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(serviceRateInvoiceValue, HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{serviceRateInvoiceUuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{tenantUuid}/{serviceRateInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ServiceRateInvoiceValue> deleteServiceRateInvoice(
-            @PathVariable String serviceRateInvoiceUuid) {
-        ServiceRateInvoiceValue serviceRateInvoiceValue = null;
+    public ResponseEntity<Integer> deleteServiceRateInvoice(@PathVariable String tenantUuid,
+                                                            @PathVariable String serviceRateInvoiceUuid) {
+        int rowDeletedCount = 0;
         try {
-            serviceRateInvoiceValue = serviceRateInvoiceService.deleteServiceRateInvoice(serviceRateInvoiceUuid);
+            rowDeletedCount = serviceRateInvoiceService.deleteServiceRateInvoice(tenantUuid, serviceRateInvoiceUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<ServiceRateInvoiceValue>(serviceRateInvoiceValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<Integer>(rowDeletedCount, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ServiceRateInvoiceValue>> getAllServiceRateInvoice() {
+    @GetMapping(value = "/{tenantUuid}")
+    public ResponseEntity<List<ServiceRateInvoiceValue>> getAllServiceRateInvoice(@PathVariable String proFormaInvoiceUuid) {
         List<ServiceRateInvoiceValue> serviceRateInvoiceValues = null;
         try {
-           serviceRateInvoiceValues  = serviceRateInvoiceService.getAllServiceRateInvoice();
+            serviceRateInvoiceValues = serviceRateInvoiceService.getAllServiceRateInvoice(proFormaInvoiceUuid);
             Logger.info("records " + serviceRateInvoiceValues.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
@@ -79,7 +81,6 @@ public class ServiceRateInvoiceController {
         return new ResponseEntity<>(serviceRateInvoiceValues, HttpStatus.ACCEPTED);
 
     }
-
 
 
 }

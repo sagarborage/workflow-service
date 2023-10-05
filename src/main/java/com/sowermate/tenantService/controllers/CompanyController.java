@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.services.CompanyService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(companyValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(companyValue, HttpStatus.OK);
     }
     @RequestMapping(value = "/{tenantUuid}/{companyUuid}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -59,7 +60,7 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.ACCEPTED);
+        return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.OK);
     }
 
     @GetMapping (value = "/{tenantUuid}")
@@ -71,25 +72,6 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(companyValues, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(companyValues, HttpStatus.OK);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,90 +1,82 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.ConfirmThroughEntity;
+import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.ConfirmThroughValue;
 import com.sowermate.tenantService.repositories.ConfirmThroughRepository;
+import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.ConfirmThroughService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional(rollbackForClassName = { "Exception" })
+@Transactional(rollbackForClassName = {"Exception"})
 public class ConfirmThroughServiceImpl implements ConfirmThroughService {
 
     @Autowired
     private ConfirmThroughRepository confirmThroughRepository;
 
     @Autowired
+    private ProFormaInvoiceRepository proFormaInvoiceRepository;
+
+    @Autowired
     TenantRepository tenantRepository;
+
     @Override
-    public ConfirmThroughValue createConfirmThrough(ConfirmThroughValue confirmThroughValue) throws Exception {
-        ConfirmThroughEntity confirmThroughEntity=new ConfirmThroughEntity();
-        BeanUtils.copyProperties(confirmThroughValue, confirmThroughEntity);
-        String randomConfirmThroughUuid= UUID.randomUUID().toString();
-        confirmThroughEntity.setConfirmThroughUuid(randomConfirmThroughUuid);
-        confirmThroughEntity.setTenantEntity(tenantRepository.findByTenantUuid(confirmThroughValue.getTenantUuid()));
-        BeanUtils.copyProperties(confirmThroughRepository.save(confirmThroughEntity), confirmThroughValue);
-        return confirmThroughValue;
+    public ConfirmThroughValue createConfirmThrough(ConfirmThroughValue confirmThroughValue) {
+
+        TenantEntity tenantEntity = tenantRepository.findByUuid(confirmThroughValue.getTenantUuid());
+
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(confirmThroughValue.getTenantUuid(),
+                confirmThroughValue.getProFormaInvoice().getProFormaInvoiceUuid());
+
+        ConfirmThroughEntity confirmThroughEntity = confirmThroughValue.toEntity().toBuilder()
+                .tenantEntity(tenantEntity)
+                .proFormaInvoiceEntity(proFormaInvoiceEntity).build();
+        return confirmThroughRepository.save(confirmThroughEntity).toDTO();
     }
 
     @Override
-    public List<ConfirmThroughValue> getAllConfirmThrough(String tenantUuid) throws Exception {
-        List<ConfirmThroughValue> confirmThroughValues=new ArrayList<>();
-        ConfirmThroughValue confirmThroughValue=null;
-        List<ConfirmThroughEntity> confirmThroughEntities= confirmThroughRepository.findAllByTenantEntity_Uuid(tenantUuid);
-        for (int i=0; i <confirmThroughEntities.size(); i++){
-            confirmThroughValue =new ConfirmThroughValue();
-            BeanUtils.copyProperties(confirmThroughEntities.get(i), confirmThroughValue);
-            confirmThroughValue.setTenantUuid(tenantUuid);
-            confirmThroughValues.add(confirmThroughValue);
-        }
-
-        return confirmThroughValues;
+    public List<ConfirmThroughValue> getAllConfirmThrough(String tenantUuid) {
+        List<ConfirmThroughValue> confirmThroughValues = new ArrayList<>();
+        ConfirmThroughValue confirmThroughValue = null;
+        List<ConfirmThroughEntity> confirmThroughEntities = confirmThroughRepository.findAllByTenantEntity_Uuid(tenantUuid);
+        return confirmThroughEntities.stream().map(cte -> cte.toDTO()).collect(Collectors.toList());
     }
 
     @Override
-    public ConfirmThroughValue editConfirmThrough(ConfirmThroughValue confirmThroughValue) throws Exception {
-        ConfirmThroughEntity confirmThroughEntity = new ConfirmThroughEntity();
-        BeanUtils.copyProperties(confirmThroughValue, confirmThroughEntity);
+    public ConfirmThroughValue editConfirmThrough(ConfirmThroughValue confirmThroughValue) {
+        TenantEntity tenantEntity = tenantRepository.findByUuid(confirmThroughValue.getTenantUuid());
 
-        // Check that UUID is not null before searching for the tenant
-        if (confirmThroughValue.getConfirmThroughUuid() != null) {
-            ConfirmThroughEntity matchingConfirmThrough = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(confirmThroughValue.getTenantUuid(),confirmThroughValue.getConfirmThroughUuid());
-            if (matchingConfirmThrough !=null) {
-                confirmThroughEntity.setConfirmThroughId(matchingConfirmThrough.getConfirmThroughId());
-                confirmThroughEntity.setTenantEntity(tenantRepository.findByTenantUuid(confirmThroughValue.getTenantUuid()));
-                BeanUtils.copyProperties(confirmThroughRepository.save(confirmThroughEntity), confirmThroughValue);
-            } else {
-            }
-        } else {
-            throw new Exception("UUID cannot be null");
-        }
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(confirmThroughValue.getTenantUuid(),
+                confirmThroughValue.getProFormaInvoice().getProFormaInvoiceUuid());
+        ConfirmThroughEntity tempConfirmThroughEntity = confirmThroughRepository
+                .findByTenantEntity_UuidAndConfirmThroughUuid(confirmThroughValue.getConfirmThroughUuid(), confirmThroughValue.getTenantUuid());
 
-        return confirmThroughValue;
+        ConfirmThroughEntity confirmThroughEntity = confirmThroughValue.toEntity().toBuilder()
+                .id(tempConfirmThroughEntity.getId())
+                .tenantEntity(tenantEntity)
+                .proFormaInvoiceEntity(proFormaInvoiceEntity)
+                .createdDateTime(tempConfirmThroughEntity.getCreatedDateTime())
+                .createdBy(tempConfirmThroughEntity.getCreatedBy())
+                .build();
+        return confirmThroughRepository.save(confirmThroughEntity).toDTO();
     }
 
     @Override
-    public ConfirmThroughValue getConfirmThrough(String tenantUuid, String confirmThroughUuid) throws Exception {
-        ConfirmThroughValue confirmThroughValue=new ConfirmThroughValue();
-        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid,confirmThroughUuid);
-        BeanUtils.copyProperties(confirmThroughEntity ,confirmThroughValue);
-        confirmThroughValue.setTenantUuid(tenantUuid);
-        return confirmThroughValue;
+    public ConfirmThroughValue getConfirmThrough(String tenantUuid, String confirmThroughUuid) {
+        return confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid).toDTO();
     }
 
     @Override
-    public ConfirmThroughValue deleteConfirmThrough( String tenantUuid,  String confirmThroughUuid) throws Exception {
-        ConfirmThroughValue confirmThroughValue=new ConfirmThroughValue();
-        ConfirmThroughEntity confirmThroughEntity =confirmThroughRepository.deleteByConfirmThroughUuid( confirmThroughUuid) ;
-        BeanUtils.copyProperties(confirmThroughEntity ,confirmThroughValue);
-        return  confirmThroughValue;
-
+    public int deleteConfirmThrough(String tenantUuid, String confirmThroughUuid) {
+        return confirmThroughRepository.deleteByConfirmThroughUuid(confirmThroughUuid);
     }
 }

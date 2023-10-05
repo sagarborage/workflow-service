@@ -1,0 +1,70 @@
+variables:
+  APP_DEPLOY_DIR: "/opt/sowermate_apps/sm_qa_apps_java_running"
+  APP_BACKUP_DIR: "/opt/sowermate_apps/sm_qa_apps_java_backup"
+  DB_BACKUP_DIR: "/opt/sowermate_apps/sm_qa_apps_java_db_backup"
+
+  DB_NAME_QA: "workflow"
+  DB_USER_QA: "workflow"
+  DB_PASS_QA: "C3586C92611157ED681FF05170496815"
+  BACKUP_AND_DROP_DB: "false" # Default value
+
+stages:
+  - build
+  - deploy
+  - cleanup
+
+build:
+  stage: build
+  before_script:
+  - export PATH=$PATH:/opt/apache-maven-3.6.3/bin
+  script:
+    - mvn clean install -DskipTests
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+    - if lsof -Pi :8183 -sTCP:LISTEN -t >/dev/null ; then
+        echo "Port 8183 is in use, terminating the process";
+        kill $(lsof -t -i:8183);
+      else
+        echo "Port 8183 is available";
+      fi
+    # Create the app backup directory if it doesn't exist
+    #- mkdir -p $APP_BACKUP_DIR
+    - if [ -f "$APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar" ]; then
+        mv "$APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar" "$APP_BACKUP_DIR/workflow-service-0.0.1-SNAPSHOT.jar";
+      else
+        echo "File does not exist. Skipping move operation.";
+      fi
+
+    # Create the database backup directory if it doesn't exist
+    #- mkdir -p $DB_BACKUP_DIR
+
+    # Conditionally backup and drop the database if BACKUP_AND_DROP_DB is true
+    - if [ "$BACKUP_AND_DROP_DB" == "true" ]; then
+        TIMESTAMP=$(date +"%Y%m%d%H%M%S");
+        mysqldump -u $DB_USER_QA -p$DB_PASS_QA $DB_NAME_QA | gzip > "$DB_BACKUP_DIR/flexipunch_${TIMESTAMP}.sql.gz";
+        mysql -u $DB_USER_QA -p$DB_PASS_QA -e "DROP DATABASE IF EXISTS $DB_NAME_QA; CREATE DATABASE $DB_NAME_QA;";
+      fi
+
+    - cp /home/gitlab-runner/.m2/repository/com/sowermate/workflow-service/0.0.1-SNAPSHOT/workflow-service-0.0.1-SNAPSHOT.jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar  # Copy new jar
+    #- java -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar &  # Start the application
+    #- nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar & # Start the application
+    - nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar > $APP_DEPLOY_DIR/workflow.log 2>&1 &
+  only:
+    refs:
+      - integration
+  when: manual
+  allow_failure: false
+  #variables:
+  #  BACKUP_AND_DROP_DB: "false"  # Override at trigger time if needed
+
+cleanup:
+  stage: cleanup
+  script:
+    - ls -1tr $APP_BACKUP_DIR | head -n -5 | xargs -d '\n' rm -f --
+    - ls -1tr $DB_BACKUP_DIR | head -n -5 | xargs -d '\n' rm -f --
+    - rm -rf target/
+    - rm -f *.log
+  when: always

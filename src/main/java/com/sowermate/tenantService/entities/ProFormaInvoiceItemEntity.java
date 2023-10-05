@@ -1,25 +1,22 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pro_forma_invoice_item")
 @Getter
 @Setter
-public class ProFormaInvoiceItemEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pro_forma_invoice_item_id", unique = true, nullable = false, updatable = false)
-    private int proFormaInvoiceItemId;
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String proFormaInvoiceItemUuid;
+@Table(name = "pro_forma_invoice_item")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class ProFormaInvoiceItemEntity extends Base{
 
     @Column(name = "width_inch")
-        private Float widthInch;
+    private Float widthInch;
 
     @Column(name = "width_measurement")
     private Float widthMeasurement;
@@ -77,4 +74,32 @@ public class ProFormaInvoiceItemEntity {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    public ProFormaInvoiceItemValue toDTO() {
+        return ProFormaInvoiceItemValue.newBuilder()
+                .proFormaInvoiceItemId(getId())
+                .uuid(getUuid())
+                .widthInch(getWidthInch())
+                .widthMeasurement(getWidthMeasurement())
+                .actualWidth(getActualWidth())
+                .chargableWidth(getChargableWidth())
+                .hightInch(getHightInch())
+                .hightMeasurement(getHightMeasurement())
+                .actualHight(getActualHight())
+                .chargableHight(getChargableHight())
+                .extraMm(getExtraMm())
+                .quantity(getQuantity())
+                .sqft(getSqft())
+                .ratePerSqft(getRatePerSqft())
+                .amount(getAmount())
+                //.tenantValue(getTenantEntity().toDTO())
+                //.glassSpecificationValue(getGlassSpecificationEntity().toDTO())
+                //.glassTypeValue(getGlassTypeEntity().toDTO())
+                //.glassThicknessValue(getGlassThicknessEntity().toDTO())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

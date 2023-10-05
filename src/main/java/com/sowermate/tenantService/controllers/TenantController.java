@@ -20,13 +20,13 @@ public class TenantController {
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(TenantController.class);
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<TenantValue> createTenantDetails(@RequestBody TenantValue tenantValue) throws Exception {
-           TenantValue tenantValue1 =tenantService.saveTenantDetails(tenantValue);
+    public ResponseEntity<TenantValue> createTenantDetails(@RequestBody TenantValue tenantValue) {
+           TenantValue tenantValue1 = tenantService.saveTenantDetails(tenantValue);
         return new ResponseEntity<TenantValue>(tenantValue1,HttpStatus.CREATED);
     }
 
     @GetMapping("/{tenantUuid}")
-    public ResponseEntity<TenantValue> getSingleTenantDetails(@PathVariable String tenantUuid) throws Exception {
+    public ResponseEntity<TenantValue> getSingleTenantDetails(@PathVariable String tenantUuid) {
         TenantValue tenantValue =tenantService.getTenantDetails(tenantUuid);
         return  new ResponseEntity<>(tenantValue, HttpStatus.ACCEPTED);
     }
@@ -45,7 +45,7 @@ public class TenantController {
 
     @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<TenantValue> deleteMessage(@PathVariable String tenantUuid) throws Exception {
+    public ResponseEntity<TenantValue> deleteMessage(@PathVariable String tenantUuid) {
      TenantValue tenantValue =tenantService.deleteTenantDetails(tenantUuid);
      return new ResponseEntity<TenantValue>(tenantValue,HttpStatus.ACCEPTED);
     }

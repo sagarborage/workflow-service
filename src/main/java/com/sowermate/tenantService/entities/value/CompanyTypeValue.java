@@ -1,12 +1,37 @@
 package com.sowermate.tenantService.entities.value;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sowermate.tenantService.entities.CompanyTypeEntity;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-public class CompanyTypeValue {
-    private String companyTypeUuid;
-    private String tenantUuid;
+@Getter
+@Jacksonized
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CompanyTypeValue extends BaseValue {
+    private Long companyTypeId;
     private String type;
     private String description;
-    private Boolean isActive;
+    protected String companyTypeUuid;
+    private boolean isActive;
+
+    private CompanyValue companyValue;
+    private TenantValue tenantValue;
+
+
+    public CompanyTypeEntity toEntity() {
+        return CompanyTypeEntity.newBuilder()
+                .id(getCompanyTypeId())
+                .uuid(getCompanyTypeUuid())
+                .type(getType())
+                .description(getDescription())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }
