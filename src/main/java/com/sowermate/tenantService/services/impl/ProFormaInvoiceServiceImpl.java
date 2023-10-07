@@ -54,6 +54,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                                     confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
                     )
                     .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
+                    .firm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
                     .companyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyBillToUuid()))
                     .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyShipToUuid()))
                     .piNumber(piNumber)

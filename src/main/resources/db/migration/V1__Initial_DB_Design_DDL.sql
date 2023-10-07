@@ -243,6 +243,7 @@ CREATE TABLE pro_forma_invoice (
   id int(10) NOT NULL AUTO_INCREMENT,
   uuid varchar(36) NOT NULL,
   tenant_id int(10) NOT NULL,
+  firm_id int(10) NOT NULL,
   id_bill_to int(10) NOT NULL,
   id_ship_to int(10) NOT NULL,
   pi_type_id int(10) NOT NULL,
