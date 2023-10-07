@@ -34,7 +34,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     private TenantRepository tenantRepository;
 
     @Override
-    public ProFormaInvoiceItemValue createproFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
+    public ProFormaInvoiceItemValue createProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
@@ -52,7 +52,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     }
 
     @Override
-    public ProFormaInvoiceItemValue editproFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
+    public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
         ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemValue.getUuid());
@@ -74,17 +74,17 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     }
 
     @Override
-    public ProFormaInvoiceItemValue getproFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid) {
+    public ProFormaInvoiceItemValue getProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid) {
         return proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemUuid).toDTO();
     }
 
     @Override
-    public int deleteproFormaInvoiceItem(String tenantUuid, String ProFormaInvoiceItemUuid) {
+    public int deleteProFormaInvoiceItem(String tenantUuid, String ProFormaInvoiceItemUuid) {
         return proFormaInvoiceItemRepository.deleteByUuid(ProFormaInvoiceItemUuid);
     }
 
     @Override
-    public List<ProFormaInvoiceItemValue> getAllproFormaInvoiceItem(String proFormaInvoiceUuid) {
+    public List<ProFormaInvoiceItemValue> getAllProFormaInvoiceItem(String proFormaInvoiceUuid) {
         List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities = proFormaInvoiceItemRepository.findAllByProFormaInvoiceEntity_uuid(proFormaInvoiceUuid);
         return proFormaInvoiceItemEntities.stream().map(piie -> piie.toDTO()).collect(Collectors.toList());
     }

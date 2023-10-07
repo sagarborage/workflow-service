@@ -87,6 +87,10 @@ public class ProFormaInvoiceEntity extends Base {
     private PiTypeEntity piTypeEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "firm_id")
+    private  CompanyEntity firm;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bill_to")
     private  CompanyEntity companyIdBill;
 
@@ -108,6 +112,7 @@ public class ProFormaInvoiceEntity extends Base {
         return ProFormaInvoiceValue.newBuilder()
                 .proFormaInvoiceId(getId())
                 .proFormaInvoiceUuid(getUuid())
+                .firmUuid(getFirm().getUuid())
                 .companyBillToUuid(getCompanyIdBill().getUuid())
                 .companyShipToUuid(getCompanyIdShip().getUuid())
                 .piTypeUuid(getPiTypeEntity().getUuid())
