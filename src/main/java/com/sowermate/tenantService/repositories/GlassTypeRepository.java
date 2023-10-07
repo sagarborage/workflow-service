@@ -15,14 +15,14 @@ public interface GlassTypeRepository extends JpaRepository <GlassTypeEntity ,Str
     @Query("SELECT g FROM GlassTypeEntity g " +
             "JOIN g.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND g.glassTypeUuid = :glassTypeUuid")
+            "AND g.uuid = :glassTypeUuid")
     public GlassTypeEntity findByTenantEntity_UuidAndGlassTypeUuid(String tenantUuid, String glassTypeUuid);
 
     public List<GlassTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
     @Transactional
     @Modifying
-    @Query("UPDATE GlassTypeEntity g SET g.isActive = false WHERE g.glassTypeUuid = :glassTypeUuid")
+    @Query("UPDATE GlassTypeEntity g SET g.isActive = false WHERE g.uuid = :glassTypeUuid")
     void softDelete(@Param("glassTypeUuid") String glassTypeUuid);
 
 }

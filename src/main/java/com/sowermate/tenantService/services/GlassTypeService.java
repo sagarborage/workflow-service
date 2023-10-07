@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface GlassTypeService {
 
-    public GlassTypeValue createGlassType(GlassTypeValue glassTypeValue) throws Exception;
+    public GlassTypeValue createGlassType(GlassTypeValue glassTypeValue);
 
-    public GlassTypeValue editGlassType(GlassTypeValue glassTypeValue) throws Exception;
+    public GlassTypeValue editGlassType(GlassTypeValue glassTypeValue);
 
-    public GlassTypeValue getGlassType(String tenantUuid, String glassTypeUuid) throws Exception;
+    public GlassTypeValue getGlassType(String tenantUuid, String glassTypeUuid);
 
-    public GlassTypeValue deleteGlassType(String tenantUuid, String glassTypeUuid) throws Exception;
+    public GlassTypeValue deleteGlassType(String tenantUuid, String glassTypeUuid);
 
-    public List<GlassTypeValue> getAllGlassType(String tenantUuid) throws Exception;
+    public List<GlassTypeValue> getAllGlassType(String tenantUuid);
 }

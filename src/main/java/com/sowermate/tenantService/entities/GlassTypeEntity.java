@@ -1,36 +1,46 @@
 package com.sowermate.tenantService.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.GlassTypeValue;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="glass_type")
-public class GlassTypeEntity  {
-    private static final long serialVersionUID = -241370177952331642L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "glass_type_id", unique = true, nullable = false, updatable = false)
-    private int glassTypeId;
-
-
-    @Column(name="uuid", unique=true,nullable=false, updatable=false)
-    private String glassTypeUuid;
+@Table(name = "glass_type")
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class GlassTypeEntity extends Base {
 
     @Column(name = "glass_name")
     private String glassName;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
     @OneToMany(mappedBy="glassTypeEntity",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntity;
+    private List<ProFormaInvoiceItemEntity> proFormaInvoiceItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
+
+    public GlassTypeValue toDTO() {
+        return GlassTypeValue.newBuilder()
+                .glassTypeId(getId())
+                .glassTypeUuid(getUuid())
+                .glassName(getGlassName())
+                .tenantUuid(getTenantEntity().getUuid())
+                //.proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItems())
+                  //      .map(e -> e.stream().map(ProFormaInvoiceItemEntity::toDTO).collect(Collectors.toList())).orElse(Collections.emptyList()))
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

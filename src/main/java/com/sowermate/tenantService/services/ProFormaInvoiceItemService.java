@@ -7,13 +7,13 @@ import java.util.List;
 public interface ProFormaInvoiceItemService {
 
 
-    public ProFormaInvoiceItemValue createProFormInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) throws Exception;
+    public ProFormaInvoiceItemValue createproFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue);
 
-    public ProFormaInvoiceItemValue editProFormInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) throws Exception;
+    public ProFormaInvoiceItemValue editproFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue);
 
-    public ProFormaInvoiceItemValue getProFormInvoiceItem(String tenantUuid,String ProFormaInvoiceItemUuid) throws Exception;
+    public ProFormaInvoiceItemValue getproFormaInvoiceItem(String tenantUuid,String proFormaInvoiceItemUuid);
 
-    public ProFormaInvoiceItemValue deleteProFormInvoiceItem(String tenantUuid,String ProFormaInvoiceItemUuid) throws Exception;
+    public int deleteproFormaInvoiceItem(String tenantUuid,String proFormaInvoiceItemUuid);
 
-    public List<ProFormaInvoiceItemValue> getAllProFormInvoiceItem(String tenantUuid) throws Exception;
+    public List<ProFormaInvoiceItemValue> getAllproFormaInvoiceItem(String tenantUuid);
 }

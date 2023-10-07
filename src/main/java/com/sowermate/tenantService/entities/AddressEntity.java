@@ -1,35 +1,21 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.CommonEntity;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.AddressValue;
 import lombok.*;
-import org.hibernate.annotations.Type;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
-
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="address")
-public class AddressEntity implements Serializable {
+@Table(name = "address")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class AddressEntity extends Base {
 
     private static final long serialVersionUID = -241370177952331642L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "address_id", unique = true, nullable = false, updatable = false)
-    private int addressId;
-
-    @Column(name="uuid", unique=true, updatable=false)
-    private String addressUuid;
-
-    @Column(name="created_dttm")
-    private Date createdDttm;
-
-    @Column(name="updated_dttm")
-    private Date updatedDttm;
 
     @Column(name = "address_line1")
     private String  addressLine1;
@@ -44,13 +30,13 @@ public class AddressEntity implements Serializable {
     private  String city;
 
     @Column(name = "state_code")
-    private  int stateCode;
+    private  String stateCode;
 
     @Column (name = "country_code")
-    private  int countryCode;
+    private  String countryCode;
 
     @Column (name = "pin_code")
-    private  int pinCode;
+    private  String pinCode;
 
     @Column (name = "work_phone")
     private  String workPhone;
@@ -59,10 +45,10 @@ public class AddressEntity implements Serializable {
     private  String fax;
 
     @Column (name= "primary_phone_number")
-    private  int primaryPhoneNumber;
+    private  String primaryPhoneNumber;
 
     @Column(name = "alternate_phone_number")
-    private  int alternatePhoneNumber;
+    private  String alternatePhoneNumber;
 
     @Column(name =  "email")
     private  String email;
@@ -70,19 +56,38 @@ public class AddressEntity implements Serializable {
     @Column(name= "website")
     private  String website;
 
-    @Column (name = "created_by")
-    private  String createdBy;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_type_id")
+    private AddressTypeEntity addressType;
 
-    @Column (name = "updated_by")
-    private  String updatedBy;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private CompanyEntity company;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
-    private TenantEntity tenantEntity;
-
+    public AddressValue toDTO() {
+        return AddressValue.newBuilder()
+                .addressId(getId())
+                .addressUuid(getUuid())
+                .addressLine1(getAddressLine1())
+                .addressLine2(getAddressLine2())
+                .addressLine3(getAddressLine3())
+                .city(getCity())
+                .stateCode(getStateCode())
+                .countryCode(getCountryCode())
+                .pinCode(getPinCode())
+                .workPhone(getWorkPhone())
+                .fax(getFax())
+                .primaryPhoneNumber(getPrimaryPhoneNumber())
+                .alternatePhoneNumber(getAlternatePhoneNumber())
+                .email(getEmail())
+                .website(getWebsite())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .addressTypeUuid(addressType.getUuid())
+                .build();
+    }
 
 }

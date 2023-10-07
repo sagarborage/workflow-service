@@ -1,73 +1,66 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.CommonEntity;
+import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.tenantService.entities.value.CompanyValue;
 import lombok.*;
-import org.hibernate.annotations.Type;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
-
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name="company")
-public class CompanyEntity {
-    private static final long serialVersionUID = -241370177952331642L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "company_id", unique = true, nullable = false, updatable = false)
-    private int companyId;
+@Table(name = "company")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public class CompanyEntity extends Base {
 
-    @Column(name="uuid", unique=true, updatable=false)
-    private String companyUuid;
-
-    @Column(name="created_dttm")
-    private Date createdDttm;
-
-    @Column(name="updated_dttm")
-    private Date updatedDttm;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "company_name")
     private String companyName;
 
     @Column(name = "CIN")
-    private int cin;
+    private String cin;
 
     @Column(name = "GSTIN")
-    private int gstin;
+    private String gstin;
 
     @Column(name = "TAN")
-    private int tan;
+    private String tan;
 
     @Column(name = "PAN")
     private String pan;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isActive = true;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name ="tenant_id")
-   private TenantEntity tenantEntity;
+    @JoinColumn(name = "tenant_id")
+    private TenantEntity tenantEntity;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_type_id")
-    private CompanyTypeEntity companyTypeEntity;
+    private CompanyTypeEntity companyType;
 
-    @OneToMany(mappedBy="companyIdBill",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<AddressEntity> addresses;
 
-    @OneToMany(mappedBy="companyIdShip",cascade=CascadeType.ALL)
-    private List<ProFormaInvoiceEntity> proFormaInvoiceEntity1;
-
+    public CompanyValue toDTO() {
+        return CompanyValue.newBuilder()
+                .companyId(getId())
+                .companyUuid(getUuid())
+                .companyName(getCompanyName())
+                .cin(getCin())
+                .gstin(getGstin())
+                .tan(getTan())
+                .pan(getPan())
+                //.tenantUuid(getTenantEntity().getUuid())
+                //.companyAddresses(getCompanyAddresses().stream().map(e->e.toDTO()).collect(Collectors.toList()))
+                .companyTypeUuid(getCompanyType().getUuid())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
+                .createdBy(getCreatedBy())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .isActive(isActive())
+                .build();
+    }
 }

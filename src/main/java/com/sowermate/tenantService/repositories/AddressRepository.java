@@ -2,6 +2,7 @@ package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.AddressEntity;
 
+import com.sowermate.tenantService.entities.AddressTypeEntity;
 import com.sowermate.tenantService.entities.GlassTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,22 +18,24 @@ import java.util.List;
 public interface AddressRepository extends JpaRepository<AddressEntity, String> {
 
 
-        @Query("SELECT a FROM AddressEntity a " +
-                "JOIN a.tenantEntity t " +
-                "WHERE t.uuid = :tenantUuid " +
-                "AND a.addressUuid = :addressUuid")
-        public AddressEntity findByTenantEntity_UuidAndAddressUuid(String tenantUuid, String addressUuid);
+/*    @Query("SELECT a FROM AddressEntity a " +
+            "JOIN a.tenantEntity t " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND a.addressUuid = :addressUuid")*/
+    AddressEntity findByUuid(String addressUuid);
 
-   // public AddressEntity findByAddressUuid (@Param("addressUuid")String addressUuid);
+    //AddressEntity getAddressEntityByAddressUuid(@Param("addressUuid") String addressUuid);
+    //AddressEntity getAddressEntityByAddressId(@Param("addressId") int addressId);
 
    // public AddressEntity deleteByAddressUuid (@Param("addressUuid")String addressUuid);
 
-    public List<AddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    //List<AddressEntity> findAllByTenantEntity_Uuid(String tenantUuid);
+    //List<AddressEntity> findAllByTenantEntity_TenantId(int tenantId);
    // public List<AddressEntity> findByAddressId(int addressId);
 
     @Transactional
     @Modifying
-    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.addressUuid = :addressUuid")
+    @Query("UPDATE AddressEntity a SET a.isActive = false WHERE a.uuid = :addressUuid")
     void softDelete(@Param("addressUuid") String addressUuid);
 
 }
