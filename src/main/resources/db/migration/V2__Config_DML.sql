@@ -18,10 +18,10 @@ INSERT INTO `company_type` (`uuid`, `tenant_id`, `type`, `description`, `is_acti
 ("d0335437-3c0d-11ee-962a-14abc5fbd6fa", 1, 'Tri-Party', 'Customer', 1);
 
 INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `CIN`, `GSTIN`, `TAN`, `PAN`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
+('584bd17c-89a3-46ec-833b-f4502f046de4', 1, 1, 'Self test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
 
 INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `CIN`, `GSTIN`, `TAN`, `PAN`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('584bd17c-89a3-46ec-833b-f4502f046de4', 1, 2, 'subsidiary', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
+('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Tripart test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
 
 INSERT INTO `address` (`uuid`, `company_id`, `address_type_id`, `address_line1`, `address_line2`, `address_line3`, `city`, `state_code`, `country_code`, `pin_code`, `work_phone`, `fax`, `primary_phone_number`, `alternate_phone_number`, `email`, `website`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('28efd0b3-a0ba-4805-b432-5543013c0e73', 1, 2, 'Hadapsar, near Dmart', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
