@@ -119,7 +119,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }*/
 
     @Override
-    public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid) {
-        return  proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid);
+    public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid,LocalDateTime startDate, LocalDateTime endDate) {
+        return  proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid,startDate,endDate);
     }
 }

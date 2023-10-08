@@ -9,19 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/proforma-invoices")
 public class ProFormaInvoiceController {
+    private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ProFormaInvoiceController.class);
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
 
-    private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ProFormaInvoiceController.class);
-
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceValue> createproFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
+    public ResponseEntity<ProFormaInvoiceValue> createProFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
         try {
             proFormaInvoiceValue = proFormaInvoiceService.createProFormaInvoice(proFormaInvoiceValue);
         } catch (Exception e) {
@@ -32,7 +36,7 @@ public class ProFormaInvoiceController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceValue> editproFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
+    public ResponseEntity<ProFormaInvoiceValue> editProFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
         ProFormaInvoiceValue proFormaInvoiceValue1 = null;
         try {
             proFormaInvoiceValue1 = proFormaInvoiceService.editProFormaInvoice(proFormaInvoiceValue);
@@ -43,8 +47,8 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/{tenantUuid}/{proFormaInvoiceUuid}")
-    public ResponseEntity<ProFormaInvoiceValue> getproFormaInvoice(@PathVariable String tenantUuid,
-                                                                  @PathVariable String proFormaInvoiceUuid) {
+    public ResponseEntity<ProFormaInvoiceValue> getProFormaInvoice(@PathVariable String tenantUuid,
+                                                                   @PathVariable String proFormaInvoiceUuid) {
         ProFormaInvoiceValue proFormaInvoiceValue = null;
         try {
             proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
@@ -57,7 +61,7 @@ public class ProFormaInvoiceController {
     @RequestMapping(value = "/{tenantUuid}/{proFormaInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Integer> deleteProFormaInvoice(@PathVariable String tenantUuid,
-                                                        @PathVariable String proFormaInvoiceUuid) {
+                                                         @PathVariable String proFormaInvoiceUuid) {
         int deleteProFormaInvoice = 0;
         try {
             deleteProFormaInvoice = proFormaInvoiceService.deleteProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
@@ -68,7 +72,7 @@ public class ProFormaInvoiceController {
     }
     //TODO: Remove this code lateron
 /*    @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<ProFormaInvoiceValue>> getAllproFormaInvoice(@PathVariable String tenantUuid) {
+    public ResponseEntity<List<ProFormaInvoiceValue>> getAllProFormaInvoice(@PathVariable String tenantUuid) {
         List<ProFormaInvoiceValue> proFormaInvoiceValues = null;
         try {
             proFormaInvoiceValues = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid);
@@ -79,11 +83,16 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceValues, HttpStatus.ACCEPTED);
     }*/
 
-    @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllproFormaInvoice(@PathVariable String tenantUuid) {
+    @GetMapping("/{tenantUuid}/{startDate}/{endDate}")
+    public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
         List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
         try {
-            proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            startDate = startDate+" 00:00:00";
+            endDate = endDate+" 23:59:59";
+            LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
+            LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
+            proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);
             Logger.info("records " + proFormaInvoiceMinimals.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
