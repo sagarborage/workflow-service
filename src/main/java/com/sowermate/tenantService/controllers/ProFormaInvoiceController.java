@@ -25,7 +25,7 @@ public class ProFormaInvoiceController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceValue> createproFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
+    public ResponseEntity<ProFormaInvoiceValue> createProFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
         try {
             proFormaInvoiceValue = proFormaInvoiceService.createProFormaInvoice(proFormaInvoiceValue);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class ProFormaInvoiceController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<ProFormaInvoiceValue> editproFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
+    public ResponseEntity<ProFormaInvoiceValue> editProFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
         ProFormaInvoiceValue proFormaInvoiceValue1 = null;
         try {
             proFormaInvoiceValue1 = proFormaInvoiceService.editProFormaInvoice(proFormaInvoiceValue);
@@ -47,7 +47,7 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/{tenantUuid}/{proFormaInvoiceUuid}")
-    public ResponseEntity<ProFormaInvoiceValue> getproFormaInvoice(@PathVariable String tenantUuid,
+    public ResponseEntity<ProFormaInvoiceValue> getProFormaInvoice(@PathVariable String tenantUuid,
                                                                    @PathVariable String proFormaInvoiceUuid) {
         ProFormaInvoiceValue proFormaInvoiceValue = null;
         try {
@@ -72,7 +72,7 @@ public class ProFormaInvoiceController {
     }
     //TODO: Remove this code lateron
 /*    @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<ProFormaInvoiceValue>> getAllproFormaInvoice(@PathVariable String tenantUuid) {
+    public ResponseEntity<List<ProFormaInvoiceValue>> getAllProFormaInvoice(@PathVariable String tenantUuid) {
         List<ProFormaInvoiceValue> proFormaInvoiceValues = null;
         try {
             proFormaInvoiceValues = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid);
@@ -83,8 +83,8 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceValues, HttpStatus.ACCEPTED);
     }*/
 
-    @GetMapping("/{tenantUuid}")
-    public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllproFormaInvoice(@PathVariable String tenantUuid, @RequestParam(name = "startDate", required = true) String startDate, @RequestParam(name = "endDate", required = true) String endDate) {
+    @GetMapping("/{tenantUuid}/{startDate}/{endDate}")
+    public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
         List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
