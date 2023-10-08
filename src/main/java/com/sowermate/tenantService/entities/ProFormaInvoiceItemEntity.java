@@ -13,13 +13,16 @@ import javax.persistence.*;
 @Table(name = "pro_forma_invoice_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class ProFormaInvoiceItemEntity extends Base{
+public class ProFormaInvoiceItemEntity extends Base {
 
     @Column(name = "width_inch")
     private Float widthInch;
 
     @Column(name = "width_measurement")
     private Float widthMeasurement;
+
+    @Column(name = "width_measurement_label")
+    private String widthMeasurementLabel;
 
     @Column(name = "actual_width")
     private Float actualWidth;
@@ -33,6 +36,9 @@ public class ProFormaInvoiceItemEntity extends Base{
     @Column(name = "hight_measurement")
     private Float hightMeasurement;
 
+    @Column(name = "height_measurement_label")
+    private String heightMeasurementLabel;
+
     @Column(name = "actual_hight")
     private Float actualHight;
 
@@ -45,11 +51,14 @@ public class ProFormaInvoiceItemEntity extends Base{
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "sqft")
-    private Float sqft;
+    @Column(name = "unit_value")
+    private Float unitValue;
 
-    @Column(name = "rate_per_sqft")
-    private Double ratePerSqft;
+    @Column(name = "rate_per_unit")
+    private Double ratePerUnit;
+
+    @Column(name = "unit_measurement_label")
+    private String unitMeasurementLabel;
 
     @Column(name = "amount")
     private Double amount;
@@ -71,7 +80,7 @@ public class ProFormaInvoiceItemEntity extends Base{
     private GlassThicknessEntity glassThicknessEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
+    @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
     public ProFormaInvoiceItemValue toDTO() {
@@ -80,16 +89,19 @@ public class ProFormaInvoiceItemEntity extends Base{
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
+                .widthMeasurementLabel(getWidthMeasurementLabel())
                 .actualWidth(getActualWidth())
                 .chargableWidth(getChargableWidth())
                 .hightInch(getHightInch())
                 .hightMeasurement(getHightMeasurement())
+                .heightMeasurementLabel(getHeightMeasurementLabel())
                 .actualHight(getActualHight())
                 .chargableHight(getChargableHight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
-                .sqft(getSqft())
-                .ratePerSqft(getRatePerSqft())
+                .unitValue(getUnitValue())
+                .ratePerUnit(getRatePerUnit())
+                .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
                 //.tenantValue(getTenantEntity().toDTO())
                 //.glassSpecificationValue(getGlassSpecificationEntity().toDTO())

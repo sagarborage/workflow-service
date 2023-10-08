@@ -22,16 +22,19 @@ public class ProFormaInvoiceItemValue extends BaseValue {
     private String tenantUuid;
     private Float widthInch;
     private Float widthMeasurement;
+    private String widthMeasurementLabel;
     private Float actualWidth;
     private Float chargableWidth;
     private Float hightInch;
     private Float hightMeasurement;
+    private String heightMeasurementLabel;
     private Float actualHight;
     private Float chargableHight;
     private Float extraMm;
     private int quantity;
-    private Float sqft;
-    private Double ratePerSqft;
+    private Float unitValue;
+    private Double ratePerUnit;
+    private String unitMeasurementLabel;
     private Double amount;
 
     public ProFormaInvoiceItemEntity toEntity() {
@@ -40,16 +43,19 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
+                .widthMeasurementLabel(getWidthMeasurementLabel())
                 .actualWidth(getActualWidth())
                 .chargableWidth(getChargableWidth())
                 .hightInch(getHightInch())
                 .hightMeasurement(getHightMeasurement())
+                .heightMeasurementLabel(getHeightMeasurementLabel())
                 .actualHight(getActualHight())
                 .chargableHight(getChargableHight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
-                .sqft(getSqft())
-                .ratePerSqft(getRatePerSqft())
+                .unitValue(getUnitValue())
+                .ratePerUnit(getRatePerUnit())
+                .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
                 //.tenantEntity(getTenantValue().toEntity())
                 //.glassTypeEntity(getGlassTypeValue().toEntity())
