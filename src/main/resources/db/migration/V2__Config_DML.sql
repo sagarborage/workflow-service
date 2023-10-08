@@ -21,7 +21,7 @@ INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `
 ('584bd17c-89a3-46ec-833b-f4502f046de4', 1, 1, 'Self test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
 
 INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `CIN`, `GSTIN`, `TAN`, `PAN`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Tripart test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
+('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Tri party test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);
 
 INSERT INTO `address` (`uuid`, `company_id`, `address_type_id`, `address_line1`, `address_line2`, `address_line3`, `city`, `state_code`, `country_code`, `pin_code`, `work_phone`, `fax`, `primary_phone_number`, `alternate_phone_number`, `email`, `website`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('28efd0b3-a0ba-4805-b432-5543013c0e73', 1, 2, 'Hadapsar, near Dmart', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
@@ -36,5 +36,7 @@ INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_dttm`, `las
 INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('94771345-c309-4eb1-8e2b-bf147ec25f3f', 1, 'Test Glass Specification', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', NULL, 1);
 
+INSERT INTO `service_rate` (`uuid`, `tenant_id`, `name`, `rate`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('3c0f293b-c5bb-4f92-a138-4a8400716d01', 1, 'Big Hole', 100.50, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1);
 
 
