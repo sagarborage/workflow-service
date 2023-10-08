@@ -17,8 +17,11 @@ public class ProFormaInvoiceItemValue extends BaseValue {
     private String uuid;
     private String proFormaInvoiceUuid;
     private String glassTypeUuid;
+    private String glassTypeName;
     private String glassSpecificationUuid;
+    private String glassSpecificationName;
     private String glassThicknessUuid;
+    private String glassThicknessName;
     private String tenantUuid;
     private Float widthInch;
     private Float widthMeasurement;

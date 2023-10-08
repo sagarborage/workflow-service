@@ -13,6 +13,7 @@ import lombok.extern.jackson.Jacksonized;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceRateInvoiceValue extends BaseValue {
 
+    private String serviceRateName;
     private String proFormaInvoiceUuid;
     private String serviceRateUuid;
     private int quantity;
