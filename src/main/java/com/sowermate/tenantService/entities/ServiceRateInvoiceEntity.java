@@ -21,10 +21,10 @@ public class ServiceRateInvoiceEntity extends Base {
     private int quantity;
 
     @Column(name = "rate")
-    private int rate;
+    private Double rate;
 
     @Column(name = "total")
-    private int total;
+    private Double total;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pro_forma_invoice_id")

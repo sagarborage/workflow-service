@@ -16,8 +16,8 @@ public class ServiceRateInvoiceValue extends BaseValue {
     private String proFormaInvoiceUuid;
     private String serviceRateUuid;
     private int quantity;
-    private int rate;
-    private int total;
+    private Double rate;
+    private Double total;
 
     public ServiceRateInvoiceEntity toEntity() {
         return ServiceRateInvoiceEntity.newBuilder()

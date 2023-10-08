@@ -25,8 +25,8 @@ public class ProFormaInvoiceItemValue extends BaseValue {
     private String widthMeasurementLabel;
     private Float actualWidth;
     private Float chargableWidth;
-    private Float hightInch;
-    private Float hightMeasurement;
+    private Float heightInch;
+    private Float heightMeasurement;
     private String heightMeasurementLabel;
     private Float actualHight;
     private Float chargableHight;
@@ -46,8 +46,8 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 .widthMeasurementLabel(getWidthMeasurementLabel())
                 .actualWidth(getActualWidth())
                 .chargableWidth(getChargableWidth())
-                .hightInch(getHightInch())
-                .hightMeasurement(getHightMeasurement())
+                .heightInch(getHeightInch())
+                .heightMeasurement(getHeightMeasurement())
                 .heightMeasurementLabel(getHeightMeasurementLabel())
                 .actualHight(getActualHight())
                 .chargableHight(getChargableHight())

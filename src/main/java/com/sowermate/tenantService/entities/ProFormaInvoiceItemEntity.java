@@ -30,19 +30,19 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "chargable_width")
     private Float chargableWidth;
 
-    @Column(name = "hight_inch")
-    private Float hightInch;
+    @Column(name = "height_inch")
+    private Float heightInch;
 
-    @Column(name = "hight_measurement")
-    private Float hightMeasurement;
+    @Column(name = "height_measurement")
+    private Float heightMeasurement;
 
     @Column(name = "height_measurement_label")
     private String heightMeasurementLabel;
 
-    @Column(name = "actual_hight")
+    @Column(name = "actual_height")
     private Float actualHight;
 
-    @Column(name = "chargable_hight")
+    @Column(name = "chargable_height")
     private Float chargableHight;
 
     @Column(name = "extra_mm")
@@ -92,8 +92,8 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .widthMeasurementLabel(getWidthMeasurementLabel())
                 .actualWidth(getActualWidth())
                 .chargableWidth(getChargableWidth())
-                .hightInch(getHightInch())
-                .hightMeasurement(getHightMeasurement())
+                .heightInch(getHeightInch())
+                .heightMeasurement(getHeightMeasurement())
                 .heightMeasurementLabel(getHeightMeasurementLabel())
                 .actualHight(getActualHight())
                 .chargableHight(getChargableHight())
@@ -104,8 +104,8 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
                 .glassSpecificationUuid(getGlassSpecificationEntity().getUuid())
-                .glassThicknessUuid(getGlassTypeEntity().getUuid())
-                .glassTypeUuid(getGlassThicknessEntity().getUuid())
+                .glassThicknessUuid(getGlassThicknessEntity().getUuid())
+                .glassTypeUuid(getGlassTypeEntity().getUuid())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
