@@ -39,6 +39,10 @@ public class ProFormaInvoiceItemValue extends BaseValue {
     private Double ratePerUnit;
     private String unitMeasurementLabel;
     private Double amount;
+    private int optimize;
+    private int cutting;
+    private int toughen;
+    private int dispatch;
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
@@ -60,6 +64,10 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
+                .optimize(getOptimize())
+                .cutting(getCutting())
+                .toughen(getToughen())
+                .dispatch(getDispatch())
                 //.tenantEntity(getTenantValue().toEntity())
                 //.glassTypeEntity(getGlassTypeValue().toEntity())
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())
