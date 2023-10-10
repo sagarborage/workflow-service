@@ -38,6 +38,7 @@ public class ServiceRateInvoiceEntity extends Base {
         return ServiceRateInvoiceValue.newBuilder()
                 .id(getId())
                 .uuid(getUuid())
+                .serviceRateUuid(getServiceRateEntity().getUuid())
                 .serviceRateName(getServiceRateEntity().getName())
                 .quantity(getQuantity())
                 .rate(getRate())
