@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+import static com.sowermate.tenantService.entities.common.TimeConstant.*;
+
 @RestController
 @RequestMapping("/proforma-invoices")
 public class ProFormaInvoiceController {
@@ -87,9 +89,9 @@ public class ProFormaInvoiceController {
     public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
         List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            startDate = startDate+" 00:00:00";
-            endDate = endDate+" 23:59:59";
+            DateTimeFormatter formatter = FORMATTER;
+            startDate = startDate+BEGINNING;
+            endDate = endDate+ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
             proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);
