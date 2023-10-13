@@ -25,6 +25,7 @@ public class ProFormaInvoiceValue extends BaseValue {
     private String firmUuid;
     private String companyBillToUuid;
     private String companyShipToUuid;
+    private String partyName;
     private String piNumber;
     private LocalDateTime invoiceDate;
     private Double proFormaInvoiceAmount;

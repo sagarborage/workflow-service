@@ -92,12 +92,20 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceEntity.getId())
                 .tenantEntity(tenantRepository.findByUuid(proFormaInvoiceValue.getTenantUuid()))
-                .confirmThroughEntity(confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getProFormaInvoiceUuid()))
+                .confirmThroughEntity(
+                        null == proFormaInvoiceValue.getConfirmThroughUuid() ? null :
+                                confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
+                )
                 .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
+                .firm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
+                .companyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyBillToUuid()))
+                .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyShipToUuid()))
+                .piNumber(tempProFormaInvoiceEntity.getPiNumber())
+                .invoiceDate(tempProFormaInvoiceEntity.getInvoiceDate())
                 .createdDateTime(tempProFormaInvoiceEntity.getCreatedDateTime())
                 .createdBy(tempProFormaInvoiceEntity.getCreatedBy())
                 .build();
-        return proFormaInvoiceEntity.toDTO();
+        return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
     }
 
     @Override
