@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.minimal.UserAuthProjection;
 import com.sowermate.tenantService.entities.value.UserValue;
 import com.sowermate.tenantService.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,12 @@ public class UserController {
     public ResponseEntity<UserValue> editGlassType(@RequestBody UserValue userValue) throws Exception {
         UserValue userValue1 = userService.editUser(userValue);
         return new ResponseEntity<UserValue>(userValue1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/auth/{userName}/{password}")
+    public ResponseEntity<UserAuthProjection> userAuthentication(@PathVariable String userName, @PathVariable String password) {
+        UserAuthProjection userValue = userService.userAuthentication(userName, password);
+        return new ResponseEntity<>(userValue, HttpStatus.ACCEPTED);
     }
 
 }

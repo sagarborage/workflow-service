@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.RoleTypeEntity;
 import com.sowermate.tenantService.entities.UserEntity;
 import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.minimal.UserAuthProjection;
 import com.sowermate.tenantService.entities.value.UserValue;
 import com.sowermate.tenantService.repositories.RoleTypeRepository;
 import com.sowermate.tenantService.repositories.UserRepository;
@@ -69,6 +70,12 @@ public class UserServiceImpl implements UserService {
     public List<UserValue> getAllUser(String tenantUuid) {
         List<UserEntity> UserEntities = userRepository.findAllByTenantEntity_Uuid(tenantUuid);
         return userRepository.findAllByTenantEntity_Uuid(tenantUuid).stream().map(gte -> gte.toDTO()).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserAuthProjection userAuthentication(String userName, String password) {
+        UserAuthProjection userAuthProjection = userRepository.userAuthentication(userName, password);
+        return userAuthProjection;
     }
 }
 
