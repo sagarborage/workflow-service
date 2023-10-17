@@ -64,7 +64,7 @@ public class ProFormaInvoiceEntity extends Base {
 
 
     @Column(name = "round_off_amount")
-    private int roundOffAmount;
+    private Float roundOffAmount;
 
     @Column(name = "payable_amount")
     private Float payableAmount;
@@ -112,11 +112,13 @@ public class ProFormaInvoiceEntity extends Base {
         return ProFormaInvoiceValue.newBuilder()
                 .proFormaInvoiceId(getId())
                 .proFormaInvoiceUuid(getUuid())
+                .tenantUuid(getTenantEntity().getUuid())
                 .firmUuid(getFirm().getUuid())
                 .companyBillToUuid(getCompanyIdBill().getUuid())
                 .partyName(getCompanyIdBill().getCompanyName())
                 .companyShipToUuid(getCompanyIdShip().getUuid())
                 .piTypeUuid(getPiTypeEntity().getUuid())
+                .piTypeName(getPiTypeEntity().getPiTypeName())
                 .piNumber(getPiNumber())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())
