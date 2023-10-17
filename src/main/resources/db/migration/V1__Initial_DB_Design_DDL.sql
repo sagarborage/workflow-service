@@ -1,4 +1,3 @@
-
 CREATE TABLE tenant (
   id int(10) NOT NULL AUTO_INCREMENT,
   uuid varchar(36) NOT NULL,
@@ -130,6 +129,7 @@ CREATE TABLE user (
   tenant_id int(10) NOT NULL,
   role_id int(10) NOT NULL,
   name varchar(100) NOT NULL,
+  user_name varchar(100) NOT NULL UNIQUE,
   password varchar(50) NOT NULL,
   salt varchar(50) NOT NULL,
   mobile_number varchar(20) NOT NULL,
@@ -167,13 +167,21 @@ CREATE TABLE additional_charges (
 );
 
 CREATE TABLE confirm_through (
-  id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
-  tenant_id int(10) NOT NULL,
-  name varchar(50) DEFAULT NULL,
-  PRIMARY KEY (id) USING BTREE,
-  KEY tenant_id (id)
-);
+   id int(10) NOT NULL AUTO_INCREMENT,
+   uuid varchar(36) NOT NULL DEFAULT (UUID()),
+   tenant_id int(10) NOT NULL,
+   firm_id int(10) NOT NULL,
+   pro_forma_invoice_id int(10) NOT NULL,
+   name varchar(50) DEFAULT NULL,
+   created_dttm datetime DEFAULT NULL,
+   last_updated_dttm datetime DEFAULT NULL,
+   created_by varchar(100) DEFAULT NULL,
+   last_updated_by varchar(100) DEFAULT NULL,
+   is_active boolean DEFAULT 1,
+   PRIMARY KEY (id) USING BTREE,
+   KEY FK_confirm_through_pro_forma_invoice (pro_forma_invoice_id) USING BTREE,
+   CONSTRAINT confirm_through_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
+ );
 
 CREATE TABLE glass_specification (
   id int(10) NOT NULL AUTO_INCREMENT,

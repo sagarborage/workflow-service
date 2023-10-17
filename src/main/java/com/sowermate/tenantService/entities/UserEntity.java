@@ -22,6 +22,9 @@ public class UserEntity extends Base {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "password")
     private String password;
 
@@ -47,6 +50,7 @@ public class UserEntity extends Base {
                 .id(getId())
                 .uuid(getUuid())
                 .name(getName())
+                .userName(getUserName())
                 .password(getPassword())
                 .salt(getPassword())
                 .mobileNumber(getMobileNumber())
