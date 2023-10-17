@@ -40,7 +40,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .tenantEntity(getTenantEntity(tenantUuid))
-                .proFormaInvoiceEntity(getProFormaInvoiceEntity(tenantUuid, proFormaInvoiceItemValue.getUuid()))
+                .proFormaInvoiceEntity(getProFormaInvoiceEntity(tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
                 .glassThicknessEntity(getGlassThicknessEntity(tenantUuid, proFormaInvoiceItemValue.getGlassThicknessUuid()))
                 .glassTypeEntity(getGlassTypeEntity(tenantUuid, proFormaInvoiceItemValue.getGlassTypeUuid()))
                 .glassSpecificationEntity(getGlassSpecificationEntity(tenantUuid, proFormaInvoiceItemValue.getGlassSpecificationUuid()))
@@ -56,7 +56,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceItemEntity.getId())
                 .tenantEntity(getTenantEntity(tenantUuid))
-                .proFormaInvoiceEntity(getProFormaInvoiceEntity(tenantUuid, proFormaInvoiceItemValue.getUuid()))
+                .proFormaInvoiceEntity(getProFormaInvoiceEntity(tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
                 .glassThicknessEntity(getGlassThicknessEntity(tenantUuid, proFormaInvoiceItemValue.getGlassThicknessUuid()))
                 .glassTypeEntity(getGlassTypeEntity(tenantUuid, proFormaInvoiceItemValue.getGlassTypeUuid()))
                 .glassSpecificationEntity(getGlassSpecificationEntity(tenantUuid, proFormaInvoiceItemValue.getGlassSpecificationUuid()))

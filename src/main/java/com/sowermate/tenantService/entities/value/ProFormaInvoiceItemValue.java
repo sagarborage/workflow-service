@@ -12,7 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProFormaInvoiceItemValue extends BaseValue {
-
+    private String proFormaInvoiceUuid;
     private String glassTypeUuid;
     private String glassTypeName;
     private String glassSpecificationUuid;
