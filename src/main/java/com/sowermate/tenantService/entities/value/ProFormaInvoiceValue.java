@@ -22,6 +22,7 @@ public class ProFormaInvoiceValue extends BaseValue {
     private String tenantUuid;
     private String confirmThroughUuid;
     private String piTypeUuid;
+    private String piTypeName;
     private String firmUuid;
     private String companyBillToUuid;
     private String companyShipToUuid;
@@ -40,7 +41,7 @@ public class ProFormaInvoiceValue extends BaseValue {
     private Double transportCharges;
     private Float gstCharges;
     private Float grandTotal;
-    private int roundOffAmount;
+    private Float roundOffAmount;
     private Float payableAmount;
     private Float previousBalance;
     private int adjustmentAmount;
