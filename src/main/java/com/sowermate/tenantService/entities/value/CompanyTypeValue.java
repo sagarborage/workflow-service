@@ -11,27 +11,21 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyTypeValue extends BaseValue {
-    private Long companyTypeId;
     private String type;
     private String description;
-    protected String companyTypeUuid;
-    private boolean isActive;
-
-    private CompanyValue companyValue;
-    private TenantValue tenantValue;
+    private String tenantUuid;
 
 
     public CompanyTypeEntity toEntity() {
         return CompanyTypeEntity.newBuilder()
-                .id(getCompanyTypeId())
-                .uuid(getCompanyTypeUuid())
+                .uuid(getUuid())
                 .type(getType())
                 .description(getDescription())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

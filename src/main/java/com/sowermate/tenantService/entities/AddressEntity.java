@@ -66,8 +66,7 @@ public class AddressEntity extends Base {
 
     public AddressValue toDTO() {
         return AddressValue.newBuilder()
-                .addressId(getId())
-                .addressUuid(getUuid())
+                .uuid(getUuid())
                 .addressLine1(getAddressLine1())
                 .addressLine2(getAddressLine2())
                 .addressLine3(getAddressLine3())
@@ -85,7 +84,7 @@ public class AddressEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .addressTypeUuid(addressType.getUuid())
                 .build();
     }

@@ -97,7 +97,6 @@ public class TenantEntity extends Base {
 
     public TenantValue toDTO() {
         return TenantValue.newBuilder()
-                .tenantId(getId())
                 .uuid(getUuid())
                 .tenantName(getTenantName())
                 .address(getAddress())
@@ -121,7 +120,7 @@ public class TenantEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 

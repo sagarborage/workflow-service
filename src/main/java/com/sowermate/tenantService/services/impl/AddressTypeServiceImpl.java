@@ -1,7 +1,9 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.AddressTypeEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.AddressTypeValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.AddressTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.AddressTypeService;
@@ -22,21 +24,36 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     @Autowired
     private AddressTypeRepository addressTypeRepository;
 
+    public AddressTypeEntity getAddressTypeEntity(String tenantUuid,String addressTypeUuid){
+        AddressTypeEntity addressTypeEntity = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid,addressTypeUuid);
+        if (addressTypeEntity==null){
+            throw new ResourceNotFoundException("AddressType","tenantUuid or addressTypeUuid",tenantUuid+" or "+ addressTypeUuid);
+        }
+        return addressTypeEntity;
+    }
+
+    public TenantEntity getTenantEntity(String tenantUuid){
+        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
+        if (tenantEntity==null){
+            throw new ResourceNotFoundException("TenantEntity","tenantUuid",tenantUuid);
+        }
+        return tenantEntity;
+    }
     @Override
     public AddressTypeValue createAddressType(AddressTypeValue addressTypeValue) {
         AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
-                .tenantEntity(tenantRepository.findByUuid(addressTypeValue.getTenantUuid()))
+                .tenantEntity(getTenantEntity(addressTypeValue.getTenantUuid()))
                         .build();
         return addressTypeRepository.save(addressTypeEntity).toDTO();
     }
 
     @Override
     public AddressTypeValue editAddressType(AddressTypeValue addressTypeValue) {
-        AddressTypeEntity addressTypeEntityTemp = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(addressTypeValue.getAddressTypeUuid(),
-                addressTypeValue.getAddressTypeUuid());
+        AddressTypeEntity addressTypeEntityTemp = getAddressTypeEntity(addressTypeValue.getTenantUuid(),
+                addressTypeValue.getUuid());
         AddressTypeEntity addressTypeEntity = addressTypeValue.toEntity().toBuilder()
                 .id(addressTypeEntityTemp.getId())
-                .tenantEntity(tenantRepository.findByUuid(addressTypeValue.getTenantUuid()))
+                .tenantEntity(getTenantEntity(addressTypeValue.getTenantUuid()))
                 .createdDateTime(addressTypeEntityTemp.getCreatedDateTime())
                 .createdBy(addressTypeEntityTemp.getCreatedBy())
                 .build();
@@ -51,7 +68,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
 
     @Override
     public AddressTypeValue getAddressType(String tenantUuid, String addressTypeUuid) {
-        return addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid).toDTO();
+        return getAddressTypeEntity(tenantUuid, addressTypeUuid).toDTO();
     }
 
     @Override
@@ -59,4 +76,5 @@ public class AddressTypeServiceImpl implements AddressTypeService {
         addressTypeRepository.softDelete(addressTypeUuid);
         return addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(tenantUuid, addressTypeUuid).toDTO();
     }
+
 }

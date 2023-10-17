@@ -17,8 +17,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProFormaInvoiceValue extends BaseValue {
 
-    private Long proFormaInvoiceId;
-    private String proFormaInvoiceUuid;
     private String tenantUuid;
     private String confirmThroughUuid;
     private String piTypeUuid;
@@ -51,8 +49,7 @@ public class ProFormaInvoiceValue extends BaseValue {
 
     public ProFormaInvoiceEntity toEntity() {
         return ProFormaInvoiceEntity.newBuilder()
-                .id(getProFormaInvoiceId())
-                .uuid(getProFormaInvoiceUuid())
+                .uuid(getUuid())
                 .piNumber(getPiNumber())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())
@@ -72,7 +69,7 @@ public class ProFormaInvoiceValue extends BaseValue {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

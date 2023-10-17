@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @NoArgsConstructor
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class BaseValue {
+public abstract class BaseValue {
     private Long id;
     private String uuid;
     private LocalDateTime createdDateTime;
     private LocalDateTime lastUpdatedDateTime;
     private String createdBy;
     private String lastUpdatedBy;
-    private boolean isActive;
+    private Boolean isActive;
 }

@@ -31,10 +31,9 @@ public class RoleTypeEntity extends Base {
 
     public RoleTypeValue toDTO() {
         return RoleTypeValue.newBuilder()
-                .id(getId())
                 .uuid(getUuid())
                 .name(getName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

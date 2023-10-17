@@ -29,14 +29,13 @@ public class UserValue extends BaseValue {
 
     public UserEntity toEntity() {
         return UserEntity.newBuilder()
-                .id(getId())
                 .uuid(getUuid())
                 .name(getName())
                 .password(getPassword())
                 .salt(getPassword())
                 .mobileNumber(getMobileNumber())
                 .emailId(getEmailId())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

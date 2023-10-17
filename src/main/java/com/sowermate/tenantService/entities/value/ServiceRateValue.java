@@ -15,22 +15,17 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceRateValue extends BaseValue {
 
-    private Long serviceRateId;
-    private String serviceRateUuid;
     private String tenantUuid;
     private String name;
     private float rate;
-    private boolean isActive;
-
     private List<ServiceRateInvoiceValue> serviceRateInvoices;
 
     public ServiceRateEntity toEntity() {
         return ServiceRateEntity.newBuilder()
-                .id(getServiceRateId())
-                .uuid(getServiceRateUuid())
+                .uuid(getUuid())
                 .name(getName())
                 .rate(getRate())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 //.serviceRateInvoices(getServiceRateInvoices().stream().map(t->t.toEntity()).collect(Collectors.toList()))
                 .build();
     }

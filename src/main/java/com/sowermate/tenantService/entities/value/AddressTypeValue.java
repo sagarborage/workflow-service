@@ -15,21 +15,16 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressTypeValue extends BaseValue {
 
-    private Long addressTypeId;
-    private String addressTypeUuid;
     private String tenantUuid;
     private String type;
     private String description;
-    private boolean isActive;
 
     public AddressTypeEntity toEntity() {
         return AddressTypeEntity.newBuilder()
-                .id(getAddressTypeId())
-                .uuid(getAddressTypeUuid())
+                .uuid(getUuid())
                 .type(getType())
                 .description(getDescription())
-                .isActive(isActive())
-                //.tenantEntity(getTenantValue().toEntity())
+                .isActive(getIsActive())
                 .build();
     }
 }

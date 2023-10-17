@@ -36,14 +36,12 @@ public class ServiceRateInvoiceEntity extends Base {
 
     public ServiceRateInvoiceValue toDTO() {
         return ServiceRateInvoiceValue.newBuilder()
-                .id(getId())
                 .uuid(getUuid())
-                .serviceRateUuid(getServiceRateEntity().getUuid())
                 .serviceRateName(getServiceRateEntity().getName())
                 .quantity(getQuantity())
                 .rate(getRate())
                 .total(getTotal())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

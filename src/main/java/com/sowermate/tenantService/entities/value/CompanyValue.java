@@ -17,12 +17,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyValue extends BaseValue {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long companyId;
-    protected String companyUuid;
     private String tenantUuid;
     private String companyTypeUuid;
     private String companyName;
@@ -30,22 +24,17 @@ public class CompanyValue extends BaseValue {
     private String gstin;
     private String tan;
     private String pan;
-    private boolean isActive;
     private List<AddressValue> addresses;
 
     public CompanyEntity toEntity() {
         return CompanyEntity.newBuilder()
-                .id(getCompanyId())
-                .uuid(getCompanyUuid())
+                .uuid(getUuid())
                 .companyName(getCompanyName())
                 .cin(getCin())
                 .gstin(getGstin())
                 .tan(getTan())
                 .pan(getPan())
-                .isActive(isActive())
-                //.tenantEntity(TenantEntity.newBuilder().uuid(getCompanyUuid()).build())
-                //.companyAddresses(Optional.ofNullable(getCompanyAddresses()).map(e->e.stream().map(el->el.toEntity()).collect(Collectors.toList())).orElse(null))
-                //.companyType(CompanyTypeEntity.newBuilder().companyTypeUuid(getCompanyTypeUuid()).build())
+                .isActive(getIsActive())
                 .build();
     }
 }

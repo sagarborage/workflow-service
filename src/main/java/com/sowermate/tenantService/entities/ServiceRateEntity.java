@@ -32,8 +32,7 @@ public class ServiceRateEntity extends Base {
 
     public ServiceRateValue toDTO() {
         return ServiceRateValue.newBuilder()
-                .serviceRateId(getId())
-                .serviceRateUuid(getUuid())
+                .uuid(getUuid())
                 .name(getName())
                 .rate(getRate())
                 //.tenantValue(getTenantEntity().toDTO())
@@ -42,7 +41,7 @@ public class ServiceRateEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

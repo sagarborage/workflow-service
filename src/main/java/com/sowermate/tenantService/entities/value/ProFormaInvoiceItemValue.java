@@ -13,9 +13,6 @@ import lombok.extern.jackson.Jacksonized;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProFormaInvoiceItemValue extends BaseValue {
 
-    private Long proFormaInvoiceItemId;
-    private String uuid;
-    private String proFormaInvoiceUuid;
     private String glassTypeUuid;
     private String glassTypeName;
     private String glassSpecificationUuid;
@@ -46,7 +43,6 @@ public class ProFormaInvoiceItemValue extends BaseValue {
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
-                .id(getProFormaInvoiceItemId())
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
@@ -73,7 +69,7 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())
                 //.glassSpecificationEntity(getGlassSpecificationValue().toEntity())
                 //.proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

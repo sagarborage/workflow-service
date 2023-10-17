@@ -29,10 +29,9 @@ public class PiTypeEntity extends Base {
 
     public PiTypeValue toDTO() {
         return PiTypeValue.newBuilder()
-                .piTypeId(getId())
-                .piTypeUuid(getUuid())
+                .uuid(getUuid())
                 .piTypeName(getPiTypeName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())

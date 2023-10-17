@@ -51,7 +51,7 @@ public class UserEntity extends Base {
                 .salt(getPassword())
                 .mobileNumber(getMobileNumber())
                 .emailId(getEmailId())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

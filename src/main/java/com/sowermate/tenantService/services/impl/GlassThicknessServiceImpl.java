@@ -38,7 +38,7 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(glassThicknessValue.getTenantUuid());
         GlassThicknessEntity tempGlassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(glassThicknessValue.getTenantUuid(),
-                glassThicknessValue.getGlassThicknessUuid());
+                glassThicknessValue.getUuid());
         GlassThicknessEntity glassThicknessEntity = glassThicknessValue.toEntity().toBuilder()
                 .id(tempGlassThicknessEntity.getId())
                 .tenantEntity(tenantEntity)

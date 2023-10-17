@@ -42,7 +42,7 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(glassSpecificationValue.getTenantUuid());
         GlassSpecificationEntity tempGlassSpecificationEntity = glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(glassSpecificationValue.getTenantUuid(),
-                glassSpecificationValue.getGlassSpecificationUuid());
+                glassSpecificationValue.getUuid());
 
         GlassSpecificationEntity glassSpecificationEntity = glassSpecificationValue.toEntity().toBuilder()
                 .id(tempGlassSpecificationEntity.getId())

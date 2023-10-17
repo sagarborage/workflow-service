@@ -44,7 +44,7 @@ public class PiTypeServiceImpl implements PiTypeService {
     public PiTypeValue editPiType(PiTypeValue piTypeValue) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(piTypeValue.getTenantUuid());
         PiTypeEntity tempPiTypeEntity =  piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(piTypeValue.getTenantUuid(),
-                piTypeValue.getPiTypeUuid());
+                piTypeValue.getUuid());
         PiTypeEntity piTypeEntity = piTypeValue.toEntity().toBuilder()
                 .id(tempPiTypeEntity.getId())
                 .tenantEntity(tenantEntity)

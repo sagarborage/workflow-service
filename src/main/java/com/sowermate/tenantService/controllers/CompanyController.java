@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.controllers;
 import com.sowermate.tenantService.entities.value.CommonValue;
 import com.sowermate.tenantService.entities.value.CompanyValue;
+import com.sowermate.tenantService.payload.ApiResponse;
 import com.sowermate.tenantService.services.CompanyService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class CompanyController {
     }
     @RequestMapping(value = "/{tenantUuid}/{companyUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CompanyValue> deleteCompanyDetails(@PathVariable String tenantUuid,
+    public ResponseEntity<ApiResponse> deleteCompanyDetails(@PathVariable String tenantUuid,
             @PathVariable String companyUuid) {
         CompanyValue companyValue = null;
         try {
@@ -60,7 +61,7 @@ public class CompanyController {
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
-        return new ResponseEntity<CompanyValue>(companyValue, HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(new ApiResponse("Company Deleted Successfully",true),HttpStatus.OK);
     }
 
     @GetMapping (value = "/{tenantUuid}")

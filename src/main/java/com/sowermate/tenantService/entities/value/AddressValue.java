@@ -13,8 +13,6 @@ import lombok.extern.jackson.Jacksonized;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressValue extends BaseValue {
     @JsonIgnore
-    private Long addressId;
-    private String addressUuid;
     private String addressTypeUuid;
     private String addressLine1;
     private String addressLine2;
@@ -32,11 +30,11 @@ public class AddressValue extends BaseValue {
 
     public AddressEntity toEntity() {
         return AddressEntity.newBuilder()
-                .id(getAddressId())
-                .uuid(getAddressUuid())
+                .uuid(getUuid())
                 .addressLine1(getAddressLine1())
                 .addressLine2(getAddressLine2())
-                .addressLine3(getAddressLine3())                .isActive(isActive())
+                .addressLine3(getAddressLine3())
+                .isActive(getIsActive())
                 .city(getCity())
                 .stateCode(getStateCode())
                 .countryCode(getCountryCode())

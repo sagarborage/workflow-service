@@ -16,21 +16,16 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GlassThicknessValue extends BaseValue {
 
-    private Long glassThicknessId;
-    private String glassThicknessUuid;
     private String tenantUuid;
     private String name;
-    private boolean isActive;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
 
     public GlassThicknessEntity toEntity() {
         return GlassThicknessEntity.newBuilder()
-                .id(getGlassThicknessId())
-                .uuid(getGlassThicknessUuid())
+                .uuid(getUuid())
                 .name(getName())
-                .isActive(isActive())
-                //.proFormaInvoiceItemEntities(getProFormaInvoiceItems().stream().map(i->i.toEntity()).collect(Collectors.toList()))
+                .isActive(getIsActive())
                 .build();
     }
 }

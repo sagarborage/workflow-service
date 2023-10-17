@@ -1,4 +1,5 @@
 package com.sowermate.tenantService.repositories;
+import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,14 +21,17 @@ public interface ProFormaInvoiceItemRepository extends JpaRepository<ProFormaInv
   //  public List<ProFormaInvoiceItemEntity> findAll();
   //  public List<ProFormaInvoiceItemEntity> findByProFormaInvoiceItemId(int proFormaInvoiceItemId);
 
-/*
-    @Query("SELECT p FROM ProFormaInvoiceItemEntity p " +
-            "JOIN p.tenantEntity t " +
-            "WHERE t.uuid = :tenantUuid " +
-            "AND p.proFormaInvoiceItemUuid = :proFormaInvoiceItemUuid")
-    public ProFormaInvoiceItemEntity findByTenantEntity_UuidAndProFormaInvoiceItemUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
-*/
+//    @Query("SELECT p FROM ProFormaInvoiceItemEntity p " +
+//            "JOIN p.tenantEntity t " +
+//            "WHERE t.uuid = :tenantUuid " +
+//            "AND p.proFormaInvoiceItemUuid = :proFormaInvoiceItemUuid")
+//    public ProFormaInvoiceItemEntity findByTenantEntity_UuidAndProFormaInvoiceItemUuid(String tenantUuid, String proFormaInvoiceItemUuid);
 
+//    @Query("SELECT c FROM CompanyEntity c " +
+//            "JOIN c.tenantEntity t " +
+//            "WHERE t.uuid = :tenantUuid " +
+//            "AND c.uuid = :companyUuid")
+//    CompanyEntity findByTenantEntity_UuidAndCompanyUuid(String tenantUuid, String companyUuid);
     //TODO: use proFormaInvoiceUuid as well
     public ProFormaInvoiceItemEntity findByUuid(String uuid);
 

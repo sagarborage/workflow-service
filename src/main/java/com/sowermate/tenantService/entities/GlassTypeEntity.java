@@ -30,8 +30,7 @@ public class GlassTypeEntity extends Base {
 
     public GlassTypeValue toDTO() {
         return GlassTypeValue.newBuilder()
-                .glassTypeId(getId())
-                .glassTypeUuid(getUuid())
+                .uuid(getUuid())
                 .glassName(getGlassName())
                 .tenantUuid(getTenantEntity().getUuid())
                 //.proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItems())
@@ -40,7 +39,7 @@ public class GlassTypeEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

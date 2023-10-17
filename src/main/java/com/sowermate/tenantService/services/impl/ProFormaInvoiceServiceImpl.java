@@ -1,9 +1,9 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +53,10 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                             null == proFormaInvoiceValue.getConfirmThroughUuid() ? null :
                                     confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
                     )
-                    .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
-                    .firm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
-                    .companyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyBillToUuid()))
-                    .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getCompanyShipToUuid()))
+                    .piTypeEntity(getPiType(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
+                    .firm(getFirm(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
+                    .companyIdBill(getCompanyIdBill(tenantUUID, proFormaInvoiceValue.getCompanyBillToUuid()))
+                    .companyIdShip(getCompanyIdShip(tenantUUID, proFormaInvoiceValue.getCompanyShipToUuid()))
                     .piNumber(piNumber)
                     .invoiceDate(LocalDateTime.now())
                     .build();
@@ -64,6 +64,60 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         }
     }
 
+
+    public CompanyEntity getCompanyIdShip(String tenantUuid, String companyIdShipUuid){
+        CompanyEntity companyIdShip = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUuid,companyIdShipUuid);
+        if(companyIdShip == null){
+            throw new ResourceNotFoundException("CompanyEntity","tenantUuid or companyIdShipUuid",tenantUuid+" or "+companyIdShipUuid);
+        }
+        return companyIdShip;
+    }
+    public CompanyEntity getCompanyIdBill(String tenantUuid, String companyIdBillUuid){
+        CompanyEntity companyIdBill = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUuid,companyIdBillUuid);
+        if(companyIdBill == null){
+            throw new ResourceNotFoundException("CompanyEntity","tenantUuid or companyIdBillUuid",tenantUuid+" or "+companyIdBillUuid);
+        }
+        return companyIdBill;
+    }
+
+    public CompanyEntity getFirm(String tenantUuid, String firmUuid){
+        CompanyEntity firm = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUuid,firmUuid);
+        if(firm == null){
+            throw new ResourceNotFoundException("CompanyEntity","tenantUuid or firmUuid",tenantUuid+" or "+firmUuid);
+        }
+        return firm;
+    }
+
+    public PiTypeEntity getPiType(String tenantUuid, String PiTypeUuid){
+        PiTypeEntity piTypeEntity = piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUuid,PiTypeUuid);
+        if(piTypeEntity == null){
+            throw new ResourceNotFoundException("PiTypeEntity","tenantUuid or PiTypeUuid",tenantUuid+" or "+PiTypeUuid);
+        }
+        return piTypeEntity;
+    }
+
+    public ConfirmThroughEntity getConfirmThroughEntity(String tenantUuid,String confirmThroughUuid){
+        ConfirmThroughEntity confirmThrough = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid,confirmThroughUuid);
+        if(confirmThrough == null){
+            throw new ResourceNotFoundException("ConfirmThroughEntity","tenantUuid or ConfirmThroughUuid",tenantUuid+" or "+confirmThroughUuid);
+        }
+        return confirmThrough;
+    }
+
+    public TenantEntity getTenant(String tenantUuid){
+        TenantEntity tenant = tenantRepository.findByUuid(tenantUuid);
+        if(tenant == null){
+            throw new ResourceNotFoundException("TenantEntity","tenantUuid",tenantUuid);
+        }
+        return tenant;
+    }
+    public ProFormaInvoiceEntity getProFormaInvoiceEntity(String tenantUuid, String proFormaInvoiceUuid){
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
+        if(proFormaInvoiceEntity == null){
+            throw new ResourceNotFoundException("ProformInvoiceEntity","ProformInvoiceUuid or tenantUuid",tenantUuid+" or "+proFormaInvoiceUuid);
+        }
+        return proFormaInvoiceEntity;
+    }
     private String generatePiNumber(long tenantId) {
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(tenantId);
 
@@ -87,28 +141,37 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
         String tenantUUID = proFormaInvoiceValue.getTenantUuid();
         ProFormaInvoiceEntity tempProFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(proFormaInvoiceValue.getTenantUuid(),
-                proFormaInvoiceValue.getProFormaInvoiceUuid());
+                proFormaInvoiceValue.getUuid());
 
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceEntity.getId())
                 .tenantEntity(tenantRepository.findByUuid(proFormaInvoiceValue.getTenantUuid()))
-                .confirmThroughEntity(confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getProFormaInvoiceUuid()))
-                .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
-                .createdDateTime(tempProFormaInvoiceEntity.getCreatedDateTime())
-                .createdBy(tempProFormaInvoiceEntity.getCreatedBy())
+                .confirmThroughEntity(
+                        null == proFormaInvoiceValue.getConfirmThroughUuid() ? null :
+                                confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
+                )
+                .proFormaInvoiceAmount(proFormaInvoiceValue.getProFormaInvoiceAmount())
+                .piTypeEntity(getPiType(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
+                .firm(getFirm(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
+                .companyIdBill(getCompanyIdBill(tenantUUID, proFormaInvoiceValue.getCompanyBillToUuid()))
+                .companyIdShip(getCompanyIdShip(tenantUUID, proFormaInvoiceValue.getCompanyShipToUuid()))
+                .invoiceDate(LocalDateTime.now())
                 .build();
-        return proFormaInvoiceEntity.toDTO();
+        return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO().toBuilder().tenantUuid(tenantUUID).build();
     }
 
     @Override
     public ProFormaInvoiceValue getProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
+        ProFormaInvoiceEntity proFormaInvoiceEntity = getProFormaInvoiceEntity(tenantUuid,proFormaInvoiceUuid);
         return proFormaInvoiceEntity.toDTO();
     }
 
     @Override
-    public int deleteProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
-        return proFormaInvoiceRepository.deleteByUuid(proFormaInvoiceUuid);
+    public void deleteProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid) {
+        int status= proFormaInvoiceRepository.deleteByUuid(proFormaInvoiceUuid);
+        if(status==0){
+            throw new ResourceNotFoundException("ProformInvoice","ProformInvoiceUuid or tenantUuid",tenantUuid+" or "+proFormaInvoiceUuid);
+        }
     }
     //TODO: Remove this code lateron
 /*    @Override

@@ -97,7 +97,6 @@ public class ProFormaInvoiceItemEntity extends Base {
 
     public ProFormaInvoiceItemValue toDTO() {
         return ProFormaInvoiceItemValue.newBuilder()
-                .proFormaInvoiceItemId(getId())
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
@@ -129,7 +128,7 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

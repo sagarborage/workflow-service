@@ -15,19 +15,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GlassTypeValue extends BaseValue {
 
-    private Long glassTypeId;
     private String tenantUuid;
-    private String glassTypeUuid;
     private String glassName;
-    private boolean isActive;
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
 
     public GlassTypeEntity toEntity() {
         return GlassTypeEntity.newBuilder()
-                .id(getGlassTypeId())
-                .uuid(getGlassTypeUuid())
+                .uuid(getUuid())
                 .glassName(getGlassName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
     

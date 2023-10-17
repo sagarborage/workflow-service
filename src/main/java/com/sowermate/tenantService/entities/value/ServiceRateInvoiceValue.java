@@ -15,7 +15,6 @@ public class ServiceRateInvoiceValue extends BaseValue {
 
     private String serviceRateName;
     private String proFormaInvoiceUuid;
-    private String serviceRateUuid;
     private int quantity;
     private Double rate;
     private Double total;
@@ -27,9 +26,7 @@ public class ServiceRateInvoiceValue extends BaseValue {
                 .quantity(getQuantity())
                 .rate(getRate())
                 .total(getTotal())
-                //.proFormaInvoiceEntity(getProFormaInvoice().toEntity())
-                //.serviceRateEntity(getServiceRate().toEntity())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

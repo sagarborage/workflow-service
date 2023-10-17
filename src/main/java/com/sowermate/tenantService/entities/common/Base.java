@@ -14,7 +14,7 @@ import java.util.UUID;
 @MappedSuperclass
 @NoArgsConstructor
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class Base {
+public abstract class Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,14 +25,18 @@ public class Base {
 
     @Column(name = "created_by")
     private String createdBy;
+
     @Column(name = "created_dttm")
     private LocalDateTime createdDateTime;
+
     @Column(name = "last_updated_by")
     private String lastUpdatedBy;
+
     @Column(name = "last_updated_dttm")
     private LocalDateTime lastUpdatedDateTime;
+
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @PrePersist
     public void autofillCreate() {

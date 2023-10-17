@@ -1,7 +1,10 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.AdditionalChargesEntity;
 import com.sowermate.tenantService.entities.AddressEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.AddressValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.AddressRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
 import com.sowermate.tenantService.services.AddressService;
@@ -33,7 +36,7 @@ public class AddressServiceImpl  implements AddressService {
     public AddressValue editAddress(AddressValue addressValue) {
         AddressEntity  addressEntity = addressValue.toEntity();
 
-        addressEntity.toBuilder().id(addressRepository.findByUuid(addressValue.getAddressUuid()).getId()).build();
+        addressEntity.toBuilder().id(addressRepository.findByUuid(addressValue.getUuid()).getId()).build();
         BeanUtils.copyProperties(addressRepository.save(addressEntity), addressValue);
         return addressRepository.save(addressEntity).toDTO();
     }
@@ -55,5 +58,21 @@ public class AddressServiceImpl  implements AddressService {
     public List<AddressValue> getAllCompanyAddress(String tenantUuid) {
         List<AddressValue> addressValues = new ArrayList<>();
         return addressValues;
+    }
+
+    public TenantEntity getTenantEntity(String tenantUuid){
+        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
+        if (tenantEntity==null){
+            throw new ResourceNotFoundException("TenantEntity","tenantUuid",tenantUuid);
+        }
+        return tenantEntity;
+    }
+
+    public AddressEntity getAddressEntity(String addressEntityUuid){
+        AddressEntity addressEntity = addressRepository.findByUuid(addressEntityUuid);
+        if (addressEntity==null){
+            throw new ResourceNotFoundException("AdditionalChargesEntity","additionalChargesEntityUuid",addressEntityUuid);
+        }
+        return addressEntity;
     }
 }

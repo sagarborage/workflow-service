@@ -2,6 +2,7 @@ package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.payload.ApiResponse;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import static com.sowermate.tenantService.entities.common.TimeConstant.*;
 
 @RestController
 @RequestMapping("/proforma-invoices")
-public class ProFormaInvoiceController {
+public class ProFormaInvoiceController{
     private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ProFormaInvoiceController.class);
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
@@ -28,12 +26,8 @@ public class ProFormaInvoiceController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ProFormaInvoiceValue> createProFormaInvoice(@RequestBody ProFormaInvoiceValue proFormaInvoiceValue) {
-        try {
-            proFormaInvoiceValue = proFormaInvoiceService.createProFormaInvoice(proFormaInvoiceValue);
-        } catch (Exception e) {
-            Logger.error("Error while creating Seller:", e);
-        }
-        return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue, HttpStatus.CREATED);
+        ProFormaInvoiceValue proFormaInvoiceValue1 = proFormaInvoiceService.createProFormaInvoice(proFormaInvoiceValue);
+        return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue1, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -62,15 +56,10 @@ public class ProFormaInvoiceController {
 
     @RequestMapping(value = "/{tenantUuid}/{proFormaInvoiceUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Integer> deleteProFormaInvoice(@PathVariable String tenantUuid,
-                                                         @PathVariable String proFormaInvoiceUuid) {
-        int deleteProFormaInvoice = 0;
-        try {
-            deleteProFormaInvoice = proFormaInvoiceService.deleteProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
-        } catch (Exception e) {
-            Logger.error("Error while deleting Seller:", e);
-        }
-        return new ResponseEntity<Integer>(deleteProFormaInvoice, HttpStatus.ACCEPTED);
+    public ResponseEntity<ApiResponse> deleteProFormaInvoice(@PathVariable String tenantUuid,
+                                                             @PathVariable String proFormaInvoiceUuid) {
+        proFormaInvoiceService.deleteProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
+        return new ResponseEntity<>(new ApiResponse("ProFormaInvoice deleted successfully", true), HttpStatus.OK);
     }
     //TODO: Remove this code lateron
 /*    @GetMapping("/{tenantUuid}")
@@ -90,8 +79,8 @@ public class ProFormaInvoiceController {
         List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
         try {
             DateTimeFormatter formatter = FORMATTER;
-            startDate = startDate+BEGINNING;
-            endDate = endDate+ENDING;
+            startDate = startDate + BEGINNING;
+            endDate = endDate + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
             proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);

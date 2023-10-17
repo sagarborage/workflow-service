@@ -1,7 +1,8 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
+import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,11 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
-                .tenantEntity(tenantRepository.findByUuid(tenantUuid))
-                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
-                        tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
-                .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
-                        proFormaInvoiceItemValue.getGlassThicknessUuid()))
-                .glassTypeEntity(glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid,
-                        proFormaInvoiceItemValue.getGlassTypeUuid()))
-                .glassSpecificationEntity(glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,
-                        proFormaInvoiceItemValue.getGlassSpecificationUuid()))
+                .tenantEntity(getTenantEntity(tenantUuid))
+                .proFormaInvoiceEntity(getProFormaInvoiceEntity(tenantUuid, proFormaInvoiceItemValue.getUuid()))
+                .glassThicknessEntity(getGlassThicknessEntity(tenantUuid, proFormaInvoiceItemValue.getGlassThicknessUuid()))
+                .glassTypeEntity(getGlassTypeEntity(tenantUuid, proFormaInvoiceItemValue.getGlassTypeUuid()))
+                .glassSpecificationEntity(getGlassSpecificationEntity(tenantUuid, proFormaInvoiceItemValue.getGlassSpecificationUuid()))
                 .build();
         return proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity).toDTO();
     }
@@ -55,18 +52,14 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
-        ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemValue.getUuid());
+        ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = getProFormaInvoiceItemEntity(proFormaInvoiceItemValue.getUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceItemEntity.getId())
-                .tenantEntity(tenantRepository.findByUuid(tenantUuid))
-                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
-                        tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
-                .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
-                        proFormaInvoiceItemValue.getGlassThicknessUuid()))
-                .glassTypeEntity(glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid,
-                        proFormaInvoiceItemValue.getGlassTypeUuid()))
-                .glassSpecificationEntity(glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,
-                        proFormaInvoiceItemValue.getGlassSpecificationUuid()))
+                .tenantEntity(getTenantEntity(tenantUuid))
+                .proFormaInvoiceEntity(getProFormaInvoiceEntity(tenantUuid, proFormaInvoiceItemValue.getUuid()))
+                .glassThicknessEntity(getGlassThicknessEntity(tenantUuid, proFormaInvoiceItemValue.getGlassThicknessUuid()))
+                .glassTypeEntity(getGlassTypeEntity(tenantUuid, proFormaInvoiceItemValue.getGlassTypeUuid()))
+                .glassSpecificationEntity(getGlassSpecificationEntity(tenantUuid, proFormaInvoiceItemValue.getGlassSpecificationUuid()))
                 .createdDateTime(tempProFormaInvoiceItemEntity.getCreatedDateTime())
                 .createdBy(tempProFormaInvoiceItemEntity.getCreatedBy())
                 .build();
@@ -75,7 +68,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
     @Override
     public ProFormaInvoiceItemValue getProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid) {
-        return proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemUuid).toDTO();
+        return getProFormaInvoiceItemEntity(proFormaInvoiceItemUuid).toDTO();
     }
 
     @Override
@@ -88,5 +81,54 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities = proFormaInvoiceItemRepository.findAllByProFormaInvoiceEntity_uuid(proFormaInvoiceUuid);
         return proFormaInvoiceItemEntities.stream().map(piie -> piie.toDTO()).collect(Collectors.toList());
     }
+
+    public ProFormaInvoiceItemEntity getProFormaInvoiceItemEntity(String proFormaInvoiceItemUuid){
+        ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemUuid);
+        if(proFormaInvoiceItemEntity==null){
+            throw new ResourceNotFoundException("proFormaInvoiceEntity","proFormaInvoiceUuid",proFormaInvoiceItemUuid);
+        }
+        return proFormaInvoiceItemEntity;
+    }
+    public TenantEntity getTenantEntity(String tenantUuid){
+        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
+        if(tenantEntity==null){
+            throw new ResourceNotFoundException("TenantEntity","tenantUuid",tenantUuid);
+        }
+        return tenantEntity;
+    }
+
+    public ProFormaInvoiceEntity getProFormaInvoiceEntity(String tenantUuid, String proFormaInvoiceUuid){
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid,proFormaInvoiceUuid);
+        if(proFormaInvoiceEntity==null){
+            throw new ResourceNotFoundException("proFormaInvoiceEntity","tenantUuid or proFormaInvoiceUuid",tenantUuid +" or "+proFormaInvoiceUuid);
+        }
+        return proFormaInvoiceEntity;
+    }
+
+    public GlassThicknessEntity getGlassThicknessEntity(String tenantUuid, String glassThicknessUuid){
+        GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,glassThicknessUuid);
+        if(glassThicknessEntity==null){
+            throw new ResourceNotFoundException("proFormaInvoiceEntity","tenantUuid or glassThicknessUuid",tenantUuid +" or "+glassThicknessUuid);
+        }
+        return glassThicknessEntity;
+    }
+
+    public GlassTypeEntity getGlassTypeEntity(String tenantUuid, String glassTypeEntityUuid){
+        GlassTypeEntity glassThicknessEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid,glassTypeEntityUuid);
+        if(glassThicknessEntity==null){
+            throw new ResourceNotFoundException("proFormaInvoiceEntity","tenantUuid or glassTypeEntityUuid",tenantUuid +" or "+glassTypeEntityUuid);
+        }
+        return glassThicknessEntity;
+    }
+
+    public GlassSpecificationEntity getGlassSpecificationEntity(String tenantUuid, String glassSpecificationEntityUuid){
+        GlassSpecificationEntity glassSpecificationEntity = glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,glassSpecificationEntityUuid);
+        if(glassSpecificationEntity==null){
+            throw new ResourceNotFoundException("proFormaInvoiceEntity","tenantUuid or glassSpecificationEntityUuid",tenantUuid +" or "+glassSpecificationEntityUuid);
+        }
+        return glassSpecificationEntity;
+    }
+
+
 }
 

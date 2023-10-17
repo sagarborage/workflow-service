@@ -38,8 +38,7 @@ public class AdditionalChargesEntity extends Base {
 
     public AdditionalChargesValue toDTO() {
         return AdditionalChargesValue.newBuilder()
-                .additionalChargesId(getId())
-                .additionalChargesUuid(getUuid())
+                .uuid(getUuid())
                 .extraMm(getExtraMm())
                 .insurance(getInsurance())
                 .adminCharges(getAdminCharges())
@@ -49,7 +48,7 @@ public class AdditionalChargesEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

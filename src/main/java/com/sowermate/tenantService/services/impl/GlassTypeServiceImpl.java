@@ -38,7 +38,7 @@ public class GlassTypeServiceImpl implements GlassTypeService {
     public GlassTypeValue editGlassType(GlassTypeValue glassTypeValue) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(glassTypeValue.getTenantUuid());
         GlassTypeEntity tempGlassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(glassTypeValue.getTenantUuid(),
-                glassTypeValue.getGlassTypeUuid());
+                glassTypeValue.getUuid());
         GlassTypeEntity glassTypeEntity = glassTypeValue.toEntity().toBuilder()
                 .id(tempGlassTypeEntity.getId())
                 .createdDateTime(tempGlassTypeEntity.getCreatedDateTime())

@@ -15,8 +15,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PiTypeValue extends BaseValue {
 
-    private Long piTypeId;
-    private String piTypeUuid;
     private String piTypeName;
     private String tenantUuid;
 
@@ -24,10 +22,9 @@ public class PiTypeValue extends BaseValue {
 
     public PiTypeEntity toEntity() {
         return PiTypeEntity.newBuilder()
-                .id(getPiTypeId())
-                .uuid(getPiTypeUuid())
+                .uuid(getUuid())
                 .piTypeName(getPiTypeName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

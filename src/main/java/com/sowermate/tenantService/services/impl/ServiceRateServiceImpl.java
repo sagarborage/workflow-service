@@ -34,7 +34,7 @@ public class ServiceRateServiceImpl implements ServiceRateService {
     @Override
     public ServiceRateValue editServiceRate(ServiceRateValue serviceRateValue) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(serviceRateValue.getTenantUuid());
-        ServiceRateEntity tempServiceRateEntity = serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(serviceRateValue.getTenantUuid(), serviceRateValue.getServiceRateUuid());
+        ServiceRateEntity tempServiceRateEntity = serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(serviceRateValue.getTenantUuid(), serviceRateValue.getUuid());
 
         ServiceRateEntity serviceRateEntity = serviceRateValue.toEntity().toBuilder()
                 .id(tempServiceRateEntity.getId())

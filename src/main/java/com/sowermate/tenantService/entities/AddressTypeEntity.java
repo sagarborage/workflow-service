@@ -31,16 +31,16 @@ public class AddressTypeEntity extends Base {
 
     public AddressTypeValue toDTO() {
         return AddressTypeValue.newBuilder()
-                .addressTypeId(getId())
-                .addressTypeUuid(getUuid())
+                .uuid(getUuid())
+                .tenantUuid(getTenantEntity().getUuid())
                 .type(getType())
                 .description(getDescription())
-                //.tenantValue(getTenantEntity().toDTO())
+                .tenantUuid(getTenantEntity().getUuid())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

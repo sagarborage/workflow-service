@@ -30,14 +30,13 @@ public class GlassSpecificationEntity extends Base {
 
     public GlassSpecificationValue toDTO() {
         return GlassSpecificationValue.newBuilder()
-                .glassSpecificationId(getId())
-                .glassSpecificationUuid(getUuid())
+                .uuid(getUuid())
                 .name(getName())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

@@ -18,10 +18,9 @@ public class RoleTypeValue extends BaseValue {
 
     public RoleTypeEntity toEntity() {
         return RoleTypeEntity.newBuilder()
-                .id(getId())
                 .uuid(getUuid())
                 .name(getName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

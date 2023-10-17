@@ -1,7 +1,10 @@
 package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.value.CompanyTypeValue;
+import com.sowermate.tenantService.entities.value.CompanyValue;
+import com.sowermate.tenantService.payload.ApiResponse;
 import com.sowermate.tenantService.services.CompanyTypeService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import java.util.List;
 @RequestMapping("/company_types")
 public class CompanyTypeController {
 
+    private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(CompanyTypeController.class);
     @Autowired
     private CompanyTypeService companyTypeService;
 
@@ -25,8 +29,16 @@ public class CompanyTypeController {
 
     @GetMapping(value = "/{tenantUuid}/{companyTypeUuid}")
     public ResponseEntity<CompanyTypeValue> getCompanyType(@PathVariable String  tenantUuid,@PathVariable String companyTypeUuid) {
-        CompanyTypeValue companyTypeValue=companyTypeService.getCompanyType(tenantUuid,companyTypeUuid);
-        return  new ResponseEntity<>(companyTypeValue, HttpStatus.ACCEPTED);
+
+        CompanyTypeValue companyTypeValue=null;
+        try {
+             companyTypeValue=companyTypeService.getCompanyType(tenantUuid,companyTypeUuid);
+
+        } catch (Exception e) {
+            Logger.error("Error while creating Seller:", e);
+        }
+        return new ResponseEntity<CompanyTypeValue>(companyTypeValue,HttpStatus.CREATED);
+
     }
 
     @GetMapping(value = "/{tenantUuid}")
@@ -44,9 +56,9 @@ public class CompanyTypeController {
 
     @RequestMapping(value = "/{tenantUuid}/{companyTypeUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<CompanyTypeValue> deleteCompanyType(@PathVariable String  tenantUuid,@PathVariable String companyTypeUuid) {
+    public ResponseEntity<ApiResponse> deleteCompanyType(@PathVariable String  tenantUuid, @PathVariable String companyTypeUuid) {
         CompanyTypeValue companyTypeValue =companyTypeService.deleteCompanyType(tenantUuid,companyTypeUuid);
-        return new ResponseEntity<CompanyTypeValue>(companyTypeValue ,HttpStatus.ACCEPTED);
+        return new ResponseEntity<> (new  ApiResponse("CompanyType Deleted Successfully",true),HttpStatus.OK);
     }
 
 }

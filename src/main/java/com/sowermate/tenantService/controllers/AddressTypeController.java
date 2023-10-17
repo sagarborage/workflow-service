@@ -2,6 +2,7 @@ package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.value.AddressTypeValue;
 import com.sowermate.tenantService.services.AddressTypeService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping("/address-types")
 public class AddressTypeController {
 
+    private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(AddressTypeController.class);
     @Autowired
     private AddressTypeService addressTypeService;
 
@@ -45,7 +47,12 @@ public class AddressTypeController {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<AddressTypeValue> editAddressType(@RequestBody AddressTypeValue addressTypeValue) {
-        AddressTypeValue addressTypeValue1 = addressTypeService.editAddressType(addressTypeValue);
+        AddressTypeValue addressTypeValue1 = null;
+        try {
+             addressTypeValue1 = addressTypeService.editAddressType(addressTypeValue);
+        } catch (Exception e) {
+            Logger.error("Error while editing Seller:", e);
+        }
         return new ResponseEntity<AddressTypeValue>(addressTypeValue1, HttpStatus.CREATED);
     }
 

@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TenantValue extends BaseValue {
 
-    private Long tenantId;
-    private String uuid;
     private String tenantName;
     private String address;
     private String city;
@@ -32,7 +30,6 @@ public class TenantValue extends BaseValue {
     private Date activationDate;
     private Date expiryDate;
     private int gracePeriod;
-    private boolean isActive = true;
 
     private List<CompanyValue> companyValues;
     private AdditionalChargesValue additionalCharges;
@@ -48,7 +45,6 @@ public class TenantValue extends BaseValue {
 
     public TenantEntity toEntity() {
         return TenantEntity.newBuilder()
-                .id(getTenantId())
                 .uuid(getUuid())
                 .tenantName(getTenantName())
                 .address(getAddress())
@@ -61,7 +57,7 @@ public class TenantValue extends BaseValue {
                 .activationDate(getActivationDate())
                 .expiryDate(getExpiryDate())
                 .gracePeriod(getGracePeriod())
-                .isActive(isActive())
+                .isActive(getIsActive())
 /*                .companyEntities(Optional.ofNullable(getCompanyValues()).map(values -> values.stream()
                         .map(CompanyValue::toEntity)
                         .collect(Collectors.toList())).orElse(Collections.emptyList()))*/

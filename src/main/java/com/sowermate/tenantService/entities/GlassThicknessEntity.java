@@ -29,14 +29,13 @@ public class GlassThicknessEntity extends Base {
 
     public GlassThicknessValue toDTO() {
         return GlassThicknessValue.newBuilder()
-                .glassThicknessId(getId())
-                .glassThicknessUuid(getUuid())
+                .uuid(getUuid())
                 .name(getName())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

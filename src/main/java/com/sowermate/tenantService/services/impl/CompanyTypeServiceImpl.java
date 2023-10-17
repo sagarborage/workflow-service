@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.CompanyTypeEntity;
 import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.CompanyTypeValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.CompanyRepository;
 import com.sowermate.tenantService.repositories.CompanyTypeRepository;
 import com.sowermate.tenantService.repositories.TenantRepository;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,15 +26,12 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     @Autowired
     private TenantRepository tenantRepository;
 
-    @Autowired
-    private CompanyRepository companyRepository;
 
     @Override
     public CompanyTypeValue createCompanyType(CompanyTypeValue companyTypeValue) {
-        TenantEntity tenantEntity = tenantRepository.findByUuid(companyTypeValue.getTenantValue().getUuid());
-        CompanyEntity companyEntity = companyRepository.getCompanyEntityByUuid(companyTypeValue.getCompanyValue().getCompanyUuid());
+        TenantEntity tenantEntity =getTenantEntity(companyTypeValue.getTenantUuid());
         CompanyTypeEntity companyTypeEntity = companyTypeValue.toEntity().toBuilder()
-                .companyEntiies(Arrays.asList(companyEntity))
+                .tenantEntity(tenantEntity)
                 .build();
         return companyTypeRepository.save(companyTypeEntity).toDTO();
     }
@@ -42,14 +39,12 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 
     @Override
     public CompanyTypeValue editCompanyType(CompanyTypeValue companyTypeValue) {
-        TenantEntity tenantEntity = tenantRepository.findByUuid(companyTypeValue.getTenantValue().getUuid());
-        CompanyEntity companyEntity = companyRepository.getCompanyEntityByUuid(companyTypeValue.getCompanyValue().getCompanyUuid());
-        CompanyTypeEntity companyTypeTemp = companyTypeRepository.findByUuid(companyTypeValue.getCompanyTypeUuid());
+        TenantEntity tenantEntity = getTenantEntity(companyTypeValue.getTenantUuid());
+        CompanyTypeEntity companyTypeTemp = getCompanyTypeEntity(companyTypeValue.getUuid());
 
         CompanyTypeEntity companyTypeEntity = companyTypeValue.toEntity().toBuilder()
                 .id(companyTypeTemp.getId())
-                //.tenantEntity(tenantEntity)
-                .companyEntiies(Arrays.asList(companyEntity))
+                .tenantEntity(tenantEntity)
                 .createdDateTime(companyTypeTemp.getCreatedDateTime())
                 .createdBy(companyTypeTemp.getCreatedBy())
                 .build();
@@ -65,13 +60,29 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 
     @Override
     public CompanyTypeValue getCompanyType(String tenantUuid, String companyTypeUuid) {
-        return null;
+        return getCompanyTypeEntity(companyTypeUuid).toDTO();
     }
 
     @Override
     public CompanyTypeValue deleteCompanyType(String tenantUuid, String companyTypeUuid) {
+        CompanyTypeEntity companyTypeEntity = getCompanyTypeEntity(companyTypeUuid);
         companyTypeRepository.softDelete(companyTypeUuid);
         return null;
     }
 
+    public TenantEntity getTenantEntity(String tenantUuid){
+        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
+        if(tenantEntity==null){
+            throw new ResourceNotFoundException("TenantEntity","tenantUuid",tenantUuid);
+        }
+        return tenantEntity;
+    }
+
+    public CompanyTypeEntity getCompanyTypeEntity(String companyTypeUuid) {
+        CompanyTypeEntity companyTypeEntity =  companyTypeRepository.findByUuid(companyTypeUuid);
+        if(companyTypeEntity==null){
+            throw new ResourceNotFoundException("companyTypeEntity","companyTypeUuid",companyTypeUuid);
+        }
+        return companyTypeEntity;
+    }
 }

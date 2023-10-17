@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 import com.sowermate.tenantService.entities.value.TenantValue;
+import com.sowermate.tenantService.payload.ApiResponse;
 import com.sowermate.tenantService.services.TenantService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ public class TenantController {
 
     @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<TenantValue> deleteMessage(@PathVariable String tenantUuid) {
+    public ResponseEntity<ApiResponse> deleteMessage(@PathVariable String tenantUuid) {
      TenantValue tenantValue =tenantService.deleteTenantDetails(tenantUuid);
-     return new ResponseEntity<TenantValue>(tenantValue,HttpStatus.ACCEPTED);
+     return new ResponseEntity<ApiResponse>(new ApiResponse("Tenant Deleted Successfully",true),HttpStatus.OK);
     }
     @RequestMapping( method = RequestMethod.PUT)
     @ResponseBody

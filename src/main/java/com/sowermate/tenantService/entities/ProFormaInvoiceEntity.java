@@ -2,12 +2,14 @@ package com.sowermate.tenantService.entities;
 
 import com.sowermate.tenantService.entities.common.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,30 +90,30 @@ public class ProFormaInvoiceEntity extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "firm_id")
-    private  CompanyEntity firm;
+    private CompanyEntity firm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bill_to")
-    private  CompanyEntity companyIdBill;
+    private CompanyEntity companyIdBill;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ship_to")
-    private  CompanyEntity companyIdShip;
+    private CompanyEntity companyIdShip;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
+    @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL)
     private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities;
 
     public ProFormaInvoiceValue toDTO() {
         return ProFormaInvoiceValue.newBuilder()
-                .proFormaInvoiceId(getId())
-                .proFormaInvoiceUuid(getUuid())
+                .uuid(getUuid())
+                .tenantUuid(getTenantEntity().getUuid())
                 .firmUuid(getFirm().getUuid())
                 .companyBillToUuid(getCompanyIdBill().getUuid())
                 .companyShipToUuid(getCompanyIdShip().getUuid())
@@ -135,13 +137,13 @@ public class ProFormaInvoiceEntity extends Base {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
-                .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))
-                .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity->entity.toDTO()).collect(Collectors.toList())).orElse(null))
+                .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e -> e.stream().map(el -> el.toDTO()).collect(Collectors.toList())).orElse(null))
+                .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity -> entity.toDTO()).collect(Collectors.toList())).orElse(null))
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

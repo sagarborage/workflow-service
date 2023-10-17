@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.value.AddressValue;
 import com.sowermate.tenantService.entities.value.CompanyValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,13 @@ public class CompanyServiceImpl implements CompanyService {
                         .addressTypeUuid(addressEntity.getAddressType().getUuid()).build())).build();
     }
 
+    public CompanyEntity getCompanyEntity(String tenantUuid, String companyUuid){
+        CompanyEntity companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUuid, companyUuid);
+        if(companyEntity==null){
+            throw new ResourceNotFoundException("Company","tenantUuid or companyUuid",tenantUuid +" or "+companyUuid);
+        }
+        return companyEntity;
+    }
     @Override
     public List<CompanyValue> getAllCompany(String tenantUuid) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
@@ -58,7 +66,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyValue deleteCompany(String tenantUuid, String companyUuid) {
-        companyRepository.softDelete(tenantUuid, companyUuid);
+        CompanyEntity companyEntity = getCompanyEntity(tenantUuid,companyUuid);
+        companyRepository.softDelete(companyEntity.getUuid());
         return getCompany(tenantUuid, companyUuid);
     }
 
@@ -74,13 +83,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     private CompanyEntity prepareAndSaveCompanyEntity(CompanyValue companyValue, TenantEntity tenantEntity, CompanyTypeEntity companyType) {
-        if (null == companyValue.getCompanyUuid()) {
+        if (null == companyValue.getUuid()) {
             return companyRepository.save(companyValue.toEntity().toBuilder().tenantEntity(tenantEntity).companyType(companyType).build());
         } else {
-            CompanyEntity companyEntityTemp = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(companyValue.getTenantUuid(), companyValue.getCompanyUuid());
+            CompanyEntity companyEntityTemp = getCompanyEntity(companyValue.getTenantUuid(), companyValue.getUuid());
+
             return companyRepository.save(companyValue.toEntity().toBuilder()
                     .id(companyEntityTemp.getId())
-                    .tenantEntity(tenantEntity).companyType(companyType)
+                    .tenantEntity(tenantEntity)
+                    .companyType(companyType)
                     .createdDateTime(companyEntityTemp.getCreatedDateTime())
                     .createdBy(companyEntityTemp.getCreatedBy())
                     .build());
@@ -90,11 +101,11 @@ public class CompanyServiceImpl implements CompanyService {
     private AddressEntity prepareAndSaveAddressEntity(CompanyValue companyValue, CompanyEntity companyEntity, TenantEntity tenantEntity) {
         AddressTypeEntity addressType = addressTypeRepository.findByTenantEntity_UuidAndAddressTypeUuid(companyValue.getTenantUuid(), companyValue.getAddresses().get(0).getAddressTypeUuid());
         AddressValue addressValue = companyValue.getAddresses().get(0);
-        if (addressValue.getAddressUuid() == null) {
+        if (addressValue.getUuid() == null) {
             AddressEntity addressEntity = addressValue.toEntity().toBuilder().addressType(addressType).company(companyEntity).build();
             return addressRepository.save(addressEntity);
         } else {
-            AddressEntity addressEntityTemp = addressRepository.findByUuid(addressValue.getAddressUuid());
+            AddressEntity addressEntityTemp = addressRepository.findByUuid(addressValue.getUuid());
             AddressEntity addressEntity = addressValue.toEntity().toBuilder()
                     .id(addressEntityTemp.getId())
                     .addressType(addressType).company(companyEntity)

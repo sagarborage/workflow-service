@@ -46,8 +46,8 @@ public class CompanyEntity extends Base {
 
     public CompanyValue toDTO() {
         return CompanyValue.newBuilder()
-                .companyId(getId())
-                .companyUuid(getUuid())
+                .uuid(getUuid())
+                .tenantUuid(getTenantEntity().getUuid())
                 .companyName(getCompanyName())
                 .cin(getCin())
                 .gstin(getGstin())
@@ -60,7 +60,7 @@ public class CompanyEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

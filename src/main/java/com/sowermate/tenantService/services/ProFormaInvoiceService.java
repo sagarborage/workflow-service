@@ -14,7 +14,7 @@ public interface ProFormaInvoiceService {
 
     public ProFormaInvoiceValue getProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid);
 
-    public int deleteProFormaInvoice(String tenantUuid,String proFormaInvoiceUuid);
+    public void deleteProFormaInvoice(String tenantUuid,String proFormaInvoiceUuid);
 
     //public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
     public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
