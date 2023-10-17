@@ -22,6 +22,7 @@ public class UserValue extends BaseValue {
     private String tenantUuid;
     private String roleTypeUuid;
     private String name;
+    private String userName;
     private String password;
     private String salt;
     private String mobileNumber;
@@ -29,9 +30,9 @@ public class UserValue extends BaseValue {
 
     public UserEntity toEntity() {
         return UserEntity.newBuilder()
-                .id(getId())
                 .uuid(getUuid())
                 .name(getName())
+                .userName(getUserName())
                 .password(getPassword())
                 .salt(getPassword())
                 .mobileNumber(getMobileNumber())
