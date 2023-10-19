@@ -15,7 +15,14 @@ INSERT INTO `pi_type` ( `uuid`, `tenant_id`, `pi_type_name`, `created_dttm`, `la
 
 INSERT INTO `company_type` (`uuid`, `tenant_id`, `type`, `description`, `is_active`) VALUES
 ("d03351ec-3c0d-11ee-962a-14abc5fbd6fa", 1, 'Self', 'subsidiary', 1),
-("d0335437-3c0d-11ee-962a-14abc5fbd6fa", 1, 'Tri-Party', 'Customer', 1);
+("lfk35437-3c0d-5643-ythj-56abc5fbd6gj", 1, 'Tri-Party', 'Customer', 1);
+
+INSERT INTO `role_type` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('9b8759db-1684-4fea-aaf3-c3906e43a385', 1, 'Optimize', '2023-10-19 10:18:35', '2023-10-19 10:18:36', 'ADMIN', 'ADMIN', 1),
+('8976314d-8e0c-47e1-9646-d96f7525632c', 1, 'Cutting', '2023-10-19 10:18:35', '2023-10-19 10:18:36', 'ADMIN', 'ADMIN', 1),
+('39e4136e-5e82-44d5-9940-cf07a012c68d', 1, 'Toughen', '2023-10-19 10:18:35', '2023-10-19 10:18:36', 'ADMIN', 'ADMIN', 1),
+('8140a78c-4e69-4e4c-bfea-7663fa3a2534', 1, 'Dispatch', '2023-10-19 10:18:35', '2023-10-19 10:18:36', 'ADMIN', 'ADMIN', 1);
+
 
 INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `CIN`, `GSTIN`, `TAN`, `PAN`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('584bd17c-89a3-46ec-833b-f4502f046de4', 1, 1, 'Self Company One', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', NULL, 1);

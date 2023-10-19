@@ -16,8 +16,8 @@ public interface RoleTypeRepository extends JpaRepository <RoleTypeEntity ,Strin
     @Query("SELECT r FROM RoleTypeEntity r " +
             "JOIN r.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND r.uuid = :RoleTypeUuid")
-    public RoleTypeEntity findByTenantEntity_UuidAndRoleTypeUuid(String tenantUuid, String RoleTypeUuid);
+            "AND r.uuid = :roleTypeUuid")
+    public RoleTypeEntity findByTenantEntity_UuidAndRoleTypeUuid(String tenantUuid, String roleTypeUuid);
 
     public List<RoleTypeEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
