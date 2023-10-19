@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +59,9 @@ public class UserController {
     @GetMapping("/auth/{userName}/{password}")
     public ResponseEntity<UserAuthProjection> userAuthentication(@PathVariable String userName, @PathVariable String password) {
         UserAuthProjection userValue = userService.userAuthentication(userName, password);
+        if(ObjectUtils.isEmpty(userValue)) {
+            return new ResponseEntity<>(userValue, HttpStatus.UNAUTHORIZED);
+        }
         return new ResponseEntity<>(userValue, HttpStatus.ACCEPTED);
     }
 
