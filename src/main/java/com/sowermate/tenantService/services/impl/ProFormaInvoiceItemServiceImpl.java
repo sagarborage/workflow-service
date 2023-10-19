@@ -52,7 +52,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
-        ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = getProFormaInvoiceItemEntity(proFormaInvoiceItemValue.getUuid());
+        ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = getProFormaInvoiceItemEntity(tenantUuid,proFormaInvoiceItemValue.getUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceItemEntity.getId())
                 .tenantEntity(getTenantEntity(tenantUuid))
@@ -68,7 +68,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
     @Override
     public ProFormaInvoiceItemValue getProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid) {
-        return getProFormaInvoiceItemEntity(proFormaInvoiceItemUuid).toDTO();
+        return getProFormaInvoiceItemEntity(tenantUuid,proFormaInvoiceItemUuid).toDTO();
     }
 
     @Override
@@ -82,10 +82,10 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         return proFormaInvoiceItemEntities.stream().map(piie -> piie.toDTO()).collect(Collectors.toList());
     }
 
-    public ProFormaInvoiceItemEntity getProFormaInvoiceItemEntity(String proFormaInvoiceItemUuid){
-        ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByUuid(proFormaInvoiceItemUuid);
+    public ProFormaInvoiceItemEntity getProFormaInvoiceItemEntity(String tenantUuid, String proFormaInvoiceItemUuid){
+        ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid,proFormaInvoiceItemUuid);
         if(proFormaInvoiceItemEntity==null){
-            throw new ResourceNotFoundException("proFormaInvoiceEntity","proFormaInvoiceUuid",proFormaInvoiceItemUuid);
+            throw new ResourceNotFoundException("proFormaInvoiceEntity","tenantUuid or proFormaInvoiceUuid",tenantUuid +" or "+proFormaInvoiceItemUuid);
         }
         return proFormaInvoiceItemEntity;
     }

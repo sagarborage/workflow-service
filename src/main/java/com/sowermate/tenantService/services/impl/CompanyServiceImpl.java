@@ -74,7 +74,7 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyValue prepareAndSaveEntities(CompanyValue companyValue) {
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(companyValue.getTenantUuid());
-        CompanyTypeEntity companyType = companyTypeRepository.findByUuid(companyValue.getCompanyTypeUuid());
+        CompanyTypeEntity companyType = companyTypeRepository.findByTenantEntity_UuidAndCompanyTypeEntityUuid(companyValue.getTenantUuid(),companyValue.getCompanyTypeUuid());
 
         CompanyEntity companyEntity = prepareAndSaveCompanyEntity(companyValue, tenantEntity, companyType);
         AddressEntity addressEntity = prepareAndSaveAddressEntity(companyValue, companyEntity, tenantEntity);

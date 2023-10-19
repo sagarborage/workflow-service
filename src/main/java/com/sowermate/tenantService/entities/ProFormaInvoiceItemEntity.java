@@ -118,6 +118,7 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .cutting(getCutting())
                 .toughen(getToughen())
                 .dispatch(getDispatch())
+                .tenantUuid(getTenantEntity().getUuid())
                 .glassSpecificationUuid(getGlassSpecificationEntity().getUuid())
                 .glassSpecificationName(getGlassSpecificationEntity().getName())
                 .glassThicknessUuid(getGlassThicknessEntity().getUuid())
