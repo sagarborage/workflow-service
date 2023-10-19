@@ -69,5 +69,7 @@ INSERT INTO `service_rate` (`uuid`, `tenant_id`, `name`, `rate`, `created_dttm`,
 INSERT INTO `additional_charges` (`uuid`, `tenant_id`, `extra_mm`, `insurance`, `admin_charges`, `forwarding_charges`, `gst`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('02987ac2-0e69-4a99-b727-b63345ff246f', 1, 44.00, 55.00, 200.00, 200.00, 18.00, '2023-10-17 11:45:46', '2023-10-17 11:45:48', 'ADMIN', 'ADMIN', 1);
 
+INSERT INTO `user` (`uuid`, `tenant_id`, `role_id`, `name`, `user_name`, `password`, `salt`, `mobile_number`, `email_id`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('3376c86c-ec01-4fc5-bb7e-b6a433fa9522', 1, 1, 'User One', 'test', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1);
 
 
