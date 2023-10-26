@@ -11,18 +11,16 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConfirmThroughValue extends BaseValue {
-    private Long confirmThroughId;
-    private String confirmThroughUuid;
     private String tenantUuid;
     private String name;
     private ProFormaInvoiceValue proFormaInvoice;
 
     public ConfirmThroughEntity toEntity() {
         return ConfirmThroughEntity.newBuilder()
-                .id(getConfirmThroughId())
-                .uuid(getConfirmThroughUuid())
+                .id(getId())
+                .uuid(getUuid())
                 .name(getName())
-                .proFormaInvoiceEntity(getProFormaInvoice().toEntity())
+                .isActive(isActive())
                 .build();
     }
 }
