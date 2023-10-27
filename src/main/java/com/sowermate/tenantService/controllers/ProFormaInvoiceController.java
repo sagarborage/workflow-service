@@ -48,6 +48,20 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue1, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/updateConfirmThrough/{tenantUuid}/{proFormaInvoiceUuid}/{confirmThroughUuid}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<ProFormaInvoiceValue> updateConfirmThrough(@PathVariable String tenantUuid,
+                                                                     @PathVariable String proFormaInvoiceUuid,
+                                                                     @PathVariable String confirmThroughUuid) {
+        ProFormaInvoiceValue proFormaInvoiceValue1 = null;
+        try {
+            proFormaInvoiceValue1 = proFormaInvoiceService.updateConfirmThrough(tenantUuid, proFormaInvoiceUuid, confirmThroughUuid);
+        } catch (Exception e) {
+            Logger.error("Error while updating Confirm Through:", e);
+        }
+        return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue1, HttpStatus.CREATED);
+    }
+
     @GetMapping("/{tenantUuid}/{proFormaInvoiceUuid}")
     public ResponseEntity<ProFormaInvoiceValue> getProFormaInvoice(@PathVariable String tenantUuid,
                                                                    @PathVariable String proFormaInvoiceUuid) {
@@ -90,8 +104,8 @@ public class ProFormaInvoiceController {
         List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
         try {
             DateTimeFormatter formatter = FORMATTER;
-            startDate = startDate+BEGINNING;
-            endDate = endDate+ENDING;
+            startDate = startDate + BEGINNING;
+            endDate = endDate + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
             proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);

@@ -168,7 +168,7 @@ CREATE TABLE additional_charges (
 
 CREATE TABLE confirm_through (
    id int(10) NOT NULL AUTO_INCREMENT,
-   uuid varchar(36) NOT NULL DEFAULT (UUID()),
+   uuid varchar(36) NOT NULL,
    tenant_id int(10) NOT NULL,
    name varchar(50) DEFAULT NULL,
    created_dttm datetime DEFAULT NULL,

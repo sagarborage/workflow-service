@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.ConfirmThroughEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
@@ -106,6 +107,14 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .createdBy(tempProFormaInvoiceEntity.getCreatedBy())
                 .build();
         return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
+    }
+
+    @Override
+    public ProFormaInvoiceValue updateConfirmThrough(String tenantUuid, String proFormaInvoiceUuid, String confirmThroughUuid) {
+        ConfirmThroughEntity confirmThroughEntity = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid);
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
+        ProFormaInvoiceEntity  proFormaInvoiceEntityUpdated = proFormaInvoiceEntity.toBuilder().confirmThroughEntity(confirmThroughEntity).build();
+        return proFormaInvoiceRepository.save(proFormaInvoiceEntityUpdated).toDTO();
     }
 
     @Override
