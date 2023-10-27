@@ -24,9 +24,6 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     private ConfirmThroughRepository confirmThroughRepository;
 
     @Autowired
-    private ProFormaInvoiceRepository proFormaInvoiceRepository;
-
-    @Autowired
     TenantRepository tenantRepository;
 
     @Override
@@ -34,12 +31,9 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(confirmThroughValue.getTenantUuid());
 
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(confirmThroughValue.getTenantUuid(),
-                confirmThroughValue.getProFormaInvoice().getProFormaInvoiceUuid());
 
         ConfirmThroughEntity confirmThroughEntity = confirmThroughValue.toEntity().toBuilder()
-                .tenantEntity(tenantEntity)
-                .proFormaInvoiceEntity(proFormaInvoiceEntity).build();
+                .tenantEntity(tenantEntity).build();
         return confirmThroughRepository.save(confirmThroughEntity).toDTO();
     }
 
@@ -55,15 +49,12 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     public ConfirmThroughValue editConfirmThrough(ConfirmThroughValue confirmThroughValue) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(confirmThroughValue.getTenantUuid());
 
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(confirmThroughValue.getTenantUuid(),
-                confirmThroughValue.getProFormaInvoice().getProFormaInvoiceUuid());
         ConfirmThroughEntity tempConfirmThroughEntity = confirmThroughRepository
-                .findByTenantEntity_UuidAndConfirmThroughUuid(confirmThroughValue.getConfirmThroughUuid(), confirmThroughValue.getTenantUuid());
+                .findByTenantEntity_UuidAndConfirmThroughUuid(confirmThroughValue.getUuid(), confirmThroughValue.getTenantUuid());
 
         ConfirmThroughEntity confirmThroughEntity = confirmThroughValue.toEntity().toBuilder()
                 .id(tempConfirmThroughEntity.getId())
                 .tenantEntity(tenantEntity)
-                .proFormaInvoiceEntity(proFormaInvoiceEntity)
                 .createdDateTime(tempConfirmThroughEntity.getCreatedDateTime())
                 .createdBy(tempConfirmThroughEntity.getCreatedBy())
                 .build();
