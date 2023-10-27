@@ -31,10 +31,8 @@ public class ConfirmThroughEntity extends Base {
 
     public ConfirmThroughValue toDTO() {
         return ConfirmThroughValue.newBuilder()
-                .confirmThroughId(getId())
-                .confirmThroughUuid(getUuid())
+                .uuid(getUuid())
                 .name(getName())
-                .proFormaInvoice(getProFormaInvoiceEntity().toDTO())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
