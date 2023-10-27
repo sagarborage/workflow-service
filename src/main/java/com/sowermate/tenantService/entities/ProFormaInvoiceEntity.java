@@ -113,6 +113,7 @@ public class ProFormaInvoiceEntity extends Base {
                 .proFormaInvoiceId(getId())
                 .proFormaInvoiceUuid(getUuid())
                 .tenantUuid(getTenantEntity().getUuid())
+                .confirmThroughUuid(getConfirmThroughEntity().getUuid())
                 .firmUuid(getFirm().getUuid())
                 .companyBillToUuid(getCompanyIdBill().getUuid())
                 .partyName(getCompanyIdBill().getCompanyName())

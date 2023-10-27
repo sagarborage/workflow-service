@@ -11,6 +11,7 @@ public interface ProFormaInvoiceService {
     public ProFormaInvoiceValue createProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue);
 
     public ProFormaInvoiceValue editProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue);
+    public ProFormaInvoiceValue updateConfirmThrough(String tenantUuid, String proFprmaInvoiceUuid, String confirmThroughUuid);
 
     public ProFormaInvoiceValue getProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid);
 

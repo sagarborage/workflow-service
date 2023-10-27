@@ -79,4 +79,15 @@ INSERT INTO `additional_charges` (`uuid`, `tenant_id`, `extra_mm`, `insurance`, 
 INSERT INTO `user` (`uuid`, `tenant_id`, `role_id`, `name`, `user_name`, `password`, `salt`, `mobile_number`, `email_id`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('3376c86c-ec01-4fc5-bb7e-b6a433fa9522', 1, 1, 'User One', 'test', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1);
 
+INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('lsn8e7f7-ghej-4f2d-b303-dje947a25fkd', 1, 'Call', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('dhene7f7-82ce-4f2d-qwdf-724947a250ed', 1, 'Phone', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('ssgee7f7-ahsn-4f2d-sdvf-7we947a250ed', 1, 'Whatsapp', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
+('snagebf7-widm-4f2d-sde1-3e4947a250ed', 1, 'Self', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
 
