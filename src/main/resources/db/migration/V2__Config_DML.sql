@@ -83,7 +83,7 @@ INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `las
 ('lsn8e7f7-ghej-4f2d-b303-dje947a25fkd', 1, 'Call', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
 
 INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('dhene7f7-82ce-4f2d-qwdf-724947a250ed', 1, 'Phone', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
+('dhene7f7-82ce-4f2d-qwdf-724947a250ed', 1, 'Text', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
 
 INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_dttm`, `last_updated_dttm`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('ssgee7f7-ahsn-4f2d-sdvf-7we947a250ed', 1, 'Whatsapp', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
