@@ -63,16 +63,16 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "amount")
     private Double amount;
 
-    @Column(name = "`optimize`")
+    @Column(name = "`optimize_bucket`")
     private int optimize;
 
-    @Column(name = "`cutting`")
+    @Column(name = "`cutting_bucket`")
     private int cutting;
 
-    @Column(name = "`toughen`")
+    @Column(name = "`toughen_bucket`")
     private int toughen;
 
-    @Column(name = "`dispatch`")
+    @Column(name = "`dispatch_bucket`")
     private int dispatch;
 
     @ManyToOne(fetch = FetchType.LAZY)
