@@ -64,16 +64,16 @@ public class ProFormaInvoiceItemEntity extends Base {
     private Double amount;
 
     @Column(name = "`optimize_bucket`")
-    private int optimize;
+    private int optimizeBucket;
 
     @Column(name = "`cutting_bucket`")
-    private int cutting;
+    private int cuttingBucket;
 
     @Column(name = "`toughen_bucket`")
-    private int toughen;
+    private int toughenBucket;
 
     @Column(name = "`dispatch_bucket`")
-    private int dispatch;
+    private int dispatchBucket;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pro_forma_invoice_id")
@@ -115,10 +115,10 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
-                .optimize(getOptimize())
-                .cutting(getCutting())
-                .toughen(getToughen())
-                .dispatch(getDispatch())
+                .optimizeBucket(getOptimizeBucket())
+                .cuttingBucket(getCuttingBucket())
+                .toughenBucket(getToughenBucket())
+                .dispatchBucket(getDispatchBucket())
                 .glassSpecificationUuid(getGlassSpecificationEntity().getUuid())
                 .glassSpecificationName(getGlassSpecificationEntity().getName())
                 .glassThicknessUuid(getGlassThicknessEntity().getUuid())

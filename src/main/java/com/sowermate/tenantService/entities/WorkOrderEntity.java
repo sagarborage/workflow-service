@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Table(name = "work_order")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class WorkOrderEntity extends Base {
 

@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.services;
 
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 
 import java.time.LocalDateTime;
@@ -19,5 +20,7 @@ public interface ProFormaInvoiceService {
 
     //public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
     public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
+
+    public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType);
 
 }

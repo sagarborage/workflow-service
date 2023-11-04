@@ -1,10 +1,10 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.ConfirmThroughEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,12 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Autowired
     private TenantRepository tenantRepository;
+
+    @Autowired
+    WorkOrderRepository workOrderRepository;
+
+    @Autowired
+    ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
 
     @Override
     @Transactional
@@ -111,9 +117,30 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     public ProFormaInvoiceValue updateConfirmThrough(String tenantUuid, String proFormaInvoiceUuid, String confirmThroughUuid) {
-        ConfirmThroughEntity confirmThroughEntity = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid);
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
-        ProFormaInvoiceEntity  proFormaInvoiceEntityUpdated = proFormaInvoiceEntity.toBuilder().confirmThroughEntity(confirmThroughEntity).build();
+        ConfirmThroughEntity confirmThroughEntity = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid);
+        if (confirmThroughEntity == null) {
+            throw new ResourceNotFoundException();
+        }
+        proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughEntity);
+        ProFormaInvoiceEntity proFormaInvoiceEntityUpdated = proFormaInvoiceRepository.save(proFormaInvoiceEntity);
+
+        WorkOrderEntity workOrderEntity = new WorkOrderEntity();
+        workOrderEntity.setProFormaInvoiceEntity(proFormaInvoiceEntity);
+        workOrderEntity.setTenantEntity(proFormaInvoiceEntity.getTenantEntity());
+        workOrderEntity.setFirm(proFormaInvoiceEntity.getFirm());
+        WorkOrderEntity forCheck = workOrderRepository.save(workOrderEntity);
+
+
+        if (proFormaInvoiceEntityUpdated.getConfirmThroughEntity() != null) {
+            List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntityList = proFormaInvoiceItemRepository.findAllByProFormaInvoiceEntity_uuid(proFormaInvoiceEntity.getUuid());
+            proFormaInvoiceItemEntityList.stream().map(item -> {
+                item.setOptimizeBucket(item.getQuantity());
+                return proFormaInvoiceEntity;
+            }).collect(Collectors.toList());
+            proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntityList);
+        }
+
         return proFormaInvoiceRepository.save(proFormaInvoiceEntityUpdated).toDTO();
     }
 
@@ -136,7 +163,29 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }*/
 
     @Override
-    public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid,LocalDateTime startDate, LocalDateTime endDate) {
-        return  proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid,startDate,endDate);
+    public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate) {
+        return proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, startDate, endDate);
+    }
+
+    @Override
+    public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType) {
+        List<ProFormaInvoiceOrdersProjection> proFormaInvoiceOrdersProjections;
+        switch (deptType) {
+            case "optimize":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimize(tenantUuid);
+                break;
+            case "cutting":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCutting(tenantUuid);
+                break;
+            case "dispatch":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatch(tenantUuid);
+                break;
+            case "toughen":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughen(tenantUuid);
+                break;
+            default:
+                throw new ResourceNotFoundException();
+        }
+        return proFormaInvoiceOrdersProjections;
     }
 }

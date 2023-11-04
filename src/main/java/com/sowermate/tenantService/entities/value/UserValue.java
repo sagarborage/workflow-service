@@ -1,17 +1,10 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sowermate.tenantService.entities.RoleTypeEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.UserEntity;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Getter
 @Jacksonized
