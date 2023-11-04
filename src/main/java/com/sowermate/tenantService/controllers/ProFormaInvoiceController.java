@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.slf4j.LoggerFactory;
@@ -9,11 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import static com.sowermate.tenantService.entities.common.TimeConstant.*;
@@ -114,5 +112,11 @@ public class ProFormaInvoiceController {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(proFormaInvoiceMinimals, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/work-order-list/{tenantUuid}/{deptType}")
+    public ResponseEntity<List<ProFormaInvoiceOrdersProjection>> getAllProFormOrdersDetails(@PathVariable String tenantUuid, @PathVariable String deptType) {
+        List<ProFormaInvoiceOrdersProjection> proFormaInvoiceOrdersProjections = proFormaInvoiceService.getAllProFormOrdersDetails(tenantUuid, deptType);
+        return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
     }
 }
