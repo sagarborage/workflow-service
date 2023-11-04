@@ -72,7 +72,7 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())
                 //.glassSpecificationEntity(getGlassSpecificationValue().toEntity())
                 //.proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

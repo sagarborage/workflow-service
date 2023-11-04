@@ -18,7 +18,7 @@ public class WorkOrderValue extends BaseValue {
     public WorkOrderEntity toEntity() {
         return WorkOrderEntity.newBuilder()
                 .uuid(getUuid())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

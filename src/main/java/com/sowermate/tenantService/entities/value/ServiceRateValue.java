@@ -20,7 +20,6 @@ public class ServiceRateValue extends BaseValue {
     private String tenantUuid;
     private String name;
     private float rate;
-    private boolean isActive;
 
     private List<ServiceRateInvoiceValue> serviceRateInvoices;
 
@@ -30,7 +29,7 @@ public class ServiceRateValue extends BaseValue {
                 .uuid(getServiceRateUuid())
                 .name(getName())
                 .rate(getRate())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 //.serviceRateInvoices(getServiceRateInvoices().stream().map(t->t.toEntity()).collect(Collectors.toList()))
                 .build();
     }

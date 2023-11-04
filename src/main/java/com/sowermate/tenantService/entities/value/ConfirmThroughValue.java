@@ -20,7 +20,7 @@ public class ConfirmThroughValue extends BaseValue {
                 .id(getId())
                 .uuid(getUuid())
                 .name(getName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

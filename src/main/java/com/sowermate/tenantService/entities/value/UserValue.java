@@ -30,7 +30,7 @@ public class UserValue extends BaseValue {
                 .salt(getPassword())
                 .mobileNumber(getMobileNumber())
                 .emailId(getEmailId())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

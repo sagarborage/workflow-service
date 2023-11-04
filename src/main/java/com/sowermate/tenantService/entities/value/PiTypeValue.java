@@ -27,7 +27,7 @@ public class PiTypeValue extends BaseValue {
                 .id(getPiTypeId())
                 .uuid(getPiTypeUuid())
                 .piTypeName(getPiTypeName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

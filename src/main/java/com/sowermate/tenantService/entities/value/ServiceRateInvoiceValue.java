@@ -29,7 +29,7 @@ public class ServiceRateInvoiceValue extends BaseValue {
                 .total(getTotal())
                 //.proFormaInvoiceEntity(getProFormaInvoice().toEntity())
                 //.serviceRateEntity(getServiceRate().toEntity())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

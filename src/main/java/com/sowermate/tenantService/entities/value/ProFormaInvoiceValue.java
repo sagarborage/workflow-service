@@ -73,7 +73,7 @@ public class ProFormaInvoiceValue extends BaseValue {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

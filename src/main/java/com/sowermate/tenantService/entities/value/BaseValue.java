@@ -20,5 +20,5 @@ public class BaseValue {
     private LocalDateTime lastUpdatedDateTime;
     private String createdBy;
     private String lastUpdatedBy;
-    private boolean isActive;
+    private Boolean isActive;
 }

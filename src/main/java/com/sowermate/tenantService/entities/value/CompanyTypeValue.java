@@ -15,7 +15,6 @@ public class CompanyTypeValue extends BaseValue {
     private String type;
     private String description;
     protected String companyTypeUuid;
-    private boolean isActive;
 
     private CompanyValue companyValue;
     private TenantValue tenantValue;
@@ -31,7 +30,7 @@ public class CompanyTypeValue extends BaseValue {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }
