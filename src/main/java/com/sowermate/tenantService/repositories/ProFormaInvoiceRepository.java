@@ -55,7 +55,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.id as partyBillTo, " +
+            "co.companyName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -67,7 +67,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.id as partyBillTo, " +
+            "co.companyName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -79,7 +79,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.id as partyBillTo, " +
+            "co.companyName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -91,7 +91,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.id as partyBillTo, " +
+            "co.companyName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
