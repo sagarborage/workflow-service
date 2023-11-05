@@ -34,7 +34,7 @@ public class RoleTypeEntity extends Base {
                 .id(getId())
                 .uuid(getUuid())
                 .name(getName())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

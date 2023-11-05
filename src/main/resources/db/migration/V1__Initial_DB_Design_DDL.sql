@@ -309,10 +309,14 @@ CREATE TABLE pro_forma_invoice_item (
   rate_per_unit decimal(20,6) DEFAULT NULL,
   unit_measurement_label varchar(20),
   amount decimal(20,6) DEFAULT NULL,
-  `optimize` int(5) DEFAULT 0,
-  `cutting` int(5) DEFAULT 0,
-  `toughen` int(5) DEFAULT 0,
-  `dispatch` int(5) DEFAULT 0,
+  `optimize_bucket` int(5) DEFAULT 0,
+  `cutting_bucket` int(5) DEFAULT 0,
+  `toughen_bucket` int(5) DEFAULT 0,
+  `dispatch_bucket` int(5) DEFAULT 0,
+  `optimize_completed` int(5) DEFAULT 0,
+  `cutting_completed` int(5) DEFAULT 0,
+  `toughen_completed` int(5) DEFAULT 0,
+  `dispatch_completed` int(5) DEFAULT 0,
   created_dttm datetime DEFAULT NULL,
   last_updated_dttm datetime DEFAULT NULL,
   created_by varchar(100) DEFAULT NULL,
@@ -376,3 +380,21 @@ CREATE TABLE status (
   KEY tenant_id (tenant_id),
   CONSTRAINT status_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
+
+CREATE TABLE work_order (
+   id int(10) NOT NULL AUTO_INCREMENT,
+   uuid varchar(36) NOT NULL DEFAULT (UUID()),
+   proforma_invoice_id int(10) NOT NULL,
+   tenant_id int(10) NOT NULL,
+   firm_id int(10) NOT NULL,
+   created_dttm datetime DEFAULT NULL,
+   last_updated_dttm datetime DEFAULT NULL,
+   created_by varchar(100) DEFAULT NULL,
+   last_updated_by varchar(100) DEFAULT NULL,
+   is_active boolean DEFAULT 1,
+   PRIMARY KEY (id) USING BTREE,
+   CONSTRAINT work_order_tenant_ibfk_1
+   FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+   FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id),
+   FOREIGN KEY (firm_id) REFERENCES company (id)
+ );

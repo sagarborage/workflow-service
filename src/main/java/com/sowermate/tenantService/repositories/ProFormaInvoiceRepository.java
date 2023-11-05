@@ -1,14 +1,13 @@
 package com.sowermate.tenantService.repositories;
 
-import com.sowermate.tenantService.entities.PiTypeEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,4 +51,52 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
     int deleteByUuid(@Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
+
+    @Query("Select pi.uuid as proformaInvoiceUuid, " +
+            "pi.piNumber as piNumber, " +
+            "co.id as partyBillTo, " +
+            "wo.id as workOrderNo " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.workOrderEntity wo " +
+            "join pi.companyIdBill co " +
+            "join pi.proFormaInvoiceItemEntities pii " +
+            "where pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
+            "pii.optimizeBucket >= 1 Group By pi.uuid")
+    List<ProFormaInvoiceOrdersProjection> findAllPiOrdersDetailsOfOptimize(String tenantUuid);
+
+    @Query("Select pi.uuid as proformaInvoiceUuid, " +
+            "pi.piNumber as piNumber, " +
+            "co.id as partyBillTo, " +
+            "wo.id as workOrderNo " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.workOrderEntity wo " +
+            "join pi.companyIdBill co " +
+            "join pi.proFormaInvoiceItemEntities pii " +
+            "where pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
+            "pii.cuttingBucket >= 1 Group By pi.uuid")
+    List<ProFormaInvoiceOrdersProjection> findAllPiOrdersDetailsOfCutting(String tenantUuid);
+
+    @Query("Select pi.uuid as proformaInvoiceUuid, " +
+            "pi.piNumber as piNumber, " +
+            "co.id as partyBillTo, " +
+            "wo.id as workOrderNo " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.workOrderEntity wo " +
+            "join pi.companyIdBill co " +
+            "join pi.proFormaInvoiceItemEntities pii " +
+            "where pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
+            "pii.dispatchBucket >= 1 Group By pi.uuid")
+    List<ProFormaInvoiceOrdersProjection> findAllPiOrdersDetailsOfDispatch(String tenantUuid);
+
+    @Query("Select pi.uuid as proformaInvoiceUuid, " +
+            "pi.piNumber as piNumber, " +
+            "co.id as partyBillTo, " +
+            "wo.id as workOrderNo " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.workOrderEntity wo " +
+            "join pi.companyIdBill co " +
+            "join pi.proFormaInvoiceItemEntities pii " +
+            "where pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
+            "pii.toughenBucket >= 1 Group By pi.uuid")
+    List<ProFormaInvoiceOrdersProjection> findAllPiOrdersDetailsOfToughen(String tenantUuid);
 }

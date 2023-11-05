@@ -30,7 +30,6 @@ public class CompanyValue extends BaseValue {
     private String gstin;
     private String tan;
     private String pan;
-    private boolean isActive;
     private List<AddressValue> addresses;
 
     public CompanyEntity toEntity() {
@@ -42,7 +41,7 @@ public class CompanyValue extends BaseValue {
                 .gstin(getGstin())
                 .tan(getTan())
                 .pan(getPan())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 //.tenantEntity(TenantEntity.newBuilder().uuid(getCompanyUuid()).build())
                 //.companyAddresses(Optional.ofNullable(getCompanyAddresses()).map(e->e.stream().map(el->el.toEntity()).collect(Collectors.toList())).orElse(null))
                 //.companyType(CompanyTypeEntity.newBuilder().companyTypeUuid(getCompanyTypeUuid()).build())

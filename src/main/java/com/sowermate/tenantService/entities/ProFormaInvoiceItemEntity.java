@@ -63,17 +63,17 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "amount")
     private Double amount;
 
-    @Column(name = "`optimize`")
-    private int optimize;
+    @Column(name = "`optimize_bucket`")
+    private int optimizeBucket;
 
-    @Column(name = "`cutting`")
-    private int cutting;
+    @Column(name = "`cutting_bucket`")
+    private int cuttingBucket;
 
-    @Column(name = "`toughen`")
-    private int toughen;
+    @Column(name = "`toughen_bucket`")
+    private int toughenBucket;
 
-    @Column(name = "`dispatch`")
-    private int dispatch;
+    @Column(name = "`dispatch_bucket`")
+    private int dispatchBucket;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pro_forma_invoice_id")
@@ -115,10 +115,10 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
-                .optimize(getOptimize())
-                .cutting(getCutting())
-                .toughen(getToughen())
-                .dispatch(getDispatch())
+                .optimizeBucket(getOptimizeBucket())
+                .cuttingBucket(getCuttingBucket())
+                .toughenBucket(getToughenBucket())
+                .dispatchBucket(getDispatchBucket())
                 .glassSpecificationUuid(getGlassSpecificationEntity().getUuid())
                 .glassSpecificationName(getGlassSpecificationEntity().getName())
                 .glassThicknessUuid(getGlassThicknessEntity().getUuid())
@@ -129,7 +129,7 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

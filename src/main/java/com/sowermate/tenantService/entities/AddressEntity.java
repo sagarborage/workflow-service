@@ -85,7 +85,7 @@ public class AddressEntity extends Base {
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .addressTypeUuid(addressType.getUuid())
                 .build();
     }

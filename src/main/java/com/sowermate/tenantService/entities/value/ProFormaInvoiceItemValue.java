@@ -2,7 +2,6 @@ package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
@@ -39,10 +38,10 @@ public class ProFormaInvoiceItemValue extends BaseValue {
     private Double ratePerUnit;
     private String unitMeasurementLabel;
     private Double amount;
-    private int optimize;
-    private int cutting;
-    private int toughen;
-    private int dispatch;
+    private int optimizeBucket;
+    private int cuttingBucket;
+    private int toughenBucket;
+    private int dispatchBucket;
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
@@ -64,16 +63,16 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())
                 .amount(getAmount())
-                .optimize(getOptimize())
-                .cutting(getCutting())
-                .toughen(getToughen())
-                .dispatch(getDispatch())
+                .optimizeBucket(getOptimizeBucket())
+                .cuttingBucket(getCuttingBucket())
+                .toughenBucket(getToughenBucket())
+                .dispatchBucket(getDispatchBucket())
                 //.tenantEntity(getTenantValue().toEntity())
                 //.glassTypeEntity(getGlassTypeValue().toEntity())
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())
                 //.glassSpecificationEntity(getGlassSpecificationValue().toEntity())
                 //.proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

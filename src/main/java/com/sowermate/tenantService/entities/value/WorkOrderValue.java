@@ -1,7 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sowermate.tenantService.entities.ConfirmThroughEntity;
+import com.sowermate.tenantService.entities.WorkOrderEntity;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
@@ -10,16 +10,14 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ConfirmThroughValue extends BaseValue {
+public class WorkOrderValue extends BaseValue {
+    private String proFormaInvoiceUuid;
+    private String firmUuid;
     private String tenantUuid;
-    private String name;
-    private ProFormaInvoiceValue proFormaInvoice;
 
-    public ConfirmThroughEntity toEntity() {
-        return ConfirmThroughEntity.newBuilder()
-                .id(getId())
+    public WorkOrderEntity toEntity() {
+        return WorkOrderEntity.newBuilder()
                 .uuid(getUuid())
-                .name(getName())
                 .isActive(getIsActive())
                 .build();
     }

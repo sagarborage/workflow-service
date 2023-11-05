@@ -2,13 +2,11 @@ package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -49,6 +47,7 @@ public class ProFormaInvoiceValue extends BaseValue {
 
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
     private List<ServiceRateInvoiceValue> serviceRateInvoices;
+    private WorkOrderValue workOrderValue;
 
 
     public ProFormaInvoiceEntity toEntity() {
@@ -74,7 +73,7 @@ public class ProFormaInvoiceValue extends BaseValue {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

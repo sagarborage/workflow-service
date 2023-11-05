@@ -1,7 +1,8 @@
 package com.sowermate.tenantService.entities;
 
 import com.sowermate.tenantService.entities.common.Base;
-import com.sowermate.tenantService.entities.value.ConfirmThroughValue;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.entities.value.WorkOrderValue;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,30 +10,35 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Entity
 @Getter
 @Setter
-@Table(name = "confirm_through")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "work_order")
+@NoArgsConstructor
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-public class ConfirmThroughEntity extends Base {
+public class WorkOrderEntity extends Base {
 
-    private static final long serialVersionUID = -241370177952331642L;
-
-    @Column(name = "name")
-    private String name;
-
-    @OneToOne(mappedBy="confirmThroughEntity",cascade=CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proforma_invoice_id")
     private ProFormaInvoiceEntity proFormaInvoiceEntity;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "firm_id")
+    private CompanyEntity firm;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
+    @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    public ConfirmThroughValue toDTO() {
-        return ConfirmThroughValue.newBuilder()
+    public WorkOrderValue toDTO() {
+        return WorkOrderValue.newBuilder()
                 .uuid(getUuid())
-                .name(getName())
+                .proFormaInvoiceUuid(getProFormaInvoiceEntity().getUuid())
+                .tenantUuid(getTenantEntity().getUuid())
+                .firmUuid(getFirm().getUuid())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())

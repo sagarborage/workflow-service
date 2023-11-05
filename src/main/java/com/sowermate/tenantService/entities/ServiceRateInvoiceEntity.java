@@ -43,7 +43,7 @@ public class ServiceRateInvoiceEntity extends Base {
                 .quantity(getQuantity())
                 .rate(getRate())
                 .total(getTotal())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

@@ -32,7 +32,7 @@ public class Base {
     @Column(name = "last_updated_dttm")
     private LocalDateTime lastUpdatedDateTime;
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @PrePersist
     public void autofillCreate() {

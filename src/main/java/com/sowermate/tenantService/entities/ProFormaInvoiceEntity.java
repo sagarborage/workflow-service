@@ -108,6 +108,9 @@ public class ProFormaInvoiceEntity extends Base {
     @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
     private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities;
 
+    @OneToOne(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
+    private WorkOrderEntity workOrderEntity;
+
     public ProFormaInvoiceValue toDTO() {
         return ProFormaInvoiceValue.newBuilder()
                 .proFormaInvoiceId(getId())
@@ -140,12 +143,13 @@ public class ProFormaInvoiceEntity extends Base {
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
                 .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))
+               // .workOrderValue(Optional.ofNullable(getWorkOrderEntity().toDTO()).orElse(null))
                 .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity->entity.toDTO()).collect(Collectors.toList())).orElse(null))
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
-                .isActive(isActive())
+                .isActive(getIsActive())
                 .build();
     }
 }

@@ -61,7 +61,7 @@ public class TenantValue extends BaseValue {
                 .activationDate(getActivationDate())
                 .expiryDate(getExpiryDate())
                 .gracePeriod(getGracePeriod())
-                .isActive(isActive())
+                .isActive(getIsActive())
 /*                .companyEntities(Optional.ofNullable(getCompanyValues()).map(values -> values.stream()
                         .map(CompanyValue::toEntity)
                         .collect(Collectors.toList())).orElse(Collections.emptyList()))*/
