@@ -1,12 +1,14 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
+import com.sowermate.tenantService.entities.DeptTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -170,8 +172,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Override
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType) {
         List<ProFormaInvoiceOrdersProjection> proFormaInvoiceOrdersProjections;
+        DeptTypeEnum deptTypeEnum;
         switch (deptType) {
-            case "optimize":
+            case  "optimize":
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimize(tenantUuid);
                 break;
             case "cutting":
@@ -182,6 +185,28 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 break;
             case "toughen":
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughen(tenantUuid);
+                break;
+            default:
+                throw new ResourceNotFoundException();
+        }
+        return proFormaInvoiceOrdersProjections;
+    }
+
+    @Override
+    public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, String proFormaInvoiceUuid,String deptType) {
+        List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceOrdersProjections;
+        switch (deptType) {
+            case "optimize":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid,proFormaInvoiceUuid);
+                break;
+            case "cutting":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid,proFormaInvoiceUuid);
+                break;
+            case "dispatch":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(tenantUuid,proFormaInvoiceUuid);
+                break;
+            case "toughen":
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
             default:
                 throw new ResourceNotFoundException();

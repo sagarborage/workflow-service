@@ -42,6 +42,10 @@ public class ProFormaInvoiceItemValue extends BaseValue {
     private int cuttingBucket;
     private int toughenBucket;
     private int dispatchBucket;
+    private int optimizeCompleted;
+    private int cuttingCompleted;
+    private int toughenCompleted;
+    private int dispatchCompleted;
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
@@ -55,8 +59,8 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 .heightInch(getHeightInch())
                 .heightMeasurement(getHeightMeasurement())
                 .heightMeasurementLabel(getHeightMeasurementLabel())
-                .actualHight(getActualHight())
-                .chargableHight(getChargableHight())
+                .actualHeight(getActualHight())
+                .chargableHeight(getChargableHight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
                 .unitValue(getUnitValue())
@@ -67,6 +71,10 @@ public class ProFormaInvoiceItemValue extends BaseValue {
                 .cuttingBucket(getCuttingBucket())
                 .toughenBucket(getToughenBucket())
                 .dispatchBucket(getDispatchBucket())
+                .optimizeCompleted(getOptimizeCompleted())
+                .cuttingCompleted(getCuttingCompleted())
+                .toughenCompleted(getToughenCompleted())
+                .dispatchCompleted(getDispatchCompleted())
                 //.tenantEntity(getTenantValue().toEntity())
                 //.glassTypeEntity(getGlassTypeValue().toEntity())
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())

@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
@@ -118,5 +119,11 @@ public class ProFormaInvoiceController {
     public ResponseEntity<List<ProFormaInvoiceOrdersProjection>> getAllProFormOrdersDetails(@PathVariable String tenantUuid, @PathVariable String deptType) {
         List<ProFormaInvoiceOrdersProjection> proFormaInvoiceOrdersProjections = proFormaInvoiceService.getAllProFormOrdersDetails(tenantUuid, deptType);
         return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/work-order-individuals-list/{tenantUuid}/{proFormaInvoiceUuid}/{deptType}")
+    public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> getAllProFormOrdersIndividualsDetails(@PathVariable String tenantUuid,@PathVariable String proFormaInvoiceUuid, @PathVariable String deptType) {
+        List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceService.getAllProFormIndividualsOrdersDetails(tenantUuid, proFormaInvoiceUuid, deptType);
+        return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
     }
 }

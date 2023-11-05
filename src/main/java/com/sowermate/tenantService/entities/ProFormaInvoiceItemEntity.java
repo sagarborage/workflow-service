@@ -40,10 +40,10 @@ public class ProFormaInvoiceItemEntity extends Base {
     private String heightMeasurementLabel;
 
     @Column(name = "actual_height")
-    private Float actualHight;
+    private Float actualHeight;
 
     @Column(name = "chargable_height")
-    private Float chargableHight;
+    private Float chargableHeight;
 
     @Column(name = "extra_mm")
     private Float extraMm;
@@ -74,6 +74,19 @@ public class ProFormaInvoiceItemEntity extends Base {
 
     @Column(name = "`dispatch_bucket`")
     private int dispatchBucket;
+
+
+    @Column(name = "`optimize_completed`")
+    private int optimizeCompleted;
+
+    @Column(name = "`cutting_completed`")
+    private int cuttingCompleted;
+
+    @Column(name = "`toughen_completed`")
+    private int toughenCompleted;
+
+    @Column(name = "`dispatch_completed`")
+    private int dispatchCompleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pro_forma_invoice_id")
@@ -107,8 +120,8 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .heightInch(getHeightInch())
                 .heightMeasurement(getHeightMeasurement())
                 .heightMeasurementLabel(getHeightMeasurementLabel())
-                .actualHight(getActualHight())
-                .chargableHight(getChargableHight())
+                .actualHight(getActualHeight())
+                .chargableHight(getChargableHeight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
                 .unitValue(getUnitValue())
@@ -118,6 +131,10 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .optimizeBucket(getOptimizeBucket())
                 .cuttingBucket(getCuttingBucket())
                 .toughenBucket(getToughenBucket())
+                .dispatchBucket(getDispatchBucket())
+                .optimizeCompleted(getOptimizeCompleted())
+                .cuttingCompleted(getCuttingCompleted())
+                .toughenCompleted(getToughenCompleted())
                 .dispatchBucket(getDispatchBucket())
                 .glassSpecificationUuid(getGlassSpecificationEntity().getUuid())
                 .glassSpecificationName(getGlassSpecificationEntity().getName())
