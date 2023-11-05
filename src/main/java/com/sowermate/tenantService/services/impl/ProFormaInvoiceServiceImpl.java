@@ -8,7 +8,7 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
-import com.sowermate.tenantService.entities.DeptTypeEnum;
+import com.sowermate.tenantService.entities.DeptTypeEnum.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -172,18 +172,18 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Override
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType) {
         List<ProFormaInvoiceOrdersProjection> proFormaInvoiceOrdersProjections;
-        DeptTypeEnum deptTypeEnum;
-        switch (deptType) {
-            case  "optimize":
+
+        switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
+            case OPTIMIZE:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimize(tenantUuid);
                 break;
-            case "cutting":
+            case Cutting:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCutting(tenantUuid);
                 break;
-            case "dispatch":
+            case DISPATCH:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatch(tenantUuid);
                 break;
-            case "toughen":
+            case TOUGHEN:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughen(tenantUuid);
                 break;
             default:
@@ -195,17 +195,17 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Override
     public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, String proFormaInvoiceUuid,String deptType) {
         List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceOrdersProjections;
-        switch (deptType) {
-            case "optimize":
+        switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
+            case OPTIMIZE:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
-            case "cutting":
+            case Cutting:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
-            case "dispatch":
+            case DISPATCH:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
-            case "toughen":
+            case TOUGHEN:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
             default:
