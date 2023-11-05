@@ -7,5 +7,5 @@ public interface ProFormaInvoiceOrdersProjection {
 
     Long getWorkOrderNo();
 
-    Long getPartyBillTo();
+    String getPartyBillTo();
 }
