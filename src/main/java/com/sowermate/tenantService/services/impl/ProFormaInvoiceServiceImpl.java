@@ -8,7 +8,6 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
-import com.sowermate.tenantService.entities.DeptTypeEnum.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,7 +176,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             case OPTIMIZE:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimize(tenantUuid);
                 break;
-            case Cutting:
+            case CUTTING:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCutting(tenantUuid);
                 break;
             case DISPATCH:
@@ -199,7 +198,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             case OPTIMIZE:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
-            case Cutting:
+            case CUTTING:
                 proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid,proFormaInvoiceUuid);
                 break;
             case DISPATCH:

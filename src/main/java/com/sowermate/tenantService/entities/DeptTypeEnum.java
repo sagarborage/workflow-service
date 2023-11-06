@@ -2,7 +2,7 @@ package com.sowermate.tenantService.entities;
 
 public enum DeptTypeEnum {
     OPTIMIZE("optimize"),
-    Cutting("cutting"),
+    CUTTING("cutting"),
     DISPATCH("dispatch"),
     TOUGHEN("toughen");
 

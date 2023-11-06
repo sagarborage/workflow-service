@@ -18,6 +18,6 @@ public interface ProFormaInvoiceIndividualsOrdersProjection {
 
     Long getBucketQuantity();
 
-    Long completedQuantity();
+    Long getCompletedQuantity();
 
 }
