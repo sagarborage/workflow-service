@@ -1,5 +1,7 @@
 package com.sowermate.tenantService.services;
 
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
+import com.sowermate.tenantService.entities.value.BucketManipulationValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 
 import java.util.List;
@@ -16,4 +18,6 @@ public interface ProFormaInvoiceItemService {
     public int deleteProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid);
 
     public List<ProFormaInvoiceItemValue> getAllProFormaInvoiceItem(String tenantUuid);
+
+    public List<ProFormaInvoiceIndividualsOrdersProjection> bucketManipulation(String actionType, BucketManipulationValue bucketManipulationValue);
 }
