@@ -59,7 +59,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
-        ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(proFormaInvoiceItemValue.getUuid(), proFormaInvoiceItemValue.getTenantUuid());
+        ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(proFormaInvoiceItemValue.getTenantUuid(), proFormaInvoiceItemValue.getUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceItemEntity.getId())
                 .tenantEntity(tenantRepository.findByUuid(tenantUuid))
