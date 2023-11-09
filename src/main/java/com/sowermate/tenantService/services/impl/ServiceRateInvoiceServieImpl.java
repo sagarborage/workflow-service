@@ -4,6 +4,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.ServiceRateEntity;
 import com.sowermate.tenantService.entities.ServiceRateInvoiceEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
 import com.sowermate.tenantService.repositories.ServiceRateInvoiceRepository;
@@ -42,7 +43,31 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
 
     @Override
     public ServiceRateInvoiceValue editServiceRateInvoice(ServiceRateInvoiceValue serviceRateInvoiceValue) {
-        return serviceRateInvoiceValue;
+        ServiceRateEntity serviceRateEntity = serviceRateRepository.findByUuid(serviceRateInvoiceValue.getServiceRateUuid());
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByUuid(serviceRateInvoiceValue.getProFormaInvoiceUuid());
+        ServiceRateInvoiceEntity tempServiceRateInvoiceEntity = serviceRateInvoiceRepository.findByProFormaInvoiceUuidUuidAndServiceRateInvoiceUuid(serviceRateInvoiceValue.getProFormaInvoiceUuid(),serviceRateInvoiceValue.getUuid());
+       ServiceRateInvoiceEntity serviceRateInvoiceEntity = serviceRateInvoiceValue.toEntity().toBuilder()
+               .id(tempServiceRateInvoiceEntity.getId())
+               .serviceRateEntity(serviceRateEntity)
+               .proFormaInvoiceEntity(proFormaInvoiceEntity)
+               .createdDateTime(tempServiceRateInvoiceEntity.getCreatedDateTime())
+               .createdBy(tempServiceRateInvoiceEntity.getCreatedBy())
+               .build();
+
+        return serviceRateInvoiceRepository.save(serviceRateInvoiceEntity).toDTO();
+
+
+
+
+//        TenantEntity tenantEntity = tenantRepository.findByUuid(serviceRateValue.getTenantUuid());
+//        ServiceRateEntity tempServiceRateEntity = serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(serviceRateValue.getTenantUuid(), serviceRateValue.getServiceRateUuid());
+//
+//        ServiceRateEntity serviceRateEntity = serviceRateValue.toEntity().toBuilder()
+//                .id(tempServiceRateEntity.getId())
+//                .tenantEntity(tenantEntity)
+//                .createdDateTime(tempServiceRateEntity.getCreatedDateTime())
+//                .createdBy(tempServiceRateEntity.getCreatedBy())
+//                .build();
     }
 
     @Override
