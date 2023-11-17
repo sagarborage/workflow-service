@@ -101,7 +101,9 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pii.toughenBucket >= 1 Group By pi.uuid")
     List<ProFormaInvoiceOrdersProjection> findAllPiOrdersDetailsOfToughen(String tenantUuid);
 
-    @Query("Select pi.piNumber as piNumber, " +
+    @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pii.uuid as proformaInvoiceItemUuid, " +
+            "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
@@ -117,13 +119,17 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.optimizeBucket >= 1 ")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfOptimizeIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
-    @Query("Select pi.piNumber as piNumber, " +
+    @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pii.uuid as proformaInvoiceItemUuid, " +
+            "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "gt.glassName as glassType, " +
+            "pii.actualWidth as actualWidth, " +
+            "pii.actualHeight as actualHeight, " +
+            "gth.name as glassThickness, " +
             "pii.quantity as quantity, " +
             "pii.cuttingBucket as bucketQuantity, " +
             "pii.cuttingCompleted as completedQuantity " +
@@ -132,15 +138,20 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pi.companyIdBill co " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
+            "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.cuttingBucket >= 1")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfCuttingIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
-    @Query("Select pi.piNumber as piNumber, " +
+    @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pii.uuid as proformaInvoiceItemUuid, " +
+            "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "gt.glassName as glassType, " +
-            "pii.quantity as Quantity, " +
+            "pii.actualWidth as actualWidth, " +
+            "pii.actualHeight as actualHeight, " +
+            "gth.name as glassThickness, " +
+            "pii.quantity as quantity, " +
             "pii.dispatchBucket as bucketQuantity, " +
             "pii.dispatchCompleted as completedQuantity " +
             "from ProFormaInvoiceEntity pi " +
@@ -148,15 +159,20 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pi.companyIdBill co " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
+            "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.dispatchBucket >= 1")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfDispatchIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
-    @Query("Select pi.piNumber as piNumber, " +
+    @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pii.uuid as proformaInvoiceItemUuid, " +
+            "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "gt.glassName as glassType, " +
-            "pii.quantity as Quantity, " +
+            "pii.actualWidth as actualWidth, " +
+            "pii.actualHeight as actualHeight, " +
+            "gth.name as glassThickness, " +
+            "pii.quantity as quantity, " +
             "pii.toughenBucket as bucketQuantity, " +
             "pii.toughenCompleted as completedQuantity " +
             "from ProFormaInvoiceEntity pi " +
@@ -164,9 +180,9 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pi.companyIdBill co " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
+            "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.toughenBucket >= 1")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
 
