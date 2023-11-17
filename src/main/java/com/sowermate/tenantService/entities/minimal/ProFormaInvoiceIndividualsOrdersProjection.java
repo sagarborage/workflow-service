@@ -2,6 +2,10 @@ package com.sowermate.tenantService.entities.minimal;
 
 public interface ProFormaInvoiceIndividualsOrdersProjection {
 
+    String getProformaInvoiceUuid();
+
+    String getProformaInvoiceItemUuid();
+
     String getPiNumber();
 
     Long getWorkOrderNo();
