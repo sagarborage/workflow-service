@@ -119,8 +119,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.optimizeBucket >= 1 ")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfOptimizeIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
@@ -141,8 +140,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.cuttingBucket >= 1 ")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfCuttingIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
@@ -163,8 +161,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where pi.uuid = :proFormaInvoiceUuid and " +
-            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid) and " +
-            "pii.dispatchBucket >= 1 ")
+            "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfDispatchIndividual(String tenantUuid, String proFormaInvoiceUuid);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
