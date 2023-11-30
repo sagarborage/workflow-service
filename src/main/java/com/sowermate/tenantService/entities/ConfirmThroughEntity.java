@@ -22,9 +22,6 @@ public class ConfirmThroughEntity extends Base {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy="confirmThroughEntity",cascade=CascadeType.ALL)
-    private ProFormaInvoiceEntity proFormaInvoiceEntity;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;

@@ -78,7 +78,7 @@ public class ProFormaInvoiceEntity extends Base {
     @Column(name = "status")
     private String status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "confirm_through_id")
     private ConfirmThroughEntity confirmThroughEntity;
 
