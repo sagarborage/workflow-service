@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 public interface ProFormaInvoiceMinimal {
     String getUuid();
 
-    String getpartyName();
+    String getConfirmThroughUuid();
+
+    String getPartyName();
 
     String getPiNumber();
 
