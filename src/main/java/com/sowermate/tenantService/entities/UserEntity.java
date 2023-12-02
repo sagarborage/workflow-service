@@ -49,6 +49,7 @@ public class UserEntity extends Base {
         return UserValue.newBuilder()
                 .id(getId())
                 .uuid(getUuid())
+                .roleTypeUuid(getRoleTypeEntity() != null ? getRoleTypeEntity().getUuid() : null)
                 .name(getName())
                 .userName(getUserName())
                 .password(getPassword())
