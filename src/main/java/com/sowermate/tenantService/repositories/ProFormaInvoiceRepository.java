@@ -43,11 +43,14 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "c.companyName as partyName, " +
             "pfie.piNumber as piNumber, " +
             "ct.uuid as confirmThroughUuid, " +
+            "woe.uuid as workOrderUuid, " +
+            "woe.id as workOrderId, " +
             "pfie.payableAmount as payableAmount, " +
             "pfie.invoiceDate as invoiceDate, " +
             "pfie.status as status FROM ProFormaInvoiceEntity pfie " +
             "JOIN pfie.companyIdBill c " +
             "LEFT JOIN pfie.confirmThroughEntity ct " +
+            "LEFT JOIN pfie.workOrderEntity woe " +
             "where pfie.tenantEntity.uuid = :tenantUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.invoiceDate DESC")
     List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
 

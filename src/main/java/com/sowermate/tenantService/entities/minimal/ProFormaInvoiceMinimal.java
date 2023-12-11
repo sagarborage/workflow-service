@@ -7,6 +7,10 @@ public interface ProFormaInvoiceMinimal {
 
     String getConfirmThroughUuid();
 
+    String getWorkOrderUuid();
+
+    String getWorkOrderId();
+
     String getPartyName();
 
     String getPiNumber();
