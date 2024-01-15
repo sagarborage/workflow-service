@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -118,9 +117,10 @@ public class ProFormaInvoiceEntity extends Base {
                 .tenantUuid(getTenantEntity().getUuid())
                 .confirmThroughUuid(null == getConfirmThroughEntity() ? null : getConfirmThroughEntity().getUuid())
                 .firmUuid(getFirm().getUuid())
-                .companyBillToUuid(getCompanyIdBill().getUuid())
-                .partyName(getCompanyIdBill().getCompanyName())
-                .companyShipToUuid(getCompanyIdShip().getUuid())
+                .partyBillToUuid(getCompanyIdBill().getUuid())
+                .partyBillToName(getCompanyIdBill().getCompanyName())
+                .partyShipToUuid(getCompanyIdShip().getUuid())
+                .partyShipToName(getCompanyIdShip().getCompanyName())
                 .piTypeUuid(getPiTypeEntity().getUuid())
                 .piTypeName(getPiTypeEntity().getPiTypeName())
                 .piNumber(getPiNumber())
