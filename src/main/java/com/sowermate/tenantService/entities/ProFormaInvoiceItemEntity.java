@@ -27,8 +27,8 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "actual_width")
     private Float actualWidth;
 
-    @Column(name = "chargable_width")
-    private Float chargableWidth;
+    @Column(name = "chargeable_width")
+    private Float chargeableWidth;
 
     @Column(name = "height_inch")
     private Float heightInch;
@@ -42,8 +42,8 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "actual_height")
     private Float actualHeight;
 
-    @Column(name = "chargable_height")
-    private Float chargableHeight;
+    @Column(name = "chargeable_height")
+    private Float chargeableHeight;
 
     @Column(name = "extra_mm")
     private Float extraMm;
@@ -116,12 +116,12 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .widthMeasurement(getWidthMeasurement())
                 .widthMeasurementLabel(getWidthMeasurementLabel())
                 .actualWidth(getActualWidth())
-                .chargableWidth(getChargableWidth())
+                .chargeableWidth(getChargeableWidth())
                 .heightInch(getHeightInch())
                 .heightMeasurement(getHeightMeasurement())
                 .heightMeasurementLabel(getHeightMeasurementLabel())
-                .actualHight(getActualHeight())
-                .chargableHight(getChargableHeight())
+                .actualHeight(getActualHeight())
+                .chargeableHeight(getChargeableHeight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
                 .unitValue(getUnitValue())
