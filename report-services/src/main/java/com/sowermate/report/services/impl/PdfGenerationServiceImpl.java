@@ -4,8 +4,8 @@ package com.sowermate.report.services.impl;
 import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
-import com.sowermate.report.dtos.InvoiceDto;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -14,7 +14,6 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 @Service
 public class PdfGenerationServiceImpl implements PdfGenerationService {
@@ -31,12 +30,12 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    private byte[] generatePdf(InvoiceDto invoiceDto) {
+    private byte[] generatePdf(ProFormaInvoiceValue piValue) {
         try {
             Context context = new Context();
-            context.setVariable("invoiceDto", invoiceDto);
+            context.setVariable("piValue", piValue);
 
-            String htmlContent = templateEngine.process("flexipunch-invoice", context);
+            String htmlContent = templateEngine.process("proforma-invoice", context);
 
             ITextRenderer renderer = new ITextRenderer(1000,710);
             renderer.getSharedContext().setBaseURL("classpath:/static/");
@@ -57,11 +56,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     @Override
-    public String generateInvoice(InvoiceDto invoiceDto) throws IOException {
-        byte[] pdfBytes = generatePdf(invoiceDto);
+    public String generateInvoice(ProFormaInvoiceValue piValue) throws IOException {
+        byte[] pdfBytes = generatePdf(piValue);
       //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
       //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
-        return pdfService.handlePdf(pdfBytes, invoiceDto.getInvoiceNumber(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        return pdfService.handlePdf(pdfBytes, piValue.getPiNumber(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
     }
 
 
