@@ -8,22 +8,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 
 @Repository
-public interface TenantRepository extends JpaRepository <TenantEntity, String> {
-   // @Query("SELECT t FROM TenantEntity t WHERE t.uuid = :tenantUuid")
-    TenantEntity findByUuid(@Param("tenantUuid")String tenantUuid);
+public interface TenantRepository extends JpaRepository<TenantEntity, String> {
+    // @Query("SELECT t FROM TenantEntity t WHERE t.uuid = :tenantUuid")
+    TenantEntity findByUuid(@Param("tenantUuid") String tenantUuid);
 
     @Transactional
     @Modifying
     @Query("UPDATE TenantEntity t SET t.isActive = false WHERE t.uuid = :tenantUuid")
     void softDelete(@Param("tenantUuid") String tenantUuid);
 
- @Query("select tenant.id from TenantEntity tenant where tenant.uuid = :uuid")
- Optional<Long> findIdByUuid(@Param("uuid") String uuid);
+    @Query("select tenant.id from TenantEntity tenant where tenant.uuid = :uuid")
+    Optional<Long> findIdByUuid(@Param("uuid") String uuid);
+
+    @Query("select tenant.uuid from TenantEntity tenant where tenant.id = :tenantId")
+    Optional<String> findUuidById(Long tenantId);
 
     /*@Modifying
     @Query("DELETE FROM TenantEntity t WHERE t.tenantUuid = :tenantUuid")

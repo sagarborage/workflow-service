@@ -65,5 +65,15 @@ public class RoleTypeServiceImpl implements RoleTypeService {
         List<RoleTypeEntity> RoleTypeEntities = RoleTypeRepository.findAllByTenantEntity_Uuid(tenantUuid);
         return RoleTypeEntities.stream().map(gte -> gte.toDTO()).collect(Collectors.toList());
     }
+
+    @Override
+    public Long getRoleTypeId(String uuid) {
+        return RoleTypeRepository.findRoleTypeIdByUuid(uuid);
+    }
+
+    @Override
+    public String getRoleName(Long roleId) {
+        return RoleTypeRepository.findRoleNameByRoleId(roleId);
+    }
 }
 

@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class JwtResponse {
-    private String iso2Code;
     private String firstName;
     private String lastName;
     private String username;

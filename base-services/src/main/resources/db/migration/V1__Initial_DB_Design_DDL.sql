@@ -123,6 +123,95 @@ CREATE TABLE role_type (
   CONSTRAINT role_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
+CREATE TABLE user_auth (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  uuid char(36) DEFAULT (UUID()),
+  tenant_id int(10) NOT NULL,
+  role_id int(10) NOT NULL,
+  first_name varchar(50),
+  last_name varchar(50),
+  phone varchar(15),
+  username varchar(50),
+  password_hash varchar(100),
+  is_enabled BOOLEAN NOT NULL DEFAULT 0,
+  is_email_verified BOOLEAN DEFAULT FALSE,
+  is_phone_verified BOOLEAN DEFAULT FALSE,
+  is_account_non_expired BOOLEAN NOT NULL DEFAULT 1,
+  is_account_non_locked BOOLEAN NOT NULL DEFAULT 1,
+  is_credentials_non_expired BOOLEAN NOT NULL DEFAULT 1,
+  failed_attempt INT NOT NULL DEFAULT 1,
+  is_active BOOLEAN NOT NULL DEFAULT 1,
+  created_by VARCHAR(64) NOT NULL,
+  created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  last_updated_by VARCHAR(64) NOT NULL,
+  last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  version INT NOT NULL DEFAULT 1,
+  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  FOREIGN KEY (role_id) REFERENCES role_type (id),
+  UNIQUE (username),
+  UNIQUE (phone)
+)ENGINE=InnoDB;
+
+CREATE TABLE user_profile (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  uuid char(36) DEFAULT (UUID()),
+  user_id INT UNSIGNED NOT NULL,
+  first_name varchar(50),
+  last_name varchar(50),
+  address TEXT,
+  gender ENUM('male','female'),
+  dob date,
+  profile_url varchar(500),
+  profile_back_url varchar(500),
+  is_active BOOLEAN NOT NULL DEFAULT 1,
+  created_by VARCHAR(64) NOT NULL,
+  created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  last_updated_by VARCHAR(64) NOT NULL,
+  last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  version INT NOT NULL DEFAULT 1,
+  FOREIGN KEY (user_id) REFERENCES user_auth (id)
+)ENGINE=InnoDB;
+
+CREATE TABLE confirmation_code (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  	uuid CHAR(36) DEFAULT (UUID()),
+  	user_id INT UNSIGNED NOT NULL,
+    code VARCHAR(40) NOT NULL,
+    operation VARCHAR(50),
+     created_at DATETIME NOT NULL,
+    expires_at DATETIME NOT NULL,
+    reset_attempts INT DEFAULT 0,
+    is_used BOOLEAN DEFAULT 0,
+	FOREIGN KEY (user_id) REFERENCES user_auth(id),
+	UNIQUE (code)
+)ENGINE=InnoDB;
+
+create table verification_token(
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+uuid CHAR(36) DEFAULT (UUID()),
+user_id INT UNSIGNED NOT NULL,
+token_value varchar(40) NOT NULL,
+created_at DATETIME NOT NULL,
+expired_at DATETIME NOT NULL,
+FOREIGN KEY(user_id) REFERENCES user_auth(id)
+)ENGINE=InnoDB;
+
+CREATE TABLE email_templates (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  	uuid CHAR(36) DEFAULT (UUID()),
+  	template_code varchar(40) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+	is_active BOOLEAN NOT NULL DEFAULT 1,
+	created_by VARCHAR(64) NOT NULL,
+  	created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  	last_updated_by VARCHAR(64) NOT NULL,
+    last_updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  	version INT UNSIGNED NOT NULL DEFAULT 1,
+	UNIQUE (template_code)
+)ENGINE=InnoDB;
+
 CREATE TABLE user (
   id int(10) NOT NULL AUTO_INCREMENT,
   uuid varchar(36) NOT NULL,

@@ -15,4 +15,7 @@ public interface RoleTypeService {
     public RoleTypeValue deleteRoleType(String tenantUuid, String RoleTypeUuid);
 
     public List<RoleTypeValue> getAllRoleType(String tenantUuid);
+
+    Long getRoleTypeId(String uuid);
+    String getRoleName(Long roleId);
 }

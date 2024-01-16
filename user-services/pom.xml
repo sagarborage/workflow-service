@@ -29,6 +29,11 @@
             <artifactId>notification-services</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sowermate.workflow</groupId>
+            <artifactId>image-processing-services</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-crypto</artifactId>

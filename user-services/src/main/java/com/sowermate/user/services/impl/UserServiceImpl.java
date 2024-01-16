@@ -1,4 +1,3 @@
-/*
 package com.sowermate.user.services.impl;
 
 import com.sowermate.base.exceptions.ResourceNotFoundException;
@@ -35,7 +34,7 @@ import static com.sowermate.notification.constants.EmailConstants.*;
 import static com.sowermate.user.constants.MessageConstants.*;
 
 
-@Service
+@Service("userImpl")
 public class UserServiceImpl implements UserService {
     @Autowired
     private ConfirmationCodeRepository confirmationCodeRepository;
@@ -131,8 +130,8 @@ public class UserServiceImpl implements UserService {
         LoginDto login = new LoginDto();
         if (flag) {
             login.setUsername(loginDto.getUsername());
-           // login.setTenantUuid(tenantService.getPartyUuid(userAuth.getPartyId()));
-          //  login.setUserProfileUuid(userProfileService.getProfileUuidByUserId(userAuth.getId()));
+            login.setTenantUuid(tenantService.getTenantUuid(userAuth.getTenantId()));
+            login.setUserProfileUuid(userProfileService.getProfileUuidByUserId(userAuth.getId()));
         } else {
             login = null;
         }
@@ -212,11 +211,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    */
-/**
+    /**
      * {@inheritDoc}
-     *//*
-
+     */
     @Override
     public boolean validateOtpAndUpdateOtpStatus(String newEmail, String enteredOtp) {
         Optional<ConfirmationCode> optionalEmailOtp = confirmationCodeRepository.findByCodeAndIsUsedIsFalse(enteredOtp);
@@ -233,12 +230,6 @@ public class UserServiceImpl implements UserService {
                     auth.setIsEmailVerified(true);
                     auth.setUsername(newEmail);
                     this.userAuthRepository.save(auth);
-                    */
-/*Optional<EmployeeDetails> userProfile = userProfileRepository.findEmployeeDetailsByUserId(confirmationCode.getUserId());
-                    EmployeeDetails profile = userProfile.get();
-                    profile.setEmail(newEmail);
-                    this.userProfileRepository.save(profile);*//*
-
                     return true;
                 } else {
                     return false;
@@ -262,11 +253,9 @@ public class UserServiceImpl implements UserService {
         return requestDto;
     }
 
-    */
-/**
+    /**
      * {@inheritDoc}
-     *//*
-
+     */
     @Override
     public void sendOtp(String email, Long userId) {
         String otp = confirmationCodeUtils.generateConfirmationCode();
@@ -280,4 +269,4 @@ public class UserServiceImpl implements UserService {
         confirmationCodeRepository.save(confirmationCode);
     }
 }
-*/
+

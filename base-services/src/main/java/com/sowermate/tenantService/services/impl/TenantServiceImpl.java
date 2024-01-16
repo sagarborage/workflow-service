@@ -69,4 +69,10 @@ public class TenantServiceImpl implements TenantService {
         return this.tenantRepository.findIdByUuid(tenantUuid)
                 .orElseThrow(() -> new ResourceNotFoundException("tenant", "tenantUuid", tenantUuid));
     }
+
+    @Override
+    public String getTenantUuid(Long tenantId) {
+        return this.tenantRepository.findUuidById(tenantId)
+                .orElseThrow(() -> new ResourceNotFoundException("tenant", "tenantId", String.valueOf(tenantId)));
+    }
 }

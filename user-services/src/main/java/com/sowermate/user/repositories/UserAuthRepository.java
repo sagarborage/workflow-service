@@ -76,13 +76,11 @@ public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
      */
     @Query("select ua.id from UserAuth ua where ua.username = :email")
     Optional<Long> findIdByUsername(@Param("email") String email);
-/*
 
 
-    String USER_AUTH_QUERY = "SELECT ed.firstName AS firstName, " +
-            "ed.lastName AS lastName, " +
-            "ed.phone AS phone, " +
-            "ct.iso2Code AS iso2Code, " +
+    String USER_AUTH_QUERY = "SELECT ua.firstName AS firstName, " +
+            "ua.lastName AS lastName, " +
+            "ua.phone AS phone, " +
             "ua.isAccountNonExpired AS isAccountNonExpired, " +
             "ua.uuid AS userUuid, " +
             "ua.isAccountNonLocked AS isAccountNonLocked, " +
@@ -92,15 +90,12 @@ public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
             "t.tenantName AS companyName, " +
             "t.address AS companyAddress " +
             "FROM TenantEntity t " +
-            "JOIN Countries ct ON ct.id = t.countryId " +
             "JOIN UserAuth ua ON ua.tenantId = t.id  " +
-            "JOIN EmployeeDetails ed ON ed.userId = ua.id  " +
             "WHERE ua.username = :username ";
-
     @Query(USER_AUTH_QUERY)
     UserAuthSuccessDetailsProjection getUserAuthSuccessDetailsProjectionByUsername(@Param("username") String username);
-*/
 
-    @Query("SELECT ua.role from UserAuth ua where ua.id = :userId")
-    Optional<UserRole> getRoleByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT ua.roleId from UserAuth ua where ua.id = :userId")
+    Optional<Long> getRoleIdByUserId(@Param("userId") Long userId);
 }

@@ -1,6 +1,7 @@
 package com.sowermate.user.services.impl;
 
 import com.sowermate.base.exceptions.ResourceNotFoundException;
+import com.sowermate.tenantService.services.RoleTypeService;
 import com.sowermate.tenantService.services.TenantService;
 import com.sowermate.user.entities.UserAuth;
 import com.sowermate.user.entities.UserRole;
@@ -25,26 +26,31 @@ public class UserAuthServiceImpl implements UserAuthService {
     private UserAuthRepository userAuthRepository;
     @Autowired
     private TenantService tenantService;
+    @Autowired
+    private RoleTypeService roleTypeService;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserAuth registerUser(String username, UserRole role, String tenantUuid, Boolean isActive, String createdBy, String lastUpdatedBy) {
-        Long partyId = this.tenantService.getTenantId(tenantUuid);
+    public UserAuth registerUser(String username, String phone,String firstName,String lastName, String tenantUuid,String roleUuid, Boolean isActive) {
+        Long tenantId = this.tenantService.getTenantId(tenantUuid);
+        Long roleId = this.roleTypeService.getRoleTypeId(roleUuid);
         UserAuth userAuth = new UserAuth();
-        userAuth.setTenantId(partyId);
+        userAuth.setTenantId(tenantId);
+        userAuth.setRoleId(roleId);
+        userAuth.setFirstName(firstName);
+        userAuth.setLastName(lastName);
         userAuth.setUsername(username);
-        userAuth.setRole(role);
-        userAuth.setCreatedBy(createdBy);
+        userAuth.setPhone(phone);
         userAuth.setIsEnabled(false);
         userAuth.setIsEmailVerified(false);
+        userAuth.setIsPhoneVerified(false);
         userAuth.setIsActive(isActive);
         userAuth.setFailedAttempt(1L);
         userAuth.setIsAccountNonExpired(true);
         userAuth.setIsAccountNonLocked(true);
         userAuth.setIsCredentialsNonExpired(true);
-        userAuth.setLastUpdatedBy(lastUpdatedBy);
         return this.userAuthRepository.save(userAuth);
     }
 

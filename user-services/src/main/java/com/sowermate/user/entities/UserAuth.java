@@ -22,30 +22,23 @@ import lombok.Setter;
 @Table(name = "user_auth")
 public class UserAuth extends Base {
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "is_account_non_expired")
-    private Boolean isAccountNonExpired;
-
-    @Column(name = "is_account_non_locked")
-    private Boolean isAccountNonLocked;
-
-    @Column(name = "is_credentials_non_expired")
-    private Boolean isCredentialsNonExpired;
-
-    @Column(name = "failed_attempt")
-    private Long failedAttempt;
-
     /**
      * Represents the unique identifier for a party.
      * This field stores the unique identifier associated with a party table in the system.
      */
     @Column(name = "tenant_id")
     private Long tenantId;
+
+    @Column(name = "role_id")
+    private Long roleId;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    private String phone;
 
     /**
      * The username of user
@@ -60,13 +53,6 @@ public class UserAuth extends Base {
     private String passwordHash;
 
     /**
-     * The role of user.
-     */
-    @Column
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
-    /**
      * The user is verified or not.
      */
     @Column(name = "is_enabled")
@@ -77,4 +63,24 @@ public class UserAuth extends Base {
      */
     @Column(name = "is_email_verified")
     private Boolean isEmailVerified;
+
+    /**
+     * The email of user is verified or not.
+     */
+    @Column(name = "is_phone_verified")
+    private Boolean isPhoneVerified;
+
+    @Column(name = "is_account_non_expired")
+    private Boolean isAccountNonExpired;
+
+    @Column(name = "is_account_non_locked")
+    private Boolean isAccountNonLocked;
+
+    @Column(name = "is_credentials_non_expired")
+    private Boolean isCredentialsNonExpired;
+
+    @Column(name = "failed_attempt")
+    private Long failedAttempt;
+
+
 }

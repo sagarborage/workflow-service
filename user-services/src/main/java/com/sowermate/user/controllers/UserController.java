@@ -11,9 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.sowermate.user.constants.MessageConstants.*;
-/*
 
-@RestController
+@RestController("userControllers")
 @RequestMapping("/users")
 public class UserController {
 
@@ -109,4 +108,4 @@ public class UserController {
     }
 
 
-}*/
+}

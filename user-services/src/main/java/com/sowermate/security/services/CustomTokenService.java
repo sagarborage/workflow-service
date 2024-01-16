@@ -31,9 +31,8 @@ public class CustomTokenService {
 
 
     public void populateAdditionalProperties(String username, JwtResponse jwtResponse) {
-        /*UserAuthSuccessDetailsProjection userAuthProfile = customUserDetailsService.findUserAuthSuccessDetails(username);
+        UserAuthSuccessDetailsProjection userAuthProfile = customUserDetailsService.findUserAuthSuccessDetails(username);
         if (!ObjectUtils.isEmpty(userAuthProfile)) {
-            jwtResponse.setIso2Code(userAuthProfile.getIso2Code());
             jwtResponse.setUserUuid(userAuthProfile.getUserUuid());
             jwtResponse.setFirstName(userAuthProfile.getFirstName());
             jwtResponse.setLastName(userAuthProfile.getLastName());
@@ -44,7 +43,7 @@ public class CustomTokenService {
             jwtResponse.setCompanyAddress(userAuthProfile.getCompanyAddress());
             jwtResponse.setAccountNonExpired(userAuthProfile.getIsAccountNonExpired());
             jwtResponse.setAccountNonLocked(userAuthProfile.getIsAccountNonLocked());
-        }*/
+        }
     }
 
     public void generateAccessToken(JwtResponse jwtResponse) {

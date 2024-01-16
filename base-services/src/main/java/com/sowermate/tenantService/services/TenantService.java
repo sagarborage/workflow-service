@@ -23,5 +23,6 @@ public interface TenantService {
   * @throws com.sowermate.base.exceptions.ResourceNotFoundException If the tenant with the specified UUID is not found.
   */
  Long getTenantId(String tenantUuid);
+ String getTenantUuid(Long tenantId);
 
 }

@@ -26,4 +26,9 @@ public interface RoleTypeRepository extends JpaRepository <RoleTypeEntity ,Strin
     @Query("UPDATE RoleTypeEntity r SET r.isActive = false WHERE r.uuid = :RoleTypeUuid")
     void softDelete(@Param("RoleTypeUuid") String RoleTypeUuid);
 
+    @Query("SELECT rt.id from RoleTypeEntity rt where rt.uuid = :uuid")
+    Long findRoleTypeIdByUuid(@Param("uuid") String uuid);
+
+    @Query("SELECT rt.name from RoleTypeEntity rt where rt.id = :roleId")
+    String findRoleNameByRoleId(Long roleId);
 }

@@ -1,6 +1,7 @@
 package com.sowermate.security.services;
 
 import com.sowermate.security.projections.UserAuthSuccessDetailsProjection;
+import com.sowermate.tenantService.services.RoleTypeService;
 import com.sowermate.user.entities.UserAuth;
 import com.sowermate.user.entities.UserRole;
 import com.sowermate.user.repositories.UserAuthRepository;
@@ -17,6 +18,8 @@ import java.util.Collections;
 @Service
 public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
     private final UserAuthRepository userRepository;
+    @Autowired
+    private RoleTypeService roleTypeService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -27,11 +30,11 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
     @Override
     @Transactional
-    public UserAuth registerUser(String username, String password, UserRole role) {
+    public UserAuth registerUser(String username, String password, Long roleId) {
         UserAuth user = new UserAuth();
         user.setUsername(username);
         user.setPasswordHash(passwordEncoder.encode(password));
-        user.setRole(role);
+        user.setRoleId(roleId);
         return userRepository.save(user);
     }
 
@@ -46,7 +49,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
         return new org.springframework.security.core.userdetails.User(
             user.getUsername(),
             user.getPasswordHash(), user.getIsActive(), user.getIsAccountNonExpired(), user.getIsCredentialsNonExpired(),
-                user.getIsAccountNonLocked(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()))
+                user.getIsAccountNonLocked(), Collections.singleton(new SimpleGrantedAuthority(roleTypeService.getRoleName(user.getRoleId())))
         );
     }
 
@@ -54,9 +57,9 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
     public UserAuth findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-/*
+
     @Override
     public UserAuthSuccessDetailsProjection findUserAuthSuccessDetails(String username) {
         return userRepository.getUserAuthSuccessDetailsProjectionByUsername(username);
-    }*/
+    }
 }
