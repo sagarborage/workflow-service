@@ -1,0 +1,24 @@
+server:
+  port: 9091
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: create
+        show-sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/workflow
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: workflow
+    password: C3586C92611157ED681FF05170496815
+
+  server:
+    compression:
+      enabled: true
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG

@@ -1,0 +1,10 @@
+com/sowermate/workflow/services/package-info.class
+com/sowermate/workflow/WorkFlowAppServicesApplication.class
+com/sowermate/workflow/constants/package-info.class
+com/sowermate/workflow/entities/package-info.class
+com/sowermate/workflow/repositories/package-info.class
+com/sowermate/workflow/aops/package-info.class
+com/sowermate/workflow/dtos/package-info.class
+com/sowermate/workflow/exceptions/package-info.class
+com/sowermate/workflow/controllers/package-info.class
+com/sowermate/workflow/projections/package-info.class
