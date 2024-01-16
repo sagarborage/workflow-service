@@ -2,6 +2,7 @@ package com.sowermate.report.controllers;
 
 import com.sowermate.report.dtos.InvoiceDto;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class PdfGenerationController {
     private PdfGenerationService pdfGenerationService;
 
     @PostMapping
-    public ResponseEntity<String> generateInvoicePdf(@RequestBody InvoiceDto invoiceDto) throws IOException {
-        String invoiceUrl = pdfGenerationService.generateInvoice(invoiceDto);
+    public ResponseEntity<String> generateInvoicePdf(@RequestBody ProFormaInvoiceValue piValue) throws IOException {
+        String invoiceUrl = pdfGenerationService.generateInvoice(piValue);
         return new ResponseEntity<>(invoiceUrl, HttpStatus.OK);
     }
 
