@@ -1,0 +1,96 @@
+package com.sowermate.user.services.impl;
+
+
+
+import com.sowermate.flexipunch.exceptions.ResourceNotFoundException;
+import com.sowermate.flexipunch.services.TenantService;
+import com.sowermate.user.entities.UserAuth;
+import com.sowermate.user.entities.UserRole;
+import com.sowermate.user.repositories.UserAuthRepository;
+import com.sowermate.user.services.UserAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+/**
+ * <h1>UserAuthServiceImpl class</h1>
+ * Provides the blueprint for UserAuth-related operations which include.
+ *
+ * @author asalunkhe
+ * @version 1.0
+ * @since 2023-11-20
+ */
+@Service
+public class UserAuthServiceImpl implements UserAuthService {
+    @Autowired
+    private UserAuthRepository userAuthRepository;
+    @Autowired
+    private TenantService tenantService;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserAuth registerUser(String username, UserRole role, String tenantUuid, Boolean isActive, String createdBy, String lastUpdatedBy) {
+        Long partyId = this.tenantService.getTenantId(tenantUuid);
+        UserAuth userAuth = new UserAuth();
+        userAuth.setTenantId(partyId);
+        userAuth.setUsername(username);
+        userAuth.setRole(role);
+        userAuth.setCreatedBy(createdBy);
+        userAuth.setIsEnabled(false);
+        userAuth.setIsEmailVerified(false);
+        userAuth.setIsActive(isActive);
+        userAuth.setFailedAttempt(1L);
+        userAuth.setIsAccountNonExpired(true);
+        userAuth.setIsAccountNonLocked(true);
+        userAuth.setIsCredentialsNonExpired(true);
+        userAuth.setLastUpdatedBy(lastUpdatedBy);
+        return this.userAuthRepository.save(userAuth);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserAuth findByUsername(String username) {
+        return this.userAuthRepository.findByUsername(username);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long getUserId(String uuid) {
+        return this.userAuthRepository.findIdByUuid(uuid).orElseThrow(() -> new ResourceNotFoundException("User", "uuid", uuid));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserAuth getUserAuth(String uuid) {
+        UserAuth userAuth = this.userAuthRepository.findUserAuthByUuid(uuid);
+        if (userAuth == null)
+            throw new ResourceNotFoundException("User", "uuid", uuid);
+        return userAuth;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getUserUuid(String email) {
+        return this.userAuthRepository.findUuidByUsername(email).orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+    }
+
+}

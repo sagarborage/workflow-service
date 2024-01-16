@@ -17,15 +17,51 @@
 	<description>This is work flow service</description>
     <modules>
         <module>base-services</module>
-		<module>workflow-app-services</module>
 		<module>image-processing-services</module>
 		<module>report-services</module>
+		<module>notification-services</module>
+		<module>user-services</module>
+		<module>workflow-app-services</module>
     </modules>
 	<properties>
 		<java.version>17</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.sowermate.workflow</groupId>
+				<artifactId>base-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sowermate.workflow</groupId>
+				<artifactId>image-processing-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sowermate.workflow</groupId>
+				<artifactId>report-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sowermate.workflow</groupId>
+				<artifactId>notification-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sowermate.workflow</groupId>
+				<artifactId>user-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+<!--			<dependency>
+				<groupId>com.sowermate.workflow</groupId>
+				<artifactId>workflow-app-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>-->
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

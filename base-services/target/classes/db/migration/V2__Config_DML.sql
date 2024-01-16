@@ -11,7 +11,7 @@ INSERT INTO `pi_type` ( `uuid`, `tenant_id`, `pi_type_name`, `created_dttm`, `la
 ('a5596194-a483-4240-aa73-3448c78176a1', 1, 'MM', '2023-09-09 14:11:15', '2023-09-09 14:11:15', 'ADMIN', NULL, 1),
 ('16254a71-ac1d-4d68-8200-85c813426af3', 1, 'SQFT', '2023-09-09 14:11:25', '2023-09-09 14:11:25', 'ADMIN', NULL, 1);
 
---UUID()
+-- UUID()
 
 INSERT INTO `company_type` (`uuid`, `tenant_id`, `type`, `description`, `is_active`) VALUES
 ("d03351ec-3c0d-11ee-962a-14abc5fbd6fa", 1, 'Self', 'subsidiary', 1),

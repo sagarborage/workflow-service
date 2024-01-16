@@ -29,5 +29,20 @@
             <artifactId>image-processing-services</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sowermate.workflow</groupId>
+            <artifactId>report-services</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sowermate.workflow</groupId>
+            <artifactId>notification-services</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sowermate.workflow</groupId>
+            <artifactId>user-services</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
