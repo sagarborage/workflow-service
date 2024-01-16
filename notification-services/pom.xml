@@ -21,7 +21,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.sowermate.flexipunch</groupId>
+            <groupId>com.sowermate.workflow</groupId>
             <artifactId>base-services</artifactId>
             <version>${project.version}</version>
         </dependency>

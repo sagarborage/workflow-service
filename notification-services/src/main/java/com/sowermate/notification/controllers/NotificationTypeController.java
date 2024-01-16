@@ -1,10 +1,10 @@
 package com.sowermate.notification.controllers;
 
 
-import com.sowermate.flexipunch.common.constants.StatusConstants;
-import com.sowermate.flexipunch.exceptions.ApiResponse;
+import com.sowermate.base.common.constants.StatusConstants;
 import com.sowermate.notification.dtos.NotificationTypeDto;
 import com.sowermate.notification.services.NotificationTypeService;
+import com.sowermate.tenantService.payload.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -101,7 +101,7 @@ public class NotificationTypeController {
     @DeleteMapping("/soft/{notificationTypeUuid}")
     public ResponseEntity<ApiResponse> softDeleteRequest(@PathVariable String notificationTypeUuid) {
         this.notificationTypeService.softDeleteNotificationType(notificationTypeUuid);
-        return new ResponseEntity<>(new ApiResponse("NotificationType Deleted successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("NotificationType Deleted successfully", true, HttpStatus.OK), HttpStatus.OK);
     }
 
     /**
@@ -113,7 +113,7 @@ public class NotificationTypeController {
     @DeleteMapping("/hard/{notificationTypeUuid}")
     public ResponseEntity<ApiResponse> hardDeleteRequest(@PathVariable String notificationTypeUuid) {
         this.notificationTypeService.hardDeleteNotificationType(notificationTypeUuid);
-        return new ResponseEntity<>(new ApiResponse("NotificationType Deleted successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("NotificationType Deleted successfully", true, HttpStatus.OK), HttpStatus.OK);
     }
 
 }

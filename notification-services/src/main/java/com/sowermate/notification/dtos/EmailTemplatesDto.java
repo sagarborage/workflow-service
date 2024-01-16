@@ -1,6 +1,6 @@
 package com.sowermate.notification.dtos;
 
-import com.sowermate.flexipunch.dtos.BaseDto;
+import com.sowermate.base.dtos.BaseDto;
 import lombok.Getter;
 import lombok.Setter;
 

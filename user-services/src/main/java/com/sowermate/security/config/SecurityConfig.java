@@ -10,6 +10,7 @@ import com.sowermate.security.handlers.CustomResponseHeaderWriter;
 import com.sowermate.security.handlers.TokenAuthenticationSuccessHandler;
 import com.sowermate.security.services.CustomTokenService;
 import com.sowermate.security.services.CustomUserDetailsService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -102,4 +103,8 @@ public class SecurityConfig {
         return objectMapper;
     }
 
+    @Bean
+    public ModelMapper ModelMapper() {
+        return new ModelMapper();
+    }
 }

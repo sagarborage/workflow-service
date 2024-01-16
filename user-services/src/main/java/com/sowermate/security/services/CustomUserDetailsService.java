@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface CustomUserDetailsService extends UserDetailsService {
     UserAuth registerUser(String username, String password, UserRole role);
     UserAuth findByUsername(String username);
-    UserAuthSuccessDetailsProjection findUserAuthSuccessDetails(String username);
+    /*UserAuthSuccessDetailsProjection findUserAuthSuccessDetails(String username);
 
-
+*/
 }

@@ -1,14 +1,14 @@
 package com.sowermate.notification.services.impl;
 
-import com.sowermate.flexipunch.common.constants.DropdownConstants;
-import com.sowermate.flexipunch.common.constants.StatusConstants;
-import com.sowermate.flexipunch.exceptions.InvalidInputException;
-import com.sowermate.flexipunch.exceptions.ResourceNotFoundException;
+import com.sowermate.base.common.constants.DropdownConstants;
+import com.sowermate.base.common.constants.StatusConstants;
+import com.sowermate.base.exceptions.ResourceNotFoundException;
 import com.sowermate.notification.dtos.NotificationTypeDto;
 import com.sowermate.notification.entities.NotificationType;
 import com.sowermate.notification.projections.NotificationTypeDropdownProjection;
 import com.sowermate.notification.repositories.NotificationTypeRepository;
 import com.sowermate.notification.services.NotificationTypeService;
+import com.sowermate.tenantService.exceptions.InvalidInputException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

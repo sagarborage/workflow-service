@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.base.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.value.TenantValue;
 import com.sowermate.tenantService.repositories.TenantRepository;
@@ -55,4 +56,17 @@ public class TenantServiceImpl implements TenantService {
         return tenantRepository.findByUuid(tenantUuid).toDTO();
     }
 
+
+    /**
+     * Retrieves the ID of a tenant based on its UUID.
+     *
+     * @param tenantUuid The UUID of the tenant for which the ID is being retrieved.
+     * @return The ID of the tenant if found, or throws a ResourceNotFoundException if not found.
+     * @throws com.sowermate.base.exceptions.ResourceNotFoundException If the tenant with the specified UUID is not found.
+     */
+    @Override
+    public Long getTenantId(String tenantUuid) {
+        return this.tenantRepository.findIdByUuid(tenantUuid)
+                .orElseThrow(() -> new ResourceNotFoundException("tenant", "tenantUuid", tenantUuid));
+    }
 }

@@ -54,9 +54,9 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
     public UserAuth findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
+/*
     @Override
     public UserAuthSuccessDetailsProjection findUserAuthSuccessDetails(String username) {
         return userRepository.getUserAuthSuccessDetailsProjectionByUsername(username);
-    }
+    }*/
 }

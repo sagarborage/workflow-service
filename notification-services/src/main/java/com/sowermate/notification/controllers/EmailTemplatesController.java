@@ -1,10 +1,10 @@
 package com.sowermate.notification.controllers;
 
 
-import com.sowermate.flexipunch.common.constants.StatusConstants;
-import com.sowermate.flexipunch.exceptions.ApiResponse;
+import com.sowermate.base.common.constants.StatusConstants;
 import com.sowermate.notification.dtos.EmailTemplatesDto;
 import com.sowermate.notification.services.EmailTemplatesService;
+import com.sowermate.tenantService.payload.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +97,7 @@ public class EmailTemplatesController {
     @DeleteMapping("/{uuid}")
     public ResponseEntity<ApiResponse> softDeleteEmailTemplate(@PathVariable String uuid) {
         this.emailTemplatesService.softDeleteEmailTemplate(uuid);
-        return new ResponseEntity<>(new ApiResponse("Email Template Deleted !!", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Email Template Deleted !!", true, HttpStatus.OK), HttpStatus.OK);
     }
 
 }

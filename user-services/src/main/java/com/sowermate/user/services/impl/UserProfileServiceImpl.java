@@ -1,9 +1,5 @@
 package com.sowermate.user.services.impl;
 
-
-import com.sowermate.flexipunch.dtos.EmployeeDetailsDto;
-import com.sowermate.flexipunch.entities.EmployeeDetails;
-import com.sowermate.flexipunch.repositories.EmployeeDetailsRepository;
 import com.sowermate.notification.dtos.EmailRequestDto;
 import com.sowermate.notification.entities.EmailContentType;
 import com.sowermate.notification.services.EmailRequestService;
@@ -32,8 +28,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Autowired
     private UserAuthService userAuthService;
-    @Autowired
-    private EmployeeDetailsRepository employeeDetailsRepository;
+   /* @Autowired
+    private EmployeeDetailsRepository employeeDetailsRepository;*/
     @Autowired
     private ModelMapper modelMapper;
 
@@ -47,7 +43,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     private EmailRequestService emailRequestService;
 
 
-    @Override
+    /*@Override
     @Transactional
     public EmployeeDetailsDto createUserProfile(EmployeeDetailsDto employeeDetailsDto) {
         UserAuth userAuth = userAuthService.registerUser(employeeDetailsDto.getPrimaryEmail(), UserRole.user, employeeDetailsDto.getTenantUuid(), employeeDetailsDto.getIsActive(), employeeDetailsDto.getCreatedBy(), employeeDetailsDto.getLastUpdatedBy());
@@ -66,7 +62,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         userProfileDtoData.setUserUuid(userAuth.getUuid());
         userProfileDtoData.setTenantUuid(employeeDetailsDto.getTenantUuid());
         return userProfileDtoData;
-    }
+    }*/
 
     private void saveConfirmationCode(UserAuth userAuth, String confirmationCode) {
         ConfirmationCode code = new ConfirmationCode();
@@ -79,7 +75,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         confirmationCodeRepository.save(code);
     }
 
-    private static EmailRequestDto getEmailRequestDto(EmployeeDetails userProfile, String confirmationCode) {
+    /*private static EmailRequestDto getEmailRequestDto(EmployeeDetails userProfile, String confirmationCode) {
         Map<String, String> map = new HashMap<>();
         map.put(USERNAME, userProfile.getFirstName());
         map.put(LINK, ACCOUNT_CONFIRMATION_LINK);
@@ -95,5 +91,5 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public EmployeeDetailsDto updateUserProfile(EmployeeDetailsDto employeeDetailsDto) {
         return null;
-    }
+    }*/
 }

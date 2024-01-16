@@ -1,6 +1,6 @@
 package com.sowermate.user.entities;
 
-import com.sowermate.flexipunch.entities.BaseId;
+import com.sowermate.base.entities.BaseId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

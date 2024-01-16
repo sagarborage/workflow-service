@@ -1,7 +1,6 @@
 package com.sowermate.user.entities;
 
-import com.sowermate.flexipunch.entities.Base;
-import com.sowermate.flexipunch.entities.BaseId;
+import com.sowermate.base.entities.BaseId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,12 +11,12 @@ import java.time.LocalDateTime;
 
 /**
  * <h1>ConfirmationCode Class</h1>
- * This ConfirmationCode represents a ConfirmationCode entity in the application. It extends the {@link Base} class
+ * This ConfirmationCode represents a ConfirmationCode entity in the application. It extends the {@link BaseId} class
  * which provides common entity fields such as UUID, creation and update timestamps.
  *
  * @author ajadhav
  * @version 1.0
- * @see Base
+ * @see BaseId
  * @since 2023-12-15
  */
 @Getter

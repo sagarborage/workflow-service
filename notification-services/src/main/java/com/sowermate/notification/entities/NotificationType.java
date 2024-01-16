@@ -1,7 +1,7 @@
 package com.sowermate.notification.entities;
 
 
-import com.sowermate.flexipunch.entities.Base;
+import com.sowermate.base.entities.Base;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

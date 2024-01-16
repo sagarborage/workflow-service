@@ -1,6 +1,6 @@
 package com.sowermate.security.filters;
 
-import com.sowermate.flexipunch.entities.AuthenticatedUserDetails;
+import com.sowermate.base.entities.AuthenticatedUserDetails;
 import com.sowermate.security.config.AuthConstants;
 import com.sowermate.security.config.UrlConfig;
 import com.sowermate.security.handlers.AuthenticationFailureHandler;

@@ -1,14 +1,12 @@
+/*
 package com.sowermate.user.services.impl;
 
-
-import com.sowermate.flexipunch.entities.EmployeeDetails;
-import com.sowermate.flexipunch.exceptions.ResourceNotFoundException;
-import com.sowermate.flexipunch.repositories.EmployeeDetailsRepository;
-import com.sowermate.flexipunch.services.TenantService;
+import com.sowermate.base.exceptions.ResourceNotFoundException;
 import com.sowermate.notification.constants.UrlConstants;
 import com.sowermate.notification.dtos.EmailRequestDto;
 import com.sowermate.notification.entities.EmailContentType;
 import com.sowermate.notification.services.EmailRequestService;
+import com.sowermate.tenantService.services.TenantService;
 import com.sowermate.user.dtos.ChangePasswordDto;
 import com.sowermate.user.dtos.ForgotPasswordRequestDto;
 import com.sowermate.user.dtos.LoginDto;
@@ -54,8 +52,6 @@ public class UserServiceImpl implements UserService {
     @Lazy
     @Autowired
     private UserProfileService userProfileService;
-    @Autowired
-    private EmployeeDetailsRepository userProfileRepository;
     @Autowired
     VerificationTokenRepository verificationTokenRepository;
 
@@ -216,9 +212,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /**
+    */
+/**
      * {@inheritDoc}
-     */
+     *//*
+
     @Override
     public boolean validateOtpAndUpdateOtpStatus(String newEmail, String enteredOtp) {
         Optional<ConfirmationCode> optionalEmailOtp = confirmationCodeRepository.findByCodeAndIsUsedIsFalse(enteredOtp);
@@ -235,10 +233,12 @@ public class UserServiceImpl implements UserService {
                     auth.setIsEmailVerified(true);
                     auth.setUsername(newEmail);
                     this.userAuthRepository.save(auth);
-                    Optional<EmployeeDetails> userProfile = userProfileRepository.findEmployeeDetailsByUserId(confirmationCode.getUserId());
+                    */
+/*Optional<EmployeeDetails> userProfile = userProfileRepository.findEmployeeDetailsByUserId(confirmationCode.getUserId());
                     EmployeeDetails profile = userProfile.get();
                     profile.setEmail(newEmail);
-                    this.userProfileRepository.save(profile);
+                    this.userProfileRepository.save(profile);*//*
+
                     return true;
                 } else {
                     return false;
@@ -262,9 +262,11 @@ public class UserServiceImpl implements UserService {
         return requestDto;
     }
 
-    /**
+    */
+/**
      * {@inheritDoc}
-     */
+     *//*
+
     @Override
     public void sendOtp(String email, Long userId) {
         String otp = confirmationCodeUtils.generateConfirmationCode();
@@ -278,3 +280,4 @@ public class UserServiceImpl implements UserService {
         confirmationCodeRepository.save(confirmationCode);
     }
 }
+*/

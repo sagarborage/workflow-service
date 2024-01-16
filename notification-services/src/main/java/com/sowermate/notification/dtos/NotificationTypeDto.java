@@ -1,8 +1,8 @@
 package com.sowermate.notification.dtos;
 
 
-import com.sowermate.flexipunch.common.constants.ValidationConstants;
-import com.sowermate.flexipunch.dtos.BaseDto;
+import com.sowermate.base.common.constants.ValidationConstants;
+import com.sowermate.base.dtos.BaseDto;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;

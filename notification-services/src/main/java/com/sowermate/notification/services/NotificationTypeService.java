@@ -1,7 +1,6 @@
 package com.sowermate.notification.services;
 
 
-import com.sowermate.flexipunch.exceptions.ResourceNotFoundException;
 import com.sowermate.notification.dtos.NotificationTypeDto;
 
 import java.util.List;
@@ -67,7 +66,7 @@ public interface NotificationTypeService {
      * Retrieves the ID of a NotificationType based on its UUID.
      * @param notificationTypeUuid The UUID of the NotificationType for which the ID is being retrieved.
      * @return The ID of the NotificationType if found, or throws a ResourceNotFoundException if not found.
-     * @throws ResourceNotFoundException If the NotificationType with the specified UUID is not found.
+     * @throws com.sowermate.base.exceptions.ResourceNotFoundException If the NotificationType with the specified UUID is not found.
      */
     public Long getNotificationTypeId(String notificationTypeUuid);
 }

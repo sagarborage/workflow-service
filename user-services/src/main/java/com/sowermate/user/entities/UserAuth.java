@@ -1,6 +1,6 @@
 package com.sowermate.user.entities;
 
-import com.sowermate.flexipunch.entities.Base;
+import com.sowermate.base.entities.Base;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,9 +1,7 @@
 package com.sowermate.user.services.impl;
 
-
-
-import com.sowermate.flexipunch.exceptions.ResourceNotFoundException;
-import com.sowermate.flexipunch.services.TenantService;
+import com.sowermate.base.exceptions.ResourceNotFoundException;
+import com.sowermate.tenantService.services.TenantService;
 import com.sowermate.user.entities.UserAuth;
 import com.sowermate.user.entities.UserRole;
 import com.sowermate.user.repositories.UserAuthRepository;

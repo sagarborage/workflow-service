@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -20,6 +21,10 @@ public interface TenantRepository extends JpaRepository <TenantEntity, String> {
     @Modifying
     @Query("UPDATE TenantEntity t SET t.isActive = false WHERE t.uuid = :tenantUuid")
     void softDelete(@Param("tenantUuid") String tenantUuid);
+
+ @Query("select tenant.id from TenantEntity tenant where tenant.uuid = :uuid")
+ Optional<Long> findIdByUuid(@Param("uuid") String uuid);
+
     /*@Modifying
     @Query("DELETE FROM TenantEntity t WHERE t.tenantUuid = :tenantUuid")
     public int deleteByTenantUuid(@Param("tenantUuid")String tenantUuid);

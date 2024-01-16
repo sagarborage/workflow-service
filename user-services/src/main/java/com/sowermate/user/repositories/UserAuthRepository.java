@@ -76,6 +76,7 @@ public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
      */
     @Query("select ua.id from UserAuth ua where ua.username = :email")
     Optional<Long> findIdByUsername(@Param("email") String email);
+/*
 
 
     String USER_AUTH_QUERY = "SELECT ed.firstName AS firstName, " +
@@ -90,7 +91,7 @@ public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
             "t.uuid AS companyUuid, " +
             "t.tenantName AS companyName, " +
             "t.address AS companyAddress " +
-            "FROM Tenant t " +
+            "FROM TenantEntity t " +
             "JOIN Countries ct ON ct.id = t.countryId " +
             "JOIN UserAuth ua ON ua.tenantId = t.id  " +
             "JOIN EmployeeDetails ed ON ed.userId = ua.id  " +
@@ -98,6 +99,7 @@ public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
 
     @Query(USER_AUTH_QUERY)
     UserAuthSuccessDetailsProjection getUserAuthSuccessDetailsProjectionByUsername(@Param("username") String username);
+*/
 
     @Query("SELECT ua.role from UserAuth ua where ua.id = :userId")
     Optional<UserRole> getRoleByUserId(@Param("userId") Long userId);

@@ -28,7 +28,7 @@ public class AuthenticationSuccessHandler {
         JwtResponse jwtResponse = new JwtResponse();
 
         String username = ((org.springframework.security.core.userdetails.User) authResult.getPrincipal()).getUsername();
-        UserAuthSuccessDetailsProjection userAuthProfile = customUserDetailsService.findUserAuthSuccessDetails(username);
+        /*UserAuthSuccessDetailsProjection userAuthProfile = customUserDetailsService.findUserAuthSuccessDetails(username);
         if (!ObjectUtils.isEmpty(userAuthProfile)) {
 
             jwtResponse.setIso2Code(userAuthProfile.getIso2Code());
@@ -43,7 +43,7 @@ public class AuthenticationSuccessHandler {
             jwtResponse.setAccountNonExpired(userAuthProfile.getIsAccountNonExpired());
             jwtResponse.setAccountNonLocked(userAuthProfile.getIsAccountNonLocked());
 
-        }
+        }*/
 
         List<String> roles = authResult.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

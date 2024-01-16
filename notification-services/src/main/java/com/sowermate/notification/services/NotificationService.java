@@ -1,7 +1,6 @@
 package com.sowermate.notification.services;
 
 
-import com.sowermate.flexipunch.exceptions.ResourceNotFoundException;
 import com.sowermate.notification.dtos.NotificationDto;
 import com.sowermate.notification.entities.Notification;
 
@@ -73,7 +72,7 @@ public interface NotificationService {
      * Retrieves the ID of a Notification based on its UUID.
      * @param notificationUuid The UUID of the Notification for which the ID is being retrieved.
      * @return The ID of the Notification if found, or throws a ResourceNotFoundException if not found.
-     * @throws ResourceNotFoundException If the party with the specified UUID is not found.
+     * @throws com.sowermate.base.exceptions.ResourceNotFoundException If the party with the specified UUID is not found.
      */
     public Long getNotificationId(String notificationUuid);
 }

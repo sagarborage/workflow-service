@@ -1,9 +1,9 @@
 package com.sowermate.notification.controllers;
 
-import com.sowermate.flexipunch.common.constants.StatusConstants;
-import com.sowermate.flexipunch.exceptions.ApiResponse;
+import com.sowermate.base.common.constants.StatusConstants;
 import com.sowermate.notification.dtos.NotificationDto;
 import com.sowermate.notification.services.NotificationService;
+import com.sowermate.tenantService.payload.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -109,7 +109,7 @@ public class NotificationController {
         this.notificationService.softDeleteNotification(notificationUuid, notificationTypeUuid);
 
 
-        return new ResponseEntity<>(new ApiResponse("Notification Deleted successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Notification Deleted successfully", true, HttpStatus.OK), HttpStatus.OK);
     }
 
     /**
@@ -123,7 +123,7 @@ public class NotificationController {
         this.notificationService.hardDeleteNotification(notificationUuid, notificationTypeUuid);
 
 
-        return new ResponseEntity<>(new ApiResponse("Notification Deleted successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Notification Deleted successfully", true, HttpStatus.OK), HttpStatus.OK);
     }
 
 }
