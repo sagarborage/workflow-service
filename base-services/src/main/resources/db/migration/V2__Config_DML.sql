@@ -56,12 +56,14 @@ INSERT INTO `service_rate` (`uuid`, `tenant_id`, `name`, `rate`, `created_dateti
 INSERT INTO `additional_charges` (`uuid`, `tenant_id`, `extra_mm`, `insurance`, `admin_charges`, `forwarding_charges`, `gst`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('02987ac2-0e69-4a99-b727-b63345ff246f', 1, 11.00, 11.00, 11.00, 11.00, 11.00, '2023-10-17 11:45:46', '2023-10-17 11:45:48', 'ADMIN', 'ADMIN', 1);
 
-INSERT INTO `user` (`uuid`, `tenant_id`, `role_id`, `name`, `user_name`, `password`, `salt`, `mobile_number`, `email_id`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('3376c86c-ec01-4fc5-bb7e-b6a433fa9522', 1, 1, 'Optimize user', 'Optimize', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1),
-('f47ac10b-58cc-4372-a567-0e02b2c3d479', 1, 2, 'Cutting user', 'Cutting', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1),
-('38400000-8cf0-11bd-b23e-10b96e4ef00d', 1, 3, 'Toughen user', 'Toughen', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1),
-('550e8400-e29b-41d4-a716-446655440000', 1, 4, 'Dispatch user', 'Dispatch', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1),
-('123e4567-e89b-12d3-a456-426655440000', 1, 5, 'PI user', 'ProformaInvoice', 'test', 'test', '9049989010', 'abc@abc.com', '2023-10-19 10:47:02', '2023-10-19 10:47:02', 'ADMIN', 'ADMIN', 1);
+INSERT INTO `user_auth` (`id`, `uuid`, `tenant_id`, `role_id`, `first_name`, `last_name`, `phone`, `username`, `password_hash`, `is_enabled`, `is_email_verified`, `is_phone_verified`, `is_account_non_expired`,
+`is_account_non_locked`, `is_credentials_non_expired`, `failed_attempt`, `is_active`, `created_by`, `created_datetime`, `last_updated_by`, `last_updated_datetime`, `version`) VALUES
+(1, '39109bf5-bd7f-4d61-84a1-e2d78b160078', 1, 1, 'Optimize', 'Borage', '9322861801', 'Optimize@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(2, '39109bf5-bd7f-4d61-84a1-e2d78b160079', 1, 2, 'Cutting', 'Borage', '9322861802', 'Cutting@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(3, '39109bf5-bd7f-4d61-84a1-e2d78b160070', 1, 3, 'Toughen', 'Borage', '9322861803', 'Toughen@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(4, '39109bf5-bd7f-4d61-84a1-e2d78b160071', 1, 4, 'Dispatch', 'Borage', '9322861804', 'Dispatch@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(5, '39109bf5-bd7f-4d61-84a1-e2d78b160072', 1, 5, 'ProformaInvoice', 'Borage', '9322861805', 'ProformaInvoice@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1);
+
 
 INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('lsn8e7f7-ghej-4f2d-b303-dje947a25fkd', 1, 'Call', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),
