@@ -1,8 +1,0 @@
-com/sowermate/report/services/PdfGenerationService.class
-com/sowermate/report/ReportServicesApplication.class
-com/sowermate/report/controllers/PdfGenerationController.class
-com/sowermate/report/projections/InvoicePdfProjection.class
-com/sowermate/report/services/impl/PdfGenerationServiceImpl.class
-com/sowermate/report/repositories/InvoiceJoinRepository.class
-com/sowermate/report/utils/DateInfo.class
-com/sowermate/report/dtos/InvoiceDto.class

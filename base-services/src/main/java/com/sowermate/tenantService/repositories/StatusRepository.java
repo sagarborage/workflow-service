@@ -18,11 +18,11 @@ public interface StatusRepository extends JpaRepository<StatusEntity, String> {
     @Query("SELECT s FROM StatusEntity s " +
             "JOIN s.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND s.statusUuid = :statusUuid")
-    public StatusEntity findByTenantEntity_UuidAndStatusUuid(@Param("tenantUuid") String tenantUuid, @Param("statusUuid") String statusUuid);
+            "AND s.uuid = :uuid")
+    public StatusEntity findByTenantEntity_UuidAndStatusUuid(@Param("tenantUuid") String tenantUuid, @Param("uuid") String statusUuid);
     @Transactional
     @Modifying
-    @Query("UPDATE StatusEntity s SET s.isActive = false WHERE s.statusUuid = :statusUuid")
+    @Query("UPDATE StatusEntity s SET s.isActive = false WHERE s.uuid = :statusUuid")
     void softDelete(@Param("statusUuid") String statusUuid);
 
     public List<StatusEntity> findAllByTenantEntity_Uuid(String tenantUuid);

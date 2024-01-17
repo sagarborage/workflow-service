@@ -1,6 +1,6 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

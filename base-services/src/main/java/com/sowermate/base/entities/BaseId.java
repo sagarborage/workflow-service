@@ -2,8 +2,11 @@ package com.sowermate.base.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -19,7 +22,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseId {
+@NoArgsConstructor
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
+public abstract class BaseId implements Serializable {
 
     /**
      * The ID of the class is auto increment and Unique.
@@ -32,7 +37,7 @@ public class BaseId {
     /**
      * The UUID of the class is auto generated and Unique.
      */
-    @Column(name = "uuid")
+    @Column(name = "uuid", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String uuid;
 
     @PrePersist

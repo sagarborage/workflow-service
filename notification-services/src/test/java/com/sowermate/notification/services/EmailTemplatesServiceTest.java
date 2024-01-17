@@ -110,9 +110,9 @@ class EmailTemplatesServiceTest {
         emailTemplatesDto.setContent("language");
         emailTemplatesDto.setIsActive(true);
         emailTemplatesDto.setCreatedBy("anil");
-        emailTemplatesDto.setCreatedDatetime(LocalDateTime.of(2023, 10, 26, 10, 3));
+        emailTemplatesDto.setCreatedDateTime(LocalDateTime.of(2023, 10, 26, 10, 3));
         emailTemplatesDto.setLastUpdatedBy("jay");
-        emailTemplatesDto.setLastUpdatedDatetime(LocalDateTime.of(2023, 10, 26, 10, 3));
+        emailTemplatesDto.setLastUpdatedDateTime(LocalDateTime.of(2023, 10, 26, 10, 3));
         return emailTemplatesDto;
     }
 }

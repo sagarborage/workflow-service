@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +14,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProFormaInvoiceValue extends BaseValue {
+public class ProFormaInvoiceValue extends BaseDto {
 
     private Long proFormaInvoiceId;
     private String proFormaInvoiceUuid;

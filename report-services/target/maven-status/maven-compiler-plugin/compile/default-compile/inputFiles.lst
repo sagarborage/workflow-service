@@ -1,8 +1,0 @@
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/repositories/InvoiceJoinRepository.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/ReportServicesApplication.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/utils/DateInfo.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/controllers/PdfGenerationController.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/projections/InvoicePdfProjection.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/dtos/InvoiceDto.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/services/PdfGenerationService.java
-/home/jaydeep/Public/Sowermate/Projects/WorkFlow/workflow-parent/report-services/src/main/java/com/sowermate/report/services/impl/PdfGenerationServiceImpl.java

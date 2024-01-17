@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.GlassTypeEntity;
 import lombok.Data;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GlassTypeValue extends BaseValue {
+public class GlassTypeValue extends BaseDto {
 
     private Long glassTypeId;
     private String tenantUuid;

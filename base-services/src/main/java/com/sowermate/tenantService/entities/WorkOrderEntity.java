@@ -1,17 +1,13 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.Base;
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.WorkOrderValue;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import jakarta.persistence.*;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter

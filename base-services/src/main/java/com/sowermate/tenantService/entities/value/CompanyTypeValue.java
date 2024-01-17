@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.CompanyTypeEntity;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -10,7 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CompanyTypeValue extends BaseValue {
+public class CompanyTypeValue extends BaseDto {
     private Long companyTypeId;
     private String type;
     private String description;

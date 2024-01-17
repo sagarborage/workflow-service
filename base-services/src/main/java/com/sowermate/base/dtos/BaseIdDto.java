@@ -1,7 +1,9 @@
 package com.sowermate.base.dtos;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <h1>BaseIdDto Class</h1>
@@ -15,6 +17,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class BaseIdDto {
 
     /**

@@ -28,7 +28,7 @@ public class StatusServiceImpl implements StatusService {
     public StatusValue createStatus(StatusValue statusValue) {
         StatusEntity statusEntity=new StatusEntity();
         BeanUtils.copyProperties(statusValue, statusEntity);
-        statusEntity.setStatusUuid(CommonUtils.generateUUID());
+        statusEntity.setUuid(CommonUtils.generateUUID());
         statusEntity.setTenantEntity(tenantRepository.findByUuid(statusValue.getTenantUuid()));
         BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
         return statusValue;
@@ -40,14 +40,14 @@ public class StatusServiceImpl implements StatusService {
         BeanUtils.copyProperties(statusValue, statusEntity);
 
         // Check that UUID is not null before searching for the tenant
-        if (statusValue.getStatusUuid() != null) {
-            StatusEntity matchingStatus = statusRepository.findByTenantEntity_UuidAndStatusUuid(statusValue.getTenantUuid(),statusValue.getStatusUuid());
+        if (statusValue.getUuid() != null) {
+            StatusEntity matchingStatus = statusRepository.findByTenantEntity_UuidAndStatusUuid(statusValue.getTenantUuid(),statusValue.getUuid());
             if (matchingStatus !=null) {
-                statusEntity.setStatusId(matchingStatus.getStatusId());
+                statusEntity.setId(matchingStatus.getId());
                 statusEntity.setTenantEntity(tenantRepository.findByUuid(statusValue.getTenantUuid()));
                 BeanUtils.copyProperties(statusRepository.save(statusEntity), statusValue);
             } else {
-                throw new Exception("No tenant found with UUID " + statusValue.getStatusUuid());
+                throw new Exception("No tenant found with UUID " + statusValue.getUuid());
             }
         } else {
             throw new Exception("UUID cannot be null");

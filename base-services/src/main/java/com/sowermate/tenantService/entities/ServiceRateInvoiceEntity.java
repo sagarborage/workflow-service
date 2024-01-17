@@ -1,6 +1,6 @@
 package com.sowermate.tenantService.entities;
 
-import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -36,7 +36,7 @@ public class ServiceRateInvoiceEntity extends Base {
 
     public ServiceRateInvoiceValue toDTO() {
         return ServiceRateInvoiceValue.newBuilder()
-                .id(getId())
+                //.id(getId())
                 .uuid(getUuid())
                 .serviceRateUuid(getServiceRateEntity().getUuid())
                 .serviceRateName(getServiceRateEntity().getName())

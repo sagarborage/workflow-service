@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -124,9 +125,9 @@ class EmailTemplatesRepositoryTest {
         emailTemplates.setContent("m");
         emailTemplates.setIsActive(true);
         emailTemplates.setCreatedBy("anil");
-        emailTemplates.setCreatedDatetime(new Date());
+        emailTemplates.setCreatedDateTime(LocalDateTime.now());
         emailTemplates.setLastUpdatedBy("jay");
-        emailTemplates.setLastUpdatedDatetime(new Date());
+        emailTemplates.setLastUpdatedDateTime(LocalDateTime.now());
         return emailTemplates;
     }
 }

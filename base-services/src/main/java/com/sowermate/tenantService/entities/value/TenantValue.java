@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.TenantEntity;
 import lombok.Data;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TenantValue extends BaseValue {
+public class TenantValue extends BaseDto {
 
     private Long tenantId;
     private String uuid;

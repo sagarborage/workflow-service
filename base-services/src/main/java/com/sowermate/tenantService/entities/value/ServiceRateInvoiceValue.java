@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.ServiceRateInvoiceEntity;
 import lombok.Data;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ServiceRateInvoiceValue extends BaseValue {
+public class ServiceRateInvoiceValue extends BaseDto {
 
     private String serviceRateName;
     private String proFormaInvoiceUuid;
@@ -22,7 +23,7 @@ public class ServiceRateInvoiceValue extends BaseValue {
 
     public ServiceRateInvoiceEntity toEntity() {
         return ServiceRateInvoiceEntity.newBuilder()
-                .id(getId())
+                //.id(getId())
                 .uuid(getUuid())
                 .quantity(getQuantity())
                 .rate(getRate())

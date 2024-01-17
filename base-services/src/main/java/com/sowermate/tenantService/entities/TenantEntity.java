@@ -1,7 +1,6 @@
 package com.sowermate.tenantService.entities;
 
-
-import com.sowermate.tenantService.entities.common.Base;
+import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.TenantValue;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,7 +8,6 @@ import lombok.experimental.SuperBuilder;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -88,9 +86,6 @@ public class TenantEntity extends Base {
 
     @OneToMany(mappedBy = "tenantEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AddressTypeEntity> addressTypeEntities;//OK
-
-    @OneToMany(mappedBy = "tenantEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserEntity> userEntities;
 
     @OneToMany(mappedBy = "tenantEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoleTypeEntity> roleTypeEntities;
