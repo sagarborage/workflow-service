@@ -111,6 +111,7 @@ public class ProFormaInvoiceItemEntity extends Base {
     public ProFormaInvoiceItemValue toDTO() {
         return ProFormaInvoiceItemValue.newBuilder()
                 .proFormaInvoiceItemId(getId())
+                .proFormaInvoiceUuid(getProFormaInvoiceEntity().getUuid())
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .widthMeasurement(getWidthMeasurement())
