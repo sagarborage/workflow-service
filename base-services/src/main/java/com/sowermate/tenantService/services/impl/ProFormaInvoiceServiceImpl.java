@@ -112,6 +112,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .invoiceDate(tempProFormaInvoiceEntity.getInvoiceDate())
                 .createdDateTime(tempProFormaInvoiceEntity.getCreatedDateTime())
                 .createdBy(tempProFormaInvoiceEntity.getCreatedBy())
+                .isActive(tempProFormaInvoiceEntity.getIsActive())
+                .version(tempProFormaInvoiceEntity.getVersion())
                 .build();
         return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
     }

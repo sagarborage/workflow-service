@@ -73,6 +73,8 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                         proFormaInvoiceItemValue.getGlassSpecificationUuid()))
                 .createdDateTime(tempProFormaInvoiceItemEntity.getCreatedDateTime())
                 .createdBy(tempProFormaInvoiceItemEntity.getCreatedBy())
+                .isActive(tempProFormaInvoiceItemEntity.getIsActive())
+                .version(tempProFormaInvoiceItemEntity.getVersion())
                 .build();
         return proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity).toDTO();
     }
