@@ -5,6 +5,8 @@ import com.sowermate.user.entities.UserAuth;
 import com.sowermate.user.entities.UserRole;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.Optional;
+
 /**
  * <h1>UserAuthService Interface</h1>
  * Provides the blueprint for UserAuth-related operations which include.
@@ -54,4 +56,6 @@ public interface UserAuthService extends UserDetailsService {
      * @param email The email address of the user.
      */
     String getUserUuid(String email);
+
+    Optional<UserAuth> findByUserId(Long userId);
 }

@@ -26,19 +26,29 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Long> 
     /**
      * Finds a user profile by its UUID and associated user ID.
      *
-     * @param uuid   The UUID of the user profile to find.
-     * @param userId The ID of the user associated with the profile.
+     * @param tenantId   The tenant id.
+     * @param userAuthId The user auth id.
+     * @param userProfileUuid The user profile uuid.
      * @return The user profile matching the provided UUID and user ID, or null if not found.
      */
-    UserProfile findUserProfileByUuidAndUserId(String uuid, Long userId);
+    @Query("select up from UserProfile up " +
+            "JOIN UserAuth ua ON ua.id = up.userId " +
+            "JOIN TenantEntity te ON ua.tenantId = te.id " +
+            "where te.id = :tenantId AND ua.id= :userAuthId AND up.uuid = :userProfileUuid")
+    UserProfile findUserProfile(@Param("tenantId") Long tenantId, @Param("userProfileUuid") String userProfileUuid, @Param("userAuthId") Long userAuthId);
 
     /**
      * Finds all user profiles with the specified activity status.
      *
+     * @param tenantId The tenant id.
      * @param isActive The activity status of the user profiles to retrieve.
      * @return A list of user profiles with the specified activity status.
      */
-    List<UserProfile> findAllByIsActive(Boolean isActive);
+    @Query("select up from UserProfile up " +
+            "JOIN UserAuth ua ON ua.id = up.userId " +
+            "JOIN TenantEntity te ON ua.tenantId = te.id " +
+            "where te.id = :tenantId AND up.isActive = :isActive")
+    List<UserProfile> findAllByTenantIdAndIsActive(@Param("tenantId") Long tenantId, @Param("isActive") Boolean isActive);
 
     /**
      * Finds user profiles in a dropdown projection format.

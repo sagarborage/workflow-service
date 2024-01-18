@@ -47,22 +47,22 @@ public class UserProfileController {
      * @param userProfileDto The UserProfileDto containing the updated details of the user profile.
      * @return ResponseEntity<UserProfileDto> The updated user profile along with the HTTP status code.
      */
-    @PutMapping
-    public ResponseEntity<UserProfileDto> updateUserProfile(@Valid @RequestBody UserProfileDto userProfileDto) {
-        UserProfileDto update = this.userProfileService.updateUserProfile(userProfileDto);
+    @PutMapping("/{tenantUuid}")
+    public ResponseEntity<UserProfileDto> updateUserProfile(@PathVariable String tenantUuid, @Valid @RequestBody UserProfileDto userProfileDto) {
+        UserProfileDto update = this.userProfileService.updateUserProfile(tenantUuid, userProfileDto);
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
     /**
      * Retrieves a specific user profile based on the provided UUID and user UUID.
      *
-     * @param uuid     The UUID of the user profile to retrieve.
+     * @param tenantUuid     The tenant UUID.
      * @param userUuid The UUID of the user associated with the profile.
      * @return ResponseEntity<UserProfileDto> The retrieved user profile along with the HTTP status code.
      */
-    @GetMapping("/{uuid}")
-    public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String uuid, @RequestParam(name = "userUuid", required = true) String userUuid) {
-        UserProfileDto userProfileDto = this.userProfileService.getUserProfile(uuid, userUuid);
+    @GetMapping("/{tenantUuid}/{userUuid}")
+    public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String tenantUuid, @PathVariable String userUuid) {
+        UserProfileDto userProfileDto = this.userProfileService.getUserProfile(tenantUuid, userUuid);
         return new ResponseEntity<>(userProfileDto, HttpStatus.OK);
     }
 
@@ -73,9 +73,9 @@ public class UserProfileController {
      * @param status The status of the profiles to retrieve (default is StatusConstants.ALL).
      * @return ResponseEntity<List < UserProfileDto>> The list of retrieved user profiles along with the HTTP status code.
      */
-    @GetMapping
-    public ResponseEntity<List<UserProfileDto>> getAllUserProfile(@RequestParam(name = StatusConstants.REQUEST_PARAM_STATUS, defaultValue = StatusConstants.ALL) String status) {
-        List<UserProfileDto> userProfileDtoList = this.userProfileService.getAllUserProfile(status);
+    @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.GET)
+    public ResponseEntity<List<UserProfileDto>> getAllUserProfile(@PathVariable String tenantUuid, @RequestParam(name = StatusConstants.REQUEST_PARAM_STATUS, defaultValue = StatusConstants.ALL) String status) {
+        List<UserProfileDto> userProfileDtoList = this.userProfileService.getAllUserProfile(tenantUuid, status);
         return new ResponseEntity<>(userProfileDtoList, HttpStatus.OK);
     }
 
@@ -94,13 +94,13 @@ public class UserProfileController {
     /**
      * Soft deletes a user profile based on the provided UUID and user UUID.
      *
-     * @param uuid     The UUID of the user profile to soft delete.
+     * @param tenantUuid     The tenant uuid.
      * @param userUuid The UUID of the user associated with the profile.
      * @return ResponseEntity<ApiResponse> The response indicating the success of the soft deletion along with the HTTP status code.
      */
-    @DeleteMapping("/{uuid}")
-    public ResponseEntity<ApiResponse> softDeleteUserProfile(@PathVariable String uuid, @RequestParam(name = "userUuid", required = true) String userUuid) {
-        this.userProfileService.softDeleteUserProfile(uuid, userUuid);
+    @DeleteMapping("/{tenantUuid}/{userUuid}")
+    public ResponseEntity<ApiResponse> softDeleteUserProfile(@PathVariable String tenantUuid, @PathVariable String userUuid) {
+        this.userProfileService.softDeleteUserProfile(tenantUuid, userUuid);
         return new ResponseEntity<>(new ApiResponse("User profile deleted successfully", true), HttpStatus.OK);
     }
 

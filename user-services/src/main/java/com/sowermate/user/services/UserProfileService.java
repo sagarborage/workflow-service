@@ -29,10 +29,11 @@ public interface UserProfileService {
     /**
      * Updates an existing user profile based on the provided UserProfileDto.
      *
+     * @param tenantUuid
      * @param userProfileDto The UserProfileDto containing the updated details of the user profile.
      * @return The updated user profile as a UserProfileDto.
      */
-    UserProfileDto updateUserProfile(UserProfileDto userProfileDto);
+    UserProfileDto updateUserProfile(String tenantUuid, UserProfileDto userProfileDto);
 
     /**
      * Retrieves a specific user profile based on the provided UUID and user UUID.
@@ -47,10 +48,11 @@ public interface UserProfileService {
     /**
      * Retrieves all user profiles based on the specified status.
      *
-     * @param status The status of the user profiles to retrieve.
+     * @param tenantUuid
+     * @param status     The status of the user profiles to retrieve.
      * @return A list of user profiles as UserProfileDto objects.
      */
-    List<UserProfileDto> getAllUserProfile(String status);
+    List<UserProfileDto> getAllUserProfile(String tenantUuid, String status);
 
     List<UserProfileDto> getAllUserProfileByTenant(String tenantUuid);
 
@@ -68,7 +70,7 @@ public interface UserProfileService {
      * @param uuid     The UUID of the user profile to soft delete.
      * @param userUuid The UUID of the user associated with the profile.
      */
-    void softDeleteUserProfile(String uuid, String userUuid);
+    void softDeleteUserProfile(String tenantUuid, String userUuid);
 
     /**
      * Retrieves the ID of a user profile based on its UUID.

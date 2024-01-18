@@ -63,15 +63,6 @@ public class UserController {
             return new ResponseEntity<>(UNABLE_TO_SEND_CONFIRMATION_CODE_MESSAGE, HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
-        LoginDto data = this.userService.getLoginDto(loginDto);
-        if (data == null)
-            return new ResponseEntity<>(INVALID_CREDENTIALS_MESSAGE, HttpStatus.BAD_REQUEST);
-        else
-            return new ResponseEntity<>(data, HttpStatus.OK);
-    }
-
     @PutMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
         String result = this.userService.changePassword(changePasswordDto);

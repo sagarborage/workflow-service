@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * <h1>UserAuthServiceImpl class</h1>
  * Provides the blueprint for UserAuth-related operations which include.
@@ -95,6 +97,11 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public String getUserUuid(String email) {
         return this.userAuthRepository.findUuidByUsername(email).orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+    }
+
+    @Override
+    public Optional<UserAuth> findByUserId(Long userId) {
+        return this.userAuthRepository.findUserAuthById(userId);
     }
 
 }

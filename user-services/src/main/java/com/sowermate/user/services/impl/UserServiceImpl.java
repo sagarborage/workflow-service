@@ -111,33 +111,6 @@ public class UserServiceImpl implements UserService {
             return false;
     }
 
-
-    public Boolean login(String username, String password) {
-        UserAuth userAuth = userAuthRepository.findByUsername(username);
-        if (userAuth != null && passwordEncoder.matches(password, userAuth.getPasswordHash())) {
-            if (!userAuth.getIsEnabled()) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public LoginDto getLoginDto(LoginDto loginDto) {
-        UserAuth userAuth = userAuthRepository.findByUsername(loginDto.getUsername());
-        Boolean flag = login(loginDto.getUsername(), loginDto.getPassword());
-        LoginDto login = new LoginDto();
-        if (flag) {
-            login.setUsername(loginDto.getUsername());
-            login.setTenantUuid(tenantService.getTenantUuid(userAuth.getTenantId()));
-            login.setUserProfileUuid(userProfileService.getProfileUuidByUserId(userAuth.getId()));
-        } else {
-            login = null;
-        }
-        return login;
-    }
-
     @Override
     public String changePassword(ChangePasswordDto changePasswordDto) {
         UserAuth userAuth = userAuthRepository.findByUsername(changePasswordDto.getUsername());

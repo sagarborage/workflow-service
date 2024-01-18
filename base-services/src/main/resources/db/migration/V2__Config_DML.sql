@@ -64,6 +64,13 @@ INSERT INTO `user_auth` (`id`, `uuid`, `tenant_id`, `role_id`, `first_name`, `la
 (4, '39109bf5-bd7f-4d61-84a1-e2d78b160071', 1, 4, 'Dispatch', 'Borage', '9322861804', 'Dispatch@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
 (5, '39109bf5-bd7f-4d61-84a1-e2d78b160072', 1, 5, 'ProformaInvoice', 'Borage', '9322861805', 'ProformaInvoice@gmail.com', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1);
 
+INSERT INTO `user_profile` (`id`, `uuid`, `user_id`, `first_name`, `last_name`, `address`, `gender`, `dob`, `profile_url`, `profile_back_url`, `is_active`, `created_by`, `created_datetime`, `last_updated_by`, `last_updated_datetime`, `version`) VALUES
+(1, '39109bf5-bd7f-4d61-84a1-e2d78b160078', 1, 'Optimize', 'Borage', NULL, NULL, NULL, NULL, NULL, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-18 10:30:44', 1),
+(2, '39109bf5-bd7f-4d61-84a1-e2d78b160079', 2, 'Cutting', 'Borage', NULL, NULL, NULL, NULL, NULL, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(3, '39109bf5-bd7f-4d61-84a1-e2d78b160070', 3, 'Toughen', 'Borage', NULL, NULL, NULL, NULL, NULL, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(4, '39109bf5-bd7f-4d61-84a1-e2d78b160071', 4, 'Toughen', 'Borage', NULL, NULL, NULL, NULL, NULL, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1),
+(5, '39109bf5-bd7f-4d61-84a1-e2d78b160072', 5, 'ProformaInvoice', 'Borage', NULL, NULL, NULL, NULL, NULL, 1, 'System', '2024-01-17 23:24:45', 'System', '2024-01-17 23:25:58', 1);
+
 
 INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('lsn8e7f7-ghej-4f2d-b303-dje947a25fkd', 1, 'Call', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),

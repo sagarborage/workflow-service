@@ -9,7 +9,6 @@ public interface UserService {
     Boolean emailVerification(String token);
     String verifyAccountAndSetPassword(VerifyAndSetPasswordDto verifyAndSetPasswordDto);
     Boolean regenerateCode(String email);
-    LoginDto getLoginDto(LoginDto loginDto);
     String changePassword(ChangePasswordDto changePasswordDto);
     Boolean forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto);
     Boolean setPassword(LoginDto loginDto);

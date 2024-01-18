@@ -129,51 +129,41 @@ public class UserProfileServiceImpl implements UserProfileService {
      * {@inheritDoc}
      */
     @Override
-    public UserProfileDto updateUserProfile(UserProfileDto userProfileDto) {
-        Long userId = this.userAuthService.getUserId(userProfileDto.getUserUuid());
-        UserAuth userAuth = this.userAuthService.getUserAuth(userProfileDto.getUserUuid());
-        UserProfile userProfile = getUserProfile(userProfileDto.getUuid(), userId);
-        if (userProfileDto.getFirstName() != null)
-            userProfile.setFirstName(userProfileDto.getFirstName());
-        if (userProfileDto.getLastName() != null)
-            userProfile.setLastName(userProfileDto.getLastName());
-        if (userProfileDto.getEmail() != null) {
-            userAuth.setIsEmailVerified(false);
-            this.userAuthRepository.save(userAuth);
-            this.userService.sendOtp(userProfileDto.getEmail(), userAuth.getId());
+    public UserProfileDto updateUserProfile(String tenantUuid, UserProfileDto userProfileDto) {
+        Optional<Long> tenantId = tenantRepository.findIdByUuid(tenantUuid);
+        if (tenantId.isPresent()) {
+            Long userId = this.userAuthService.getUserId(userProfileDto.getUserUuid());
+            UserAuth userAuth = this.userAuthService.getUserAuth(userProfileDto.getUserUuid());
+            UserProfile userProfile = getUserProfile(tenantId.get(), userProfileDto.getUuid(), userId);
+            if (userProfileDto.getFirstName() != null)
+                userProfile.setFirstName(userProfileDto.getFirstName());
+            if (userProfileDto.getLastName() != null)
+                userProfile.setLastName(userProfileDto.getLastName());
+            if (userProfileDto.getEmail() != null) {
+                userAuth.setIsEmailVerified(false);
+                this.userAuthRepository.save(userAuth);
+                this.userService.sendOtp(userProfileDto.getEmail(), userAuth.getId());
+            }
+            if (userProfileDto.getPhone() != null) {
+                userAuth.setIsPhoneVerified(false);
+                this.userAuthRepository.save(userAuth);
+                this.userService.sendOtp(userProfileDto.getPhone(), userAuth.getId());// TODO:phone SMS work is pending
+            }
+            if (userProfileDto.getAddress() != null)
+                userProfile.setAddress(userProfileDto.getAddress());
+            if (userProfileDto.getProfileImg() != null)
+                userProfile.setProfileUrl(this.imageService.saveImage(userProfileDto.getProfileImg(), userProfileDto.getUuid(), "front", imageStorageConfig.getProductImagesDirectory()));
+            if (userProfileDto.getProfileBackImg() != null)
+                userProfile.setProfileBackUrl(this.imageService.saveImage(userProfileDto.getProfileBackImg(), userProfileDto.getUuid(), "back", imageStorageConfig.getProfileImagesDirectory()));
+            if (userProfileDto.getBirthDay() != null)
+                userProfile.setDob(userProfileDto.getBirthDay());
+            if (userProfileDto.getGender() != null)
+                userProfile.setGender(userProfileDto.getGender());
+            this.userProfileRepository.save(userProfile);
+            UserProfileDto userProfileDtoData = this.modelMapper.map(userProfile, UserProfileDto.class);
+            userProfileDtoData.setBirthDay(userProfileDto.getBirthDay());
+            return userProfileDtoData;
         }
-        if (userProfileDto.getPhone() != null) {
-            userAuth.setIsPhoneVerified(false);
-            this.userAuthRepository.save(userAuth);
-            this.userService.sendOtp(userProfileDto.getPhone(), userAuth.getId());// TODO:phone SMS work is pending
-        }
-        if (userProfileDto.getAddress() != null)
-            userProfile.setAddress(userProfileDto.getAddress());
-        if (userProfileDto.getProfileImg() != null)
-            userProfile.setProfileUrl(this.imageService.saveImage(userProfileDto.getProfileImg(), userProfileDto.getUuid(), "front", imageStorageConfig.getProductImagesDirectory()));
-        if (userProfileDto.getProfileBackImg() != null)
-            userProfile.setProfileBackUrl(this.imageService.saveImage(userProfileDto.getProfileBackImg(), userProfileDto.getUuid(), "back", imageStorageConfig.getProfileImagesDirectory()));
-        if (userProfileDto.getBirthDay() != null)
-            userProfile.setDob(userProfileDto.getBirthDay());
-        if (userProfileDto.getGender() != null)
-            userProfile.setGender(userProfileDto.getGender());
-        this.userProfileRepository.save(userProfile);
-        UserProfileDto userProfileDtoData = this.modelMapper.map(userProfile, UserProfileDto.class);
-        userProfileDtoData.setBirthDay(userProfileDto.getBirthDay());
-        return userProfileDtoData;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserProfileDto getUserProfile(String uuid, String userUuid) {
-        Long userId = this.userAuthService.getUserId(userUuid);
-        Optional<Long> role = userAuthRepository.getRoleIdByUserId(userId);
-        Long userRole = role.get();// TODO:here we need to find role by using role id
-        UserProfile userProfile = getUserProfile(uuid, userId);
-        UserProfileDto userProfileDto = this.modelMapper.map(userProfile, UserProfileDto.class);
         return userProfileDto;
     }
 
@@ -182,21 +172,48 @@ public class UserProfileServiceImpl implements UserProfileService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserProfileDto> getAllUserProfile(String status) {
-        List<UserProfile> userProfileList;
-        if (StatusConstants.ALL.equalsIgnoreCase(status))
-            userProfileList = this.userProfileRepository.findAll();
-        else if (StatusConstants.ACTIVE.equalsIgnoreCase(status))
-            userProfileList = this.userProfileRepository.findAllByIsActive(true);
-        else if (StatusConstants.INACTIVE.equalsIgnoreCase(status))
-            userProfileList = this.userProfileRepository.findAllByIsActive(false);
-        else
-            throw new InvalidInputException("Invalid status!!");
-        return userProfileList.stream().map(userProfile -> {
+    public UserProfileDto getUserProfile(String tenantUuid, String userUuid) {
+
+        Optional<Long> tenantId = tenantRepository.findIdByUuid(tenantUuid);
+        if (tenantId.isPresent()) {
+            UserAuth userAuth = this.userAuthService.getUserAuth(userUuid);
+            Optional<Long> role = userAuthRepository.getRoleIdByUserId(userAuth.getId());
+            Long userRole = role.get();// TODO:here we need to find role by using role id
+            UserProfile userProfile = getUserProfile(tenantId.get(), userUuid, userAuth.getId());
             UserProfileDto userProfileDto = this.modelMapper.map(userProfile, UserProfileDto.class);
-            userProfileDto.setBirthDay(userProfile.getDob());
+            userProfileDto.setPhone(userAuth.getPhone());
+            userProfileDto.setEmail(userAuth.getUsername());
             return userProfileDto;
-        }).collect(Collectors.toList());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserProfileDto> getAllUserProfile(String tenantUuid, String status) {
+
+        Optional<Long> tenantId = tenantRepository.findIdByUuid(tenantUuid);
+        if (tenantId.isPresent()) {
+            List<UserProfile> userProfileList;
+            if (StatusConstants.ALL.equalsIgnoreCase(status))
+                userProfileList = this.userProfileRepository.findAllByTenantId(tenantId.get());
+            else if (StatusConstants.ACTIVE.equalsIgnoreCase(status))
+                userProfileList = this.userProfileRepository.findAllByTenantIdAndIsActive(tenantId.get(),true);
+            else if (StatusConstants.INACTIVE.equalsIgnoreCase(status))
+                userProfileList = this.userProfileRepository.findAllByTenantIdAndIsActive(tenantId.get(),false);
+            else
+                throw new InvalidInputException("Invalid status!!");
+            return userProfileList.stream().map(userProfile -> {
+                UserProfileDto userProfileDto = this.modelMapper.map(userProfile, UserProfileDto.class);
+                userProfileDto.setBirthDay(userProfile.getDob());
+                return userProfileDto;
+            }).collect(Collectors.toList());
+        }
+        return null;
     }
 
     @Override
@@ -207,6 +224,12 @@ public class UserProfileServiceImpl implements UserProfileService {
         return userProfileList.stream().map(userProfile -> {
             UserProfileDto userProfileDto = this.modelMapper.map(userProfile, UserProfileDto.class);
             userProfileDto.setBirthDay(userProfile.getDob());
+            Optional<UserAuth> userAuth = this.userAuthService.findByUserId(userProfile.getUserId());
+            if (userAuth.isPresent()) {
+                userProfileDto.setEmail(userAuth.get().getUsername());
+                userProfileDto.setPhone(userAuth.get().getPhone());
+            }
+
             return userProfileDto;
         }).collect(Collectors.toList());
     }
@@ -237,14 +260,17 @@ public class UserProfileServiceImpl implements UserProfileService {
      * {@inheritDoc}
      */
     @Override
-    public void softDeleteUserProfile(String uuid, String userUuid) {
-        Long userId = this.userAuthService.getUserId(userUuid);
-        UserAuth userAuth = this.userAuthService.getUserAuth(userUuid);
-        userAuth.setIsActive(false);
-        this.userAuthRepository.save(userAuth);
-        UserProfile userProfile = getUserProfile(uuid, userId);
-        userProfile.setIsActive(false);
-        this.userAuthRepository.save(userAuth);
+    public void softDeleteUserProfile(String tenantUuid, String userUuid) {
+        Optional<Long> tenantId = tenantRepository.findIdByUuid(tenantUuid);
+        if (tenantId.isPresent()) {
+            Long userId = this.userAuthService.getUserId(userUuid);
+            UserAuth userAuth = this.userAuthService.getUserAuth(userUuid);
+            userAuth.setIsActive(false);
+            this.userAuthRepository.save(userAuth);
+            UserProfile userProfile = getUserProfile(tenantId.get(), userUuid, userId);
+            userProfile.setIsActive(false);
+            this.userAuthRepository.save(userAuth);
+        }
     }
 
     /**
@@ -255,10 +281,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         return this.userProfileRepository.findIdByUuid(uuid).orElseThrow(() -> new ResourceNotFoundException("User profile", "uuid", uuid));
     }
 
-    public UserProfile getUserProfile(String uuid, Long userId) {
-        UserProfile userProfile = this.userProfileRepository.findUserProfileByUuidAndUserId(uuid, userId);
+    public UserProfile getUserProfile(Long tenantId, String userProfileUuid, Long userAuthId) {
+        UserProfile userProfile = this.userProfileRepository.findUserProfile(tenantId, userProfileUuid, userAuthId);
         if (userProfile == null)
-            throw new ResourceNotFoundException("User profile", "uuid", uuid);
+            throw new ResourceNotFoundException("User profile", "uuid", userProfileUuid);
         return userProfile;
     }
 

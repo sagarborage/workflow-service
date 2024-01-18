@@ -29,7 +29,6 @@ public class UserProfileDto extends BaseDto {
      */
     private String tenantUuid;
     private String userUuid;
-
     private String roleUuid;
 
     /**
