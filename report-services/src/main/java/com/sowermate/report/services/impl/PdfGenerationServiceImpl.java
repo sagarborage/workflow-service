@@ -5,6 +5,7 @@ import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         byte[] pdfBytes = generatePdf(piValue);
       //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
       //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
-        return pdfService.handlePdf(pdfBytes, piValue.getPiNumber(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        return pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
     }
 
 
