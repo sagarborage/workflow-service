@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Invoice</title>
+    <link th:href="@{classpath:static/css/ecom-invoice.css}" rel="stylesheet" type="text/css"
+          href="/static/css/ecom-invoice.css"></link>
+</head>
+<body>
+
+<div class="main">
+
+    <div class="logo-image">
+        <img th:src="@{classpath:static/images/sowermate-logo.png}" height="40px" width="110px" alt="Logo"/>
+    </div>
+
+
+    <div class="info">
+        <span> Digitally signed by Sowermate Private Limited</span>
+        <th:block th:utext="'&lt;br/&gt;'"/>
+        <span>Date:2024.01.05 17:49:34 UTC</span>
+        <th:block th:utext="'&lt;br/&gt;'"/>
+        <span> Reason:Invoice</span>
+        <th:block th:utext="'&lt;br/&gt;'"/>
+    </div>
+
+
+    <div class="invoice-header">
+        <h4><strong>Tax Invoice/Bill of Supply/Cash Memo</strong></h4>
+        <p id="right-aligned-content">(Original for Recipient)</p>
+    </div>
+
+    <div class="address">
+        <strong>Sold by:</strong><br/>
+        <span> sowermate Private Limited</span><br/>
+        <span> Survey Number 99/1, Mamidipally Village,<br/>
+                Shamshabad
+                HYDERABAD, TELANGANA, 500108
+                IN</span>
+    </div>
+
+    <div class="address">
+        <strong>Billing Address :</strong><br/>
+        <span> Abhijit Salunkhe</span><br/>
+        <span> 34, kadamwadi, Jath road kadamwadi
+                Sangli, MAHARASHTRA, 416403
+                IN</span><br/>
+        <strong>State/UT Code:</strong>
+    </div>
+
+
+</div>
+
+</body>
+</html>
+
