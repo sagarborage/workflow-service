@@ -16,6 +16,7 @@ import com.sowermate.user.entities.ConfirmationCode;
 import com.sowermate.user.entities.UserAuth;
 import com.sowermate.user.entities.UserProfile;
 import com.sowermate.user.projections.UserProfileDropDownProjection;
+import com.sowermate.user.projections.UserProfileProjection;
 import com.sowermate.user.repositories.ConfirmationCodeRepository;
 import com.sowermate.user.repositories.UserAuthRepository;
 import com.sowermate.user.repositories.UserProfileRepository;
@@ -89,8 +90,9 @@ public class UserProfileServiceImpl implements UserProfileService {
         Long userId = userAuth.getId();
         UserProfile userProfile = this.modelMapper.map(userProfileDto, UserProfile.class);
         userProfile.setUserId(userId);
+        userProfile.setUuid(userAuth.getUuid());
         this.userProfileRepository.save(userProfile);
-        tokenService.generateVerificationToken(userProfileDto.getEmail(), userProfile.getId());
+        tokenService.generateVerificationToken(userProfileDto.getEmail(), userAuth.getId());
         String confirmationCode = confirmationCodeUtils.generateConfirmationCode();
         EmailRequestDto requestDto = getEmailRequestDto(userProfile, confirmationCode,userProfileDto.getEmail());
         this.emailRequestService.sendEmailWithTemplate(requestDto);
@@ -194,32 +196,25 @@ public class UserProfileServiceImpl implements UserProfileService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserProfileDto> getAllUserProfile(String tenantUuid, String status) {
+    public List<UserProfileProjection> getAllUserProfile(String tenantUuid, String status) {
 
-        Optional<Long> tenantId = tenantRepository.findIdByUuid(tenantUuid);
-        if (tenantId.isPresent()) {
-            List<UserProfile> userProfileList;
+        Long tenantId = tenantRepository.findIdByUuid(tenantUuid).orElseThrow(()->new ResourceNotFoundException("Tenant","uuid",tenantUuid));
+            List<UserProfileProjection> userProfileList;
             if (StatusConstants.ALL.equalsIgnoreCase(status))
-                userProfileList = this.userProfileRepository.findAllByTenantId(tenantId.get());
+                userProfileList = this.userProfileRepository.findAllByDataTenantId(tenantId);
             else if (StatusConstants.ACTIVE.equalsIgnoreCase(status))
-                userProfileList = this.userProfileRepository.findAllByTenantIdAndIsActive(tenantId.get(),true);
+                userProfileList = this.userProfileRepository.findAllByTenantIdAndIsActive(tenantId,true);
             else if (StatusConstants.INACTIVE.equalsIgnoreCase(status))
-                userProfileList = this.userProfileRepository.findAllByTenantIdAndIsActive(tenantId.get(),false);
+                userProfileList = this.userProfileRepository.findAllByTenantIdAndIsActive(tenantId,false);
             else
                 throw new InvalidInputException("Invalid status!!");
-            return userProfileList.stream().map(userProfile -> {
-                UserProfileDto userProfileDto = this.modelMapper.map(userProfile, UserProfileDto.class);
-                userProfileDto.setBirthDay(userProfile.getDob());
-                return userProfileDto;
-            }).collect(Collectors.toList());
-        }
-        return null;
+            return userProfileList;
     }
 
     @Override
     public List<UserProfileDto> getAllUserProfileByTenant(String tenantUuid) {
         Long tenantId = tenantService.getTenantId(tenantUuid);
-        List<UserProfile> userProfileList = userProfileRepository.findAllByTenantId(tenantId);
+        List<UserProfile> userProfileList = userProfileRepository.findAll();
 
         return userProfileList.stream().map(userProfile -> {
             UserProfileDto userProfileDto = this.modelMapper.map(userProfile, UserProfileDto.class);
