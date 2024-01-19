@@ -42,9 +42,11 @@
     </tr>
     <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
     <tr>
-        <td style="width: 46%;" colspan="5">Proforma Invoice No.:</td>
-        <td style="width: 32.4%;" colspan="3">User:</td>
-        <td style="width: 21.6%;" colspan="2">Date:</td>
+        <td style="width: 46%;" colspan="5"><b>Proforma Invoice No:</b><span th:text="${piValue.getPiNumber()}"></span>
+        </td>
+        <td style="width: 32.4%;" colspan="3"><b>User:</b><span th:text="${piValue.getCreatedBy()}"></span></td>
+        <td style="width: 21.6%;" colspan="2"><b>Date:</b> <span
+                th:text="${#temporals.format(piValue.getInvoiceDate(), 'dd-MM-yyyy')}"></span></td>
     </tr>
     <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
     <tr>
@@ -54,13 +56,13 @@
     <tr>
         <td style="width: 46%;" colspan="5">
             <div class="customPi">Test party</div>
-            <div></div>
+            <div th:text="${piValue.getPartyBillToName()}"></div>
             <div></div>
             <div></div>
         </td>
         <td style="width: 54%;" colspan="5">
             <div class="customPi">Test party</div>
-            <div></div>
+            <div th:text="${piValue.getPartyShipToName()}"></div>
             <div></div>
             <div></div>
         </td>
@@ -130,7 +132,7 @@
     </tr>
     <!-- 11th row with colspan 6, 3, 1 and width 47.6%, 32.4%, 10.8% -->
     <tr>
-        <td rowspan="2" style="width: 47.6%;" colspan="6" >
+        <td rowspan="2" style="width: 47.6%;" colspan="6">
             <div class="customPi">BANK DETAILS</div>
             <div>Bank-</div>
             <div>Branch-</div>
@@ -138,24 +140,24 @@
             <div>IFSC Code-</div>
         </td>
         <td style="width: 32.4%;" colspan="3">
-            <div>Basic Amount</div>
-            <div>Admin Charges</div>
-            <div>Other Extra Charges</div>
-            <div>Transport Charges</div>
+            <div><b>Basic Amount</b></div>
+            <div><b>Admin Charges</b></div>
+            <div><b>Other Extra Charges</b></div>
+            <div><b>Transport Charges</b></div>
         </td>
         <td style="width: 10.8%;">
-            <div>val</div>
-            <div>val</div>
-            <div>val</div>
-            <div>val</div>
+            <div th:text="${piValue.getBasicAmount()}">Basic Amount val</div>
+            <div th:text="${piValue.getAdminCharges()}">Admin Charges val</div>
+            <div th:text="${piValue.getOtherCharges()}">Other Charges val</div>
+            <div th:text="${piValue.getTransportCharges()}">Transport Charges val</div>
         </td>
     </tr>
     <tr>
         <td style="width: 32.4%;" colspan="3">
-            <div>Grand Total</div>
+            <div><b>Grand Total</b></div>
         </td>
         <td style="width: 10.8%;">
-            <div>val</div>
+            <div th:text="${piValue.getGrandTotal()}">Grand Total val</div>
         </td>
     </tr>
     <tr>
@@ -164,15 +166,20 @@
                 <b>
                     <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
                     <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
-                    <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES WILL BE </div>
+                    <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES WILL
+                        BE
+                    </div>
                     <div>ENTERTAINED THERE AFTER.</div>
                     <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
                     <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
-                    <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS DAYS.</div>
+                    <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS
+                        DAYS.
+                    </div>
                     <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
                     <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
+                </b>
             </div>
-            </b>
+
         </td>
     </tr>
 </table>
