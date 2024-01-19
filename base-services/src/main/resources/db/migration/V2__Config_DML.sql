@@ -26,16 +26,14 @@ INSERT INTO `role_type` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_
 
 
 INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `CIN`, `GSTIN`, `TAN`, `PAN`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('584bd17c-89a3-46ec-833b-f4502f046de4', 1, 1, 'Self Company One', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1),
-('584bd17c-okld-45fh-34fg-f4502f046de4', 1, 1, 'Self Company Two', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1),
-('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Tri party test Company', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1),
-('2dc71856-ce6f-41a0-9732-ef97ae85eabc', 1, 2, 'Tri party test Company One', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1);
+('584bd17c-89a3-46ec-833b-f4502f046de4', 1, 1, 'Test Firm', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1),
+('2dc71856-ce6f-41a0-9732-ef97ae85eaf9', 1, 2, 'Test party one', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1),
+('2dc71856-ce6f-41a0-9732-ef97ae85eabc', 1, 2, 'Test party two', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1);
 
 INSERT INTO `address` (`uuid`, `company_id`, `address_type_id`, `address_line1`, `address_line2`, `address_line3`, `city`, `state_code`, `country_code`, `pin_code`, `work_phone`, `fax`, `primary_phone_number`, `alternate_phone_number`, `email`, `website`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('28efd0b3-a0ba-4805-b432-5543013c0e73', 1, 2, 'Test address one', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1),
-('shbsd0b3-a0ba-4805-efgh-5543013cjkrf', 2, 2, 'Test address two', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1),
-('45hgd0b3-a0ba-4805-ijkl-5543013c3gfh', 3, 2, 'Test address three', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1),
-('fjeyd0b3-a0ba-4805-abcd-5543013cergh', 4, 2, 'Test address four', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
+('45hgd0b3-a0ba-4805-ijkl-5543013c3gfh', 2, 2, 'Test address three', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1),
+('fjeyd0b3-a0ba-4805-abcd-5543013cergh', 3, 2, 'Test address four', NULL, NULL, NULL, '123', '1234', '123', NULL, NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
 
 INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 ('8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c', 1, 'Glass Window', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1),
