@@ -1,14 +1,17 @@
 package com.sowermate.report.services.impl;
 
 
+import ch.qos.logback.core.model.Model;
 import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.report.controllers.PIReportHeaderDetails;
 import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.entities.ServiceRateInvoiceEntity;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -17,6 +20,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,11 +40,16 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    private byte[] generatePdf(ProFormaInvoiceValue piValue, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails ) {
+    private byte[] generatePdf(ProFormaInvoiceValue piValue, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails,List<ServiceRateInvoiceValue> serviceRateDetails, String totalQuantity, String totalUnitTotal, String totalRatePerUnit, String totalAmount) {
         try {
             Context context = new Context();
             context.setVariable("piValue", piValue);
             context.setVariable("glassItemDetails", glassItemDetails);
+            context.setVariable("serviceRateDetails", serviceRateDetails);
+            context.setVariable("totalQuantity", totalQuantity);
+            context.setVariable("totalUnitTotal", totalUnitTotal);
+            context.setVariable("totalRatePerUnit", totalRatePerUnit);
+            context.setVariable("totalAmount", totalAmount);
 
             String htmlContent = templateEngine.process("proforma-invoice", context);
 
@@ -65,15 +74,46 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     @Override
     public String generateInvoice(ProFormaInvoiceValue piValue) throws IOException {
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
+        List<ServiceRateInvoiceValue> serviceRateDetails=serviceRateDetails(piValue);
 
-        byte[] pdfBytes = generatePdf(piValue, glassItemDetails);
+        double totalQuantity = glassItemDetails.values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(ProFormaInvoiceItemValue::getQuantity)
+                .sum();
+        double totalUnitTotal = glassItemDetails.values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(ProFormaInvoiceItemValue::getUnitValue)
+                .sum();
+        double totalRatePerUnit = glassItemDetails.values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(ProFormaInvoiceItemValue::getRatePerUnit)
+                .sum();
+        double totalAmount = glassItemDetails.values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(ProFormaInvoiceItemValue::getAmount)
+                .sum();
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedTotalQuantity = decimalFormat.format(totalQuantity);
+        String formattedTotalUnitTotal = decimalFormat.format(totalUnitTotal);
+        String formattedTotalRatePerUnit = decimalFormat.format(totalRatePerUnit);
+        String formattedTotalAmount = decimalFormat.format(totalAmount);
+
+        byte[] pdfBytes = generatePdf(piValue, glassItemDetails, serviceRateDetails, formattedTotalQuantity, formattedTotalUnitTotal, formattedTotalRatePerUnit, formattedTotalAmount);
+
       //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
       //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
         return pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
     }
 
-    public Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>>  glassItemDetails(ProFormaInvoiceValue piValue) {
+    private List<ServiceRateInvoiceValue> serviceRateDetails(ProFormaInvoiceValue piValue) {
+        return piValue.getServiceRateInvoices();
+    }
+
+    public Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
         List<ProFormaInvoiceItemValue> itemList = piValue.getProFormaInvoiceItems();
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = itemList.stream()
                 .collect(Collectors.groupingBy(
@@ -83,11 +123,12 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                                 itemList.stream()
                                         .filter(g -> g.getGlassSpecificationName().equals(glass.getGlassSpecificationName()) &&
                                                 g.getGlassThicknessName().equals(glass.getGlassThicknessName()))
-                                        .mapToDouble(ProFormaInvoiceItemValue::getUnitValue)
+                                        .mapToDouble(item -> Double.parseDouble(decimalFormat.format(item.getUnitValue())))
                                         .sum()
                         )
                 ));
         return glassItemDetails;
     }
+
 
 }

@@ -113,7 +113,7 @@
         <!-- 7th row with colspan 10 -->
         <th:block th:each="entry : ${glassItemDetails}">
             <tr>
-                <td th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + ' ' + entry.key.unitTotal}"
+                <td th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal+')'}"
                     colspan="10"></td>
             </tr>
             <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
@@ -134,19 +134,23 @@
         <tr>
             <td style="width: 36.8%;" colspan="4"></td>
             <td style="width: 20%;" colspan="2">Sub Total</td>
-            <td style="width: 10.8%;">val</td>
-            <td style="width: 10.8%;">val</td>
-            <td style="width: 10.8%;"></td>
-            <td style="width: 10.8%;">val</td>
+            <td style="width: 10.8%;" th:text="${totalQuantity}"></td>
+            <td style="width: 10.8%;" th:text="${totalUnitTotal}"></td>
+            <td style="width: 10.8%;" th:text="${totalRatePerUnit}"></td>
+            <td style="width: 10.8%;" th:text="${totalAmount}"></td>
         </tr>
         <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
-        <tr>
+
+        <tr th:each="item, iterStat : ${serviceRateDetails}">
             <td style="width: 36.8%;" colspan="4"></td>
-            <td style="width: 20%;" colspan="2">Cut Out</td>
-            <td style="width: 10.8%;">val</td>
+            <td style="width: 20%;" colspan="2">
+                <!-- Conditionally print "Cut Out" only in the first iteration -->
+                <span th:if="${iterStat.index == 0}">Cut Out</span>
+            </td>
+            <td style="width: 10.8%;" th:text="${item.getQuantity()}">val</td>
             <td style="width: 10.8%;"></td>
-            <td style="width: 10.8%;">val</td>
-            <td style="width: 10.8%;">val</td>
+            <td style="width: 10.8%;" th:text="${item.getRate()}">val</td>
+            <td style="width: 10.8%;" th:text="${item.getTotal()}">val</td>
         </tr>
         <!-- 11th row with colspan 6, 3, 1 and width 47.6%, 32.4%, 10.8% -->
         <tr>
