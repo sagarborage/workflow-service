@@ -4,8 +4,10 @@ package com.sowermate.report.services.impl;
 import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
+import com.sowermate.report.controllers.PIReportHeaderDetails;
 import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PdfGenerationServiceImpl implements PdfGenerationService {
@@ -31,10 +36,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    private byte[] generatePdf(ProFormaInvoiceValue piValue) {
+    private byte[] generatePdf(ProFormaInvoiceValue piValue, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails ) {
         try {
             Context context = new Context();
             context.setVariable("piValue", piValue);
+            context.setVariable("glassItemDetails", glassItemDetails);
 
             String htmlContent = templateEngine.process("proforma-invoice", context);
 
@@ -58,11 +64,30 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     @Override
     public String generateInvoice(ProFormaInvoiceValue piValue) throws IOException {
-        byte[] pdfBytes = generatePdf(piValue);
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
+
+        byte[] pdfBytes = generatePdf(piValue, glassItemDetails);
       //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
       //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
         return pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
     }
 
+    public Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>>  glassItemDetails(ProFormaInvoiceValue piValue) {
+        List<ProFormaInvoiceItemValue> itemList = piValue.getProFormaInvoiceItems();
+
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = itemList.stream()
+                .collect(Collectors.groupingBy(
+                        glass -> new PIReportHeaderDetails(
+                                glass.getGlassSpecificationName(),
+                                glass.getGlassThicknessName(),
+                                itemList.stream()
+                                        .filter(g -> g.getGlassSpecificationName().equals(glass.getGlassSpecificationName()) &&
+                                                g.getGlassThicknessName().equals(glass.getGlassThicknessName()))
+                                        .mapToDouble(ProFormaInvoiceItemValue::getUnitValue)
+                                        .sum()
+                        )
+                ));
+        return glassItemDetails;
+    }
 
 }

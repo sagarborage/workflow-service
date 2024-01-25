@@ -20,169 +20,189 @@
         .alignLeft {
         text-align: left;
         }
+
+    th, td {
+      border: 1px solid black;
+      padding: 0px;
+      text-align: center;
+      height: 20px; /* Adjust the height as needed */
+    }
     </style>
 </head>
 
 <body>
-<table class="alignCenter">
-    <!-- 1st row with colspan 10 -->
-    <tr>
-        <td class="alignCenter customPi" colspan="10">PROFORMA INVOICE</td>
-    </tr>
-    <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
-    <tr>
-        <td style="width: 20%;" colspan="2"></td>
-        <td class="alignCenter" style="width: 80%;" colspan="8">
-            <div class="customPi">Test name</div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </td>
-    </tr>
-    <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
-    <tr>
-        <td style="width: 46%;" colspan="5"><b>Proforma Invoice No:</b><span th:text="${piValue.getPiNumber()}"></span>
-        </td>
-        <td style="width: 32.4%;" colspan="3"><b>User:</b><span th:text="${piValue.getCreatedBy()}"></span></td>
-        <td style="width: 21.6%;" colspan="2"><b>Date:</b> <span
-                th:text="${#temporals.format(piValue.getInvoiceDate(), 'dd-MM-yyyy')}"></span></td>
-    </tr>
-    <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
-    <tr>
-        <td style="width: 46%;" colspan="5">Invoice To</td>
-        <td style="width: 54%;" colspan="5">Dispatch To</td>
-    </tr>
-    <tr>
-        <td style="width: 46%;" colspan="5">
-            <div class="customPi">Test party</div>
-            <div th:text="${piValue.getPartyBillToName()}"></div>
-            <div></div>
-            <div></div>
-        </td>
-        <td style="width: 54%;" colspan="5">
-            <div class="customPi">Test party</div>
-            <div th:text="${piValue.getPartyShipToName()}"></div>
-            <div></div>
-            <div></div>
-        </td>
-    </tr>
-    <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
-    <tr>
-        <td style="width: 9.2%;">
-            <div>Sr.</div>
-            <div>No</div>
-        </td>
-        <td style="width: 9.2%;">
-            <div>Width</div>
-            <div>(Inch)</div>
-        </td>
-        <td style="width: 9.2%;">
-            <div>Height</div>
-            <div>(Inch)</div>
-        </td>
-        <td style="width: 9.2%;">
-            <div>Actual W</div>
-            <div>(MM)</div>
-        </td>
-        <td style="width: 9.2%;">
-            <div>Actual H</div>
-            <div>(MM)</div>
-        </td>
-        <td style="width: 10.8%;">Glass Type</td>
-        <td style="width: 10.8%;">QTY</td>
-        <td style="width: 10.8%;">SQ FT</td>
-        <td style="width: 10.8%;">Rate</td>
-        <td style="width: 10.8%;">Amount INR</td>
-    </tr>
-    <!-- 7th row with colspan 10 -->
-    <tr>
-        <td colspan="10">Row 7 (colspan 10)</td>
-    </tr>
-    <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
-    <tr>
-        <td style="width: 9.2%;">Column 1</td>
-        <td style="width: 9.2%;">Column 2</td>
-        <td style="width: 9.2%;">Column 3</td>
-        <td style="width: 9.2%;">Column 4</td>
-        <td style="width: 9.2%;">Column 5</td>
-        <td style="width: 10.8%;">Column 6</td>
-        <td style="width: 10.8%;">Column 7</td>
-        <td style="width: 10.8%;">Column 8</td>
-        <td style="width: 10.8%;">Column 9</td>
-        <td style="width: 10.8%;">Column 10</td>
-    </tr>
-    <!-- 9th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
-    <tr>
-        <td style="width: 36.8%;" colspan="4"></td>
-        <td style="width: 20%;" colspan="2">Sub Total</td>
-        <td style="width: 10.8%;">val</td>
-        <td style="width: 10.8%;">val</td>
-        <td style="width: 10.8%;"></td>
-        <td style="width: 10.8%;">val</td>
-    </tr>
-    <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
-    <tr>
-        <td style="width: 36.8%;" colspan="4"></td>
-        <td style="width: 20%;" colspan="2">Cut Out</td>
-        <td style="width: 10.8%;">val</td>
-        <td style="width: 10.8%;"></td>
-        <td style="width: 10.8%;">val</td>
-        <td style="width: 10.8%;">val</td>
-    </tr>
-    <!-- 11th row with colspan 6, 3, 1 and width 47.6%, 32.4%, 10.8% -->
-    <tr>
-        <td rowspan="2" style="width: 47.6%;" colspan="6">
-            <div class="customPi">BANK DETAILS</div>
-            <div>Bank-</div>
-            <div>Branch-</div>
-            <div>A/C No-</div>
-            <div>IFSC Code-</div>
-        </td>
-        <td style="width: 32.4%;" colspan="3">
-            <div><b>Basic Amount</b></div>
-            <div><b>Admin Charges</b></div>
-            <div><b>Other Extra Charges</b></div>
-            <div><b>Transport Charges</b></div>
-        </td>
-        <td style="width: 10.8%;">
-            <div th:text="${piValue.getBasicAmount()}">Basic Amount val</div>
-            <div th:text="${piValue.getAdminCharges()}">Admin Charges val</div>
-            <div th:text="${piValue.getOtherCharges()}">Other Charges val</div>
-            <div th:text="${piValue.getTransportCharges()}">Transport Charges val</div>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 32.4%;" colspan="3">
-            <div><b>Grand Total</b></div>
-        </td>
-        <td style="width: 10.8%;">
-            <div th:text="${piValue.getGrandTotal()}">Grand Total val</div>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="10">
-            <div class="alignLeft">
-                <b>
-                    <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
-                    <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
-                    <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES WILL
-                        BE
-                    </div>
-                    <div>ENTERTAINED THERE AFTER.</div>
-                    <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
-                    <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
-                    <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS
-                        DAYS.
-                    </div>
-                    <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
-                    <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
-                </b>
-            </div>
+<div style="overflow-x: auto;">
+    <table class="alignCenter">
+        <!-- 1st row with colspan 10 -->
+        <tr>
+            <td class="alignCenter customPi" colspan="10">PROFORMA  INVOICE</td>
+        </tr>
+        <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
+        <tr>
+            <td style="width: 20%;" colspan="2"></td>
+            <td class="alignCenter" style="width: 80%;" colspan="8">
+                <div class="customPi">Test name</div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </td>
+        </tr>
+        <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
+        <tr>
+            <td style="width: 46%;" colspan="5"><b>Proforma Invoice No:</b><span
+                    th:text="${piValue.getPiNumber()}"></span>
+            </td>
+            <td style="width: 32.4%;" colspan="3"><b>User:</b><span th:text="${piValue.getCreatedBy()}"></span></td>
+            <td style="width: 21.6%;" colspan="2"><b>Date:</b> <span
+                    th:text="${#temporals.format(piValue.getInvoiceDate(), 'dd-MM-yyyy')}"></span></td>
+        </tr>
+        <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
+        <tr>
+            <td style="width: 46%;" colspan="5">Invoice To</td>
+            <td style="width: 54%;" colspan="5">Dispatch To</td>
+        </tr>
+        <tr>
+            <td style="width: 46%;" colspan="5">
+                <div class="customPi">Test party</div>
+                <div th:text="${piValue.getPartyBillToName()}"></div>
+                <div></div>
+                <div></div>
+            </td>
+            <td style="width: 54%;" colspan="5">
+                <div class="customPi">Test party</div>
+                <div th:text="${piValue.getPartyShipToName()}"></div>
+                <div></div>
+                <div></div>
+            </td>
+        </tr>
+        <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
+        <tr>
+            <td style="width: 9.2%;"  rowspan="2">
+                <div>Sr.</div>
+                <div>No</div>
+            </td>
+            <td style="width: 9.2%;" rowspan="2">
+                <div>Width</div>
+                <div>(Inch)</div>
+            </td>
+            <td style="width: 9.2%;" rowspan="2">
+                <div>Height</div>
+                <div>(Inch)</div>
+            </td>
+            <td style="width: 18.4%;" colspan="2">
+                <div>Actual Size</div>
+            </td>
 
-        </td>
-    </tr>
-</table>
+            <td style="width: 10.8%;" rowspan="2">Glass Type</td>
+            <td style="width: 10.8%;" rowspan="2">QTY</td>
+            <td style="width: 10.8%;" rowspan="2">SQ FT</td>
+            <td style="width: 10.8%;" rowspan="2">Rate</td>
+            <td style="width: 10.8%;" rowspan="2">Amount INR</td>
+        </tr>
+        <tr>
+            <td tyle="width: 9.2%;" >
+                <div>Width</div>
+                <div>(MM)</div>
+            </td>
+            <td tyle="width: 9.2%;" >
+                <div>Height</div>
+                <div>(MM)</div>
+            </td>
+        </tr>
+        <!-- 7th row with colspan 10 -->
+        <th:block th:each="entry : ${glassItemDetails}">
+            <tr>
+                <td th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + ' ' + entry.key.unitTotal}"
+                    colspan="10"></td>
+            </tr>
+            <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
+            <tr th:each="item,iterStat : ${entry.value}">
+                <td style="width: 9.2%;" th:text="${iterStat.index} + 1"></td>
+                <td style="width: 9.2%;" th:text="${item.widthMeasurementLabel}"></td>
+                <td style="width: 9.2%;" th:text="${item.heightMeasurementLabel}"></td>
+                <td style="width: 9.2%;" th:text="${item.actualWidth}"> </td>
+                <td style="width: 9.2%;" th:text="${item.actualHeight}"></td>
+                <td style="width: 10.8%;" th:text="${item.glassTypeName}"></td>
+                <td style="width: 10.8%;" th:text="${item.quantity}"></td>
+                <td style="width: 10.8%;" th:text="${item.unitMeasurementLabel}"></td>
+                <td style="width: 10.8%;" th:text="${item.ratePerUnit}"></td>
+                <td style="width: 10.8%;" th:text="${item.amount}"></td>
+            </tr>
+        </th:block>
+        <!-- 9th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
+        <tr>
+            <td style="width: 36.8%;" colspan="4"></td>
+            <td style="width: 20%;" colspan="2">Sub Total</td>
+            <td style="width: 10.8%;">val</td>
+            <td style="width: 10.8%;">val</td>
+            <td style="width: 10.8%;"></td>
+            <td style="width: 10.8%;">val</td>
+        </tr>
+        <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
+        <tr>
+            <td style="width: 36.8%;" colspan="4"></td>
+            <td style="width: 20%;" colspan="2">Cut Out</td>
+            <td style="width: 10.8%;">val</td>
+            <td style="width: 10.8%;"></td>
+            <td style="width: 10.8%;">val</td>
+            <td style="width: 10.8%;">val</td>
+        </tr>
+        <!-- 11th row with colspan 6, 3, 1 and width 47.6%, 32.4%, 10.8% -->
+        <tr>
+            <td rowspan="2" style="width: 47.6%;" colspan="6">
+                <div class="customPi">BANK DETAILS</div>
+                <div>Bank-</div>
+                <div>Branch-</div>
+                <div>A/C No-</div>
+                <div>IFSC Code-</div>
+            </td>
+            <td style="width: 32.4%;" colspan="3">
+                <div><b>Basic Amount</b></div>
+                <div><b>Admin Charges</b></div>
+                <div><b>Other Extra Charges</b></div>
+                <div><b>Transport Charges</b></div>
+            </td>
+            <td style="width: 10.8%;">
+                <div th:text="${piValue.getBasicAmount()}">Basic Amount val</div>
+                <div th:text="${piValue.getAdminCharges()}">Admin Charges val</div>
+                <div th:text="${piValue.getOtherCharges()}">Other Charges val</div>
+                <div th:text="${piValue.getTransportCharges()}">Transport Charges val</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 32.4%;" colspan="3">
+                <div><b>Grand Total</b></div>
+            </td>
+            <td style="width: 10.8%;">
+                <div th:text="${piValue.getGrandTotal()}">Grand Total val</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+                <div class="alignLeft">
+                    <b>
+                        <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
+                        <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
+                        <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES
+                            WILL
+                            BE
+                        </div>
+                        <div>ENTERTAINED THERE AFTER.</div>
+                        <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
+                        <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
+                        <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS
+                            DAYS.
+                        </div>
+                        <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
+                        <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
+                    </b>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
 
