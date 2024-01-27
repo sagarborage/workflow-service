@@ -2,9 +2,13 @@ package com.sowermate.report.controllers;
 
 import com.sowermate.report.dtos.InvoiceDto;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
+import com.sowermate.tenantService.services.CompanyService;
+import com.sowermate.tenantService.services.CompanyTypeService;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,9 @@ public class PdfGenerationController {
 
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @PostMapping("/{tenantUuid}/{proFormaInvoiceUuid}")
     public ResponseEntity<String> generateInvoicePdf(@PathVariable String tenantUuid,

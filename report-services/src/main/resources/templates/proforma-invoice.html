@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
+
     <style>
         table {
         width: 100%;
         border-collapse: collapse;
+        }
+        .font-helva
+        {
+          font-family: 'Helvetica', sans-serif;
+                    font-size: 14px;
         }
         .customPi {
         font-size: 1.5em; /* Adjust as needed */
@@ -32,20 +39,20 @@
 
 <body>
 <div style="overflow-x: auto;">
-    <table class="alignCenter">
+    <table class="alignCenter font-helva font-w-400 font-s-14">
         <!-- 1st row with colspan 10 -->
         <tr>
-            <td class="alignCenter customPi" colspan="10">PROFORMA  INVOICE</td>
+            <td class="alignCenter customPi font-16" colspan="10">PROFORMA  INVOICE</td>
         </tr>
         <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
         <tr>
             <td style="width: 20%;" colspan="2"></td>
-            <td class="alignCenter" style="width: 80%;" colspan="8">
-                <div class="customPi">Test name</div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+            <td class="alignCenter font-12" style="width: 80%;" colspan="8">
+                <div class="customPi">HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD.</div>
+                <div>Plot No E5 Near Chakan Oil Mill, Kupwad MIDC, Sangli 416436</div>
+                <div>GST NO:27AAECH2044N1ZG, PAN NO:AAECH2044N</div>
+                <div>Ph.:8669585198, E-Mail:himyougtuffglass16716@gmail.com</div>
+                <div>Web:www.himyougtuffglass.com</div>
             </td>
         </tr>
         <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
@@ -113,7 +120,7 @@
         <!-- 7th row with colspan 10 -->
         <th:block th:each="entry : ${glassItemDetails}">
             <tr>
-                <td th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal+')'}"
+                <td class="font-s-18 font-w-400" th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal+')'}"
                     colspan="10"></td>
             </tr>
             <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
@@ -125,7 +132,7 @@
                 <td style="width: 9.2%;" th:text="${item.actualHeight}"></td>
                 <td style="width: 10.8%;" th:text="${item.glassTypeName}"></td>
                 <td style="width: 10.8%;" th:text="${item.quantity}"></td>
-                <td style="width: 10.8%;" th:text="${item.unitMeasurementLabel}"></td>
+                <td style="width: 10.8%;" th:text="${item.unitValue}"></td>
                 <td style="width: 10.8%;" th:text="${item.ratePerUnit}"></td>
                 <td style="width: 10.8%;" th:text="${item.amount}"></td>
             </tr>
@@ -154,14 +161,14 @@
         </tr>
         <!-- 11th row with colspan 6, 3, 1 and width 47.6%, 32.4%, 10.8% -->
         <tr>
-            <td rowspan="2" style="width: 47.6%;" colspan="6">
+            <td class="alignLeft padding-8 font-s-14 font-w-500" rowspan="2" style="width: 47.6%;" colspan="6">
                 <div class="customPi">BANK DETAILS</div>
-                <div>Bank-</div>
-                <div>Branch-</div>
-                <div>A/C No-</div>
-                <div>IFSC Code-</div>
+                <div>Bank- HDFC Bank</div>
+                <div>Branch- Miraj(Sangli)</div>
+                <div>A/C No- 59208421344464</div>
+                <div>IFSC Code- HDFC0002691</div>
             </td>
-            <td style="width: 32.4%;" colspan="3">
+            <td class="padding-8 font-s-14 font-w-500" style="width: 32.4%;" colspan="3">
                 <div><b>Basic Amount</b></div>
                 <div><b>Admin Charges</b></div>
                 <div><b>Other Extra Charges</b></div>
@@ -175,32 +182,26 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 32.4%;" colspan="3">
+            <td class="padding-8" style="width: 32.4%;" colspan="3">
                 <div><b>Grand Total</b></div>
             </td>
             <td style="width: 10.8%;">
-                <div th:text="${piValue.getGrandTotal()}">Grand Total val</div>
+                <div th:text="${piValue.getGrandTotal()}"></div>
             </td>
         </tr>
         <tr>
             <td colspan="10">
-                <div class="alignLeft">
-                    <b>
+                <div class="alignLeft padding-8 font-s-13 font-w-700">
                         <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
                         <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
                         <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES
-                            WILL
-                            BE
+                            WILL BE ENTERTAINED THERE AFTER.
                         </div>
-                        <div>ENTERTAINED THERE AFTER.</div>
                         <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
                         <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
-                        <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS
-                            DAYS.
-                        </div>
+                        <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS DAYS.</div>
                         <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
                         <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
-                    </b>
                 </div>
 
             </td>
