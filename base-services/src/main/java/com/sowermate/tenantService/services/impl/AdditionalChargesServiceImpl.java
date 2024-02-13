@@ -46,6 +46,7 @@ public class AdditionalChargesServiceImpl implements AdditionalChargesService {
                 .id(additionalChargesEntityTemp.getId())
                 .createdDateTime(additionalChargesEntityTemp.getCreatedDateTime())
                 .createdBy(additionalChargesEntityTemp.getCreatedBy())
+                .version(additionalChargesEntityTemp.getVersion())
                 .build();
         return additionalChargesRepository.save(additionalChargesEntity).toDTO();
     }
