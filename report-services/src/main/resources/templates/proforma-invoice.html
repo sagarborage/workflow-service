@@ -17,6 +17,10 @@
         font-size: 1.5em; /* Adjust as needed */
         font-weight: bold; /* Adjust as needed */
         }
+        .address{
+       text-align: left;
+       padding-left:10px;
+        }
         td {
         border: 1px solid black;
         padding: 8px;
@@ -42,7 +46,7 @@
     <table class="alignCenter font-helva font-w-400 font-s-14">
         <!-- 1st row with colspan 10 -->
         <tr>
-            <td class="alignCenter customPi font-16" colspan="10">PROFORMA  INVOICE</td>
+            <td class="alignCenter customPi font-16" colspan="10">PROFORMA INVOICE</td>
         </tr>
         <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
         <tr>
@@ -70,22 +74,30 @@
             <td style="width: 54%;" colspan="5">Dispatch To</td>
         </tr>
         <tr>
-            <td style="width: 46%;" colspan="5">
-                <div class="customPi">Test party</div>
-                <div th:text="${piValue.getPartyBillToName()}"></div>
-                <div></div>
-                <div></div>
+            <td style="width: 46%;" colspan="5" class="address">
+                <div class="customPi" th:text="${reportDetails.getBillTo().getCompanyName()}"></div>
+                <div><span th:text="${reportDetails.getBillTo().getAddress()+','}"></span>
+                    <span th:text="${reportDetails.getBillTo().getState()+','}"></span>
+                    <span th:text="${reportDetails.getBillTo().getPinCode()}"></span>
+                </div>
+                <div><b>Ph:</b><span th:text="${reportDetails.getBillTo().getPhoneNumber()}"></span>
+                    <b>E-Mail:</b><span th:text="${reportDetails.getBillTo().getEmailId()}"></span>
+                </div>
             </td>
-            <td style="width: 54%;" colspan="5">
-                <div class="customPi">Test party</div>
-                <div th:text="${piValue.getPartyShipToName()}"></div>
-                <div></div>
-                <div></div>
+            <td style="width: 54%;" colspan="5" class="address">
+                <div class="customPi" th:text="${reportDetails.getShipTo().getCompanyName()}"></div>
+                <div><span th:text="${reportDetails.getShipTo().getAddress()+','}"></span>
+                    <span th:text="${reportDetails.getShipTo().getState()+','}"></span>
+                    <span th:text="${reportDetails.getShipTo().getPinCode()}"></span>
+                </div>
+                <div><b>Ph:</b><span th:text="${reportDetails.getShipTo().getPhoneNumber()}"></span>
+                    <b>E-Mail:</b><span th:text="${reportDetails.getShipTo().getEmailId()}"></span>
+                </div>
             </td>
         </tr>
         <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
         <tr>
-            <td style="width: 9.2%;"  rowspan="2">
+            <td style="width: 9.2%;" rowspan="2">
                 <div>Sr.</div>
                 <div>No</div>
             </td>
@@ -108,19 +120,20 @@
             <td style="width: 10.8%;" rowspan="2">Amount INR</td>
         </tr>
         <tr>
-            <td tyle="width: 9.2%;" >
+            <td tyle="width: 9.2%;">
                 <div>Width</div>
                 <div>(MM)</div>
             </td>
-            <td tyle="width: 9.2%;" >
+            <td tyle="width: 9.2%;">
                 <div>Height</div>
                 <div>(MM)</div>
             </td>
         </tr>
         <!-- 7th row with colspan 10 -->
-        <th:block th:each="entry : ${glassItemDetails}">
+        <th:block th:each="entry : ${reportDetails.getGlassItemDetails()}">
             <tr>
-                <td class="font-s-18 font-w-400" th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal+')'}"
+                <td class="font-s-18 font-w-400"
+                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal+')'}"
                     colspan="10"></td>
             </tr>
             <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
@@ -128,7 +141,7 @@
                 <td style="width: 9.2%;" th:text="${iterStat.index} + 1"></td>
                 <td style="width: 9.2%;" th:text="${item.widthMeasurementLabel}"></td>
                 <td style="width: 9.2%;" th:text="${item.heightMeasurementLabel}"></td>
-                <td style="width: 9.2%;" th:text="${item.actualWidth}"> </td>
+                <td style="width: 9.2%;" th:text="${item.actualWidth}"></td>
                 <td style="width: 9.2%;" th:text="${item.actualHeight}"></td>
                 <td style="width: 10.8%;" th:text="${item.glassTypeName}"></td>
                 <td style="width: 10.8%;" th:text="${item.quantity}"></td>
@@ -141,14 +154,14 @@
         <tr>
             <td style="width: 36.8%;" colspan="4"></td>
             <td style="width: 20%;" colspan="2">Sub Total</td>
-            <td style="width: 10.8%;" th:text="${totalQuantity}"></td>
-            <td style="width: 10.8%;" th:text="${totalUnitTotal}"></td>
-            <td style="width: 10.8%;" th:text="${totalRatePerUnit}"></td>
-            <td style="width: 10.8%;" th:text="${totalAmount}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalQuantity()}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalUnitTotal()}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalRatePerUnit()}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalAmount()}"></td>
         </tr>
         <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
 
-        <tr th:each="item, iterStat : ${serviceRateDetails}">
+        <tr th:each="item, iterStat : ${reportDetails.getServiceRateDetails()}">
             <td style="width: 36.8%;" colspan="4"></td>
             <td style="width: 20%;" colspan="2">
                 <!-- Conditionally print "Cut Out" only in the first iteration -->
@@ -192,16 +205,18 @@
         <tr>
             <td colspan="10">
                 <div class="alignLeft padding-8 font-s-13 font-w-700">
-                        <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
-                        <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
-                        <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES
-                            WILL BE ENTERTAINED THERE AFTER.
-                        </div>
-                        <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
-                        <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
-                        <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS DAYS.</div>
-                        <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
-                        <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
+                    <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
+                    <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
+                    <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES
+                        WILL BE ENTERTAINED THERE AFTER.
+                    </div>
+                    <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
+                    <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
+                    <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS
+                        DAYS.
+                    </div>
+                    <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
+                    <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
                 </div>
 
             </td>

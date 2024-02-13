@@ -2,12 +2,12 @@ package com.sowermate.report.services;
 
 
 
-import com.sowermate.report.dtos.InvoiceDto;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.report.dtos.PIReportAddressDto;
+import com.sowermate.report.dtos.PIReportDetails;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 
 import java.io.IOException;
 
 public interface PdfGenerationService {
-    String generateInvoice( ProFormaInvoiceValue piValue) throws IOException;
+    String generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException;
 }

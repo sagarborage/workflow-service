@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.value.AddressValue;
 import com.sowermate.tenantService.entities.value.CompanyValue;
 import com.sowermate.tenantService.repositories.*;
@@ -54,6 +55,11 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyValue> getAllCompany(String tenantUuid) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
         return getTenantWiseAddressDetails(tenantEntity);
+    }
+
+    @Override
+    public CompanyInfoProjection getCompanyInfo(String companyUuid, String tenantUuid) {
+        return companyRepository.getCompanyInfo(companyUuid, tenantUuid);
     }
 
     @Override

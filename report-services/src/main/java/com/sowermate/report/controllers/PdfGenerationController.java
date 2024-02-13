@@ -1,14 +1,11 @@
 package com.sowermate.report.controllers;
 
-import com.sowermate.report.dtos.InvoiceDto;
+import com.sowermate.report.dtos.PIReportAddressDto;
+import com.sowermate.report.dtos.PIReportDetails;
 import com.sowermate.report.services.PdfGenerationService;
-import com.sowermate.tenantService.entities.CompanyEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.value.CompanyValue;
+import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
-import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
 import com.sowermate.tenantService.services.CompanyService;
-import com.sowermate.tenantService.services.CompanyTypeService;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pdf")
@@ -34,7 +30,12 @@ public class PdfGenerationController {
     public ResponseEntity<String> generateInvoicePdf(@PathVariable String tenantUuid,
                                                      @PathVariable String proFormaInvoiceUuid) throws IOException {
         ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
-        String invoiceUrl = pdfGenerationService.generateInvoice(proFormaInvoiceValue);
+        CompanyInfoProjection billTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
+        CompanyInfoProjection shipTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
+        PIReportDetails reportDetails =new PIReportDetails();
+        reportDetails.setBillTo(billTo);
+        reportDetails.setShipTo(shipTo);
+        String invoiceUrl = pdfGenerationService.generateInvoice(proFormaInvoiceValue, reportDetails);
         return new ResponseEntity<>(invoiceUrl, HttpStatus.OK);
     }
 

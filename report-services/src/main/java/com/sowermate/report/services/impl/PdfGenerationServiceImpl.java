@@ -1,14 +1,12 @@
 package com.sowermate.report.services.impl;
 
 
-import ch.qos.logback.core.model.Model;
 import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.report.controllers.PIReportHeaderDetails;
+import com.sowermate.report.dtos.PIReportDetails;
 import com.sowermate.report.services.PdfGenerationService;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.ServiceRateInvoiceEntity;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
@@ -40,20 +38,21 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    private byte[] generatePdf(ProFormaInvoiceValue piValue, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails,List<ServiceRateInvoiceValue> serviceRateDetails, String totalQuantity, String totalUnitTotal, String totalRatePerUnit, String totalAmount) {
+    private byte[] generatePdf(ProFormaInvoiceValue piValue,PIReportDetails reportDetails) {
         try {
             Context context = new Context();
             context.setVariable("piValue", piValue);
-            context.setVariable("glassItemDetails", glassItemDetails);
+            context.setVariable("reportDetails", reportDetails);
+            /*context.setVariable("glassItemDetails", glassItemDetails);
             context.setVariable("serviceRateDetails", serviceRateDetails);
             context.setVariable("totalQuantity", totalQuantity);
             context.setVariable("totalUnitTotal", totalUnitTotal);
             context.setVariable("totalRatePerUnit", totalRatePerUnit);
-            context.setVariable("totalAmount", totalAmount);
+            context.setVariable("totalAmount", totalAmount);*/
 
             String htmlContent = templateEngine.process("proforma-invoice", context);
 
-            ITextRenderer renderer = new ITextRenderer(1000,710);
+            ITextRenderer renderer = new ITextRenderer(1000, 710);
             renderer.getSharedContext().setBaseURL("classpath:/static/");
             renderer.setDocumentFromString(htmlContent);
 
@@ -72,9 +71,9 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     @Override
-    public String generateInvoice(ProFormaInvoiceValue piValue) throws IOException {
+    public String generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
+
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
-        List<ServiceRateInvoiceValue> serviceRateDetails=serviceRateDetails(piValue);
 
         double totalQuantity = glassItemDetails.values().stream()
                 .flatMap(List::stream)
@@ -99,10 +98,17 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         String formattedTotalRatePerUnit = decimalFormat.format(totalRatePerUnit);
         String formattedTotalAmount = decimalFormat.format(totalAmount);
 
-        byte[] pdfBytes = generatePdf(piValue, glassItemDetails, serviceRateDetails, formattedTotalQuantity, formattedTotalUnitTotal, formattedTotalRatePerUnit, formattedTotalAmount);
+        reportDetails.setGlassItemDetails(glassItemDetails);
+        reportDetails.setServiceRateDetails(serviceRateDetails(piValue));
+        reportDetails.setTotalQuantity(formattedTotalQuantity);
+        reportDetails.setTotalUnitTotal(formattedTotalUnitTotal);
+        reportDetails.setTotalRatePerUnit(formattedTotalRatePerUnit);
+        reportDetails.setTotalAmount(formattedTotalAmount);
 
-      //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
-      //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
+        byte[] pdfBytes = generatePdf(piValue, reportDetails);
+
+        //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
+        //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
         return pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
     }
 

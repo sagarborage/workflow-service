@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.CompanyEntity;
+import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,16 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
     void softDelete(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid);
 
     CompanyEntity getCompanyEntityByUuid(@Param("companyUuid") String companyUuid);
+
+    @Query("SELECT c.companyName as companyName, " +
+            "t.address as address," +
+            "t.state as state," +
+            "t.pinCode as pinCode," +
+            "t.phoneNumber as phoneNumber," +
+            "t.emailId as emailId" +
+            " FROM CompanyEntity c " +
+            "JOIN c.tenantEntity t " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND c.uuid = :companyUuid")
+    CompanyInfoProjection getCompanyInfo(String tenantUuid, String companyUuid);
 }
