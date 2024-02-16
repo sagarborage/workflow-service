@@ -115,7 +115,14 @@
 
             <td style="width: 10.8%;" rowspan="2">Glass Type</td>
             <td style="width: 10.8%;" rowspan="2">QTY</td>
-            <td style="width: 10.8%;" rowspan="2">SQ FT</td>
+            <td style="width: 10.8%;" rowspan="2">
+                <div th:if="${piValue.getPiTypeName() == 'MM'}">
+                    <div>SQ MTR</div>
+                </div>
+                <div th:if="${piValue.getPiTypeName() == 'SQFT'}">
+                     <div>SQ FT</div>
+                </div>
+            </td>
             <td style="width: 10.8%;" rowspan="2">Rate</td>
             <td style="width: 10.8%;" rowspan="2">Amount INR</td>
         </tr>
@@ -133,7 +140,7 @@
         <th:block th:each="entry : ${reportDetails.getGlassItemDetails()}">
             <tr>
                 <td class="font-s-18 font-w-400"
-                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal+')'}"
+                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal} + ' ' + ${reportDetails.getUnitLabel()} +')'"
                     colspan="10"></td>
             </tr>
             <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
@@ -163,9 +170,9 @@
 
         <tr th:each="item, iterStat : ${reportDetails.getServiceRateDetails()}">
             <td style="width: 36.8%;" colspan="4"></td>
-            <td style="width: 20%;" colspan="2">
+            <td style="width: 20%;" colspan="2" th:text="${item.getServiceRateName()}">
                 <!-- Conditionally print "Cut Out" only in the first iteration -->
-                <span th:if="${iterStat.index == 0}">Cut Out</span>
+
             </td>
             <td style="width: 10.8%;" th:text="${item.getQuantity()}">val</td>
             <td style="width: 10.8%;"></td>
@@ -186,12 +193,38 @@
                 <div><b>Admin Charges</b></div>
                 <div><b>Other Extra Charges</b></div>
                 <div><b>Transport Charges</b></div>
+                <div th:if="${reportDetails.getIPercent() != '0'}">
+                    <b><div th:text="'Insurance(' + ${reportDetails.getIPercent()} + '%)'"></div></b>
+                </div>
+                <div th:if="${reportDetails.getUPercent() != '0'}">
+                    <b><div th:text="'Urgency (' + ${reportDetails.getUPercent()} + '%)'"></div></b>
+                </div>
+                <div th:if="${reportDetails.getGstType() == 'IGST'}">
+                    <div><b>IGST(18%)</b></div>
+                </div>
+                <div th:if="${reportDetails.getGstType() == 'SGST-CGST'}">
+                    <div><b>SGST(9%)</b></div>
+                    <div><b>CGST(9%)</b></div>
+                </div>
             </td>
             <td style="width: 10.8%;">
-                <div th:text="${piValue.getBasicAmount()}">Basic Amount val</div>
-                <div th:text="${piValue.getAdminCharges()}">Admin Charges val</div>
-                <div th:text="${piValue.getOtherCharges()}">Other Charges val</div>
-                <div th:text="${piValue.getTransportCharges()}">Transport Charges val</div>
+                <div th:text="${piValue.getBasicAmount()}"></div>
+                <div th:text="${piValue.getAdminCharges()}"></div>
+                <div th:text="${piValue.getOtherCharges()}"></div>
+                <div th:text="${piValue.getTransportCharges()}"></div>
+                <div th:if="${reportDetails.getIPercent() != '0'}">
+                    <div th:text="${reportDetails.getIPercentAmount()}"></div>
+                </div>
+                <div th:if="${reportDetails.getUPercent() != '0'}">
+                    <div th:text="${reportDetails.getUPercentAmount()}"></div>
+                </div>
+                <div th:if="${reportDetails.getGstType() == 'IGST'}">
+                    <div th:text="${reportDetails.getIGst()}"></div>
+                </div>
+                <div th:if="${reportDetails.getGstType() == 'SGST-CGST'}">
+                    <div th:text="${reportDetails.getSGst()}"></div>
+                    <div th:text="${reportDetails.getCGst()}"></div>
+                </div>
             </td>
         </tr>
         <tr>

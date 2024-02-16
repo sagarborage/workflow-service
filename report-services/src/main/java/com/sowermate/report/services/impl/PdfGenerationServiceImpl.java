@@ -12,6 +12,7 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -71,8 +72,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     @Override
-    public String generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
-
+    public byte[] generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
 
         double totalQuantity = glassItemDetails.values().stream()
@@ -104,12 +104,23 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setTotalUnitTotal(formattedTotalUnitTotal);
         reportDetails.setTotalRatePerUnit(formattedTotalRatePerUnit);
         reportDetails.setTotalAmount(formattedTotalAmount);
+        reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
+
+        reportDetails.setGstType("Maharashtras".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
+        reportDetails.setIGst(""+piValue.getGstCharges());
+        reportDetails.setSGst(""+piValue.getGstCharges()/2);
+        reportDetails.setCGst(""+piValue.getGstCharges()/2);
+        reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() +"" : "0");
+        reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() +"" : "0");
+        reportDetails.setIPercentAmount((piValue.getInsurancePercentAmount() + ""));
+        reportDetails.setUPercentAmount((piValue.getUrgencyPercentAmount() + ""));
 
         byte[] pdfBytes = generatePdf(piValue, reportDetails);
 
         //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
         //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
-        return pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+    return pdfBytes;
     }
 
     private List<ServiceRateInvoiceValue> serviceRateDetails(ProFormaInvoiceValue piValue) {

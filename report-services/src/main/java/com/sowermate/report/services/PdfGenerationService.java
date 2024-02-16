@@ -9,5 +9,5 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import java.io.IOException;
 
 public interface PdfGenerationService {
-    String generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException;
+    byte[] generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException;
 }

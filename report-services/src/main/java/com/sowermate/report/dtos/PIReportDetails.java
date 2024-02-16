@@ -21,5 +21,13 @@ public class PIReportDetails {
     String totalUnitTotal;
     String totalRatePerUnit;
     String totalAmount;
-
+    String unitLabel;
+    String gstType;
+    String iGst;
+    String cGst;
+    String sGst;
+    String iPercent;
+    String iPercentAmount;
+    String uPercent;
+    String uPercentAmount;
 }
