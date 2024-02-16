@@ -3,6 +3,7 @@ package com.sowermate.user.controllers;
 import com.sowermate.base.common.constants.StatusConstants;
 import com.sowermate.base.exceptions.ApiResponse;
 import com.sowermate.user.dtos.UserProfileDto;
+import com.sowermate.user.projections.UserProfileProjection;
 import com.sowermate.user.services.UserProfileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +75,8 @@ public class UserProfileController {
      * @return ResponseEntity<List < UserProfileDto>> The list of retrieved user profiles along with the HTTP status code.
      */
     @RequestMapping(value = "/{tenantUuid}", method = RequestMethod.GET)
-    public ResponseEntity<List<UserProfileDto>> getAllUserProfile(@PathVariable String tenantUuid, @RequestParam(name = StatusConstants.REQUEST_PARAM_STATUS, defaultValue = StatusConstants.ALL) String status) {
-        List<UserProfileDto> userProfileDtoList = this.userProfileService.getAllUserProfile(tenantUuid, status);
+        public ResponseEntity<List<UserProfileProjection>> getAllUserProfile(@PathVariable String tenantUuid, @RequestParam(name = StatusConstants.REQUEST_PARAM_STATUS, defaultValue = StatusConstants.ALL) String status) {
+        List<UserProfileProjection> userProfileDtoList = this.userProfileService.getAllUserProfile(tenantUuid, status);
         return new ResponseEntity<>(userProfileDtoList, HttpStatus.OK);
     }
 

@@ -36,7 +36,6 @@ public class ServiceRateInvoiceEntity extends Base {
 
     public ServiceRateInvoiceValue toDTO() {
         return ServiceRateInvoiceValue.newBuilder()
-                //.id(getId())
                 .uuid(getUuid())
                 .proFormaInvoiceUuid(proFormaInvoiceEntity.getUuid())
                 .serviceRateUuid(getServiceRateEntity().getUuid())

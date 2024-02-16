@@ -101,18 +101,24 @@ public class ProFormaInvoiceEntity extends Base {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL, orphanRemoval = true)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL, orphanRemoval = true)
     private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities;
 
     @OneToOne(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
     private WorkOrderEntity workOrderEntity;
 
+    @PostPersist
+    void postPersist(){
+        if(getProFormaInvoiceItemEntities() != null){
+            getProFormaInvoiceItemEntities().forEach(item->item.setProFormaInvoiceEntity(this));
+        }
+    }
+
     public ProFormaInvoiceValue toDTO() {
         return ProFormaInvoiceValue.newBuilder()
-                .proFormaInvoiceId(getId())
                 .proFormaInvoiceUuid(getUuid())
                 .tenantUuid(getTenantEntity().getUuid())
                 .confirmThroughUuid(null == getConfirmThroughEntity() ? null : getConfirmThroughEntity().getUuid())

@@ -2,6 +2,7 @@ package com.sowermate.user.services;
 
 
 import com.sowermate.user.dtos.UserProfileDto;
+import com.sowermate.user.projections.UserProfileProjection;
 
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public interface UserProfileService {
      * @param status     The status of the user profiles to retrieve.
      * @return A list of user profiles as UserProfileDto objects.
      */
-    List<UserProfileDto> getAllUserProfile(String tenantUuid, String status);
+    List<UserProfileProjection> getAllUserProfile(String tenantUuid, String status);
 
     List<UserProfileDto> getAllUserProfileByTenant(String tenantUuid);
 
@@ -67,7 +68,6 @@ public interface UserProfileService {
     /**
      * Soft deletes a user profile based on the provided UUID and user UUID.
      *
-     * @param uuid     The UUID of the user profile to soft delete.
      * @param userUuid The UUID of the user associated with the profile.
      */
     void softDeleteUserProfile(String tenantUuid, String userUuid);

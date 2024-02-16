@@ -10,6 +10,7 @@ public interface ProFormaInvoiceItemService {
 
 
     public ProFormaInvoiceItemValue createProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue);
+    public List<ProFormaInvoiceItemValue> saveAllProFormaInvoiceItem(String tenantUUID, List<ProFormaInvoiceItemValue> proFormaInvoiceItems);
 
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue);
 

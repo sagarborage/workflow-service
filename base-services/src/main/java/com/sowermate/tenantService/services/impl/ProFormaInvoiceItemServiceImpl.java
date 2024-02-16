@@ -1,7 +1,6 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.DeptTypeEnum;
-import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
+import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.value.BucketManipulationValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(rollbackForClassName = {"Exception"})
+//@Transactional(rollbackForClassName = {"Exception"})
 public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemService {
 
     @Autowired
@@ -53,6 +52,33 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                         proFormaInvoiceItemValue.getGlassSpecificationUuid()))
                 .build();
         return proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity).toDTO();
+    }
+
+    @Override
+    public List<ProFormaInvoiceItemValue> saveAllProFormaInvoiceItem(String tenantUuid, List<ProFormaInvoiceItemValue> proFormaInvoiceItems) {
+        ProFormaInvoiceItemValue proFormaInvoiceItemValue = proFormaInvoiceItems.get(0);
+        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
+         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+                tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid());
+        GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
+                proFormaInvoiceItemValue.getGlassThicknessUuid());
+        GlassTypeEntity glassTypeEntity = glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid,
+                proFormaInvoiceItemValue.getGlassTypeUuid());
+        GlassSpecificationEntity glassSpecificationEntity = glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,
+                proFormaInvoiceItemValue.getGlassSpecificationUuid());
+
+        List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities =  proFormaInvoiceItems.stream().map(e->{
+            return e.toEntity().toBuilder()
+                    .tenantEntity(tenantEntity)
+                    .proFormaInvoiceEntity(proFormaInvoiceEntity)
+                    .glassThicknessEntity(glassThicknessEntity)
+                    .glassTypeEntity(glassTypeEntity)
+                    .glassSpecificationEntity(glassSpecificationEntity)
+                    .version(1)
+                    .build();
+        }).collect(Collectors.toList());
+
+        return proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntities).stream().map(e->e.toDTO()).collect(Collectors.toList());
     }
 
     @Override

@@ -4,10 +4,14 @@ import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +19,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +29,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Autowired
     private ProFormaInvoiceRepository proFormaInvoiceRepository;
 
+    @Autowired
+    private ServiceRateRepository serviceRateRepository;
     @Autowired
     private ConfirmThroughRepository confirmThroughRepository;
 
@@ -42,6 +48,16 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Autowired
     ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
+
+    @Autowired
+    GlassSpecificationRepository glassSpecificationRepository;
+    @Autowired
+    GlassThicknessRepository glassThicknessRepository;
+    @Autowired
+    GlassTypeRepository glassTypeRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Override
     @Transactional
@@ -67,6 +83,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                     .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyShipToUuid()))
                     .piNumber(piNumber)
                     .invoiceDate(LocalDateTime.now())
+                    .version(proFormaInvoiceValue.getVersion())
                     .build();
             return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
         }
@@ -92,30 +109,171 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     public ProFormaInvoiceValue editProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
-
-        String tenantUUID = proFormaInvoiceValue.getTenantUuid();
         ProFormaInvoiceEntity tempProFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(proFormaInvoiceValue.getTenantUuid(),
                 proFormaInvoiceValue.getProFormaInvoiceUuid());
 
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceValue.toEntity().toBuilder()
-                .id(tempProFormaInvoiceEntity.getId())
-                .tenantEntity(tenantRepository.findByUuid(proFormaInvoiceValue.getTenantUuid()))
-                .confirmThroughEntity(
-                        null == proFormaInvoiceValue.getConfirmThroughUuid() ? null :
-                                confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
-                )
-                .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
-                .firm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
-                .companyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyBillToUuid()))
-                .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyShipToUuid()))
-                .piNumber(tempProFormaInvoiceEntity.getPiNumber())
-                .invoiceDate(tempProFormaInvoiceEntity.getInvoiceDate())
-                .createdDateTime(tempProFormaInvoiceEntity.getCreatedDateTime())
-                .createdBy(tempProFormaInvoiceEntity.getCreatedBy())
-                .isActive(tempProFormaInvoiceEntity.getIsActive())
-                .version(tempProFormaInvoiceEntity.getVersion())
+        return updateInvoiceWithItems(tempProFormaInvoiceEntity, proFormaInvoiceValue).toDTO();
+    }
+
+    public ProFormaInvoiceEntity updateInvoiceWithItems(ProFormaInvoiceEntity existingInvoice, ProFormaInvoiceValue proFormaInvoiceValue) {
+        String tenantUUID = proFormaInvoiceValue.getTenantUuid();
+
+        List<ProFormaInvoiceItemValue> proFormaInvoiceItems = proFormaInvoiceValue.getProFormaInvoiceItems();
+        List<ServiceRateInvoiceValue> serviceRateInvoiceItems = proFormaInvoiceValue.getServiceRateInvoices();
+
+        // Create a set of IDs from the updated items for efficient comparison
+        Map<String, GlassTypeEntity> glassTypeEntityMap = glassTypeRepository.findAllByTenantEntity_Uuid(existingInvoice.getTenantEntity().getUuid())
+                .stream().collect(Collectors.toMap(GlassTypeEntity::getUuid, glassTypeEntity -> glassTypeEntity));
+        Map<String, GlassSpecificationEntity> specificationEntityMap = glassSpecificationRepository.findAllByTenantEntity_Uuid(existingInvoice.getTenantEntity().getUuid())
+                .stream().collect(Collectors.toMap(GlassSpecificationEntity::getUuid, glassTypeEntity -> glassTypeEntity));
+        Map<String, GlassThicknessEntity> thicknessEntityMap = glassThicknessRepository.findAllByTenantEntity_Uuid(existingInvoice.getTenantEntity().getUuid()).
+                stream().collect(Collectors.toMap(GlassThicknessEntity::getUuid, glassTypeEntity -> glassTypeEntity));
+
+        Set<String> updatedItemIds = proFormaInvoiceItems.stream()
+                .map(ProFormaInvoiceItemValue::getUuid)
+                .collect(Collectors.toSet());
+        Set<String> toBeUpdatedServiceRateInvoiceItems = serviceRateInvoiceItems.stream()
+                .map(ServiceRateInvoiceValue::getUuid)
+                .collect(Collectors.toSet());
+
+        // Remove items from the existing list that are not present in the updated list
+        existingInvoice.getProFormaInvoiceItemEntities().removeIf(item ->
+                item.getId() != null && !updatedItemIds.contains(item.getUuid()));
+
+        // Remove items from the existing list that are not present in the updated list
+        existingInvoice.getServiceRateInvoiceEntities().removeIf(serviceRate ->
+                serviceRate.getId() != null && !toBeUpdatedServiceRateInvoiceItems.contains(serviceRate.getUuid()));
+
+        // Update or add items to the existing list
+        for (ProFormaInvoiceItemValue updatedItem : proFormaInvoiceItems) {
+            ProFormaInvoiceItemEntity existingItem = findItemById(existingInvoice, updatedItem.getUuid());
+
+            if (existingItem != null) {
+                // Update existing item
+                updateItemFromValue(existingItem,
+                        updatedItem,
+                        glassTypeEntityMap,
+                        specificationEntityMap,
+                        thicknessEntityMap
+                );
+            } else {
+                // Add new item
+                ProFormaInvoiceItemEntity newInvoiceItem = addNewInvoiceItem(proFormaInvoiceValue, updatedItem);
+                existingInvoice.getProFormaInvoiceItemEntities().add(newInvoiceItem);
+            }
+        }
+
+        for (ServiceRateInvoiceValue toBeUServiceRateInvoiceValue : serviceRateInvoiceItems) {
+            ServiceRateInvoiceEntity existingItem = findByServiceRateId(existingInvoice, toBeUServiceRateInvoiceValue.getUuid());
+
+            if (existingItem != null) {
+                // Update existing item
+                updateServiceRateFromValue(existingItem,
+                        toBeUServiceRateInvoiceValue
+                );
+            } else {
+                // Add new item
+                ServiceRateInvoiceEntity serviceRateInvoice = addNewServiceRateItem(proFormaInvoiceValue, toBeUServiceRateInvoiceValue);
+                existingInvoice.getServiceRateInvoiceEntities().add(serviceRateInvoice);
+            }
+        }
+
+        existingInvoice.setConfirmThroughEntity(
+                null == proFormaInvoiceValue.getConfirmThroughUuid() ? null :
+                        confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
+        );
+
+        existingInvoice.setPiTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()));
+        existingInvoice.setFirm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()));
+        existingInvoice.setCompanyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyBillToUuid()));
+        existingInvoice.setCompanyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyShipToUuid()));
+        existingInvoice.setProFormaInvoiceAmount(proFormaInvoiceValue.getProFormaInvoiceAmount());
+        existingInvoice.setServiceRateInvoiceAmount(proFormaInvoiceValue.getServiceRateInvoiceAmount());
+        existingInvoice.setBasicAmount(proFormaInvoiceValue.getBasicAmount());
+        existingInvoice.setAdminCharges(proFormaInvoiceValue.getAdminCharges());
+        existingInvoice.setInsurancePercent(proFormaInvoiceValue.getInsurancePercent());
+        existingInvoice.setInsurancePercentAmount(proFormaInvoiceValue.getInsurancePercentAmount());
+        existingInvoice.setUrgencyPercent(proFormaInvoiceValue.getUrgencyPercent());
+        existingInvoice.setUrgencyPercentAmount(proFormaInvoiceValue.getUrgencyPercentAmount());
+        existingInvoice.setOtherCharges(proFormaInvoiceValue.getOtherCharges());
+        existingInvoice.setTransportCharges(proFormaInvoiceValue.getTransportCharges());
+        existingInvoice.setGstCharges(proFormaInvoiceValue.getGstCharges());
+        existingInvoice.setGrandTotal(proFormaInvoiceValue.getGrandTotal());
+        existingInvoice.setRoundOffAmount(proFormaInvoiceValue.getRoundOffAmount());
+        existingInvoice.setPayableAmount(proFormaInvoiceValue.getPayableAmount());
+        existingInvoice.setPreviousBalance(proFormaInvoiceValue.getPreviousBalance());
+        existingInvoice.setAdjustmentAmount(proFormaInvoiceValue.getAdjustmentAmount());
+        existingInvoice.setStatus(proFormaInvoiceValue.getStatus());
+        return proFormaInvoiceRepository.save(existingInvoice);
+    }
+
+    private ProFormaInvoiceItemEntity findItemById(ProFormaInvoiceEntity invoice, String itemUuid) {
+        return invoice.getProFormaInvoiceItemEntities().stream()
+                .filter(item -> (item.getUuid() !=null && item.getUuid().equals(itemUuid)))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private ServiceRateInvoiceEntity findByServiceRateId(ProFormaInvoiceEntity invoice, String serviceUuid) {
+        return invoice.getServiceRateInvoiceEntities().stream()
+                .filter(serviceRate -> (serviceRate.getUuid() !=null && serviceRate.getUuid().equals(serviceUuid)))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private void updateItemFromValue(ProFormaInvoiceItemEntity itemEntity, ProFormaInvoiceItemValue itemValue, Map<String, GlassTypeEntity> glassTypeEntityMap,
+                                     Map<String, GlassSpecificationEntity> specificationEntityMap, Map<String, GlassThicknessEntity> thicknessEntityMap) {
+        // Update fields based on your business logic
+        itemEntity.setGlassTypeEntity(glassTypeEntityMap.get(itemValue.getGlassTypeUuid()));
+        itemEntity.setGlassSpecificationEntity(specificationEntityMap.get(itemValue.getGlassSpecificationUuid()));
+        itemEntity.setGlassThicknessEntity(thicknessEntityMap.get(itemValue.getGlassThicknessUuid()));
+        itemEntity.setWidthInch(itemValue.getWidthInch());
+        itemEntity.setWidthMeasurement(itemValue.getWidthMeasurement());
+        itemEntity.setWidthMeasurementLabel(itemValue.getWidthMeasurementLabel());
+        itemEntity.setActualWidth(itemValue.getActualWidth());
+        itemEntity.setChargeableWidth(itemValue.getChargeableWidth());
+        itemEntity.setHeightInch(itemValue.getHeightInch());
+        itemEntity.setHeightMeasurement(itemValue.getHeightMeasurement());
+        itemEntity.setHeightMeasurementLabel(itemValue.getHeightMeasurementLabel());
+        itemEntity.setActualHeight(itemValue.getActualHeight());
+        itemEntity.setChargeableHeight(itemValue.getChargeableHeight());
+        itemEntity.setExtraMm(itemValue.getExtraMm());
+        itemEntity.setQuantity(itemValue.getQuantity());
+        itemEntity.setUnitValue(itemValue.getUnitValue());
+        itemEntity.setRatePerUnit(itemValue.getRatePerUnit());
+        itemEntity.setUnitMeasurementLabel(itemValue.getUnitMeasurementLabel());
+        itemEntity.setAmount(itemValue.getAmount());
+    }
+
+    private ProFormaInvoiceItemEntity addNewInvoiceItem(ProFormaInvoiceValue proFormaInvoiceValue, ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
+        String tenantUuid = proFormaInvoiceValue.getTenantUuid();
+        return proFormaInvoiceItemValue.toEntity().toBuilder()
+                .tenantEntity(tenantRepository.findByUuid(tenantUuid))
+                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+                        tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
+                .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
+                        proFormaInvoiceItemValue.getGlassThicknessUuid()))
+                .glassTypeEntity(glassTypeRepository.findByTenantEntity_UuidAndGlassTypeUuid(tenantUuid,
+                        proFormaInvoiceItemValue.getGlassTypeUuid()))
+                .glassSpecificationEntity(glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,
+                        proFormaInvoiceItemValue.getGlassSpecificationUuid()))
                 .build();
-        return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
+    }
+
+    private ServiceRateInvoiceEntity addNewServiceRateItem(ProFormaInvoiceValue proFormaInvoiceValue, ServiceRateInvoiceValue serviceRateInvoiceValue) {
+        String tenantUuid = proFormaInvoiceValue.getTenantUuid();
+        return serviceRateInvoiceValue.toEntity().toBuilder()
+                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+                        tenantUuid, proFormaInvoiceValue.getProFormaInvoiceUuid()))
+                .serviceRateEntity(serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(tenantUuid, serviceRateInvoiceValue.getServiceRateUuid()))
+                .build();
+    }
+
+
+    private void updateServiceRateFromValue(ServiceRateInvoiceEntity serviceRateInvoice, ServiceRateInvoiceValue serviceRateInvoiceValue) {
+        serviceRateInvoice.setRate(serviceRateInvoiceValue.getRate());
+        serviceRateInvoice.setQuantity(serviceRateInvoiceValue.getQuantity());
+        serviceRateInvoice.setTotal(serviceRateInvoiceValue.getTotal());
     }
 
     @Override
@@ -158,12 +316,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         return proFormaInvoiceRepository.deleteByUuid(proFormaInvoiceUuid);
     }
     //TODO: Remove this code lateron
-/*    @Override
-    public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid) {
-        TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
-        List<ProFormaInvoiceEntity> proFormaInvoiceEntities = proFormaInvoiceRepository.findAllByTenantEntity_Id(tenantEntity.getId());
-        return proFormaInvoiceEntities.stream().map(pie -> pie.toDTO()).collect(Collectors.toList());
-    }*/
 
     @Override
     public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate) {
@@ -194,20 +346,20 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, String proFormaInvoiceUuid,String deptType) {
+    public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, String proFormaInvoiceUuid, String deptType) {
         List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceOrdersProjections;
         switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
             case OPTIMIZE:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid,proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid, proFormaInvoiceUuid);
                 break;
             case CUTTING:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid,proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid, proFormaInvoiceUuid);
                 break;
             case DISPATCH:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(tenantUuid,proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(tenantUuid, proFormaInvoiceUuid);
                 break;
             case TOUGHEN:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(tenantUuid,proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(tenantUuid, proFormaInvoiceUuid);
                 break;
             default:
                 throw new ResourceNotFoundException();
