@@ -85,14 +85,16 @@
                 </div>
             </td>
             <td style="width: 54%;" colspan="5" class="address">
-                <div class="customPi" th:text="${reportDetails.getShipTo().getCompanyName()}"></div>
-                <div><span th:text="${reportDetails.getShipTo().getAddress()+','}"></span>
-                    <span th:text="${reportDetails.getShipTo().getState()+','}"></span>
-                    <span th:text="${reportDetails.getShipTo().getPinCode()}"></span>
-                </div>
-                <div><b>Ph:</b><span th:text="${reportDetails.getShipTo().getPhoneNumber()}"></span>
-                    <b>E-Mail:</b><span th:text="${reportDetails.getShipTo().getEmailId()}"></span>
-                </div>
+                <div th:if="${reportDetails.getShipTo()} != null">
+                    <div class="customPi" th:text="${reportDetails.getShipTo().getCompanyName()}"></div>
+                    <div><span th:text="${reportDetails.getShipTo().getAddress()+','}"></span>
+                        <span th:text="${reportDetails.getShipTo().getState()+','}"></span>
+                        <span th:text="${reportDetails.getShipTo().getPinCode()}"></span>
+                    </div>
+                    <div><b>Ph:</b><span th:text="${reportDetails.getShipTo().getPhoneNumber()}"></span>
+                        <b>E-Mail:</b><span th:text="${reportDetails.getShipTo().getEmailId()}"></span>
+                    </div>
+                    </div>
             </td>
         </tr>
         <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
