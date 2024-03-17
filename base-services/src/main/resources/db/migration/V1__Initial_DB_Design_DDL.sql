@@ -327,7 +327,7 @@ CREATE TABLE pro_forma_invoice (
   tenant_id int(10) NOT NULL,
   firm_id int(10) NOT NULL,
   id_bill_to int(10) NOT NULL,
-  id_ship_to int(10) NOT NULL,
+  id_ship_to int(10) DEFAULT NULL,
   pi_type_id int(10) NOT NULL,
   confirm_through_id int(10) DEFAULT NULL,
   pi_number varchar(10) NOT NULL,
