@@ -1,7 +1,6 @@
-package com.sowermate.tenantService.util;
+package com.sowermate.image.utils;
 
 
-import com.sowermate.tenantService.exceptions.InvalidInputException;
 import org.apache.tika.Tika;
 
 import java.util.Base64;
@@ -16,7 +15,7 @@ public class FileDetection {
         } else if (mimeType.startsWith("application/")) {
             return false;
         } else {
-            throw new InvalidInputException("Unsupported file format!!");
+            throw new RuntimeException("Unsupported file format!!");
 
         }
     }
