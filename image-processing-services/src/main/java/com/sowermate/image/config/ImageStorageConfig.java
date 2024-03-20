@@ -25,4 +25,6 @@ public class ImageStorageConfig {
     private String productImagesDirectory;
     @Value("${image.upload-directory.profile-images}")
     private String profileImagesDirectory;
+    @Value("${file.upload-directory.pro-form-invoice}")
+    private String proFormInvoicefileDirectory;
 }

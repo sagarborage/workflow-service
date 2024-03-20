@@ -1,5 +1,7 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.image.config.ImageStorageConfig;
+import com.sowermate.image.services.PdfService;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.value.BucketManipulationValue;
@@ -9,8 +11,8 @@ import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,13 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     private GlassThicknessRepository glassThicknessRepository;
 
     @Autowired
+    private PdfService pdfService;
+
+    @Autowired
     private TenantRepository tenantRepository;
+
+    @Autowired
+    private ImageStorageConfig imageStorageConfig;
 
     @Override
     public ProFormaInvoiceItemValue createProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
@@ -85,10 +93,16 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
+        String fileUrl = null;
+        if (proFormaInvoiceItemValue.getBase64File()!=null) {
+            byte[] imageBytes = Base64.getDecoder().decode(proFormaInvoiceItemValue.getBase64File());
+             fileUrl = pdfService.handlePdf(imageBytes, proFormaInvoiceItemValue.getUuid(), "", imageStorageConfig.getProFormInvoicefileDirectory());
+        }
         ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(proFormaInvoiceItemValue.getTenantUuid(), proFormaInvoiceItemValue.getUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceItemEntity.getId())
                 .tenantEntity(tenantRepository.findByUuid(tenantUuid))
+                .fileUrl(fileUrl)
                 .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
                         tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
                 .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,

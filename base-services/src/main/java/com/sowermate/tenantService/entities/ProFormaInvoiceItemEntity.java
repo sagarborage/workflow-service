@@ -88,6 +88,9 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "`dispatch_completed`")
     private int dispatchCompleted;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pro_forma_invoice_id")
     private ProFormaInvoiceEntity proFormaInvoiceEntity;
@@ -147,6 +150,7 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .createdBy(getCreatedBy())
                 .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(getIsActive())
+                .fileUrl(getFileUrl())
                 .build();
     }
 }

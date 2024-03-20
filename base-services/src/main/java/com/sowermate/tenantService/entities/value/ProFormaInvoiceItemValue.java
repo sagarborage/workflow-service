@@ -49,6 +49,8 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private int cuttingCompleted;
     private int toughenCompleted;
     private int dispatchCompleted;
+    private String base64File;
+    private String fileUrl;
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()

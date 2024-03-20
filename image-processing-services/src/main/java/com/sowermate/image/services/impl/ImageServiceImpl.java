@@ -1,19 +1,19 @@
 package com.sowermate.image.services.impl;
 
 
-
 import com.sowermate.image.config.ImageStorageConfig;
 import com.sowermate.image.constants.ImageExtensionConstants;
 import com.sowermate.image.constants.ImageFileTypeConstants;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
+import com.sowermate.image.utils.FileDetection;
 import com.sowermate.image.utils.TypeDetection;
-import com.sowermate.tenantService.util.FileDetection;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.tika.Tika;
 import org.modelmapper.internal.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
