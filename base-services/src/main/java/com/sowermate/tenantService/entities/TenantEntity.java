@@ -28,7 +28,7 @@ public class TenantEntity extends Base {
     @Column(name = "state")
     private String state;
     @Column(name = "country_id")
-    private int countryId;
+    private Integer countryId;
     @Column(name = "pin_code")
     private String pinCode;
     @Column(name = "phone_number")
@@ -40,7 +40,7 @@ public class TenantEntity extends Base {
     @Column(name = "expiry_date")
     private Date expiryDate;
     @Column(name = "grace_period")
-    private int gracePeriod;
+    private Integer gracePeriod;
 /*    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isActive = true;*/

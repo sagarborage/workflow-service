@@ -18,7 +18,7 @@ public class ServiceRateInvoiceEntity extends Base {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "rate")
     private Double rate;

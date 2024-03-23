@@ -26,13 +26,13 @@ public class TenantValue extends BaseDto {
     private String address;
     private String city;
     private String state;
-    private int countryId;
+    private Integer countryId;
     private String pinCode;
     private String phoneNumber;
     private String emailId;
     private Date activationDate;
     private Date expiryDate;
-    private int gracePeriod;
+    private Integer gracePeriod;
     private boolean isActive = true;
 
     private List<CompanyValue> companyValues;

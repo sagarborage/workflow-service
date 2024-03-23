@@ -17,7 +17,7 @@ public class ServiceRateInvoiceValue extends BaseDto {
     private String serviceRateName;
     private String proFormaInvoiceUuid;
     private String serviceRateUuid;
-    private int quantity;
+    private Integer quantity;
     private Double rate;
     private Double total;
 
