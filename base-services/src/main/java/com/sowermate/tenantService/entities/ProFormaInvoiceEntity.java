@@ -72,7 +72,7 @@ public class ProFormaInvoiceEntity extends Base {
     private Float previousBalance;
 
     @Column(name = "adjustment_amount")
-    private int adjustmentAmount;
+    private Integer adjustmentAmount;
 
     @Column(name = "status")
     private String status;

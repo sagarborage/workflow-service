@@ -36,19 +36,19 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private Float actualHeight;
     private Float chargeableHeight;
     private Float extraMm;
-    private int quantity;
+    private Integer quantity;
     private Float unitValue;
     private Double ratePerUnit;
     private String unitMeasurementLabel;
     private Double amount;
-    private int optimizeBucket;
-    private int cuttingBucket;
-    private int toughenBucket;
-    private int dispatchBucket;
-    private int optimizeCompleted;
-    private int cuttingCompleted;
-    private int toughenCompleted;
-    private int dispatchCompleted;
+    private Integer optimizeBucket;
+    private Integer cuttingBucket;
+    private Integer toughenBucket;
+    private Integer dispatchBucket;
+    private Integer optimizeCompleted;
+    private Integer cuttingCompleted;
+    private Integer toughenCompleted;
+    private Integer dispatchCompleted;
     private String base64File;
     private String fileUrl;
 

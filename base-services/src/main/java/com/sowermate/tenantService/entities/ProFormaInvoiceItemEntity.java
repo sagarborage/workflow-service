@@ -49,7 +49,7 @@ public class ProFormaInvoiceItemEntity extends Base {
     private Float extraMm;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "unit_value")
     private Float unitValue;
@@ -64,29 +64,29 @@ public class ProFormaInvoiceItemEntity extends Base {
     private Double amount;
 
     @Column(name = "`optimize_bucket`")
-    private int optimizeBucket;
+    private Integer optimizeBucket;
 
     @Column(name = "`cutting_bucket`")
-    private int cuttingBucket;
+    private Integer cuttingBucket;
 
     @Column(name = "`toughen_bucket`")
-    private int toughenBucket;
+    private Integer toughenBucket;
 
     @Column(name = "`dispatch_bucket`")
-    private int dispatchBucket;
+    private Integer dispatchBucket;
 
 
     @Column(name = "`optimize_completed`")
-    private int optimizeCompleted;
+    private Integer optimizeCompleted;
 
     @Column(name = "`cutting_completed`")
-    private int cuttingCompleted;
+    private Integer cuttingCompleted;
 
     @Column(name = "`toughen_completed`")
-    private int toughenCompleted;
+    private Integer toughenCompleted;
 
     @Column(name = "`dispatch_completed`")
-    private int dispatchCompleted;
+    private Integer dispatchCompleted;
 
     @Column(name = "file_url")
     private String fileUrl;

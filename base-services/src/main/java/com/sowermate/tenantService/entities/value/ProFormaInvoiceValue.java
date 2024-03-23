@@ -44,7 +44,7 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Float roundOffAmount;
     private Float payableAmount;
     private Float previousBalance;
-    private int adjustmentAmount;
+    private Integer adjustmentAmount;
     private String status;
 
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
