@@ -290,6 +290,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         workOrderEntity.setProFormaInvoiceEntity(proFormaInvoiceEntity);
         workOrderEntity.setTenantEntity(proFormaInvoiceEntity.getTenantEntity());
         workOrderEntity.setFirm(proFormaInvoiceEntity.getFirm());
+        workOrderEntity.setIsActive(true);
         WorkOrderEntity forCheck = workOrderRepository.save(workOrderEntity);
 
 
