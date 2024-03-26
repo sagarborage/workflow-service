@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
+
+    <style>
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+        .font-helva
+        {
+          font-family: 'Helvetica', sans-serif;
+                    font-size: 14px;
+        }
+        .customPi {
+        font-size: 1.5em; /* Adjust as needed */
+        font-weight: bold; /* Adjust as needed */
+        }
+        .address{
+       text-align: left;
+       padding-left:10px;
+        }
+        td {
+        border: 1px solid black;
+        padding: 8px;
+        }
+        .alignCenter {
+        text-align: center;
+        }
+        .alignLeft {
+        text-align: left;
+        }
+
+    th, td {
+      border: 1px solid black;
+      padding: 0px;
+      text-align: center;
+      height: 20px; /* Adjust the height as needed */
+    }
+    </style>
+</head>
+
+<body>
+<div style="overflow-x: auto;">
+    <table class="alignCenter font-helva font-w-400 font-s-14">
+        <!-- 1st row with colspan 10 -->
+        <tr>
+            <td class="alignCenter customPi font-16" colspan="8">WORK ORDER</td>
+        </tr>
+        <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
+        <tr>
+            <td class="alignCenter font-16" style="width: 20%;" colspan="8">HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD. KUPWAD.</td>
+        </tr>
+        <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
+        <tr>
+            <td style="width: 46%;" colspan="4"><b>Work Order No: Date</b><span
+                    th:text="${piValue.getPiNumber()}"></span>
+            </td>
+            <td style="width: 32.4%;" colspan="4"><b>PI Number: Date</b><span th:text="${piValue.getCreatedBy()}"></span></td>
+        </tr>
+        <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
+        <tr>
+            <td style="width: 46%;" colspan="4">Party Name:- Sagar</td>
+            <td style="width: 54%;" colspan="4">User: Vikas Rajbhar (Confrm on Whats app)</td>
+        </tr>
+        <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
+        <tr>
+            <td style="width: 9.2%;" rowspan="2">
+                <div>Sr.</div>
+                <div>No</div>
+            </td>
+            <td style="width: 9.2%;" rowspan="2">
+                <div>Width</div>
+                <div>(Inch)</div>
+            </td>
+            <td style="width: 9.2%;" rowspan="2">
+                <div>Height</div>
+                <div>(Inch)</div>
+            </td>
+            <td style="width: 18.4%;" colspan="2">
+                <div>Size</div>
+            </td>
+
+            <td style="width: 10.8%;" rowspan="2">Glass Type</td>
+            <td style="width: 10.8%;" rowspan="2">QTY</td>
+            <td style="width: 10.8%;" rowspan="2">
+                <div>Total</div>
+            </td>
+        </tr>
+        <tr>
+            <td tyle="width: 9.2%;">
+                <div>Width</div>
+                <div>(MM)</div>
+            </td>
+            <td tyle="width: 9.2%;">
+                <div>Height</div>
+                <div>(MM)</div>
+            </td>
+        </tr>
+        <!-- 7th row with colspan 10 -->
+        <th:block th:each="entry : ${reportDetails.getGlassItemDetails()}">
+            <tr>
+                <td class="font-s-18 font-w-400"
+                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal} + ' ' + ${reportDetails.getUnitLabel()} +')'"
+                    colspan="8"></td>
+            </tr>
+            <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
+            <tr th:each="item,iterStat : ${entry.value}">
+                <td style="width: 9.2%;" th:text="${iterStat.index} + 1"></td>
+                <td style="width: 9.2%;" th:text="${item.widthMeasurementLabel}"></td>
+                <td style="width: 9.2%;" th:text="${item.heightMeasurementLabel}"></td>
+                <td style="width: 9.2%;" th:text="${item.actualWidth}"></td>
+                <td style="width: 9.2%;" th:text="${item.actualHeight}"></td>
+                <td style="width: 10.8%;" th:text="${item.glassTypeName}"></td>
+                <td style="width: 10.8%;" th:text="${item.quantity}"></td>
+                <td style="width: 10.8%;" th:text="${item.unitValue}"></td>
+            </tr>
+        </th:block>
+        <!-- 9th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
+        <tr>
+            <td style="width: 36.8%;" colspan="5"></td>
+            <td style="width: 20%;" colspan="1">Sub Total</td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalQuantity()}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalUnitTotal()}"></td>
+        </tr>
+        <tr>
+            <td style="width: 36.8%;" colspan="5"></td>
+            <td style="width: 20%;" colspan="2">EXTRA SERVICE</td>
+            <td style="width: 20%;"></td>
+        </tr>
+        <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
+
+        <tr th:each="item, iterStat : ${reportDetails.getServiceRateDetails()}">
+            <td style="width: 36.8%;" colspan="5"></td>
+            <td style="width: 20%;" colspan="1" th:text="${item.getServiceRateName()}"></td>
+            <td style="width: 10.8%;" th:text="${item.getQuantity()}">val</td>
+            <td style="width: 10.8%;"></td>
+        </tr>
+
+        <tr>
+            <td colspan="8">
+                <div class="alignCenter">DESIGNS</div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+

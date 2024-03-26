@@ -39,17 +39,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    private byte[] generatePdf(ProFormaInvoiceValue piValue,PIReportDetails reportDetails) {
+    private byte[] generatePdf(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) {
         try {
             Context context = new Context();
             context.setVariable("piValue", piValue);
             context.setVariable("reportDetails", reportDetails);
-            /*context.setVariable("glassItemDetails", glassItemDetails);
-            context.setVariable("serviceRateDetails", serviceRateDetails);
-            context.setVariable("totalQuantity", totalQuantity);
-            context.setVariable("totalUnitTotal", totalUnitTotal);
-            context.setVariable("totalRatePerUnit", totalRatePerUnit);
-            context.setVariable("totalAmount", totalAmount);*/
 
             String htmlContent = templateEngine.process("proforma-invoice", context);
 
@@ -114,6 +108,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() +"" : "0");
         reportDetails.setIPercentAmount((piValue.getInsurancePercentAmount() + ""));
         reportDetails.setUPercentAmount((piValue.getUrgencyPercentAmount() + ""));
+        reportDetails.setGrandTotal(Math.round(piValue.getGrandTotal()));
 
         byte[] pdfBytes = generatePdf(piValue, reportDetails);
 

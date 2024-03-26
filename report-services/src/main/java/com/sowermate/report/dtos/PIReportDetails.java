@@ -30,4 +30,5 @@ public class PIReportDetails {
     String iPercentAmount;
     String uPercent;
     String uPercentAmount;
+    Integer grandTotal;
 }
