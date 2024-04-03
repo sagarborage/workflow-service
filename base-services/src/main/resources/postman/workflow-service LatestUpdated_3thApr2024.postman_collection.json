@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b177aa62-f33d-46ff-8fbd-8a3577ee365e",
-		"name": "workflow-service LatestUpdated_5thOct",
+		"_postman_id": "961639de-c1d5-4ba1-8f6e-c7aef34910d0",
+		"name": "workflow-service LatestUpdated_03thApr2024",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "6307504"
+		"_exporter_id": "28645568"
 	},
 	"item": [
 		{
@@ -141,7 +141,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    //\"companyUuid\": \"7ad2af75-dbb4-435e-aa0a-1e5c6cbc136d\",\n    \"companyName\": \"Test Company Seven\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"companyTypeUuid\": \"d0335437-3c0d-11ee-962a-14abc5fbd6fa\",\n    \"cin\": \"CIN0000001\",\n    \"gstin\": \"GSTIN0000000\",\n    \"tan\": \"TAN0000000\",\n    \"addresses\": [\n        {\n            //\"companyAddressUuid\": \"cdef2962-d56a-415a-a982-ba2061d34526\",\n            \"addressTypeUuid\": \"d0329283-3c0d-11ee-962a-14abc5fbd6fa\",\n            \"addressLine1\": \"Hadapsar, near Dmart\",\n            \"city\": \"Pune\",\n            \"email\":\"a@a.com\",\n            \"stateCode\": 123,\n            \"countryCode\": 1234,\n            \"pinCode\": 123,\n            \"primaryPhoneNumber\": \"9049989010\",\n            \"alternatePhoneNumber\": \"9049989010\",\n            \"isActive\": true\n        }\n    ],\n    \"pan\": \"PAN0000000\",\n    \"isActive\": true\n}",
+							"raw": "{\n    //\"companyUuid\": \"7ad2af75-dbb4-435e-aa0a-1e5c6cbc136d\",\n    \"companyName\": \"Subsidery\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"companyTypeUuid\": \"d03351ec-3c0d-11ee-962a-14abc5fbd6fa\",\n    \"cin\": \"CIN0000001\",\n    \"gstin\": \"GSTIN0000000\",\n    \"tan\": \"TAN0000000\",\n    \"addresses\": [\n        {\n            //\"companyAddressUuid\": \"cdef2962-d56a-415a-a982-ba2061d34526\",\n            \"addressTypeUuid\": \"d0329283-3c0d-11ee-962a-14abc5fbd6fa\",\n            \"addressLine1\": \"Hadapsar, near Dmart\",\n            \"city\": \"Pune\",\n            \"email\":\"a@a.com\",\n            \"stateCode\": 123,\n            \"countryCode\": 1234,\n            \"pinCode\": 123,\n            \"primaryPhoneNumber\": \"9049989010\",\n            \"alternatePhoneNumber\": \"9049989010\",\n            \"isActive\": true\n        }\n    ],\n    \"pan\": \"PAN0000000\",\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -525,7 +525,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Hole\",\n    \"rate\":\"100.2\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"isActive\": 1\n}",
+							"raw": "{\n    \"name\": \"Big Hole\",\n    \"rate\":\"100.2345\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"isActive\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -638,7 +638,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"quantity\": \"45\",\n    \"rate\": \"50\",\n    \"total\": \"100\",\n    \"proFormaInvoiceUuid\": \"f2abd8fb-540d-4051-9093-853d11edec41\",\n    \"serviceRateUuid\": \"09b920db-dfa3-4bb2-85ed-f2107af7f567\",\n    \"isActive\": true\n}",
+							"raw": "{\n    \"quantity\": \"78\",\n    \"rate\": \"50.5\",\n    \"total\": \"100.75\",\n    \"proFormaInvoiceUuid\": \"3dc078af-3db2-447a-aa7a-b5a833571176\",\n    \"serviceRateUuid\": \"3c0f293b-c5bb-4f92-a138-4a8400716d01\",\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1073,6 +1073,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "user-authentication",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/user/auth/abhi/1234",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"abhi",
+								"1234"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1345,7 +1365,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"companyBillToUuid\": \"2dc71856-ce6f-41a0-9732-ef97ae85eaf9\",\n    \"companyShipToUuid\": \"2dc71856-ce6f-41a0-9732-ef97ae85eaf9\",\n    \"piTypeUuid\": \"a5596194-a483-4240-aa73-3448c78176a1\",\n    /*\"proFormaInvoiceAmount\": \"34\",\n    \"serviceRateInvoiceAmount\": \"35\",\n    \"basicAmount\": \"693\",\n    \"adminCharges\": \"72\",\n    \"insurancePercent\": \"64\",\n    \"insurancePercentAmount\": \"626\",\n    \"urgencyPercent\": \"35\",\n    \"urgencyPercentAmount\": \"69\",\n    \"otherCharges\": \"76\",\n    \"transportCharges\": \"64\",\n    \"gstCharges\": \"34\",\n    \"grandTotal\": \"325\",\n    \"roundOffAmount\": \"629\",\n    \"payableAmount\": \"69\",\n    \"previousBalance\": \"746\",\n    \"adjustmentAmount\": \"64\",*/\n    \"status\": \"34\",\n    \"isActive\": true\n}",
+							"raw": "{   \n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"firmUuid\": \"584bd17c-89a3-46ec-833b-f4502f046de4\",\n    \"companyBillToUuid\": \"2dc71856-ce6f-41a0-9732-ef97ae85eaf9\",\n    \"companyShipToUuid\": \"2dc71856-ce6f-41a0-9732-ef97ae85eaf9\",\n    \"piTypeUuid\": \"a5596194-a483-4240-aa73-3448c78176a1\",\n    /*\"proFormaInvoiceAmount\": \"34\",\n    \"serviceRateInvoiceAmount\": \"35\",\n    \"basicAmount\": \"693\",\n    \"adminCharges\": \"72\",\n    \"insurancePercent\": \"64\",\n    \"insurancePercentAmount\": \"626\",\n    \"urgencyPercent\": \"35\",\n    \"urgencyPercentAmount\": \"69\",\n    \"otherCharges\": \"76\",\n    \"transportCharges\": \"64\",\n    \"gstCharges\": \"34\",\n    \"grandTotal\": \"325\",\n    \"roundOffAmount\": \"629\",\n    \"payableAmount\": \"69\",\n    \"previousBalance\": \"746\",\n    \"adjustmentAmount\": \"64\",*/\n    \"status\": \"34\",\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1382,14 +1402,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOSTED_API}}/proforma-invoices/7977ff91-64d4-490b-914f-61bbacf75f0f/e48f459a-1b11-4163-b381-818658f3964e",
+							"raw": "{{HOSTED_API}}/proforma-invoices/7977ff91-64d4-490b-914f-61bbacf75f0f/3dc078af-3db2-447a-aa7a-b5a833571176",
 							"host": [
 								"{{HOSTED_API}}"
 							],
 							"path": [
 								"proforma-invoices",
 								"7977ff91-64d4-490b-914f-61bbacf75f0f",
-								"e48f459a-1b11-4163-b381-818658f3964e"
+								"3dc078af-3db2-447a-aa7a-b5a833571176"
 							]
 						}
 					},
@@ -1413,13 +1433,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOSTED_API}}/proforma-invoices/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"raw": "{{HOSTED_API}}/proforma-invoices/7977ff91-64d4-490b-914f-61bbacf75f0f/2023-10-05/2023-10-10",
 							"host": [
 								"{{HOSTED_API}}"
 							],
 							"path": [
 								"proforma-invoices",
-								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"2023-10-05",
+								"2023-10-10"
 							]
 						}
 					},
@@ -1478,6 +1500,68 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "updateConfirmThrough",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/updateConfirmThrough/7977ff91-64d4-490b-914f-61bbacf75f0f/85885ddc-7d05-474f-b2fd-e65ba66a1fbe/7ef3e64e-c66e-46a5-9766-bc8d46bebbe5",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"updateConfirmThrough",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"85885ddc-7d05-474f-b2fd-e65ba66a1fbe",
+								"7ef3e64e-c66e-46a5-9766-bc8d46bebbe5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-order-list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/work-order-list/7977ff91-64d4-490b-914f-61bbacf75f0f/optimize",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"work-order-list",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"optimize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-individual-order-list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/work-order-individuals-list/7977ff91-64d4-490b-914f-61bbacf75f0f/eab9e047-ade5-4a60-9bca-e9f99d460836/optimize",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"work-order-individuals-list",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"eab9e047-ade5-4a60-9bca-e9f99d460836",
+								"optimize"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1491,7 +1575,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"widthInch\": \"23.34\",\n    \"widthMeasurement\": \"45.32\",\n    \"actualWidth\": \"56.43\",\n    \"chargeableWidth\": \"10.23\",\n    \"heightInch\": \"12.5\",\n    \"heightMeasurement\": \"35\",\n    \"actualHeight\": \"32\",\n    \"chargeableHeight\": \"14.35\",\n    \"extraMm\": \"24.35\",\n    \"quantity\": \"24\",\n    \"sqft\": \"37.4\",\n    \"ratePerSqft\": \"24.4\",\n    \"amount\": \"900\",\n    \"isActive\": true,\n    \"proFormaInvoiceUuid\": \"f2abd8fb-540d-4051-9093-853d11edec41\",\n    \"glassTypeUuid\": \"8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c\",\n    \"glassSpecificationUuid\": \"94771345-c309-4eb1-8e2b-bf147ec25f3f\",\n    \"glassThicknessUuid\": \"a15aa9f7-178a-44b6-b631-267bf4c3ca45\"\n}",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"widthInch\": \"23.34\",\n    \"widthMeasurement\": \"45.32\",\n    \"widthMeasurementLabel\": \"1/16 34\",\n    \"actualWidth\": \"56.43\",\n    \"chargeableWidth\": \"10.23\",\n    \"heightInch\": \"12.5\",\n    \"heightMeasurement\": \"35\",\n    \"heightMeasurementLabel\": \"1/8 34\",\n    \"actualHeight\": \"32\",\n    \"chargeableHeight\": \"14.35\",\n    \"extraMm\": \"24.35\",\n    \"quantity\": \"24\",\n    \"unitValue\": \"37.4\",\n    \"ratePerUnit\": \"24.4\",\n    \"unitMeasurementLabel\": \"10 78\",\n    \"amount\": \"900\",\n    \"isActive\": true,\n    \"proFormaInvoiceUuid\": \"3dc078af-3db2-447a-aa7a-b5a833571176\",\n    \"glassTypeUuid\": \"8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c\",\n    \"glassSpecificationUuid\": \"94771345-c309-4eb1-8e2b-bf147ec25f3f\",\n    \"glassThicknessUuid\": \"a15aa9f7-178a-44b6-b631-267bf4c3ca45\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1606,7 +1690,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tenantUuid\":\"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"uuid\": \"796a5142-6265-4987-90b8-394a300976b2\",\n    \"widthInch\": \"34.44\",\n    \"widthMeasurement\": \"45.32\",\n    \"actualWidth\": \"56.43\",\n    \"chargeableWidth\": \"10.23\",\n    \"heightInch\": \"12.5\",\n    \"heightMeasurement\": \"35\",\n    \"actualHeight\": \"32\",\n    \"chargeableHeight\": \"14.35\",\n    \"extraMm\": \"24.35\",\n    \"quantity\": \"24\",\n    \"sqft\": \"37.4\",\n    \"ratePerSqft\": \"24.4\",\n    \"amount\": \"900\",\n    \"proFormaInvoiceUuid\": \"4bfdacd7-6e55-4e43-be53-48730d51e41e\",\n    \"glassTypeUuid\": \"8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c\",\n    \"glassSpecificationUuid\": \"94771345-c309-4eb1-8e2b-bf147ec25f3f\",\n    \"glassThicknessUuid\": \"a15aa9f7-178a-44b6-b631-267bf4c3ca45\"\n}",
+							"raw": "{\n    \"tenantUuid\":\"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"uuid\": \"796a5142-6265-4987-90b8-394a300976b2\",\n    \"widthInch\": \"34.44\",\n    \"widthMeasurement\": \"45.32\",\n    \"actualWidth\": \"56.43\",\n    \"chargeableWidth\": \"10.23\",\n    \"heightInch\": \"12.5\",\n    \"heghtMeasurement\": \"35\",\n    \"actualHeight\": \"32\",\n    \"chargeableHeight\": \"14.35\",\n    \"extraMm\": \"24.35\",\n    \"quantity\": \"24\",\n    \"sqft\": \"37.4\",\n    \"ratePerSqft\": \"24.4\",\n    \"amount\": \"900\",\n    \"proFormaInvoiceUuid\": \"4bfdacd7-6e55-4e43-be53-48730d51e41e\",\n    \"glassTypeUuid\": \"8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c\",\n    \"glassSpecificationUuid\": \"94771345-c309-4eb1-8e2b-bf147ec25f3f\",\n    \"glassThicknessUuid\": \"a15aa9f7-178a-44b6-b631-267bf4c3ca45\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1620,6 +1704,34 @@
 							],
 							"path": [
 								"proforma-invoice-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bucketManipulation",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"proFormaInvoiceUUid\": \"eab9e047-ade5-4a60-9bca-e9f99d460836\",\n    \"proFormaInvoiceItemUUid\": \"41eeb213-fab9-46c4-931b-833b055702c6\",\n    \"currentBucket\": \"optimize\",\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items/bucketManipulation/add",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items",
+								"bucketManipulation",
+								"add"
 							]
 						}
 					},
