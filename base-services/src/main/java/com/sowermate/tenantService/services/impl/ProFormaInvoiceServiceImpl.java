@@ -7,6 +7,7 @@ import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProject
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
@@ -284,7 +285,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             throw new ResourceNotFoundException();
         }
         proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughEntity);
-        ProFormaInvoiceEntity proFormaInvoiceEntityUpdated = proFormaInvoiceRepository.save(proFormaInvoiceEntity);
+        ProFormaInvoiceEntity proFormaInvoiceEntityUpdated = proFormaInvoiceRepository.save(proFormaInvoiceEntity.toBuilder()
+                .status(ProformaInvoiceStatusEnum.CONFIRM).build());
 
         WorkOrderEntity workOrderEntity = new WorkOrderEntity();
         workOrderEntity.setProFormaInvoiceEntity(proFormaInvoiceEntity);
@@ -304,6 +306,17 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         }
 
         return proFormaInvoiceRepository.save(proFormaInvoiceEntityUpdated).toDTO();
+    }
+
+    @Override
+    public ProFormaInvoiceValue updatePIStatus(String tenantUuid, String proFormaInvoiceUuid, ProformaInvoiceStatusEnum status, String statusDetails) {
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
+        if (status.equals(ProformaInvoiceStatusEnum.CANCEL) || status.equals(ProformaInvoiceStatusEnum.HOLD)) {
+            proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(status).statusDetails(statusDetails).build();
+        } else if (status.equals(ProformaInvoiceStatusEnum.NEW)) {
+            proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(status).statusDetails("").build();
+        }
+        return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
     }
 
     @Override
@@ -347,20 +360,20 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, String proFormaInvoiceUuid, String deptType) {
+    public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, Integer workOrderNumber, String deptType) {
         List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceOrdersProjections;
         switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
             case OPTIMIZE:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid, proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(tenantUuid, workOrderNumber);
                 break;
             case CUTTING:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid, proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(tenantUuid, workOrderNumber);
                 break;
             case DISPATCH:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(tenantUuid, proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(tenantUuid, workOrderNumber);
                 break;
             case TOUGHEN:
-                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(tenantUuid, proFormaInvoiceUuid);
+                proFormaInvoiceOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(tenantUuid, workOrderNumber);
                 break;
             default:
                 throw new ResourceNotFoundException();

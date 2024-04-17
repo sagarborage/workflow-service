@@ -349,6 +349,7 @@ CREATE TABLE pro_forma_invoice (
   previous_balance float DEFAULT NULL,
   adjustment_amount int(10) DEFAULT NULL,
   status varchar(50) DEFAULT NULL,
+  status_details varchar(50) DEFAULT NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1,
   created_by VARCHAR(64) NOT NULL,
   created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
@@ -479,4 +480,49 @@ CREATE TABLE work_order (
    FOREIGN KEY (tenant_id) REFERENCES tenant (id),
    FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id),
    FOREIGN KEY (firm_id) REFERENCES company (id)
+ );
+
+CREATE TABLE glass_breakage (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  uuid varchar(36) NOT NULL,
+  tenant_id int(10) NOT NULL,
+  proforma_invoice_id int(10) NOT NULL,
+  proforma_invoice_item_id int(10) NOT NULL,
+  firm_id int(10) NOT NULL,
+  work_order_id int(10) NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT 1,
+  created_by VARCHAR(64) NOT NULL,
+  created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  last_updated_by VARCHAR(64) NOT NULL,
+  last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
+  version INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (id) USING BTREE,
+  CONSTRAINT T_GB_FK_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  CONSTRAINT PI_GB_FK_1 FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id),
+  CONSTRAINT PII_GB_FK_1 FOREIGN KEY (proforma_invoice_item_id) REFERENCES pro_forma_invoice_item (id),
+  CONSTRAINT C_GB_FK_1 FOREIGN KEY (firm_id) REFERENCES company (id)
+ );
+
+
+ CREATE TABLE toughen_batch_process (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  uuid varchar(36) NOT NULL,
+  tenant_id int(10) NOT NULL,
+  firm_id int(10) NOT NULL,
+  proforma_invoice_id int(10) NOT NULL,
+  work_order_id int(10) NOT NULL,
+  proforma_invoice_item_id int(10) NOT NULL,
+  status varchar(50) DEFAULT NULL,
+  status_details varchar(50) DEFAULT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT 1,
+  created_by VARCHAR(64) NOT NULL,
+  created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  last_updated_by VARCHAR(64) NOT NULL,
+  last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
+  version INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (id) USING BTREE,
+  CONSTRAINT T_BD_FK_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  CONSTRAINT PI_BD_FK_1 FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id),
+  CONSTRAINT PII_BD_FK_1 FOREIGN KEY (proforma_invoice_item_id) REFERENCES pro_forma_invoice_item (id),
+  CONSTRAINT C_BD_FK_1 FOREIGN KEY (firm_id) REFERENCES company (id)
  );

@@ -183,7 +183,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 case DISPATCH:
                     proFormaInvoiceItemEntity.setDispatchBucket(proFormaInvoiceItemEntity.getDispatchBucket() - quantity);
                     proFormaInvoiceItemEntity.setDispatchCompleted(proFormaInvoiceItemEntity.getDispatchCompleted() + quantity);
-                    break;
+                        break;
                 default:
                     throw new ResourceNotFoundException();
             }
@@ -213,17 +213,17 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
         switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
             case OPTIMIZE:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getProFormaInvoiceUUid());
+                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
                 break;
             case CUTTING:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getProFormaInvoiceUUid());
+                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
                 break;
 
             case TOUGHEN:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getProFormaInvoiceUUid());
+                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
                 break;
             case DISPATCH:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getProFormaInvoiceUUid());
+                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
                 break;
 
             default:

@@ -2,6 +2,7 @@ package com.sowermate.tenantService.entities;
 
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -74,8 +75,12 @@ public class ProFormaInvoiceEntity extends Base {
     @Column(name = "adjustment_amount")
     private Integer adjustmentAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ProformaInvoiceStatusEnum status;
+
+    @Column(name = "status_details")
+    private String statusDetails;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "confirm_through_id")
@@ -148,6 +153,7 @@ public class ProFormaInvoiceEntity extends Base {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
+                .statusDetails(getStatusDetails())
                 .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))
                // .workOrderValue(Optional.ofNullable(getWorkOrderEntity().toDTO()).orElse(null))
                 .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity->entity.toDTO()).collect(Collectors.toList())).orElse(null))
