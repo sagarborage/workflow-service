@@ -32,8 +32,8 @@ deploy:
       fi
     # Create the app backup directory if it doesn't exist
     #- mkdir -p $APP_BACKUP_DIR
-    - if [ -f "$APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar" ]; then
-        mv "$APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar" "$APP_BACKUP_DIR/workflow-service-0.0.1-SNAPSHOT.jar";
+    - if [ -f "$APP_DEPLOY_DIR/workflow-app-services-0.0.1-SNAPSHOT.jar" ]; then
+        mv "$APP_DEPLOY_DIR/workflow-app-services-0.0.1-SNAPSHOT.jar" "$APP_BACKUP_DIR/workflow-app-services-0.0.1-SNAPSHOT.jar";
       else
         echo "File does not exist. Skipping move operation.";
       fi
@@ -44,14 +44,14 @@ deploy:
     # Conditionally backup and drop the database if BACKUP_AND_DROP_DB is true
     - if [ "$BACKUP_AND_DROP_DB" == "true" ]; then
         TIMESTAMP=$(date +"%Y%m%d%H%M%S");
-        mysqldump -u $DB_USER_QA -p$DB_PASS_QA $DB_NAME_QA | gzip > "$DB_BACKUP_DIR/flexipunch_${TIMESTAMP}.sql.gz";
+        mysqldump -u $DB_USER_QA -p$DB_PASS_QA $DB_NAME_QA | gzip > "$DB_BACKUP_DIR/workflow_${TIMESTAMP}.sql.gz";
         mysql -u $DB_USER_QA -p$DB_PASS_QA -e "DROP DATABASE IF EXISTS $DB_NAME_QA; CREATE DATABASE $DB_NAME_QA;";
       fi
 
-    - cp /home/gitlab-runner/.m2/repository/com/sowermate/workflow-service/0.0.1-SNAPSHOT/workflow-service-0.0.1-SNAPSHOT.jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar  # Copy new jar
+    - cp /home/gitlab-runner/.m2/repository/com/sowermate/workflow/workflow-app-services/0.0.1-SNAPSHOT/workflow-app-services-0.0.1-SNAPSHOT.jar $APP_DEPLOY_DIR/workflow-app-services-0.0.1-SNAPSHOT.jar  # Copy new jar
     #- java -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar &  # Start the application
     #- nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar & # Start the application
-    - nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar > $APP_DEPLOY_DIR/workflow.log 2>&1 &
+    - nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-app-services-0.0.1-SNAPSHOT.jar > $APP_DEPLOY_DIR/workflow.log 2>&1 &
   only:
     refs:
       - integration

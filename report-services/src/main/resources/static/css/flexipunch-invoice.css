@@ -1,0 +1,168 @@
+ @page {
+      margin-top: -0.2cm;
+       margin-bottom: 0cm;
+            margin-left: -0.2cm;
+            margin-right: -0.2cm;
+   }
+
+                     table {
+                                 width: 100%;
+                                 border-collapse: collapse;
+                             }
+
+                             th, td {
+
+                                 padding: 8px;
+                                 text-align: left;
+                             }
+
+                             th {
+                                 background-color: black;
+                                 color: white;
+                             }
+                              td {
+                                         background-color: #f2f2f2;
+                                     }
+   body {
+
+            font-family: Arial, sans-serif;
+
+                         height: 800px;
+
+        }
+
+        .heading-bar{
+        background-color:#046EAB;
+            height: 15px;
+        }
+        .logo-image{
+           width: 150px;
+           height: 50px;
+               display: inline-block;
+        }
+
+
+
+.heading-name{
+color:#046EAB ;
+font-size:23px;
+    display: inline-block;
+margin-left:50px;
+    }
+
+    .head-site{
+       font-size: 17px;
+       margin-left: 390px;
+    color:blue;
+    margin-top: -25px;
+    }
+
+    #line1{
+  color:#03B8FC;
+
+    }
+
+
+    .heading-name2{
+       position: relative;
+       bottom: 10px;
+    }
+
+    .invoice-name{
+        margin-bottom: 10px;
+        margin-top: 20px;
+    font-size:25px;
+    text-align: center;
+    }
+
+    .invoice-number{
+        margin-left: 600px;
+    }
+
+    .address{
+    display: inline-block;
+            width: 48%;
+            padding: 10px;
+            margin: 7px;
+            box-sizing: border-box;
+
+    }
+
+.terms{
+margin-top: 10px;
+margin-bottom: 10px;
+margin-left:22px;
+}
+
+.calculation{
+    width: 790px;
+    margin-left: 22px;
+}
+
+
+.data{
+    margin-top: 20px;
+    margin-left: 550px;
+        height: 188px;
+}
+
+
+
+.bank-details{
+margin-left:20px;
+margin-bottom: 23.5px;
+ width: 550px;
+table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        td {
+            border: 1px solid #dddddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+            td:first-child {
+                    font-weight: bold;
+                }
+
+                  td {
+                            border: 1px solid #dddddd;
+                            border-color: #000000;
+                        }
+}
+
+
+#line2{
+margin-left:20px;
+margin-right:20px;
+color:#C1C3C5;
+}
+
+  #line3{
+  color:#03B8FC;
+    }
+
+    #email{
+    color:blue;
+    }
+    #site{
+    color:blue;
+    }
+
+.footer-heading{
+color:#4988A8;
+margin-top:10px;
+ text-align:center;
+}
+
+ .footer-bar{
+        background-color:#046EAB;
+            height: 15px;
+        }
