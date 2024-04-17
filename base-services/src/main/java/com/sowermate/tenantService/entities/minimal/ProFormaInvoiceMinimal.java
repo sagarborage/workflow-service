@@ -9,7 +9,7 @@ public interface ProFormaInvoiceMinimal {
 
     String getWorkOrderUuid();
 
-    String getWorkOrderId();
+    String getworkOrderNumber();
 
     String getPartyName();
 

@@ -15,4 +15,6 @@ public class BucketManipulationValue {
     private String currentBucket;
 
     private Integer quantity;
+
+    private Integer workOrderNo;
 }

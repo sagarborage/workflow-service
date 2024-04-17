@@ -3,6 +3,7 @@ package com.sowermate.tenantService.entities.value;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
@@ -45,7 +46,8 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Float payableAmount;
     private Float previousBalance;
     private Integer adjustmentAmount;
-    private String status;
+    private ProformaInvoiceStatusEnum status;
+    private String statusDetails;
 
     private List<ProFormaInvoiceItemValue> proFormaInvoiceItems;
     private List<ServiceRateInvoiceValue> serviceRateInvoices;
@@ -75,6 +77,7 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
                 .status(getStatus())
+                .statusDetails(getStatusDetails())
                 .isActive(getIsActive())
                 .build();
     }

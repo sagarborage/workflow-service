@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOr
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,22 @@ public class ProFormaInvoiceController {
             Logger.error("Error while updating Confirm Through:", e);
         }
         return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue1, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/updatePIStatus/{tenantUuid}/{proFormaInvoiceUuid}/{status}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<ProFormaInvoiceValue> updatePIStatus(@PathVariable String tenantUuid,
+                                                               @PathVariable String proFormaInvoiceUuid,
+                                                               @PathVariable ProformaInvoiceStatusEnum status,
+                                                               @RequestParam(required = false) String statusDetails
+    ) {
+        ProFormaInvoiceValue proFormaInvoiceValue = null;
+        try {
+            proFormaInvoiceValue = proFormaInvoiceService.updatePIStatus(tenantUuid, proFormaInvoiceUuid, status, statusDetails);
+        } catch (Exception e) {
+            Logger.error("Error while update PI Status:", e);
+        }
+        return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue, HttpStatus.CREATED);
     }
 
     @GetMapping("/{tenantUuid}/{proFormaInvoiceUuid}")
@@ -121,9 +138,9 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/work-order-individuals-list/{tenantUuid}/{proFormaInvoiceUuid}/{deptType}")
-    public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> getAllProFormOrdersIndividualsDetails(@PathVariable String tenantUuid,@PathVariable String proFormaInvoiceUuid, @PathVariable String deptType) {
-        List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceService.getAllProFormIndividualsOrdersDetails(tenantUuid, proFormaInvoiceUuid, deptType);
+    @GetMapping("/work-order-individuals-list/{tenantUuid}/{workOrderNo}/{deptType}")
+    public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> getAllProFormOrdersIndividualsDetails(@PathVariable String tenantUuid,@PathVariable Integer workOrderNo, @PathVariable String deptType) {
+        List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceService.getAllProFormIndividualsOrdersDetails(tenantUuid, workOrderNo, deptType);
         return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
     }
 }
