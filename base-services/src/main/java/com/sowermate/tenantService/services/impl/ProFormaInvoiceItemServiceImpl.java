@@ -232,5 +232,14 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
         return proFormaInvoiceIndividualsOrdersProjections;
     }
+
+    @Override
+    public void toughenBatchProcess(String tenantUuid, String proFormaInvoiceItemUuid, boolean isCancel) {
+        ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid, proFormaInvoiceItemUuid);
+        Integer toughenBucket = proFormaInvoiceItemEntity.getToughenBucket();
+        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity  = proFormaInvoiceItemEntity.toBuilder()
+                .toughenBucket(isCancel ? toughenBucket + 1 : toughenBucket - 1).build();
+        proFormaInvoiceItemRepository.save(updatedProFormaInvoiceItemEntity);
+    }
 }
 
