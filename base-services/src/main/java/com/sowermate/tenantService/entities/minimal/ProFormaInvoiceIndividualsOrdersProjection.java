@@ -1,10 +1,14 @@
 package com.sowermate.tenantService.entities.minimal;
 
 public interface ProFormaInvoiceIndividualsOrdersProjection {
+    String getTenantUuid();
+    String getCompanyUuid();
 
     String getProformaInvoiceUuid();
 
     String getProformaInvoiceItemUuid();
+
+    String getWorkOrderUuid();
 
     String getPiNumber();
 

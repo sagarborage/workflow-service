@@ -107,9 +107,12 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceOrdersProjection> findAllPiOrdersDetailsOfToughen(String tenantUuid);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pi.tenantEntity.uuid as tenantUuid, " +
             "pii.uuid as proformaInvoiceItemUuid, " +
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
+            "wo.uuid as workOrderUuid, " +
+            "co.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -128,9 +131,12 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfOptimizeIndividual(String tenantUuid, Integer workOrderNumber);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pi.tenantEntity.uuid as tenantUuid, " +
             "pii.uuid as proformaInvoiceItemUuid, " +
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
+            "wo.uuid as workOrderUuid, " +
+            "co.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -149,9 +155,12 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfCuttingIndividual(String tenantUuid, Integer workOrderNumber);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pi.tenantEntity.uuid as tenantUuid, " +
             "pii.uuid as proformaInvoiceItemUuid, " +
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
+            "wo.uuid as workOrderUuid, " +
+            "co.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -170,9 +179,12 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfDispatchIndividual(String tenantUuid, Integer workOrderNumber);
 
     @Query("Select pi.uuid as proformaInvoiceUuid," +
+            "pi.tenantEntity.uuid as tenantUuid, " +
             "pii.uuid as proformaInvoiceItemUuid, " +
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
+            "wo.uuid as workOrderUuid, " +
+            "co.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -189,6 +201,5 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "where wo.id = :workOrderNumber and " +
             "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, Integer workOrderNumber);
-
 
 }
