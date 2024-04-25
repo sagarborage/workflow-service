@@ -29,8 +29,6 @@ public class WorkOrderEntity extends Base {
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToOne(mappedBy = "workOrderEntity",cascade =CascadeType.ALL )
-    private GlassBreakageDetailsEntity glassBreakageDetailsEntity;
 
     public WorkOrderValue toDTO() {
         return WorkOrderValue.newBuilder()

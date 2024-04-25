@@ -5,9 +5,11 @@ import com.sowermate.image.services.PdfService;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.value.BucketManipulationValue;
+import com.sowermate.tenantService.entities.value.GlassBreakageDetailsValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
+import com.sowermate.tenantService.services.GlassBreakageDetailsService;
 import com.sowermate.tenantService.services.ProFormaInvoiceItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,11 +37,14 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     @Autowired
     private GlassThicknessRepository glassThicknessRepository;
 
-    @Autowired
+    @Autowired(required = true)
     private PdfService pdfService;
 
     @Autowired
     private TenantRepository tenantRepository;
+
+    @Autowired
+    private GlassBreakageDetailsService glassBreakageDetailsService;
 
     @Autowired
     private ImageStorageConfig imageStorageConfig;
@@ -203,6 +208,9 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 default:
                     throw new ResourceNotFoundException();
             }
+            GlassBreakageDetailsValue glassBreakageDetailsValue = getGlassBreakageDetailsValue(bucketManipulationValue, deptType);
+            glassBreakageDetailsService.createGlassBreakageDetails(glassBreakageDetailsValue);
+
         } else {
             throw new ResourceNotFoundException();
         }
@@ -231,6 +239,16 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         }
 
         return proFormaInvoiceIndividualsOrdersProjections;
+    }
+
+    private static GlassBreakageDetailsValue getGlassBreakageDetailsValue(BucketManipulationValue bucketManipulationValue, String deptType) {
+        GlassBreakageDetailsValue glassBreakageDetailsValue = new GlassBreakageDetailsValue();
+        glassBreakageDetailsValue.setProFormaInvoiceItemUuid(bucketManipulationValue.getProFormaInvoiceItemUUid());
+        glassBreakageDetailsValue.setProFormaInvoiceUuid(bucketManipulationValue.getProFormaInvoiceUUid());
+        glassBreakageDetailsValue.setTenantUuid(bucketManipulationValue.getTenantUuid());
+        glassBreakageDetailsValue.setDeptName(deptType.toUpperCase());
+        glassBreakageDetailsValue.setDetails(bucketManipulationValue.getDetails());
+        return glassBreakageDetailsValue;
     }
 
     @Override

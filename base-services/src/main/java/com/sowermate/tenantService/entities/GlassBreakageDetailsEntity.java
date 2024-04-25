@@ -24,17 +24,11 @@ public class GlassBreakageDetailsEntity extends Base {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="firm_id")
-    private CompanyEntity companyEntity;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="proforma_invoice_id")
     private ProFormaInvoiceEntity proFormaInvoiceEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="work_order_id")
-    private WorkOrderEntity workOrderEntity;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="proforma_invoice_item_id")
@@ -52,8 +46,6 @@ public class GlassBreakageDetailsEntity extends Base {
                 .proFormaInvoiceUuid(proFormaInvoiceEntity.getUuid())
                 .proFormaInvoiceItemUuid(proFormaInvoiceItemEntity.getUuid())
                 .tenantUuid(tenantEntity.getUuid())
-                .companyUuid(companyEntity.getUuid())
-                .workOrderUuid(workOrderEntity.getUuid())
                 .deptName(getDeptName())
                 .details(getDetails())
                 .createdDateTime(getCreatedDateTime())
