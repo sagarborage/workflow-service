@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -110,6 +112,9 @@ public class ProFormaInvoiceItemEntity extends Base {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
+
+    @OneToMany(mappedBy = "proFormaInvoiceItemEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities;
 
     public ProFormaInvoiceItemValue toDTO() {
         return ProFormaInvoiceItemValue.newBuilder()
