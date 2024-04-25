@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface GlassBreakageDetailsRepository extends JpaRepository<GlassBreakageDetailsEntity, String> {
-    List<GlassBreakageDetailsEntity> findAllByTenantEntityUuidAndCompanyEntityUuidAndProFormaInvoiceEntityUuidAndWorkOrderEntityUuidAndProFormaInvoiceItemEntityUuid(String tenantUuid, String companyUuid, String proFormaInvoiceUuid, String workOrderUuid, String proFormaInvoiceItemUuid);
+    List<GlassBreakageDetailsEntity> findAllByTenantEntityUuidAndProFormaInvoiceItemEntityUuid(String tenantUuid, String proFormaInvoiceItemUuid);
 
     @Query("SELECT g FROM GlassBreakageDetailsEntity g " +
             "JOIN g.proFormaInvoiceItemEntity pf " +

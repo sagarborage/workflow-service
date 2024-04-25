@@ -44,8 +44,6 @@ public class CompanyEntity extends Base {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<AddressEntity> addresses;
 
-    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL)
-    private List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities;
 
     public CompanyValue toDTO() {
         return CompanyValue.newBuilder()

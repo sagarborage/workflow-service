@@ -23,13 +23,7 @@ public class GlassBreakageDetailsServiceImpl implements GlassBreakageDetailsServ
     private TenantRepository tenantRepository;
 
     @Autowired
-    private CompanyRepository companyRepository;
-
-    @Autowired
     private ProFormaInvoiceRepository proFormaInvoiceRepository;
-
-    @Autowired
-    private WorkOrderRepository workOrderRepository;
 
     @Autowired
     private ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
@@ -38,16 +32,12 @@ public class GlassBreakageDetailsServiceImpl implements GlassBreakageDetailsServ
     public GlassBreakageDetailsValue createGlassBreakageDetails(GlassBreakageDetailsValue glassBreakageDetailsValue) {
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(glassBreakageDetailsValue.getTenantUuid());
-        CompanyEntity companyEntity = companyRepository.getCompanyEntityByUuid(glassBreakageDetailsValue.getCompanyUuid());
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByUuid(glassBreakageDetailsValue.getProFormaInvoiceUuid());
-        WorkOrderEntity workOrderEntity = workOrderRepository.findByUuid(glassBreakageDetailsValue.getWorkOrderUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByUuid(glassBreakageDetailsValue.getProFormaInvoiceItemUuid());
 
         GlassBreakageDetailsEntity glassBreakageDetailsEntity = glassBreakageDetailsValue.toEntity().toBuilder()
-                .companyEntity(companyEntity)
                 .tenantEntity(tenantEntity)
                 .proFormaInvoiceEntity(proFormaInvoiceEntity)
-                .workOrderEntity(workOrderEntity)
                 .proFormaInvoiceItemEntity(proFormaInvoiceItemEntity).build();
         return glassBreakageDetailsRepository.save(glassBreakageDetailsEntity).toDTO();
     }
@@ -56,16 +46,14 @@ public class GlassBreakageDetailsServiceImpl implements GlassBreakageDetailsServ
     public List<GlassBreakageDetailsValue> getAllGlassBreakageDetails(String tenantUuid, String companyUuid, String proFormaInvoiceUuid, String workOrderUuid, String proFormaInvoiceItemUuid) {
         List<GlassBreakageDetailsValue> glassBreakageDetailsValues = new ArrayList<>();
         GlassBreakageDetailsValue glassBreakageDetailsValue = null;
-        List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities = glassBreakageDetailsRepository.findAllByTenantEntityUuidAndCompanyEntityUuidAndProFormaInvoiceEntityUuidAndWorkOrderEntityUuidAndProFormaInvoiceItemEntityUuid(tenantUuid, companyUuid, proFormaInvoiceUuid, workOrderUuid, proFormaInvoiceItemUuid);
-        return glassBreakageDetailsEntities.stream().map(cte -> cte.toDTO()).collect(Collectors.toList());
+        List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities = glassBreakageDetailsRepository.findAllByTenantEntityUuidAndProFormaInvoiceItemEntityUuid(tenantUuid, proFormaInvoiceItemUuid);
+        return glassBreakageDetailsEntities.stream().map(GlassBreakageDetailsEntity::toDTO).collect(Collectors.toList());
     }
 
     @Override
     public GlassBreakageDetailsValue editGlassBreakageDetails(GlassBreakageDetailsValue glassBreakageDetailsValue) {
         TenantEntity tenantEntity = tenantRepository.findByUuid(glassBreakageDetailsValue.getTenantUuid());
-        CompanyEntity companyEntity = companyRepository.getCompanyEntityByUuid(glassBreakageDetailsValue.getCompanyUuid());
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByUuid(glassBreakageDetailsValue.getProFormaInvoiceUuid());
-        WorkOrderEntity workOrderEntity = workOrderRepository.findByUuid(glassBreakageDetailsValue.getWorkOrderUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByUuid(glassBreakageDetailsValue.getProFormaInvoiceItemUuid());
 
         GlassBreakageDetailsEntity glassBreakageDetailsEntity = glassBreakageDetailsRepository
@@ -74,9 +62,7 @@ public class GlassBreakageDetailsServiceImpl implements GlassBreakageDetailsServ
         GlassBreakageDetailsEntity glassBreakageDetails = glassBreakageDetailsValue.toEntity().toBuilder()
                 .id(glassBreakageDetailsEntity.getId())
                 .tenantEntity(tenantEntity)
-                .companyEntity(companyEntity)
                 .proFormaInvoiceEntity(proFormaInvoiceEntity)
-                .workOrderEntity(workOrderEntity)
                 .proFormaInvoiceItemEntity(proFormaInvoiceItemEntity)
                 .createdDateTime(glassBreakageDetailsEntity.getCreatedDateTime())
                 .deptName(glassBreakageDetailsValue.getDeptName())
