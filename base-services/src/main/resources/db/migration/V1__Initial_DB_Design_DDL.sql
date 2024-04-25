@@ -531,7 +531,6 @@ CREATE TABLE glass_breakage_details (
      proforma_invoice_item_id int(10) NOT NULL,
      dept_name varchar(50) NOT NULL,
      details varchar(500) DEFAULT NULL,
-     status varchar(50) DEFAULT NULL,
      is_active BOOLEAN NOT NULL DEFAULT 1,
      created_by VARCHAR(64) NOT NULL,
      created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),

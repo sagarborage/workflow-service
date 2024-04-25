@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
@@ -36,8 +37,10 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
 
-    ProFormaInvoiceEntity findByUuid(String uuid);
+    //ProFormaInvoiceEntity findByUuid(String uuid);
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
+
+    ProFormaInvoiceEntity findByUuid( String uuid);
 
     @Query("SELECT pfie.uuid as uuid, " +
             "c.companyName as partyName, " +
