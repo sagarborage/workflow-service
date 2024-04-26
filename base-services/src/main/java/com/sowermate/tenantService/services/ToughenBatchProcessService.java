@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.services;
 
+import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
@@ -14,6 +15,6 @@ public interface ToughenBatchProcessService {
 
     List<ToughenBatchProcessValue> markToughenBatchProcessComplete(GeneralParamValue generalParamValue);
 
-    List<ToughenBatchProcessValue> getToughenBatchProcessByStatus(ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum);
+    List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum);
 
 }
