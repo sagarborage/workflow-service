@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
@@ -43,10 +44,10 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/getToughenBatchProcessByStatus/{status}")
+    @RequestMapping(method = RequestMethod.GET, path = "/getToughenBatchProcessByStatus/{companyUuid}/{status}")
     @ResponseBody
-    public ResponseEntity<List<ToughenBatchProcessValue>> getToughenBatchProcessByStatus(@PathVariable("status") ToughenBatchProcessStatusEnum status) {
-        List<ToughenBatchProcessValue> list = toughenBatchProcessService.getToughenBatchProcessByStatus(status);
+    public ResponseEntity<List<ToughenBatchProcessProjection>> getToughenBatchProcessByStatus(@PathVariable("companyUuid") String companyUuid, @PathVariable("status") ToughenBatchProcessStatusEnum status) {
+        List<ToughenBatchProcessProjection> list = toughenBatchProcessService.getToughenBatchProcessByStatus(companyUuid,status);
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 }

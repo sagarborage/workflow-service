@@ -29,6 +29,7 @@ public class WorkOrderEntity extends Base {
     @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
+
     public WorkOrderValue toDTO() {
         return WorkOrderValue.newBuilder()
                 .uuid(getUuid())
