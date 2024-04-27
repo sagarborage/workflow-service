@@ -90,6 +90,9 @@ public class TenantEntity extends Base {
     @OneToMany(mappedBy = "tenantEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoleTypeEntity> roleTypeEntities;
 
+    @OneToMany(mappedBy = "tenantEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities;
+
     public TenantValue toDTO() {
         return TenantValue.newBuilder()
                 .tenantId(getId())

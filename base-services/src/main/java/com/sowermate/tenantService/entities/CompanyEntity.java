@@ -44,6 +44,7 @@ public class CompanyEntity extends Base {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<AddressEntity> addresses;
 
+
     public CompanyValue toDTO() {
         return CompanyValue.newBuilder()
                 .companyId(getId())
