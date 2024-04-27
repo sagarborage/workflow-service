@@ -101,7 +101,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         String fileUrl = null;
         if (proFormaInvoiceItemValue.getBase64File()!=null) {
             byte[] imageBytes = Base64.getDecoder().decode(proFormaInvoiceItemValue.getBase64File());
-             fileUrl = pdfService.handlePdf(imageBytes, proFormaInvoiceItemValue.getUuid(), "", imageStorageConfig.getProFormInvoicefileDirectory());
+             fileUrl = pdfService.handlePdf(imageBytes, proFormaInvoiceItemValue.getUuid(), "", imageStorageConfig.getProFormInvoicePdfDirectory());
         }
         ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(proFormaInvoiceItemValue.getTenantUuid(), proFormaInvoiceItemValue.getUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
