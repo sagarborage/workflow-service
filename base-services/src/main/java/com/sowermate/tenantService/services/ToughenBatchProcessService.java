@@ -1,7 +1,9 @@
 package com.sowermate.tenantService.services;
 
+import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
+import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 
@@ -11,7 +13,7 @@ public interface ToughenBatchProcessService {
 
     void toughenBatchProcessItemAdd(GeneralParamValue generalParamValue);
 
-    List<ToughenBatchProcessValue> toughenBatchProcessItemCancel(String tenantUuid, String uuid);
+    ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid);
 
     List<ToughenBatchProcessValue> markToughenBatchProcessComplete(GeneralParamValue generalParamValue);
 

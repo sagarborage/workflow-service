@@ -15,7 +15,7 @@ public interface ToughenBatchProcessProjection {
 
     LocalDate getBatchDate();
 
-    String piNo();
+    String getPiNo();
 
     String getBillToPartyName();
 

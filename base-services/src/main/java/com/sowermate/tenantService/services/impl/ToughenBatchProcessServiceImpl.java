@@ -5,6 +5,7 @@ import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
+import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import com.sowermate.tenantService.repositories.*;
@@ -26,6 +27,9 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Autowired
     private ToughenBatchProcessRepository toughenBatchProcessRepository;
+
+    @Autowired
+    private ToughenBatchProcessDetailsRepository toughenBatchProcessDetailsRepository;
 
     @Autowired
     private TenantRepository tenantRepository;
@@ -78,13 +82,23 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
-    public List<ToughenBatchProcessValue> toughenBatchProcessItemCancel(String tenantUuid, String uuid) {
-        proFormaInvoiceItemService.toughenBatchProcess(tenantUuid, uuid, true);
-        Optional<List<ToughenBatchProcessEntity>> batchListInProgress = toughenBatchProcessRepository.findByStatusOrderByCreatedDateTimeDesc(ToughenBatchProcessStatusEnum.IN_PROGRESS);
-        return batchListInProgress.get().stream().map(e -> e.toDTO()).collect(Collectors.toList());
+    @Transactional
+    public ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid) {
+        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid,companyUuid);
+        if (toughenBatchProcessDetailsEntity!=null){
+            toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
+            toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
+
+            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(toughenBatchProcessDetailsEntity.getId());
+            proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket()+1);
+            proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
+        }
+        assert toughenBatchProcessDetailsEntity != null;
+        return toughenBatchProcessDetailsEntity.toDTO();
     }
 
     @Override
+    @Transactional
     public List<ToughenBatchProcessValue> markToughenBatchProcessComplete(GeneralParamValue generalParamValue) {
         Optional<List<ToughenBatchProcessEntity>> batchListInProgress = toughenBatchProcessRepository.findByBatchNoAndCompanyUuidAndStatus(generalParamValue.getBatchNo(), generalParamValue.getCompanyUuid(), ToughenBatchProcessStatusEnum.IN_PROGRESS);
         List<ToughenBatchProcessEntity> toBeUpdated = batchListInProgress.get().stream().map(e -> {
@@ -105,8 +119,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
-    public List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String
-                                                                                      companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum) {
+    public List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum) {
         List<ToughenBatchProcessProjection> list = toughenBatchProcessRepository.findByCompanyUuidAndStatus(companyUuid, toughenBatchProcessStatusEnum);
         if (!list.isEmpty()) {
             return list;

@@ -2,6 +2,7 @@ package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
+import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
@@ -29,11 +30,11 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/cancelBatchItem/{tenantUuid}/{uuid}")
+    @RequestMapping(method = RequestMethod.PUT, path = "/cancelBatchItem/{uuid}/{companyUuid}")
     @ResponseBody
-    public ResponseEntity<List<ToughenBatchProcessValue>> toughenBatchProcessItemCancel(@PathVariable("tenantUuid") String tenantUuid, @PathVariable("uuid") String uuid) {
-        List<ToughenBatchProcessValue> list = toughenBatchProcessService.toughenBatchProcessItemCancel(tenantUuid, uuid);
-        return new ResponseEntity<>(list, HttpStatus.CREATED);
+    public ResponseEntity<ToughenBatchProcessDetailsValue> toughenBatchProcessItemCancel(@PathVariable("uuid") String uuid,@PathVariable("companyUuid") String companyUuid) {
+        ToughenBatchProcessDetailsValue toughenBatchProcessDetailsValue = toughenBatchProcessService.toughenBatchProcessItemCancel(uuid,companyUuid);
+        return new ResponseEntity<>(toughenBatchProcessDetailsValue, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/markComplete")

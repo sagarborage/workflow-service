@@ -38,7 +38,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     @Query("SELECT " +
             "tb.uuid as batchUuid, " +
             "tb.batchNo as batchNo, " +
-            "pi.uuid as proformaInvoiceItemUuidUuid, " +
+            "pi.uuid as proformaInvoiceItemUuid, " +
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
             "p.uuid as proformaInvoiceUuid , " +
@@ -69,14 +69,19 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "WHERE tb.id = :batchId ")
     Optional<List<ProFormaInvoiceItemEntity>> findByBatchNo(Long batchId);
 
-    @Query("SELECT " +
-            "pi " +
+    @Query("SELECT pi " +
+            "From ToughenBatchProcessDetailsEntity tbd " +
+            "JOIN tbd.proFormaInvoiceItemEntity pi " +
+            "WHERE tbd.id = :id ")
+    ProFormaInvoiceItemEntity findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(Long id);
+
+    @Query("SELECT tbd " +
             "FROM ToughenBatchProcessEntity tb " +
             "JOIN tb.companyEntity c " +
             "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
             "WHERE tbd.uuid = :uuid " +
             "AND c.uuid = :companyUuid ")
-    Optional<ToughenBatchProcessDetailsEntity> findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid,String companyUuid);
+    ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid,String companyUuid);
 
 
 }
