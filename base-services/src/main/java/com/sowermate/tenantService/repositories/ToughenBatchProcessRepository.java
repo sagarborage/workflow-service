@@ -1,6 +1,7 @@
 package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
+import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
@@ -40,8 +41,10 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "pi.uuid as proformaInvoiceItemUuidUuid, " +
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
+            "p.uuid as proformaInvoiceUuid , " +
             "c.companyName as billToPartyName, " +
             "c.uuid as billToPartyUuid, " +
+            "th.name as thickness, "+
             "pi.actualWidth as actualWidth, " +
             "pi.chargeableWidth as chargeableWidth, " +
             "pi.actualHeight as actualHeight, " +
@@ -51,6 +54,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tb.companyEntity firm " +
             "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
+            "JOIN pi.glassThicknessEntity th " +
             "JOIN pi.proFormaInvoiceEntity p " +
             "JOIN p.companyIdBill c " +
             "WHERE c.uuid =:companyUuid AND " +
@@ -64,6 +68,15 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
             "WHERE tb.id = :batchId ")
     Optional<List<ProFormaInvoiceItemEntity>> findByBatchNo(Long batchId);
+
+    @Query("SELECT " +
+            "pi " +
+            "FROM ToughenBatchProcessEntity tb " +
+            "JOIN tb.companyEntity c " +
+            "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
+            "WHERE tbd.uuid = :uuid " +
+            "AND c.uuid = :companyUuid ")
+    Optional<ToughenBatchProcessDetailsEntity> findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid,String companyUuid);
 
 
 }

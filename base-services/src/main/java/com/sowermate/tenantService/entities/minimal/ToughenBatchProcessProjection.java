@@ -9,7 +9,9 @@ public interface ToughenBatchProcessProjection {
 
     String getBatchNo();
 
-    String getProformaInvoiceItemUuidUuid();
+    String getProformaInvoiceItemUuid();
+
+    String getProformaInvoiceUuid();
 
     LocalDate getBatchDate();
 
@@ -18,6 +20,8 @@ public interface ToughenBatchProcessProjection {
     String getBillToPartyName();
 
     String getBillToPartyUuid();
+
+    String getThickness();
 
     Double getActualWidth();
 
