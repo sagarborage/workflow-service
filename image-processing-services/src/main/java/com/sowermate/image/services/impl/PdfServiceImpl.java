@@ -90,4 +90,54 @@ public class PdfServiceImpl implements PdfService {
             return "Error handling the PDF.";
         }
     }
+
+    @Override
+    public Boolean deleteFile(String targetDirectory,String parentDirectory, String fileName) {
+        try {
+            File baseDirectory = new File(pdfStorageConfig.getPdfUploadDirectory());
+            if (!baseDirectory.exists()) {
+                if (baseDirectory.mkdirs()) {
+                    System.out.println("Base directory created successfully: " + baseDirectory.getAbsolutePath());
+                } else {
+                    System.err.println("Failed to create base directory: " + baseDirectory.getAbsolutePath());
+                }
+            }
+
+            File targetDirectoryFile = new File(baseDirectory, targetDirectory);
+            if (!targetDirectoryFile.exists()) {
+                if (targetDirectoryFile.mkdirs()) {
+                    System.out.println("Target directory created successfully: " + targetDirectoryFile.getAbsolutePath());
+                } else {
+                    System.err.println("Failed to create target directory: " + targetDirectoryFile.getAbsolutePath());
+                }
+            }
+
+            File userDirectory = new File(targetDirectoryFile, parentDirectory);
+            if (!userDirectory.exists()) {
+                if (userDirectory.mkdir()) {
+                    System.out.println("User directory created successfully: " + userDirectory.getAbsolutePath());
+                } else {
+                    System.err.println("Failed to create user directory: " + userDirectory.getAbsolutePath());
+                }
+            }
+
+            File fileToDelete = new File(userDirectory, fileName);
+
+            if (fileToDelete.exists()) {
+                if (fileToDelete.delete()) {
+                    System.out.println("File deleted successfully: " + fileToDelete.getAbsolutePath());
+                    return true;
+                } else {
+                    System.err.println("Failed to delete file: " + fileToDelete.getAbsolutePath());
+                    return false;
+                }
+            } else {
+                System.err.println("File not found: " + fileToDelete.getAbsolutePath());
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

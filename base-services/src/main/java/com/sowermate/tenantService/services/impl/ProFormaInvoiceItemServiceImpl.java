@@ -49,6 +49,16 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     @Autowired
     private ImageStorageConfig imageStorageConfig;
 
+    private static GlassBreakageDetailsValue getGlassBreakageDetailsValue(BucketManipulationValue bucketManipulationValue, String deptType) {
+        GlassBreakageDetailsValue glassBreakageDetailsValue = new GlassBreakageDetailsValue();
+        glassBreakageDetailsValue.setProFormaInvoiceItemUuid(bucketManipulationValue.getProFormaInvoiceItemUUid());
+        glassBreakageDetailsValue.setProFormaInvoiceUuid(bucketManipulationValue.getProFormaInvoiceUUid());
+        glassBreakageDetailsValue.setTenantUuid(bucketManipulationValue.getTenantUuid());
+        glassBreakageDetailsValue.setDeptName(deptType.toUpperCase());
+        glassBreakageDetailsValue.setDetails(bucketManipulationValue.getDetails());
+        return glassBreakageDetailsValue;
+    }
+
     @Override
     public ProFormaInvoiceItemValue createProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
@@ -71,7 +81,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public List<ProFormaInvoiceItemValue> saveAllProFormaInvoiceItem(String tenantUuid, List<ProFormaInvoiceItemValue> proFormaInvoiceItems) {
         ProFormaInvoiceItemValue proFormaInvoiceItemValue = proFormaInvoiceItems.get(0);
         TenantEntity tenantEntity = tenantRepository.findByUuid(tenantUuid);
-         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
                 tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid());
         GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
                 proFormaInvoiceItemValue.getGlassThicknessUuid());
@@ -80,7 +90,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         GlassSpecificationEntity glassSpecificationEntity = glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,
                 proFormaInvoiceItemValue.getGlassSpecificationUuid());
 
-        List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities =  proFormaInvoiceItems.stream().map(e->{
+        List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities = proFormaInvoiceItems.stream().map(e -> {
             return e.toEntity().toBuilder()
                     .tenantEntity(tenantEntity)
                     .proFormaInvoiceEntity(proFormaInvoiceEntity)
@@ -91,7 +101,21 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                     .build();
         }).collect(Collectors.toList());
 
-        return proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntities).stream().map(e->e.toDTO()).collect(Collectors.toList());
+        return proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntities).stream().map(e -> e.toDTO()).collect(Collectors.toList());
+    }
+
+    @Override
+    public String deleteProformaInvoiceItemFile(String tenantUuid,String proformaInvoiceItemUuid, String fileName) {
+        Boolean isDeleted = pdfService.deleteFile(imageStorageConfig.getProFormInvoicePdfDirectory(),proformaInvoiceItemUuid,fileName);
+        if (isDeleted) {
+            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid,proformaInvoiceItemUuid);
+            proFormaInvoiceItemEntity.setFileUrl(null);
+            proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
+            return "File Deleted Successfully";
+        }
+        else
+            return "Error when Deleted file";
+
     }
 
     @Override
@@ -99,9 +123,9 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
         String fileUrl = null;
-        if (proFormaInvoiceItemValue.getBase64File()!=null) {
+        if (proFormaInvoiceItemValue.getBase64File() != null) {
             byte[] imageBytes = Base64.getDecoder().decode(proFormaInvoiceItemValue.getBase64File());
-             fileUrl = pdfService.handlePdf(imageBytes, proFormaInvoiceItemValue.getUuid(), "", imageStorageConfig.getProFormInvoicePdfDirectory());
+            fileUrl = pdfService.handlePdf(imageBytes, proFormaInvoiceItemValue.getUuid(), "", imageStorageConfig.getProFormInvoicePdfDirectory());
         }
         ProFormaInvoiceItemEntity tempProFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(proFormaInvoiceItemValue.getTenantUuid(), proFormaInvoiceItemValue.getUuid());
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
@@ -115,30 +139,30 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                         proFormaInvoiceItemValue.getGlassTypeUuid()))
                 .glassSpecificationEntity(glassSpecificationRepository.findByTenantEntity_UuidAndGlassSpecificationUuid(tenantUuid,
                         proFormaInvoiceItemValue.getGlassSpecificationUuid()))
-                .widthInch(proFormaInvoiceItemValue.getWidthInch()==null?tempProFormaInvoiceItemEntity.getWidthInch():proFormaInvoiceItemValue.getWidthInch())
-                .widthMeasurement(proFormaInvoiceItemValue.getWidthMeasurement()==null?tempProFormaInvoiceItemEntity.getWidthMeasurement():proFormaInvoiceItemValue.getWidthMeasurement())
-                .actualWidth(proFormaInvoiceItemValue.getActualWidth()==null?tempProFormaInvoiceItemEntity.getActualWidth():proFormaInvoiceItemValue.getActualWidth())
-                .chargeableWidth(proFormaInvoiceItemValue.getChargeableWidth()==null?tempProFormaInvoiceItemEntity.getChargeableWidth():proFormaInvoiceItemValue.getChargeableWidth())
-                .heightInch(proFormaInvoiceItemValue.getHeightInch()==null?tempProFormaInvoiceItemEntity.getHeightInch():proFormaInvoiceItemValue.getHeightInch())
-                .heightMeasurement(proFormaInvoiceItemValue.getHeightMeasurement()==null?tempProFormaInvoiceItemEntity.getHeightMeasurement():proFormaInvoiceItemValue.getHeightMeasurement())
-                .heightMeasurementLabel(proFormaInvoiceItemValue.getWidthMeasurementLabel()==null?tempProFormaInvoiceItemEntity.getHeightMeasurementLabel():proFormaInvoiceItemValue.getHeightMeasurementLabel())
-                .actualHeight(proFormaInvoiceItemValue.getActualHeight()==null?tempProFormaInvoiceItemEntity.getActualHeight():proFormaInvoiceItemValue.getActualHeight())
-                .chargeableHeight(proFormaInvoiceItemValue.getChargeableHeight()==null?tempProFormaInvoiceItemEntity.getChargeableHeight():proFormaInvoiceItemValue.getChargeableHeight())
-                .extraMm(proFormaInvoiceItemValue.getExtraMm()==null?tempProFormaInvoiceItemEntity.getExtraMm():proFormaInvoiceItemValue.getExtraMm())
-                .quantity(proFormaInvoiceItemValue.getQuantity()==null?tempProFormaInvoiceItemEntity.getQuantity():proFormaInvoiceItemValue.getQuantity())
-                .unitValue(proFormaInvoiceItemValue.getUnitValue()==null?tempProFormaInvoiceItemEntity.getUnitValue():proFormaInvoiceItemValue.getUnitValue())
-                .ratePerUnit(proFormaInvoiceItemValue.getRatePerUnit()==null?tempProFormaInvoiceItemEntity.getRatePerUnit():proFormaInvoiceItemValue.getRatePerUnit())
-                .unitMeasurementLabel(proFormaInvoiceItemValue.getUnitMeasurementLabel()==null?tempProFormaInvoiceItemEntity.getUnitMeasurementLabel():proFormaInvoiceItemValue.getUnitMeasurementLabel())
-                .amount(proFormaInvoiceItemValue.getAmount()==null?tempProFormaInvoiceItemEntity.getAmount():proFormaInvoiceItemValue.getAmount())
-                .optimizeBucket(proFormaInvoiceItemValue.getOptimizeBucket()==null?tempProFormaInvoiceItemEntity.getOptimizeBucket():proFormaInvoiceItemValue.getOptimizeBucket())
-                .cuttingBucket(proFormaInvoiceItemValue.getCuttingBucket()==null?tempProFormaInvoiceItemEntity.getCuttingBucket():proFormaInvoiceItemValue.getCuttingBucket())
-                .toughenBucket(proFormaInvoiceItemValue.getToughenBucket()==null?tempProFormaInvoiceItemEntity.getToughenBucket():proFormaInvoiceItemValue.getToughenBucket())
-                .dispatchBucket(proFormaInvoiceItemValue.getDispatchBucket()==null?tempProFormaInvoiceItemEntity.getDispatchBucket():proFormaInvoiceItemValue.getDispatchBucket())
-                .optimizeCompleted(proFormaInvoiceItemValue.getOptimizeCompleted()==null?tempProFormaInvoiceItemEntity.getOptimizeCompleted():proFormaInvoiceItemValue.getOptimizeCompleted())
-                .cuttingCompleted(proFormaInvoiceItemValue.getCuttingCompleted()==null?tempProFormaInvoiceItemEntity.getCuttingCompleted():proFormaInvoiceItemValue.getCuttingCompleted())
-                .toughenCompleted(proFormaInvoiceItemValue.getToughenCompleted()==null?tempProFormaInvoiceItemEntity.getToughenCompleted():proFormaInvoiceItemValue.getToughenCompleted())
-                .dispatchCompleted(proFormaInvoiceItemValue.getDispatchCompleted()==null?tempProFormaInvoiceItemEntity.getDispatchCompleted():proFormaInvoiceItemValue.getDispatchCompleted())
-                .fileUrl(proFormaInvoiceItemValue.getBase64File()==null?tempProFormaInvoiceItemEntity.getFileUrl():fileUrl)
+                .widthInch(proFormaInvoiceItemValue.getWidthInch() == null ? tempProFormaInvoiceItemEntity.getWidthInch() : proFormaInvoiceItemValue.getWidthInch())
+                .widthMeasurement(proFormaInvoiceItemValue.getWidthMeasurement() == null ? tempProFormaInvoiceItemEntity.getWidthMeasurement() : proFormaInvoiceItemValue.getWidthMeasurement())
+                .actualWidth(proFormaInvoiceItemValue.getActualWidth() == null ? tempProFormaInvoiceItemEntity.getActualWidth() : proFormaInvoiceItemValue.getActualWidth())
+                .chargeableWidth(proFormaInvoiceItemValue.getChargeableWidth() == null ? tempProFormaInvoiceItemEntity.getChargeableWidth() : proFormaInvoiceItemValue.getChargeableWidth())
+                .heightInch(proFormaInvoiceItemValue.getHeightInch() == null ? tempProFormaInvoiceItemEntity.getHeightInch() : proFormaInvoiceItemValue.getHeightInch())
+                .heightMeasurement(proFormaInvoiceItemValue.getHeightMeasurement() == null ? tempProFormaInvoiceItemEntity.getHeightMeasurement() : proFormaInvoiceItemValue.getHeightMeasurement())
+                .heightMeasurementLabel(proFormaInvoiceItemValue.getWidthMeasurementLabel() == null ? tempProFormaInvoiceItemEntity.getHeightMeasurementLabel() : proFormaInvoiceItemValue.getHeightMeasurementLabel())
+                .actualHeight(proFormaInvoiceItemValue.getActualHeight() == null ? tempProFormaInvoiceItemEntity.getActualHeight() : proFormaInvoiceItemValue.getActualHeight())
+                .chargeableHeight(proFormaInvoiceItemValue.getChargeableHeight() == null ? tempProFormaInvoiceItemEntity.getChargeableHeight() : proFormaInvoiceItemValue.getChargeableHeight())
+                .extraMm(proFormaInvoiceItemValue.getExtraMm() == null ? tempProFormaInvoiceItemEntity.getExtraMm() : proFormaInvoiceItemValue.getExtraMm())
+                .quantity(proFormaInvoiceItemValue.getQuantity() == null ? tempProFormaInvoiceItemEntity.getQuantity() : proFormaInvoiceItemValue.getQuantity())
+                .unitValue(proFormaInvoiceItemValue.getUnitValue() == null ? tempProFormaInvoiceItemEntity.getUnitValue() : proFormaInvoiceItemValue.getUnitValue())
+                .ratePerUnit(proFormaInvoiceItemValue.getRatePerUnit() == null ? tempProFormaInvoiceItemEntity.getRatePerUnit() : proFormaInvoiceItemValue.getRatePerUnit())
+                .unitMeasurementLabel(proFormaInvoiceItemValue.getUnitMeasurementLabel() == null ? tempProFormaInvoiceItemEntity.getUnitMeasurementLabel() : proFormaInvoiceItemValue.getUnitMeasurementLabel())
+                .amount(proFormaInvoiceItemValue.getAmount() == null ? tempProFormaInvoiceItemEntity.getAmount() : proFormaInvoiceItemValue.getAmount())
+                .optimizeBucket(proFormaInvoiceItemValue.getOptimizeBucket() == null ? tempProFormaInvoiceItemEntity.getOptimizeBucket() : proFormaInvoiceItemValue.getOptimizeBucket())
+                .cuttingBucket(proFormaInvoiceItemValue.getCuttingBucket() == null ? tempProFormaInvoiceItemEntity.getCuttingBucket() : proFormaInvoiceItemValue.getCuttingBucket())
+                .toughenBucket(proFormaInvoiceItemValue.getToughenBucket() == null ? tempProFormaInvoiceItemEntity.getToughenBucket() : proFormaInvoiceItemValue.getToughenBucket())
+                .dispatchBucket(proFormaInvoiceItemValue.getDispatchBucket() == null ? tempProFormaInvoiceItemEntity.getDispatchBucket() : proFormaInvoiceItemValue.getDispatchBucket())
+                .optimizeCompleted(proFormaInvoiceItemValue.getOptimizeCompleted() == null ? tempProFormaInvoiceItemEntity.getOptimizeCompleted() : proFormaInvoiceItemValue.getOptimizeCompleted())
+                .cuttingCompleted(proFormaInvoiceItemValue.getCuttingCompleted() == null ? tempProFormaInvoiceItemEntity.getCuttingCompleted() : proFormaInvoiceItemValue.getCuttingCompleted())
+                .toughenCompleted(proFormaInvoiceItemValue.getToughenCompleted() == null ? tempProFormaInvoiceItemEntity.getToughenCompleted() : proFormaInvoiceItemValue.getToughenCompleted())
+                .dispatchCompleted(proFormaInvoiceItemValue.getDispatchCompleted() == null ? tempProFormaInvoiceItemEntity.getDispatchCompleted() : proFormaInvoiceItemValue.getDispatchCompleted())
+                .fileUrl(proFormaInvoiceItemValue.getBase64File() == null ? tempProFormaInvoiceItemEntity.getFileUrl() : fileUrl)
                 .createdDateTime(tempProFormaInvoiceItemEntity.getCreatedDateTime())
                 .createdBy(tempProFormaInvoiceItemEntity.getCreatedBy())
                 .isActive(tempProFormaInvoiceItemEntity.getIsActive())
@@ -149,7 +173,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
     @Override
     public ProFormaInvoiceItemValue getProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid) {
-        return proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid,proFormaInvoiceItemUuid).toDTO();
+        return proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid, proFormaInvoiceItemUuid).toDTO();
     }
 
     @Override
@@ -188,7 +212,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 case DISPATCH:
                     proFormaInvoiceItemEntity.setDispatchBucket(proFormaInvoiceItemEntity.getDispatchBucket() - quantity);
                     proFormaInvoiceItemEntity.setDispatchCompleted(proFormaInvoiceItemEntity.getDispatchCompleted() + quantity);
-                        break;
+                    break;
                 default:
                     throw new ResourceNotFoundException();
             }
@@ -221,17 +245,17 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
 
         switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
             case OPTIMIZE:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
+                proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
                 break;
             case CUTTING:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
+                proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfCuttingIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
                 break;
 
             case TOUGHEN:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
+                proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfToughenIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
                 break;
             case DISPATCH:
-                proFormaInvoiceIndividualsOrdersProjections =  proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(bucketManipulationValue.getTenantUuid(),bucketManipulationValue.getWorkOrderNo());
+                proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
                 break;
 
             default:
@@ -241,21 +265,11 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         return proFormaInvoiceIndividualsOrdersProjections;
     }
 
-    private static GlassBreakageDetailsValue getGlassBreakageDetailsValue(BucketManipulationValue bucketManipulationValue, String deptType) {
-        GlassBreakageDetailsValue glassBreakageDetailsValue = new GlassBreakageDetailsValue();
-        glassBreakageDetailsValue.setProFormaInvoiceItemUuid(bucketManipulationValue.getProFormaInvoiceItemUUid());
-        glassBreakageDetailsValue.setProFormaInvoiceUuid(bucketManipulationValue.getProFormaInvoiceUUid());
-        glassBreakageDetailsValue.setTenantUuid(bucketManipulationValue.getTenantUuid());
-        glassBreakageDetailsValue.setDeptName(deptType.toUpperCase());
-        glassBreakageDetailsValue.setDetails(bucketManipulationValue.getDetails());
-        return glassBreakageDetailsValue;
-    }
-
     @Override
     public void toughenBatchProcess(String tenantUuid, String proFormaInvoiceItemUuid, boolean isCancel) {
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid, proFormaInvoiceItemUuid);
         Integer toughenBucket = proFormaInvoiceItemEntity.getToughenBucket();
-        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity  = proFormaInvoiceItemEntity.toBuilder()
+        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity = proFormaInvoiceItemEntity.toBuilder()
                 .toughenBucket(isCancel ? toughenBucket + 1 : toughenBucket - 1).build();
         proFormaInvoiceItemRepository.save(updatedProFormaInvoiceItemEntity);
     }

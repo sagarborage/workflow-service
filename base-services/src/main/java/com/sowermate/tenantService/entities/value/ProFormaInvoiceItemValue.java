@@ -12,7 +12,6 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @Jacksonized
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProFormaInvoiceItemValue extends BaseDto {
 
     private Integer srno;//TODO: remove it later on, it is added as part of mui grid code compatibility
