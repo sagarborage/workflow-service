@@ -266,6 +266,24 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     }
 
     @Override
+    public List<ProFormaInvoiceIndividualsOrdersProjection> bucketManipulationCompleteAll(BucketManipulationValue bucketManipulationValue) {
+        List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = null;
+        List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceUuid(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getProFormaInvoiceItemUUid());
+        for (ProFormaInvoiceItemEntity entity : proFormaInvoiceItemEntities) {
+            bucketManipulationValue.setProFormaInvoiceItemUUid(entity.getUuid());
+            if(bucketManipulationValue.getCurrentBucket().equalsIgnoreCase("Optimize")) {
+                bucketManipulationValue.setQuantity(entity.getQuantity() - entity.getOptimizeCompleted());
+            }
+            if(bucketManipulationValue.getCurrentBucket().equalsIgnoreCase("Dispatch")) {
+                bucketManipulationValue.setQuantity(entity.getQuantity() - entity.getDispatchCompleted());
+            }
+            proFormaInvoiceIndividualsOrdersProjections = bucketManipulation("add", bucketManipulationValue);
+        }
+
+        return proFormaInvoiceIndividualsOrdersProjections;
+    }
+
+    @Override
     public void toughenBatchProcess(String tenantUuid, String proFormaInvoiceItemUuid, boolean isCancel) {
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid, proFormaInvoiceItemUuid);
         Integer toughenBucket = proFormaInvoiceItemEntity.getToughenBucket();
