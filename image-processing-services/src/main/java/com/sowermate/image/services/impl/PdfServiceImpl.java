@@ -6,20 +6,41 @@ import com.sowermate.image.constants.FileTypeConstants;
 import com.sowermate.image.constants.ImageExtensionConstants;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.image.utils.TypeDetection;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.tika.Tika;
 import org.modelmapper.internal.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Base64;
+import java.util.List;
 
 @Service
 public class PdfServiceImpl implements PdfService {
 
     @Autowired
     private PdfStorageConfig pdfStorageConfig;
+
+    @Override
+    public String mergePDFs(List<String> base64Pdfs) throws IOException {
+        PDFMergerUtility merger = new PDFMergerUtility();
+
+        for (String i : base64Pdfs) {
+            byte[] pdfBytes = Base64.getDecoder().decode(i);
+            merger.addSource(new ByteArrayInputStream(pdfBytes));
+        }
+        ByteArrayOutputStream mergedOutput = new ByteArrayOutputStream();
+        merger.setDestinationStream(mergedOutput);
+        merger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+
+        return Base64.getEncoder().encodeToString(mergedOutput.toByteArray());
+    }
 
     public String handlePdf(byte[] imageBytes, String userProfileUuid, String serviceType, String targetDirectory) {
         try {
@@ -92,7 +113,7 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public Boolean deleteFile(String targetDirectory,String parentDirectory, String fileName) {
+    public Boolean deleteFile(String targetDirectory, String parentDirectory, String fileName) {
         try {
             File baseDirectory = new File(pdfStorageConfig.getPdfUploadDirectory());
             if (!baseDirectory.exists()) {
