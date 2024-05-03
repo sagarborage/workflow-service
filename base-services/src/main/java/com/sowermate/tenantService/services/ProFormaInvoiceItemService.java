@@ -21,5 +21,6 @@ public interface ProFormaInvoiceItemService {
     public List<ProFormaInvoiceItemValue> getAllProFormaInvoiceItem(String tenantUuid);
 
     public List<ProFormaInvoiceIndividualsOrdersProjection> bucketManipulation(String actionType, BucketManipulationValue bucketManipulationValue);
+    public List<ProFormaInvoiceIndividualsOrdersProjection> bucketManipulationCompleteAll(BucketManipulationValue bucketManipulationValue);
     public void toughenBatchProcess(String tenantUuid, String proFormaInvoiceItemUuid, boolean isCancel);
 }

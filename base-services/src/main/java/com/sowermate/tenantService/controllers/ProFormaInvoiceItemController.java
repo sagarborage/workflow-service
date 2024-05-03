@@ -107,4 +107,16 @@ public class ProFormaInvoiceItemController {
         }
         return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
     }
+
+    @RequestMapping(value = "/bucketManipulationCompleteAll", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> bucketManipulationCompleteAll(@RequestBody BucketManipulationValue bucketManipulationValue) {
+        List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = null;
+        try {
+            proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceItemService.bucketManipulationCompleteAll(bucketManipulationValue);
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
+    }
 }
