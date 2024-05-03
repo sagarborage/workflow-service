@@ -25,6 +25,8 @@ public class AddressValue extends BaseDto {
     private String countryCode;
     private String pinCode;
     private String workPhone;
+    private  String contactPerson;
+    private  String aadhaar;
     private String fax;
     private String primaryPhoneNumber;
     private String alternatePhoneNumber;
@@ -44,6 +46,8 @@ public class AddressValue extends BaseDto {
                 .countryCode(getCountryCode())
                 .pinCode(getPinCode())
                 .workPhone(getWorkPhone())
+                .contactPerson(getContactPerson())
+                .aadhaar(getAadhaar())
                 .fax(getFax())
                 .primaryPhoneNumber(getPrimaryPhoneNumber())
                 .alternatePhoneNumber(getAlternatePhoneNumber())

@@ -95,6 +95,8 @@ CREATE TABLE address (
   country_code varchar(50) NOT NULL,
   pin_code varchar(50) NOT NULL,
   work_phone varchar(20) DEFAULT NULL,
+  contact_person varchar(20) NOT NULL,
+  aadhaar varchar(20) DEFAULT  NULL,
   fax varchar(40) DEFAULT NULL,
   primary_phone_number varchar(20) DEFAULT NULL,
   alternate_phone_number varchar(20) DEFAULT NULL,
