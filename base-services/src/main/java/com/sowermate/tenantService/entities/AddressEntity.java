@@ -41,6 +41,12 @@ public class AddressEntity extends Base {
     @Column (name = "work_phone")
     private  String workPhone;
 
+    @Column (name = "contact_person")
+    private  String contactPerson;
+
+    @Column (name = "aadhaar")
+    private  String aadhaar;
+
     @Column (name = "fax")
     private  String fax;
 
@@ -76,6 +82,8 @@ public class AddressEntity extends Base {
                 .countryCode(getCountryCode())
                 .pinCode(getPinCode())
                 .workPhone(getWorkPhone())
+                .contactPerson(getContactPerson())
+                .aadhaar(getAadhaar())
                 .fax(getFax())
                 .primaryPhoneNumber(getPrimaryPhoneNumber())
                 .alternatePhoneNumber(getAlternatePhoneNumber())
