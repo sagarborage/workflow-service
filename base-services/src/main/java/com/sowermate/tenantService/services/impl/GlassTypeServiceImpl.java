@@ -44,6 +44,7 @@ public class GlassTypeServiceImpl implements GlassTypeService {
                 .createdDateTime(tempGlassTypeEntity.getCreatedDateTime())
                 .createdBy(tempGlassTypeEntity.getCreatedBy())
                 .tenantEntity(tenantEntity)
+                .version(tempGlassTypeEntity.getVersion())
                 .build();
         return glassTypeRepository.save(glassTypeEntity).toDTO();
     }
