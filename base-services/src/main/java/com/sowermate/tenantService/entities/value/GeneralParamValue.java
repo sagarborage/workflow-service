@@ -16,4 +16,6 @@ public class GeneralParamValue {
     String piUuid;
     String workOrderUuid;
     String piItemUuid;
+    String batchItemUuid;
+    String details;
 }
