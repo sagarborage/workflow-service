@@ -85,9 +85,12 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     @Transactional
     public ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid) {
         ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid,companyUuid);
-        if (toughenBatchProcessDetailsEntity!=null){
-            toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
-            toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
+        if (toughenBatchProcessDetailsEntity!=null) {
+            //TODO: changed this logic to completely remove entry from batch process
+            //toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
+            //toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
+            toughenBatchProcessDetailsRepository.delete(toughenBatchProcessDetailsEntity);
+
 
             ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(toughenBatchProcessDetailsEntity.getId());
             proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket()+1);
