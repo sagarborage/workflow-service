@@ -37,6 +37,13 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(toughenBatchProcessDetailsValue, HttpStatus.CREATED);
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/brokeBatchItem")
+    @ResponseBody
+    public ResponseEntity<ToughenBatchProcessDetailsValue> toughenBatchProcessItemBreak(@RequestBody GeneralParamValue generalParamValue) {
+        ToughenBatchProcessDetailsValue toughenBatchProcessDetailsValue = toughenBatchProcessService.toughenBatchProcessItemBroke(generalParamValue);
+        return new ResponseEntity<>(toughenBatchProcessDetailsValue, HttpStatus.CREATED);
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/markComplete")
     @ResponseBody
     public ResponseEntity<List<ToughenBatchProcessValue>> markToughenBatchProcessComplete(@RequestBody GeneralParamValue generalParamValue) {

@@ -3,6 +3,8 @@ package com.sowermate.tenantService.entities;
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ConfirmThroughValue;
 import com.sowermate.tenantService.entities.value.GlassBreakageDetailsValue;
+import com.sowermate.tenantService.enums.DeptNameEnum;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,8 +36,9 @@ public class GlassBreakageDetailsEntity extends Base {
     @JoinColumn(name ="proforma_invoice_item_id")
     private ProFormaInvoiceItemEntity proFormaInvoiceItemEntity;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "dept_name")
-    private String deptName;
+    private DeptTypeEnum deptName;
 
     @Column(name = "details")
     private String details;

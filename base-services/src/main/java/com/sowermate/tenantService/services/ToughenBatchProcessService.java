@@ -14,6 +14,7 @@ public interface ToughenBatchProcessService {
     void toughenBatchProcessItemAdd(GeneralParamValue generalParamValue);
 
     ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid);
+    ToughenBatchProcessDetailsValue toughenBatchProcessItemBroke(GeneralParamValue generalParamValue);
 
     List<ToughenBatchProcessValue> markToughenBatchProcessComplete(GeneralParamValue generalParamValue);
 

@@ -54,7 +54,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         glassBreakageDetailsValue.setProFormaInvoiceItemUuid(bucketManipulationValue.getProFormaInvoiceItemUUid());
         glassBreakageDetailsValue.setProFormaInvoiceUuid(bucketManipulationValue.getProFormaInvoiceUUid());
         glassBreakageDetailsValue.setTenantUuid(bucketManipulationValue.getTenantUuid());
-        glassBreakageDetailsValue.setDeptName(deptType.toUpperCase());
+        glassBreakageDetailsValue.setDeptName(DeptTypeEnum.valueOf(deptType.toUpperCase()));
         glassBreakageDetailsValue.setDetails(bucketManipulationValue.getDetails());
         return glassBreakageDetailsValue;
     }

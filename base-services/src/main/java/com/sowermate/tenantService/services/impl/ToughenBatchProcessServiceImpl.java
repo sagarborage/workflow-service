@@ -1,12 +1,15 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.DeptTypeEnum;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
+import com.sowermate.tenantService.entities.value.GlassBreakageDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
+import com.sowermate.tenantService.enums.DeptNameEnum;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ToughenBatchProcessService;
@@ -44,6 +47,9 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Autowired
     private ProFormaInvoiceItemServiceImpl proFormaInvoiceItemService;
+
+    @Autowired
+    private GlassBreakageDetailsServiceImpl glassBreakageDetailsService;
 
     @Override
     @Transactional
@@ -93,7 +99,27 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
 
             ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(toughenBatchProcessDetailsEntity.getId());
-            proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket()+1);
+            proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket() + 1);
+            proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
+        }
+        assert toughenBatchProcessDetailsEntity != null;
+        return toughenBatchProcessDetailsEntity.toDTO();
+    }
+
+    @Override
+    public ToughenBatchProcessDetailsValue toughenBatchProcessItemBroke(GeneralParamValue generalParamValue) {
+        //TODO: rewrite this logic later on, specially param GeneralParamValue
+        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(generalParamValue.getBatchItemUuid(), generalParamValue.getCompanyUuid());
+        if (toughenBatchProcessDetailsEntity != null) {
+            toughenBatchProcessDetailsEntity.toBuilder().status(ToughenBatchProcessStatusEnum.BROKEN);
+            toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
+
+            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(toughenBatchProcessDetailsEntity.getId());
+            proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - 1);
+            proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + 1);
+            //Entry into break table
+            GlassBreakageDetailsValue breakageDetails = getBreakageDetails(generalParamValue);
+            glassBreakageDetailsService.createGlassBreakageDetails(breakageDetails);
             proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
         }
         assert toughenBatchProcessDetailsEntity != null;
@@ -156,6 +182,17 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
                 .batchNo(batchNO)
                 .status(ToughenBatchProcessStatusEnum.IN_PROGRESS)
                 .isActive(true)
+                .build();
+    }
+
+    private static GlassBreakageDetailsValue getBreakageDetails(GeneralParamValue generalParamValue) {
+        return  GlassBreakageDetailsValue
+                .newBuilder()
+                .tenantUuid(generalParamValue.getTenantUuid())
+                .proFormaInvoiceUuid(generalParamValue.getPiUuid())
+                .proFormaInvoiceItemUuid(generalParamValue.getPiItemUuid())
+                .deptName(DeptTypeEnum.TOUGHEN)
+                .details(generalParamValue.getDetails())
                 .build();
     }
 }
