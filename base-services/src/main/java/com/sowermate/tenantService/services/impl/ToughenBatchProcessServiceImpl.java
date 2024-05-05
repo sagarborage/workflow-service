@@ -118,14 +118,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - 1);
             proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + 1);
             //Entry into break table
-            GlassBreakageDetailsValue breakageDetails = GlassBreakageDetailsValue
-                    .newBuilder()
-                    .tenantUuid(generalParamValue.getTenantUuid())
-                    .proFormaInvoiceUuid(generalParamValue.getPiUuid())
-                    .proFormaInvoiceItemUuid(generalParamValue.getPiItemUuid())
-                    .deptName(DeptTypeEnum.TOUGHEN)
-                    .details(generalParamValue.getDetails())
-                    .build();
+            GlassBreakageDetailsValue breakageDetails = getBreakageDetails(generalParamValue);
             glassBreakageDetailsService.createGlassBreakageDetails(breakageDetails);
             proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
         }
@@ -189,6 +182,17 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
                 .batchNo(batchNO)
                 .status(ToughenBatchProcessStatusEnum.IN_PROGRESS)
                 .isActive(true)
+                .build();
+    }
+
+    private static GlassBreakageDetailsValue getBreakageDetails(GeneralParamValue generalParamValue) {
+        return  GlassBreakageDetailsValue
+                .newBuilder()
+                .tenantUuid(generalParamValue.getTenantUuid())
+                .proFormaInvoiceUuid(generalParamValue.getPiUuid())
+                .proFormaInvoiceItemUuid(generalParamValue.getPiItemUuid())
+                .deptName(DeptTypeEnum.TOUGHEN)
+                .details(generalParamValue.getDetails())
                 .build();
     }
 }

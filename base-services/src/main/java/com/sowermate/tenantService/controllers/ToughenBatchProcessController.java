@@ -37,7 +37,7 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(toughenBatchProcessDetailsValue, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/brokeBatchItem/{uuid}/{companyUuid}")
+    @RequestMapping(method = RequestMethod.POST, path = "/brokeBatchItem")
     @ResponseBody
     public ResponseEntity<ToughenBatchProcessDetailsValue> toughenBatchProcessItemBreak(@RequestBody GeneralParamValue generalParamValue) {
         ToughenBatchProcessDetailsValue toughenBatchProcessDetailsValue = toughenBatchProcessService.toughenBatchProcessItemBroke(generalParamValue);
