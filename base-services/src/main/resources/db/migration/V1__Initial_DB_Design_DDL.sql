@@ -542,3 +542,23 @@ CREATE TABLE glass_breakage_details (
      CONSTRAINT PI_GBD_FK_1 FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id),
      CONSTRAINT PII_GBD_FK_1 FOREIGN KEY (proforma_invoice_item_id) REFERENCES pro_forma_invoice_item (id)
     );
+
+CREATE TABLE jb_creation (
+    id INT(10) AUTO_INCREMENT,
+    uuid VARCHAR(36) NOT NULL,
+    toughen_batch_process_id INT(10) NOT NULL,
+    party_name VARCHAR(50) NOT NULL,
+    width_mm DECIMAL(20,6) DEFAULT NULL,
+    height_mm DECIMAL(20,6) DEFAULT NULL,
+    quantity INT DEFAULT NULL,
+    thickness VARCHAR(500) DEFAULT NULL,
+    status VARCHAR(50) DEFAULT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT 1,
+    created_by VARCHAR(64) NOT NULL,
+    created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_updated_by VARCHAR(64) NOT NULL,
+    last_updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    version INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (id) USING BTREE,
+    CONSTRAINT TBP_TBPD_FK_2 FOREIGN KEY (toughen_batch_process_id) REFERENCES toughen_batch_process (id)
+);

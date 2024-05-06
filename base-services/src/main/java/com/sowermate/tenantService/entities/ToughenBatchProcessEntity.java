@@ -38,6 +38,9 @@ public class ToughenBatchProcessEntity extends Base {
     @OneToMany(mappedBy="toughenBatchProcessEntity",cascade=CascadeType.ALL, orphanRemoval = true)
     private List<ToughenBatchProcessDetailsEntity> toughenBatchProcessDetailsEntities;
 
+    @OneToMany(mappedBy="toughenBatchProcessEntity",cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<JbCreationEntity> jbCreationEntities;
+
     @PostPersist
     void setToughenBatchProcessValue(){
         for(ToughenBatchProcessDetailsEntity entity : toughenBatchProcessDetailsEntities) {

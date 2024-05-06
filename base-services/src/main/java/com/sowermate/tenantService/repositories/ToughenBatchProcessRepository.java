@@ -83,5 +83,6 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "AND c.uuid = :companyUuid ")
     ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid,String companyUuid);
 
+    ToughenBatchProcessEntity findByUuid(@Param("toughenBatchProcessUuid") String toughenBatchProcessUuid);
 
 }
