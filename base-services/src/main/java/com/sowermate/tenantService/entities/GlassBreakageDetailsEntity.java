@@ -27,7 +27,7 @@ public class GlassBreakageDetailsEntity extends Base {
     private TenantEntity tenantEntity;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="proforma_invoice_id")
     private ProFormaInvoiceEntity proFormaInvoiceEntity;
 

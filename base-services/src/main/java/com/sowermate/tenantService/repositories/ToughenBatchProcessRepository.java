@@ -4,13 +4,12 @@ import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
-import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +35,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo,String companyUuid,ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
+            "tbd.uuid as batchItemUuid, " +
             "tb.uuid as batchUuid, " +
             "tb.batchNo as batchNo, " +
             "pi.uuid as proformaInvoiceItemUuid, " +
@@ -72,8 +72,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     @Query("SELECT pi " +
             "From ToughenBatchProcessDetailsEntity tbd " +
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
-            "WHERE tbd.id = :id ")
-    ProFormaInvoiceItemEntity findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(Long id);
+            "WHERE tbd.uuid = :uuid ")
+    ProFormaInvoiceItemEntity getPIItemToBeCancelled(@Param("uuid") String uuid);
 
     @Query("SELECT tbd " +
             "FROM ToughenBatchProcessEntity tb " +
