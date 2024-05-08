@@ -9,7 +9,6 @@ import com.sowermate.tenantService.entities.value.GeneralParamValue;
 import com.sowermate.tenantService.entities.value.GlassBreakageDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
-import com.sowermate.tenantService.enums.DeptNameEnum;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ToughenBatchProcessService;
@@ -95,12 +94,10 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             //TODO: changed this logic to completely remove entry from batch process
             //toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
             //toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
-            toughenBatchProcessDetailsRepository.delete(toughenBatchProcessDetailsEntity);
-
-
-            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(toughenBatchProcessDetailsEntity.getId());
+            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.getPIItemToBeCancelled(uuid);
             proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket() + 1);
             proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
+            toughenBatchProcessDetailsRepository.delete(toughenBatchProcessDetailsEntity);
         }
         assert toughenBatchProcessDetailsEntity != null;
         return toughenBatchProcessDetailsEntity.toDTO();
@@ -114,7 +111,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             toughenBatchProcessDetailsEntity.toBuilder().status(ToughenBatchProcessStatusEnum.BROKEN);
             toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
 
-            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.findProFormaInvoiceItemEntityByToughenBatchProcessDetailsId(toughenBatchProcessDetailsEntity.getId());
+            ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.getPIItemToBeCancelled(toughenBatchProcessDetailsEntity.getUuid());
             proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - 1);
             proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + 1);
             //Entry into break table
@@ -193,6 +190,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
                 .proFormaInvoiceItemUuid(generalParamValue.getPiItemUuid())
                 .deptName(DeptTypeEnum.TOUGHEN)
                 .details(generalParamValue.getDetails())
+                .isActive(true)
                 .build();
     }
 }

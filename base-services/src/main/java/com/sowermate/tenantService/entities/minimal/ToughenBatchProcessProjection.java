@@ -5,6 +5,7 @@ import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import java.time.LocalDate;
 
 public interface ToughenBatchProcessProjection {
+    String getBatchItemUuid();
     String getBatchUuid();
 
     String getBatchNo();
