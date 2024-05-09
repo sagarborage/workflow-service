@@ -2,6 +2,7 @@ package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
+import com.sowermate.tenantService.repositories.GlassThicknessRepository;
 import com.sowermate.tenantService.repositories.JbCreationRepository;
 import com.sowermate.tenantService.repositories.ToughenBatchProcessDetailsRepository;
 import com.sowermate.tenantService.repositories.ToughenBatchProcessRepository;
@@ -20,6 +21,9 @@ public class JbCreationServiceImpl implements JbCreationService {
 
     @Autowired
     private ToughenBatchProcessRepository toughenBatchProcessRepository;
+
+    @Autowired
+    private GlassThicknessRepository glassThicknessRepository;
 
     @Override
     public JbCreationValue createJbCreation(JbCreationValue jbCreationValue) {
@@ -63,7 +67,8 @@ public class JbCreationServiceImpl implements JbCreationService {
 
     private JbCreationEntity prepareAndSaveJbCreationEntity(JbCreationValue jbCreationValue, ToughenBatchProcessEntity toughenBatchProcessEntity) {
         if (null == jbCreationValue.getJbCreationUuid()) {
-            return jbCreationRepository.save(jbCreationValue.toEntity().toBuilder().toughenBatchProcessEntity(toughenBatchProcessEntity).build());
+            GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid("7977ff91-64d4-490b-914f-61bbacf75f0f",jbCreationValue.getGlassThicknessUuid());
+            return jbCreationRepository.save(jbCreationValue.toEntity().toBuilder().glassThicknessEntity(glassThicknessEntity).build());
         } else {
             JbCreationEntity jbCreationEntityTemp = jbCreationRepository.findByToughenBatchProcessEntity_UuidAndJbCreationEntityUuid(jbCreationValue.getToughenBatchProcessUuid(), jbCreationValue.getJbCreationUuid());
             return jbCreationRepository.save(jbCreationValue.toEntity().toBuilder()

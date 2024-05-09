@@ -20,7 +20,7 @@ public class JbCreationValue extends BaseDto {
     private Float widthMm;
     private Float heightMm;
     private Integer quantity;
-    private String thickness;
+    private String glassThicknessUuid;
     private String status;
 
     public JbCreationEntity toEntity() {
@@ -31,7 +31,7 @@ public class JbCreationValue extends BaseDto {
                 .widthMm(getWidthMm())
                 .heightMm(getHeightMm())
                 .quantity(getQuantity())
-                .thickness(getThickness())
+                //.thickness(getThickness())
                 .status(getStatus())
                 .isActive(getIsActive())
                 .build();

@@ -551,7 +551,7 @@ CREATE TABLE jb_creation (
     width_mm DECIMAL(20,6) DEFAULT NULL,
     height_mm DECIMAL(20,6) DEFAULT NULL,
     quantity INT DEFAULT NULL,
-    thickness VARCHAR(500) DEFAULT NULL,
+    glass_thickness_id int(10) NOT NULL,
     status VARCHAR(50) DEFAULT NULL,
     is_active BOOLEAN NOT NULL DEFAULT 1,
     created_by VARCHAR(64) NOT NULL,
@@ -560,5 +560,6 @@ CREATE TABLE jb_creation (
     last_updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     version INT NOT NULL DEFAULT 1,
     PRIMARY KEY (id) USING BTREE,
-    CONSTRAINT TBP_TBPD_FK_2 FOREIGN KEY (toughen_batch_process_id) REFERENCES toughen_batch_process (id)
+    CONSTRAINT TBP_TBPD_FK_2 FOREIGN KEY (toughen_batch_process_id) REFERENCES toughen_batch_process (id),
+    CONSTRAINT PI_JBC_FK_1 FOREIGN  KEY (glass_thickness_id) REFERENCES glass_thickness (id)
 );

@@ -31,8 +31,9 @@ public class JbCreationEntity extends Base {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "thickness")
-    private String thickness;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "glass_thickness_id")
+    private GlassThicknessEntity glassThicknessEntity;
 
     @Column(name = "status")
     private String status;
@@ -46,7 +47,7 @@ public class JbCreationEntity extends Base {
                 .widthMm(getWidthMm())
                 .heightMm(getHeightMm())
                 .quantity(getQuantity())
-                .thickness(getThickness())
+                .glassThicknessUuid(getGlassThicknessEntity().getUuid())
                 .status(getStatus())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
