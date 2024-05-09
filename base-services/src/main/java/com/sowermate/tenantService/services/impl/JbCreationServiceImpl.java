@@ -68,7 +68,7 @@ public class JbCreationServiceImpl implements JbCreationService {
     private JbCreationEntity prepareAndSaveJbCreationEntity(JbCreationValue jbCreationValue, ToughenBatchProcessEntity toughenBatchProcessEntity) {
         if (null == jbCreationValue.getJbCreationUuid()) {
             GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid("7977ff91-64d4-490b-914f-61bbacf75f0f",jbCreationValue.getGlassThicknessUuid());
-            return jbCreationRepository.save(jbCreationValue.toEntity().toBuilder().glassThicknessEntity(glassThicknessEntity).build());
+            return jbCreationRepository.save(jbCreationValue.toEntity().toBuilder().toughenBatchProcessEntity(toughenBatchProcessEntity).glassThicknessEntity(glassThicknessEntity).build());
         } else {
             JbCreationEntity jbCreationEntityTemp = jbCreationRepository.findByToughenBatchProcessEntity_UuidAndJbCreationEntityUuid(jbCreationValue.getToughenBatchProcessUuid(), jbCreationValue.getJbCreationUuid());
             return jbCreationRepository.save(jbCreationValue.toEntity().toBuilder()

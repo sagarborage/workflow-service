@@ -31,7 +31,6 @@ public class JbCreationValue extends BaseDto {
                 .widthMm(getWidthMm())
                 .heightMm(getHeightMm())
                 .quantity(getQuantity())
-                //.thickness(getThickness())
                 .status(getStatus())
                 .isActive(getIsActive())
                 .build();
