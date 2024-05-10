@@ -390,6 +390,8 @@ CREATE TABLE pro_forma_invoice_item (
   rate_per_unit decimal(20,6) DEFAULT NULL,
   unit_measurement_label varchar(20),
   amount decimal(20,6) DEFAULT NULL,
+  status varchar(50) NOT NULL,
+  status_details varchar(50) DEFAULT NULL,
   `optimize_bucket` int(5) UNSIGNED NOT NULL DEFAULT 0 ,
   `cutting_bucket` int(5) UNSIGNED NOT NULL DEFAULT 0 ,
   `toughen_bucket` int(5) UNSIGNED NOT NULL DEFAULT 0 ,

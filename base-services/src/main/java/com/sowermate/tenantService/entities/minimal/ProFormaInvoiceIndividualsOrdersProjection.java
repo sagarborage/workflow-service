@@ -1,5 +1,7 @@
 package com.sowermate.tenantService.entities.minimal;
 
+import com.sowermate.tenantService.enums.ProformaInvoiceItemStatusEnum;
+
 public interface ProFormaInvoiceIndividualsOrdersProjection {
     String getTenantUuid();
     String getCompanyUuid();
@@ -27,5 +29,7 @@ public interface ProFormaInvoiceIndividualsOrdersProjection {
     Long getBucketQuantity();
 
     Long getCompletedQuantity();
+    ProformaInvoiceItemStatusEnum getStatus();
+    String getStatusDetails();
 
 }
