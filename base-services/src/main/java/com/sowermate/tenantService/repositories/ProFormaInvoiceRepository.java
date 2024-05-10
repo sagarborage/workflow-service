@@ -132,7 +132,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where wo.id = :workOrderNumber and " +
-            "pii.status = 'IN_PROGRESS' and " +
+            //"pii.status = 'IN_PROGRESS' and " + TODO: to hold and un-hole we need to comment-out this condition..need discussion on the scenario and solution
             "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfOptimizeIndividual(String tenantUuid, Integer workOrderNumber);
 
@@ -159,7 +159,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where wo.id = :workOrderNumber and " +
-            "pii.status = 'IN_PROGRESS' and " +
+            //"pii.status = 'IN_PROGRESS' and " +
             "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfCuttingIndividual(String tenantUuid, Integer workOrderNumber);
 
@@ -186,7 +186,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where wo.id = :workOrderNumber and " +
-            "pii.status = 'IN_PROGRESS' and " +
+            //"pii.status = 'IN_PROGRESS' and " +
             "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfDispatchIndividual(String tenantUuid, Integer workOrderNumber);
 
@@ -213,7 +213,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
             "where wo.id = :workOrderNumber and " +
-            "pii.status = 'IN_PROGRESS' and " +
+            //"pii.status = 'IN_PROGRESS' and " +
             "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, Integer workOrderNumber);
 
