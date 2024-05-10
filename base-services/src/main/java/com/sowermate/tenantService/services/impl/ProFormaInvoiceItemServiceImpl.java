@@ -7,6 +7,7 @@ import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOr
 import com.sowermate.tenantService.entities.value.BucketManipulationValue;
 import com.sowermate.tenantService.entities.value.GlassBreakageDetailsValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import com.sowermate.tenantService.entities.value.ProformaInvoiceItemReqParam;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.GlassBreakageDetailsService;
@@ -174,6 +175,17 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     @Override
     public ProFormaInvoiceItemValue getProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid) {
         return proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(tenantUuid, proFormaInvoiceItemUuid).toDTO();
+    }
+
+    @Override
+    public ProFormaInvoiceItemValue updateProformaInvoiceItemStatus(ProformaInvoiceItemReqParam proformaInvoiceItemReqParam) {
+        ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(proformaInvoiceItemReqParam.getTenantUuid(), proformaInvoiceItemReqParam.getPiItemUuid());
+        if(proFormaInvoiceItemEntity.getStatus().equals(proformaInvoiceItemReqParam.getStatusFrom())) {
+            proFormaInvoiceItemEntity.setStatus(proformaInvoiceItemReqParam.getStatusTo());
+            proFormaInvoiceItemEntity.setStatusDetails(proformaInvoiceItemReqParam.getStatusDetails());
+            return proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity).toDTO();
+        }
+        return proFormaInvoiceItemEntity.toDTO();
     }
 
     @Override

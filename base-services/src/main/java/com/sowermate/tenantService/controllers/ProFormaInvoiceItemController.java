@@ -3,6 +3,7 @@ package com.sowermate.tenantService.controllers;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.value.BucketManipulationValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import com.sowermate.tenantService.entities.value.ProformaInvoiceItemReqParam;
 import com.sowermate.tenantService.services.ProFormaInvoiceItemService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,20 @@ public class ProFormaInvoiceItemController {
         }
         return new ResponseEntity<ProFormaInvoiceItemValue>(proFormaInvoiceItemValue1, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "/updateProFormaInvoiceItemStatus", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<ProFormaInvoiceItemValue> updateProFormaInvoiceItemStatus(@RequestBody ProformaInvoiceItemReqParam proformaInvoiceItemReqParam) {
+
+        ProFormaInvoiceItemValue proFormaInvoiceItemValue1 = null;
+        try {
+            proFormaInvoiceItemValue1 = proFormaInvoiceItemService.updateProformaInvoiceItemStatus(proformaInvoiceItemReqParam);
+        } catch (Exception e) {
+            Logger.error("Error while editing Seller:", e);
+        }
+        return new ResponseEntity<ProFormaInvoiceItemValue>(proFormaInvoiceItemValue1, HttpStatus.CREATED);
+    }
+
 
     @GetMapping("/{tenantUuid}/{proFormaInvoiceItemUuid}")
     public ResponseEntity<ProFormaInvoiceItemValue> getProFormaInvoiceItem(@PathVariable String tenantUuid,

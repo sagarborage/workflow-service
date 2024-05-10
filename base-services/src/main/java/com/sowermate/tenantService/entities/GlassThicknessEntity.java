@@ -27,6 +27,9 @@ public class GlassThicknessEntity extends Base {
     @JoinColumn(name ="tenant_id")
     private TenantEntity tenantEntity;
 
+    @OneToOne(mappedBy="glassThicknessEntity",fetch = FetchType.LAZY)
+    private JbCreationEntity jbCreationEntity;
+
     public GlassThicknessValue toDTO() {
         return GlassThicknessValue.newBuilder()
                 .glassThicknessId(getId())

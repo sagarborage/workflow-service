@@ -3,6 +3,7 @@ package com.sowermate.tenantService.entities.value;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
+import com.sowermate.tenantService.enums.ProformaInvoiceItemStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -51,6 +52,8 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private Integer dispatchCompleted;
     private String base64File;
     private String fileUrl;
+    private ProformaInvoiceItemStatusEnum status;
+    private String statusDetails;
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
@@ -86,6 +89,8 @@ public class ProFormaInvoiceItemValue extends BaseDto {
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())
                 //.glassSpecificationEntity(getGlassSpecificationValue().toEntity())
                 //.proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
+                .status(getStatus())
+                .statusDetails(getStatusDetails())
                 .isActive(getIsActive())
                 .build();
     }

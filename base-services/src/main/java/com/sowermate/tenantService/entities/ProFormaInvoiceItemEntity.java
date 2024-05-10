@@ -2,6 +2,8 @@ package com.sowermate.tenantService.entities;
 
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import com.sowermate.tenantService.enums.ProformaInvoiceItemStatusEnum;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -90,6 +92,13 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "`dispatch_completed`")
     private Integer dispatchCompleted;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ProformaInvoiceItemStatusEnum status;
+
+    @Column(name = "status_details")
+    private String statusDetails;
+
     @Column(name = "file_url")
     private String fileUrl;
 
@@ -156,6 +165,8 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .lastUpdatedBy(getLastUpdatedBy())
                 .isActive(getIsActive())
                 .fileUrl(getFileUrl())
+                .status(getStatus())
+                .statusDetails(getStatusDetails())
                 .build();
     }
 }
