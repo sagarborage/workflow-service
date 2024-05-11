@@ -45,16 +45,13 @@ public class PdfGenerationController {
         PIReportDetails reportDetails = new PIReportDetails();
         reportDetails.setBillTo(billTo);
         reportDetails.setShipTo(shipTo);
-        List<String> piItemsPdfUrls = proFormaInvoiceValue.getProFormaInvoiceItems().stream().map(ProFormaInvoiceItemValue->{
-            if (ProFormaInvoiceItemValue.getFileUrl()!=null){
-                if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")){
-                    return ProFormaInvoiceItemValue.getFileUrl();
+        List<String> piItemsPdfUrls = new ArrayList<>();
+                proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue->{
+            if (ProFormaInvoiceItemValue.getFileUrl()!=null) {
+                if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")) {
+                    piItemsPdfUrls.add(ProFormaInvoiceItemValue.getFileUrl());
                 }
-                else
-                    return null;
             }
-            else
-                return null;
         }).toList();
         byte[] pdfContent = pdfGenerationService.generateInvoice(proFormaInvoiceValue, reportDetails);
         String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
