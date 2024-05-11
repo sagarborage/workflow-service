@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.image.services.PdfService;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
@@ -20,7 +21,9 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,37 +31,32 @@ import java.util.stream.Collectors;
 public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Autowired
-    private ProFormaInvoiceRepository proFormaInvoiceRepository;
-
-    @Autowired
-    private ServiceRateRepository serviceRateRepository;
-    @Autowired
-    private ConfirmThroughRepository confirmThroughRepository;
-
-    @Autowired
-    private PiTypeRepository piTypeRepository;
-
-    @Autowired
-    private CompanyRepository companyRepository;
-
-    @Autowired
-    private TenantRepository tenantRepository;
-
-    @Autowired
     WorkOrderRepository workOrderRepository;
-
     @Autowired
     ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
-
     @Autowired
     GlassSpecificationRepository glassSpecificationRepository;
     @Autowired
     GlassThicknessRepository glassThicknessRepository;
     @Autowired
     GlassTypeRepository glassTypeRepository;
-
     @PersistenceContext
     EntityManager entityManager;
+    @Autowired
+    private ProFormaInvoiceRepository proFormaInvoiceRepository;
+    @Autowired
+    private ServiceRateRepository serviceRateRepository;
+    @Autowired
+    private ConfirmThroughRepository confirmThroughRepository;
+    @Autowired
+    private PiTypeRepository piTypeRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
+    private TenantRepository tenantRepository;
+
+    @Autowired(required = true)
+    private PdfService pdfService;
 
     @Override
     @Transactional
@@ -137,9 +135,21 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .map(ServiceRateInvoiceValue::getUuid)
                 .collect(Collectors.toSet());
 
+        List<ProFormaInvoiceItemEntity> removedItems = existingInvoice.getProFormaInvoiceItemEntities().stream().peek(item -> {
+            if (item.getId() != null && !updatedItemIds.contains(item.getUuid())) {
+                if (item.getFileUrl() != null) {
+                    if (!item.getFileUrl().equals("Error handling the PDF."))
+                        pdfService.deleteFileAndParentDirectoryByUrl(item.getFileUrl());
+                }
+            }
+        }).toList();
+
         // Remove items from the existing list that are not present in the updated list
         existingInvoice.getProFormaInvoiceItemEntities().removeIf(item ->
                 item.getId() != null && !updatedItemIds.contains(item.getUuid()));
+
+
+
 
         // Remove items from the existing list that are not present in the updated list
         existingInvoice.getServiceRateInvoiceEntities().removeIf(serviceRate ->
@@ -210,14 +220,14 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     private ProFormaInvoiceItemEntity findItemById(ProFormaInvoiceEntity invoice, String itemUuid) {
         return invoice.getProFormaInvoiceItemEntities().stream()
-                .filter(item -> (item.getUuid() !=null && item.getUuid().equals(itemUuid)))
+                .filter(item -> (item.getUuid() != null && item.getUuid().equals(itemUuid)))
                 .findFirst()
                 .orElse(null);
     }
 
     private ServiceRateInvoiceEntity findByServiceRateId(ProFormaInvoiceEntity invoice, String serviceUuid) {
         return invoice.getServiceRateInvoiceEntities().stream()
-                .filter(serviceRate -> (serviceRate.getUuid() !=null && serviceRate.getUuid().equals(serviceUuid)))
+                .filter(serviceRate -> (serviceRate.getUuid() != null && serviceRate.getUuid().equals(serviceUuid)))
                 .findFirst()
                 .orElse(null);
     }

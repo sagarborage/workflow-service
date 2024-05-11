@@ -120,6 +120,18 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     }
 
     @Override
+    public String deleteProformaInvoiceItemFileByUrl(String fileUrl) {
+        return pdfService.getPdfAsBase64(fileUrl);
+//        if (isDeleted) {
+//
+//            return "File Deleted Successfully";
+//        }
+//        else
+//            return "Error when Deleted file";
+
+    }
+
+    @Override
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
 
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();

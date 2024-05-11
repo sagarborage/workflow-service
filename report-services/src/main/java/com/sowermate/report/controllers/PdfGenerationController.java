@@ -1,9 +1,11 @@
 package com.sowermate.report.controllers;
 
+import com.sowermate.image.services.PdfService;
 import com.sowermate.report.dtos.PIReportAddressDto;
 import com.sowermate.report.dtos.PIReportDetails;
 import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.services.CompanyService;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
@@ -15,12 +17,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pdf")
 public class PdfGenerationController {
     @Autowired
     private PdfGenerationService pdfGenerationService;
+
+    @Autowired
+    private PdfService pdfService;
 
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
@@ -37,13 +45,36 @@ public class PdfGenerationController {
         PIReportDetails reportDetails = new PIReportDetails();
         reportDetails.setBillTo(billTo);
         reportDetails.setShipTo(shipTo);
+        List<String> piItemsPdfUrls = proFormaInvoiceValue.getProFormaInvoiceItems().stream().map(ProFormaInvoiceItemValue->{
+            if (ProFormaInvoiceItemValue.getFileUrl()!=null){
+                if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")){
+                    return ProFormaInvoiceItemValue.getFileUrl();
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }).toList();
         byte[] pdfContent = pdfGenerationService.generateInvoice(proFormaInvoiceValue, reportDetails);
+        String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
+
+
+        List<String> base64PdfForMerging = new ArrayList<>();
+        base64PdfForMerging.add(base64PdfContent);
+        piItemsPdfUrls.stream().peek(piItemsPdfUrl->{
+            base64PdfForMerging.add(pdfService.getPdfAsBase64(piItemsPdfUrl));
+        }).toList();
+
+
+        String mergedPdf = pdfService.mergePDFs(base64PdfForMerging);
+        byte[] finalPdf = Base64.getDecoder().decode(mergedPdf);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
         headers.setContentDispositionFormData("attachment", "example.pdf");
 
-        return ResponseEntity.ok().headers(headers).body(pdfContent);
+        return ResponseEntity.ok().headers(headers).body(finalPdf);
     }
 
 }
