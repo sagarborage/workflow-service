@@ -9,4 +9,9 @@ public interface PdfService {
     Boolean deleteFile(String targetDirectory,String parentDirectory, String fileName);
 
     String mergePDFs(List<String> base64Pdfs) throws IOException;
+
+    boolean deleteFileByUrl(String fileUrl);
+    boolean deleteFileAndParentDirectoryByUrl(String fileUrl);
+
+    String getPdfAsBase64(String pdfUrl);
 }

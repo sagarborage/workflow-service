@@ -85,6 +85,17 @@ public class ProFormaInvoiceItemController {
         return new ResponseEntity<>(isDeleted, HttpStatus.ACCEPTED);
     }
 
+    @DeleteMapping("/deleteFileByUrl")
+    public ResponseEntity<String> deleteProFormaInvoiceItemFile(@RequestParam(name = "fileUrl") String fileUrl) {
+        String isDeleted = null;
+        try {
+            isDeleted = proFormaInvoiceItemService.deleteProformaInvoiceItemFileByUrl(fileUrl);
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(isDeleted, HttpStatus.ACCEPTED);
+    }
+
     @RequestMapping(value = "/{tenantUuid}/{ProFormaInvoiceItemUuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Integer> deleteProFormaInvoiceItem(@PathVariable String tenantUuid,

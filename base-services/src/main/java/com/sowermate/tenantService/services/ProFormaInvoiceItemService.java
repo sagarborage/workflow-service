@@ -13,6 +13,7 @@ public interface ProFormaInvoiceItemService {
     public ProFormaInvoiceItemValue createProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue);
     public List<ProFormaInvoiceItemValue> saveAllProFormaInvoiceItem(String tenantUUID, List<ProFormaInvoiceItemValue> proFormaInvoiceItems);
     public String deleteProformaInvoiceItemFile(String tenantUuid,String parentDirectory, String fileName);
+    public String deleteProformaInvoiceItemFileByUrl(String fileUrl);
     public ProFormaInvoiceItemValue editProFormaInvoiceItem(ProFormaInvoiceItemValue proFormaInvoiceItemValue);
 
     public ProFormaInvoiceItemValue getProFormaInvoiceItem(String tenantUuid, String proFormaInvoiceItemUuid);

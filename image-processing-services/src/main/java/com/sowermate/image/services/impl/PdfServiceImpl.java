@@ -6,6 +6,7 @@ import com.sowermate.image.constants.FileTypeConstants;
 import com.sowermate.image.constants.ImageExtensionConstants;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.image.utils.TypeDetection;
+import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.tika.Tika;
@@ -13,10 +14,11 @@ import org.modelmapper.internal.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.List;
@@ -159,6 +161,121 @@ public class PdfServiceImpl implements PdfService {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public boolean deleteFileByUrl(String fileUrl) {
+        try {
+            // Parse the URL to extract necessary information
+            URI uri = new URI(fileUrl);
+            String path = uri.getPath();
+            String[] segments = path.split("/");
+
+            // Extract target directory, user profile UUID, and filename
+            String targetDirectory = segments[2]; // Assuming the structure is /targetDirectory/userProfileUuid/filename.extension
+            String userProfileUuid = segments[3];
+            String filename = segments[4];
+
+            // Construct the file path
+            File fileToDelete = new File(pdfStorageConfig.getPdfUploadDirectory() + File.separator + targetDirectory + File.separator + userProfileUuid + File.separator + filename);
+
+            // Check if file exists and delete it
+            if (fileToDelete.exists()) {
+                if (fileToDelete.delete()) {
+                    System.out.println("File deleted successfully: " + fileToDelete.getAbsolutePath());
+                    return true;
+                } else {
+                    System.err.println("Failed to delete file: " + fileToDelete.getAbsolutePath());
+                    return false;
+                }
+            } else {
+                System.err.println("File does not exist: " + fileToDelete.getAbsolutePath());
+                return false;
+            }
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid file URL: " + fileUrl);
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean deleteFileAndParentDirectoryByUrl(String fileUrl) {
+        try {
+            // Parse the URL to extract necessary information
+            URI uri = new URI(fileUrl);
+            String path = uri.getPath();
+            String[] segments = path.split("/");
+
+            // Extract target directory and user profile UUID
+            String targetDirectory = segments[2]; // Assuming the structure is /targetDirectory/userProfileUuid/filename.extension
+            String userProfileUuid = segments[3];
+
+            // Construct the directory path
+            File directoryToDelete = new File(pdfStorageConfig.getPdfUploadDirectory() + File.separator + targetDirectory + File.separator + userProfileUuid);
+
+            // Check if directory exists
+            if (directoryToDelete.exists() && directoryToDelete.isDirectory()) {
+                // List files in the directory
+                File[] files = directoryToDelete.listFiles();
+                if (files != null) {
+                    // Delete each file in the directory
+                    for (File file : files) {
+                        if (!file.delete()) {
+                            System.err.println("Failed to delete file: " + file.getAbsolutePath());
+                            return false;
+                        }
+                    }
+                }
+
+                // Delete the directory itself
+                if (directoryToDelete.delete()) {
+                    System.out.println("Directory deleted successfully: " + directoryToDelete.getAbsolutePath());
+                    return true;
+                } else {
+                    System.err.println("Failed to delete directory: " + directoryToDelete.getAbsolutePath());
+                    return false;
+                }
+            } else {
+                System.err.println("Directory does not exist: " + directoryToDelete.getAbsolutePath());
+                return false;
+            }
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid file URL: " + fileUrl);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public String getPdfAsBase64(String pdfUrl) {
+        try {
+            // Open a connection to the PDF URL
+            URL url = new URL(pdfUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Get the input stream from the connection
+            InputStream inputStream = connection.getInputStream();
+
+            // Read the PDF content into a byte array
+            byte[] pdfBytes = IOUtils.toByteArray(inputStream);
+
+            // Close the input stream
+            inputStream.close();
+
+            // Convert the PDF content to Base64
+            byte[] base64Bytes = Base64.getEncoder().encode(pdfBytes);
+
+            // Convert the Base64 bytes to a string
+            String base64String = new String(base64Bytes);
+
+            return base64String;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
