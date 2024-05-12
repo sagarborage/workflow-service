@@ -95,8 +95,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             GlassThicknessEntity thicknessEntity = thicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(jbCreationValue.getTenantUuid(), jbCreationValue.getGlassThicknessUuid());
             ToughenBatchProcessEntity toughenBatchProcessEntity = batchListInProgress.get().get(0);
 
-            List<JbCreationEntity> jbCreationEntities =  jbCreationValues.stream()
-                    .map(jb-> jb.toEntity().toBuilder().glassThicknessEntity(thicknessEntity).toughenBatchProcessEntity(toughenBatchProcessEntity).build()).collect(Collectors.toList());
+            List<JbCreationEntity> jbCreationEntities = getJbCreationEntities(jbCreationValues, thicknessEntity, toughenBatchProcessEntity);
 
             toughenBatchProcessEntity.getJbCreationEntities().addAll(jbCreationEntities);
             toughenBatchProcessRepository.saveAndFlush(toughenBatchProcessEntity).toDTO();
@@ -120,10 +119,18 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
                 toughenBatchProcessEntity = createToughenBatchProcessEntity(generalParamValue, 1);
             }
             GlassThicknessEntity thicknessEntity = thicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(jbCreationValue.getTenantUuid(), jbCreationValue.getGlassThicknessUuid());
-            JbCreationEntity jbCreationEntity = jbCreationValue.toEntity().toBuilder().glassThicknessEntity(thicknessEntity).build();
-            toughenBatchProcessEntity = toughenBatchProcessEntity.toBuilder().jbCreationEntities(List.of(jbCreationEntity)).build();
+
+            List<JbCreationEntity> jbCreationEntities = getJbCreationEntities(jbCreationValues, thicknessEntity, toughenBatchProcessEntity);
+            toughenBatchProcessEntity.setJbCreationEntities(jbCreationEntities);
             toughenBatchProcessRepository.saveAndFlush(toughenBatchProcessEntity);
         }
+    }
+
+    private static List<JbCreationEntity> getJbCreationEntities(List<JbCreationValue> jbCreationValues, GlassThicknessEntity thicknessEntity, ToughenBatchProcessEntity toughenBatchProcessEntity) {
+        return jbCreationValues.stream()
+                .map(jb-> jb.toEntity().toBuilder().glassThicknessEntity(thicknessEntity)
+                        .toughenBatchProcessEntity(toughenBatchProcessEntity).build())
+                .collect(Collectors.toList());
     }
 
     @Override
