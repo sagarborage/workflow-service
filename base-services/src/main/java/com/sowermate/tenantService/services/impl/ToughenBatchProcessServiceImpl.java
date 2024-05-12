@@ -1,14 +1,8 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.DeptTypeEnum;
-import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
-import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
-import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
+import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
-import com.sowermate.tenantService.entities.value.GeneralParamValue;
-import com.sowermate.tenantService.entities.value.GlassBreakageDetailsValue;
-import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
-import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
+import com.sowermate.tenantService.entities.value.*;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ToughenBatchProcessService;
@@ -31,7 +25,13 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     private ToughenBatchProcessRepository toughenBatchProcessRepository;
 
     @Autowired
+    private JbCreationRepository jbCreationRepository;
+
+    @Autowired
     private ToughenBatchProcessDetailsRepository toughenBatchProcessDetailsRepository;
+
+    @Autowired
+    private GlassThicknessRepository thicknessRepository;
 
     @Autowired
     private TenantRepository tenantRepository;
@@ -87,10 +87,57 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
+    public void toughenBatchProcessJBAddItems(List<JbCreationValue> jbCreationValues) {
+        JbCreationValue jbCreationValue = jbCreationValues.get(0);
+        Optional<List<ToughenBatchProcessEntity>> batchListInProgress = toughenBatchProcessRepository.findByStatusOrderByCreatedDateTimeDesc(ToughenBatchProcessStatusEnum.IN_PROGRESS);
+
+        if (!ObjectUtils.isEmpty(batchListInProgress.get())) {
+            GlassThicknessEntity thicknessEntity = thicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(jbCreationValue.getTenantUuid(), jbCreationValue.getGlassThicknessUuid());
+            ToughenBatchProcessEntity toughenBatchProcessEntity = batchListInProgress.get().get(0);
+
+            List<JbCreationEntity> jbCreationEntities = getJbCreationEntities(jbCreationValues, thicknessEntity, toughenBatchProcessEntity);
+
+            toughenBatchProcessEntity.getJbCreationEntities().addAll(jbCreationEntities);
+            toughenBatchProcessRepository.saveAndFlush(toughenBatchProcessEntity).toDTO();
+        } else {
+            // setting this values to be passed to create toughenBatchProcess
+            GeneralParamValue generalParamValue = GeneralParamValue.newBuilder().tenantUuid(jbCreationValue.getTenantUuid()).companyUuid(jbCreationValue.getFirmUuid()).build();
+            //
+            Optional<ToughenBatchProcessEntity> batchListRecentRecord = toughenBatchProcessRepository.findFirstByCompanyEntityUuidOrderByCreatedDateTimeDesc(jbCreationValue.getFirmUuid());
+
+            ToughenBatchProcessEntity toughenBatchProcessEntity;
+            if (batchListRecentRecord.isPresent() && !ObjectUtils.isEmpty(batchListRecentRecord.get())) {
+                ToughenBatchProcessEntity dbEntity = batchListRecentRecord.get();
+                LocalDateTime createdDateTime = dbEntity.getCreatedDateTime();
+                if (createdDateTime.getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) {
+                    toughenBatchProcessEntity = createToughenBatchProcessEntity(generalParamValue, dbEntity.getBatchNo() + 1);
+                } else {
+                    toughenBatchProcessEntity = createToughenBatchProcessEntity(generalParamValue, 1);
+                }
+            } else {
+                //empty records
+                toughenBatchProcessEntity = createToughenBatchProcessEntity(generalParamValue, 1);
+            }
+            GlassThicknessEntity thicknessEntity = thicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(jbCreationValue.getTenantUuid(), jbCreationValue.getGlassThicknessUuid());
+
+            List<JbCreationEntity> jbCreationEntities = getJbCreationEntities(jbCreationValues, thicknessEntity, toughenBatchProcessEntity);
+            toughenBatchProcessEntity.setJbCreationEntities(jbCreationEntities);
+            toughenBatchProcessRepository.saveAndFlush(toughenBatchProcessEntity);
+        }
+    }
+
+    private static List<JbCreationEntity> getJbCreationEntities(List<JbCreationValue> jbCreationValues, GlassThicknessEntity thicknessEntity, ToughenBatchProcessEntity toughenBatchProcessEntity) {
+        return jbCreationValues.stream()
+                .map(jb-> jb.toEntity().toBuilder().glassThicknessEntity(thicknessEntity)
+                        .toughenBatchProcessEntity(toughenBatchProcessEntity).build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid) {
         ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid,companyUuid);
-        if (toughenBatchProcessDetailsEntity!=null) {
+        if (toughenBatchProcessDetailsEntity != null) {
             //TODO: changed this logic to completely remove entry from batch process
             //toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
             //toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
@@ -98,9 +145,15 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket() + 1);
             proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
             toughenBatchProcessDetailsRepository.delete(toughenBatchProcessDetailsEntity);
+            return toughenBatchProcessDetailsEntity.toDTO();
+        } else {
+            //Check and remove if the item type is JB
+            JbCreationEntity jbCreationEntity = jbCreationRepository.getJbCreationEntityByUuid(uuid);
+            if(jbCreationEntity != null) {
+                jbCreationRepository.delete(jbCreationEntity);
+            }
         }
-        assert toughenBatchProcessDetailsEntity != null;
-        return toughenBatchProcessDetailsEntity.toDTO();
+        return null;
     }
 
     @Override
@@ -108,7 +161,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
         //TODO: rewrite this logic later on, specially param GeneralParamValue
         ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(generalParamValue.getBatchItemUuid(), generalParamValue.getCompanyUuid());
         if (toughenBatchProcessDetailsEntity != null) {
-            toughenBatchProcessDetailsEntity.toBuilder().status(ToughenBatchProcessStatusEnum.BROKEN);
+            toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsEntity.toBuilder().status(ToughenBatchProcessStatusEnum.BROKEN).build();
             toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
 
             ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.getPIItemToBeCancelled(toughenBatchProcessDetailsEntity.getUuid());

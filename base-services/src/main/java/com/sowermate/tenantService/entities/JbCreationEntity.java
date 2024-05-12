@@ -2,6 +2,7 @@ package com.sowermate.tenantService.entities;
 
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
+import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -35,8 +36,9 @@ public class JbCreationEntity extends Base {
     @JoinColumn(name = "glass_thickness_id")
     private GlassThicknessEntity glassThicknessEntity;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ToughenBatchProcessStatusEnum status;
 
     public JbCreationValue toDTO() {
         return JbCreationValue.newBuilder()

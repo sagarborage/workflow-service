@@ -31,7 +31,15 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN p.companyIdBill c " +
             "WHERE c.uuid =:companyUuid  " +
             "AND tb.batchNo = :batchNo " +
-            "AND tb.status = :status ")
+            "AND tb.status = :status UNION " +
+            "SELECT tb " +
+            "FROM ToughenBatchProcessEntity tb " +
+            "JOIN tb.companyEntity firm " +
+            "JOIN tb.jbCreationEntities jb " +
+            "WHERE firm.uuid =:companyUuid " +
+            "AND tb.batchNo = :batchNo " +
+            "AND tb.status = :status "
+    )
     Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo,String companyUuid,ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
@@ -39,6 +47,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "tb.uuid as batchUuid, " +
             "tb.batchNo as batchNo, " +
             "pi.uuid as proformaInvoiceItemUuid, " +
+            "'WORK_ORDER' as itemType, " +
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
             "p.uuid as proformaInvoiceUuid , " +
@@ -58,7 +67,28 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN pi.proFormaInvoiceEntity p " +
             "JOIN p.companyIdBill c " +
             "WHERE c.uuid =:companyUuid AND " +
-            "tb.status = :status ")
+            "tb.status = :status UNION " +
+            "SELECT " +
+            "jb.uuid as batchItemUuid, " +
+            "tbpe.uuid as batchUuid, " +
+            "tbpe.batchNo as batchNo, " +
+            "'N/A' as proformaInvoiceItemUuid, " +
+            "'JB' as itemType, " +
+            "Date(tbpe.createdDateTime) as batchDate, " +
+            "'JB/' as piNo, " +
+            "'N/A' as proformaInvoiceUuid , " +
+            "jb.partyName as billToPartyName, " +
+            "'N/A' as billToPartyUuid, " +
+            "jb.glassThicknessEntity.name as thickness, "+
+            "jb.widthMm as actualWidth, " +
+            "jb.widthMm as chargeableWidth, " +
+            "jb.heightMm as actualHeight, " +
+            "jb.heightMm as chargeableHeight, " +
+            "jb.status as itemStatus " +
+            "FROM JbCreationEntity jb " +
+            "JOIN jb.toughenBatchProcessEntity tbpe " +
+            "where tbpe.status = :status"
+    )
     List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String companyUuid, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +

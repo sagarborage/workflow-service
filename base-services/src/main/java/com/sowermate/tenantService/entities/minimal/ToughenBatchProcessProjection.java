@@ -1,14 +1,18 @@
 package com.sowermate.tenantService.entities.minimal;
 
+import com.sowermate.tenantService.enums.ItemTypeEnum;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 
 import java.time.LocalDate;
 
 public interface ToughenBatchProcessProjection {
     String getBatchItemUuid();
+
     String getBatchUuid();
 
     String getBatchNo();
+
+    ItemTypeEnum getItemType();
 
     String getProformaInvoiceItemUuid();
 

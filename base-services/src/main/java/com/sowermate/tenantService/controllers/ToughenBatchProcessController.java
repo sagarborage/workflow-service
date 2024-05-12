@@ -2,6 +2,7 @@ package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
+import com.sowermate.tenantService.entities.value.JbCreationValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
@@ -26,6 +27,14 @@ public class ToughenBatchProcessController {
     @ResponseBody
     public ResponseEntity<Void> toughenBatchProcessItemAdd(@RequestBody GeneralParamValue generalParamValue) {
         toughenBatchProcessService.toughenBatchProcessItemAdd(generalParamValue);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/toughenBatchProcessJBAddItems")
+    @ResponseBody
+    public ResponseEntity<Void> toughenBatchProcessJBAddItems(@RequestBody List<JbCreationValue> jbCreationValues) {
+        toughenBatchProcessService.toughenBatchProcessJBAddItems(jbCreationValues);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

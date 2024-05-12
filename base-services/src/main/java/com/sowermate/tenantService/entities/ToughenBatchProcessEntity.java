@@ -42,9 +42,16 @@ public class ToughenBatchProcessEntity extends Base {
     private List<JbCreationEntity> jbCreationEntities;
 
     @PostPersist
-    void setToughenBatchProcessValue(){
-        for(ToughenBatchProcessDetailsEntity entity : toughenBatchProcessDetailsEntities) {
-            entity.setToughenBatchProcessEntity(this);
+    void executePostPersist(){
+        if(null != toughenBatchProcessDetailsEntities) {
+            for(ToughenBatchProcessDetailsEntity entity : toughenBatchProcessDetailsEntities) {
+                entity.setToughenBatchProcessEntity(this);
+            }
+        }
+        if(null != jbCreationEntities) {
+            for(JbCreationEntity entity : jbCreationEntities) {
+                entity.setToughenBatchProcessEntity(this);
+            }
         }
     }
 
