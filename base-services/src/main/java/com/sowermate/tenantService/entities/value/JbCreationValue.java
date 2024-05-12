@@ -3,6 +3,7 @@ package com.sowermate.tenantService.entities.value;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.JbCreationEntity;
+import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
@@ -13,6 +14,8 @@ import lombok.extern.jackson.Jacksonized;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JbCreationValue extends BaseDto {
 
+    private String tenantUuid;
+    private String firmUuid;
     private Long jbCreationId;
     protected String jbCreationUuid;
     private String toughenBatchProcessUuid;
@@ -21,7 +24,7 @@ public class JbCreationValue extends BaseDto {
     private Float heightMm;
     private Integer quantity;
     private String glassThicknessUuid;
-    private String status;
+    private ToughenBatchProcessStatusEnum status;
 
     public JbCreationEntity toEntity() {
         return JbCreationEntity.newBuilder()
