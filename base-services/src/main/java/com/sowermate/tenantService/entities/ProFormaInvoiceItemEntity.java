@@ -79,6 +79,9 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "`dispatch_bucket`")
     private Integer dispatchBucket;
 
+    @Column(name = "`gate_pass_bucket`")
+    private Integer gatePassBucket;
+
 
     @Column(name = "`optimize_completed`")
     private Integer optimizeCompleted;
@@ -91,6 +94,9 @@ public class ProFormaInvoiceItemEntity extends Base {
 
     @Column(name = "`dispatch_completed`")
     private Integer dispatchCompleted;
+
+    @Column(name = "`gate_pass_completed`")
+    private Integer gatePassCompleted;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

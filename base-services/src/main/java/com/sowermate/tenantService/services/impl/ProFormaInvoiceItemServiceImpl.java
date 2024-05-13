@@ -236,6 +236,12 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 case DISPATCH:
                     proFormaInvoiceItemEntity.setDispatchBucket(proFormaInvoiceItemEntity.getDispatchBucket() - quantity);
                     proFormaInvoiceItemEntity.setDispatchCompleted(proFormaInvoiceItemEntity.getDispatchCompleted() + quantity);
+                    proFormaInvoiceItemEntity.setGatePassBucket(proFormaInvoiceItemEntity.getGatePassBucket() + quantity);
+                    break;
+                case GATE_PASS:
+                    int gatePassBucketQty = proFormaInvoiceItemEntity.getGatePassBucket();
+                    proFormaInvoiceItemEntity.setGatePassBucket(0);//empty bucket and add that qty to completed qty
+                    proFormaInvoiceItemEntity.setGatePassCompleted(proFormaInvoiceItemEntity.getGatePassCompleted() + gatePassBucketQty);
                     break;
                 default:
                     throw new ResourceNotFoundException();
@@ -266,7 +272,6 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
         List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = null;
 
-
         switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
             case OPTIMIZE:
                 proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfOptimizeIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
@@ -280,6 +285,10 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 break;
             case DISPATCH:
                 proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
+                break;
+
+            case GATE_PASS:
+                //proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceRepository.findAllPiOrdersDetailsOfDispatchIndividual(bucketManipulationValue.getTenantUuid(), bucketManipulationValue.getWorkOrderNo());
                 break;
 
             default:

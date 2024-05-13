@@ -46,10 +46,12 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private Integer cuttingBucket;
     private Integer toughenBucket;
     private Integer dispatchBucket;
+    private Integer gatePassBucket;
     private Integer optimizeCompleted;
     private Integer cuttingCompleted;
     private Integer toughenCompleted;
     private Integer dispatchCompleted;
+    private Integer gatePassCompleted;
     private String base64File;
     private String fileUrl;
     private ProformaInvoiceItemStatusEnum status;
