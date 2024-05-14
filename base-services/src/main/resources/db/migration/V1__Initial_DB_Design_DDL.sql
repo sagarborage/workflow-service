@@ -567,3 +567,42 @@ CREATE TABLE jb_creation (
     CONSTRAINT TBP_TBPD_FK_2 FOREIGN KEY (toughen_batch_process_id) REFERENCES toughen_batch_process (id),
     CONSTRAINT PI_JBC_FK_1 FOREIGN  KEY (glass_thickness_id) REFERENCES glass_thickness (id)
 );
+
+CREATE TABLE gate_pass (
+    id INT(10) AUTO_INCREMENT,
+    uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
+    tenant_id INT(10) NOT NULL,
+    company_id INT(10) NOT NULL,
+    party_company_id INT(10) NOT NULL,
+    proforma_invoice_id INT(10) NOT NULL,
+    gate_pass_no INT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT 1,
+    created_by VARCHAR(64) NOT NULL,
+    created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_updated_by VARCHAR(64) NOT NULL,
+    last_updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    version INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (id) USING BTREE,
+    FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+    FOREIGN KEY (company_id) REFERENCES company (id),
+    FOREIGN KEY (party_company_id) REFERENCES company (id),
+    FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id)
+);
+
+
+
+CREATE TABLE gate_pass_details (
+    id INT(10) AUTO_INCREMENT,
+    uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
+    Proforma_invoice_item_id INT(10) NOT NULL,
+    gate_pass_id INT(10) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT 1,
+    created_by VARCHAR(64) NOT NULL,
+    created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_updated_by VARCHAR(64) NOT NULL,
+    last_updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    version INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (id) USING BTREE,
+    FOREIGN KEY (gate_pass_id) REFERENCES gate_pass (id),
+    FOREIGN KEY (Proforma_invoice_item_id) REFERENCES pro_forma_invoice_item (id)
+);
