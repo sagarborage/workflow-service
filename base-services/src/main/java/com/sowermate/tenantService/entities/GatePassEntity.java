@@ -44,6 +44,7 @@ public class GatePassEntity extends Base {
 
     public GatePassValue toDTO() {
         return GatePassValue.newBuilder()
+                .uuid(getUuid())
                 .proFormaInvoiceUuid(getProFormaInvoiceEntity() == null ?null : getProFormaInvoiceEntity().getUuid())
                 .tenantUuid(getTenantEntity()==null?null : getTenantEntity().getUuid())
                 .companyUuid(getCompanyEntity()==null?null : getCompanyEntity().getUuid())

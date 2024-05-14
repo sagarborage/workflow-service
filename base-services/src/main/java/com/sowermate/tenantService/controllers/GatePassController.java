@@ -1,0 +1,83 @@
+package com.sowermate.tenantService.controllers;
+
+import com.sowermate.tenantService.entities.value.GatePassValue;
+import com.sowermate.tenantService.services.GatePassService;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/gatePass")
+public class GatePassController {
+
+    @Autowired
+    private GatePassService gatePassService;
+
+    private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(GatePassController.class);
+
+    @RequestMapping( method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<GatePassValue> createGatePass(@RequestBody GatePassValue gatePassValue){
+        GatePassValue gatePassValue1=null;
+        try {
+            gatePassValue1=gatePassService.createGatePass(gatePassValue);
+        } catch (Exception e) {
+            Logger.error("Error while creating Seller:", e);
+        }
+        return new ResponseEntity<GatePassValue>(gatePassValue1, HttpStatus.CREATED);
+    }
+
+    @RequestMapping( method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<GatePassValue> updateGatePass(@RequestBody GatePassValue gatePassValue){
+        GatePassValue gatePassValue1=null;
+        try {
+            gatePassValue1=  gatePassService.updateGatePass(gatePassValue);
+        } catch (Exception e) {
+            Logger.error("Error while editing Seller:", e);
+        }
+        return new ResponseEntity< GatePassValue>(gatePassValue1,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/byUuid/{gatePassUuid}/{tenantUuid}")
+    public ResponseEntity<GatePassValue> getGatePass(@PathVariable String gatePassUuid,
+                                                          @PathVariable String tenantUuid) {
+        GatePassValue gatePassValue = null;
+        try {
+            gatePassValue = gatePassService.getGatePass(gatePassUuid,tenantUuid);
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(gatePassValue, HttpStatus.OK);
+    }
+
+    @GetMapping (value = "/{tenantUuid}/{companyUuid}")
+    public ResponseEntity<List<GatePassValue>> getAllGatePass(@PathVariable String tenantUuid,@PathVariable String companyUuid) {
+        List<GatePassValue> gatePassValues = null;
+        try {
+            gatePassValues = gatePassService.getAllGatePass(tenantUuid,companyUuid);
+            Logger.info("records " + gatePassValues.size());
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(gatePassValues, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{gatePassUuid}/{tenantUuid}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<GatePassValue> deleteGatePass(@PathVariable String gatePassUuid,
+                                                             @PathVariable String tenantUuid) {
+        GatePassValue gatePassValue = null;
+        try {
+            gatePassValue = gatePassService.deleteGatePass(gatePassUuid,tenantUuid);
+        } catch (Exception e) {
+            Logger.error("Error while deleting Seller:", e);
+        }
+        return new ResponseEntity<GatePassValue>(gatePassValue, HttpStatus.OK);
+    }
+
+}
