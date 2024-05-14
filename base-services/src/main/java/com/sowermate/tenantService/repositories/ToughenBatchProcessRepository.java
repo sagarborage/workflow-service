@@ -4,12 +4,14 @@ import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
+import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +92,53 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "where tbpe.status = :status"
     )
     List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String companyUuid, ToughenBatchProcessStatusEnum status);
+
+    @Query("SELECT " +
+            "tb.uuid as batchUuid, " +
+            "tb.batchNo as batchNo, " +
+            "Date(tb.createdDateTime) as batchDate, " +
+            "p.piNumber as piNo, " +
+            "c.companyName as billToPartyName, " +
+            "th.name as thickness, "+
+            "pi.actualWidth as actualWidth, " +
+            "pi.chargeableWidth as chargeableWidth, " +
+            "pi.actualHeight as actualHeight, " +
+            "pi.chargeableHeight as chargeableHeight " +
+            "FROM ToughenBatchProcessEntity tb " +
+            "JOIN tb.tenantEntity t " +
+            "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
+            "JOIN tbd.proFormaInvoiceItemEntity pi " +
+            "JOIN pi.glassThicknessEntity th " +
+            "JOIN pi.proFormaInvoiceEntity p " +
+            "JOIN p.companyIdBill c " +
+            "WHERE c.uuid =:companyUuid AND " +
+            "t.uuid =:tenantUuid AND " +
+            "Date(tb.createdDateTime) =:batchProcessingDate UNION "+
+            "SELECT " +
+            "tb.uuid as batchUuid," +
+            "tb.batchNo as batchNo, " +
+            "Date(tb.createdDateTime) as batchDate, " +
+            "CONCAT('JB/', jb.id) AS piNo, "+
+            "jb.partyName as billToPartyName, " +
+            "jb.glassThicknessEntity.name as thickness, "+
+            "jb.widthMm as actualWidth, " +
+            "jb.widthMm as chargeableWidth, " +
+            "jb.heightMm as actualHeight, " +
+            "jb.heightMm as chargeableHeight " +
+            "FROM JbCreationEntity jb " +
+            "JOIN jb.toughenBatchProcessEntity tb " +
+            "JOIN tb.tenantEntity t " +
+            "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
+            "JOIN tbd.proFormaInvoiceItemEntity pi " +
+            "JOIN pi.glassThicknessEntity th " +
+            "JOIN pi.proFormaInvoiceEntity p " +
+            "JOIN p.companyIdBill c " +
+            "WHERE c.uuid =:companyUuid AND " +
+            "t.uuid =:tenantUuid AND " +
+            "Date(tb.createdDateTime) =:batchProcessingDate "
+    )
+    List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
+
 
     @Query("SELECT " +
             "pi " +

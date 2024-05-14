@@ -1,10 +1,11 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.GlassThicknessEntity;
+import com.sowermate.tenantService.entities.JbCreationEntity;
+import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
 import com.sowermate.tenantService.repositories.GlassThicknessRepository;
 import com.sowermate.tenantService.repositories.JbCreationRepository;
-import com.sowermate.tenantService.repositories.ToughenBatchProcessDetailsRepository;
 import com.sowermate.tenantService.repositories.ToughenBatchProcessRepository;
 import com.sowermate.tenantService.services.JbCreationService;
 import org.springframework.beans.factory.annotation.Autowired;

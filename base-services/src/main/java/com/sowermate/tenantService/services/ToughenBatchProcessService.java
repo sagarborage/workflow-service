@@ -2,12 +2,14 @@ package com.sowermate.tenantService.services;
 
 import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
+import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ToughenBatchProcessService {
@@ -21,5 +23,7 @@ public interface ToughenBatchProcessService {
     List<ToughenBatchProcessValue> markToughenBatchProcessComplete(GeneralParamValue generalParamValue);
 
     List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum);
+
+    List<ViewToughenBatchProcessDetailsProjection> getViewToughBatchProcess(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
 
 }
