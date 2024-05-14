@@ -2,6 +2,7 @@ package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
+import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.entities.value.*;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import com.sowermate.tenantService.repositories.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,6 +203,15 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     public List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum) {
         List<ToughenBatchProcessProjection> list = toughenBatchProcessRepository.findByCompanyUuidAndStatus(companyUuid, toughenBatchProcessStatusEnum);
         if (!list.isEmpty()) {
+            return list;
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<ViewToughenBatchProcessDetailsProjection> getViewToughBatchProcess(String tenantUuid, String companyUuid, LocalDate batchProcessingDate) {
+        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessRepository.findByViewToughBatchProcess(tenantUuid, companyUuid, batchProcessingDate);
+        if(!list.isEmpty()){
             return list;
         }
         return new ArrayList<>();
