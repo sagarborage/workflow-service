@@ -46,10 +46,12 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private Integer cuttingBucket;
     private Integer toughenBucket;
     private Integer dispatchBucket;
+    private Integer gatePassBucket;
     private Integer optimizeCompleted;
     private Integer cuttingCompleted;
     private Integer toughenCompleted;
     private Integer dispatchCompleted;
+    private Integer gatePassCompleted;
     private String base64File;
     private String fileUrl;
     private ProformaInvoiceItemStatusEnum status;
@@ -80,10 +82,12 @@ public class ProFormaInvoiceItemValue extends BaseDto {
                 .cuttingBucket(getCuttingBucket() == null ? 0 : getCuttingBucket())
                 .toughenBucket(getToughenBucket() == null ? 0 : getToughenBucket())
                 .dispatchBucket(getDispatchBucket() == null ? 0 : getDispatchBucket())
+                .gatePassBucket(getGatePassBucket() == null ? 0 : getGatePassBucket())
                 .optimizeCompleted(getOptimizeCompleted() == null ? 0 : getOptimizeCompleted())
                 .cuttingCompleted(getCuttingCompleted() == null ? 0 : getCuttingCompleted())
                 .toughenCompleted(getToughenCompleted() == null ? 0 : getToughenCompleted())
                 .dispatchCompleted(getDispatchCompleted() == null ? 0 : getDispatchCompleted())
+                .gatePassCompleted(getGatePassCompleted() == null ? 0 : getGatePassCompleted())
                 //.tenantEntity(getTenantValue().toEntity())
                 //.glassTypeEntity(getGlassTypeValue().toEntity())
                 //.glassThicknessEntity(getGlassThicknessValue().toEntity())

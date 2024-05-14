@@ -71,10 +71,10 @@ INSERT INTO `user_profile` (`id`, `uuid`, `user_id`, `first_name`, `last_name`, 
 
 
 INSERT INTO `confirm_through` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
-('lsn8e7f7-ghej-4f2d-b303-dje947a25fkd', 1, 'Call', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),
-('dhene7f7-82ce-4f2d-qwdf-724947a250ed', 1, 'Text', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),
+('lsn8e7f7-ghej-4f2d-b303-dje947a25fkd', 1, 'Self', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),
+('dhene7f7-82ce-4f2d-qwdf-724947a250ed', 1, 'Call', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),
 ('ssgee7f7-ahsn-4f2d-sdvf-7we947a250ed', 1, 'Whatsapp', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1),
-('snagebf7-widm-4f2d-sde1-3e4947a250ed', 1, 'Self', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
+('snagebf7-widm-4f2d-sde1-3e4947a250ed', 1, 'Text', '2023-10-27 10:04:23', '2023-10-27 10:04:23', 'ADMIN', 'ADMIN', 1);
 
  INSERT INTO `pro_forma_invoice` (`uuid`, `tenant_id`, `firm_id`, `id_bill_to`, `id_ship_to`, `pi_type_id`, `confirm_through_id`, `pi_number`, `invoice_date`, `pro_forma_invoice_amount`, `service_rate_invoice_amount`, `basic_amount`, `admin_charges`, `insurance_percent`, `insurance_percent_amount`, `urgency_percent`, `urgency_percent_amount`, `other_charges`, `transport_charges`, `gst_charges`, `grand_total`, `round_off_amount`, `payable_amount`, `previous_balance`, `adjustment_amount`, `status`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES ('eab9e047-ade5-4a60-9bca-e9f99d460836', 1, 1, 3, 3, 1, NULL, 'NOV/1', '2023-11-05 15:13:42', 34, 35, 693, 72, 64, 626, 35, 69, 76, 64, 34, 325, 629, 69, 746, 64, 'IN_PROGRESS', '2023-11-07 15:13:42', '2023-11-07 15:13:42', 'ADMIN', 'ADMIN', 1);
 
