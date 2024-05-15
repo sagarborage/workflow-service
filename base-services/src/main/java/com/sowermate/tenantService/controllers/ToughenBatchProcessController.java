@@ -6,7 +6,6 @@ import com.sowermate.tenantService.entities.value.GeneralParamValue;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
-import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import com.sowermate.tenantService.services.ToughenBatchProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +69,10 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/getViewToughBatchProcess")
+    @RequestMapping(method = RequestMethod.GET, path = "/viewToughenBatchProcessDetails/{tenantUuid}/{companyUuid}/{batchProcessingDate}")
     @ResponseBody
-    public ResponseEntity<List<ViewToughenBatchProcessDetailsProjection>> getViewToughBatchProcess(@RequestParam("tenantUuid") String tenantUuid, @RequestParam("companyUuid") String companyUuid, @RequestParam("batchProcessingDate") LocalDate batchProcessingDate) {
-        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessService.getViewToughBatchProcess(tenantUuid, companyUuid, batchProcessingDate);
+    public ResponseEntity<List<ViewToughenBatchProcessDetailsProjection>> viewToughenBatchProcessDetails(@PathVariable("tenantUuid") String tenantUuid, @PathVariable("companyUuid") String companyUuid, @PathVariable("batchProcessingDate") LocalDate batchProcessingDate) {
+        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessService.viewToughenBatchProcessDetails(tenantUuid, companyUuid, batchProcessingDate);
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 }

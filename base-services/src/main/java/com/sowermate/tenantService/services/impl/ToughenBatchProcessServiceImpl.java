@@ -209,7 +209,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
-    public List<ViewToughenBatchProcessDetailsProjection> getViewToughBatchProcess(String tenantUuid, String companyUuid, LocalDate batchProcessingDate) {
+    public List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, String companyUuid, LocalDate batchProcessingDate) {
         List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessRepository.findByViewToughBatchProcess(tenantUuid, companyUuid, batchProcessingDate);
         if(!list.isEmpty()){
             return list;
