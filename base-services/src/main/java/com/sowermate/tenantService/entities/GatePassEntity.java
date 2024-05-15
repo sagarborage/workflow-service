@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,9 @@ public class GatePassEntity extends Base {
 
     @Column(name = "gate_pass_no", nullable = false)
     private Integer gatePassNo;
+
+    @OneToMany(mappedBy = "gatePassEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<GatePassDetailsEntity> gatePassDetailsEntities;
 
     public GatePassValue toDTO() {
         return GatePassValue.newBuilder()
