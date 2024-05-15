@@ -131,6 +131,9 @@ public class ProFormaInvoiceItemEntity extends Base {
     @OneToMany(mappedBy = "proFormaInvoiceItemEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities;
 
+    @OneToMany(mappedBy = "proFormaInvoiceItemEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<GatePassDetailsEntity> GatePassDetailsEntity;
+
     public ProFormaInvoiceItemValue toDTO() {
         return ProFormaInvoiceItemValue.newBuilder()
                 .proFormaInvoiceUuid(getProFormaInvoiceEntity().getUuid())
