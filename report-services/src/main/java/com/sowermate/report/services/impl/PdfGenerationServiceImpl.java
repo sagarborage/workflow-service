@@ -39,13 +39,41 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    private byte[] generatePdf(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) {
+    @Override
+    public byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
+
+        extractCommonLogic(piValue, reportDetails, glassItemDetails);
+
+        byte[] pdfBytes = generatePdf(piValue, reportDetails, "proforma-invoice");
+
+        //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
+        //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
+        pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+    return pdfBytes;
+    }
+
+    @Override
+    public byte[] generateWorkOrder(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
+
+        extractCommonLogic(piValue, reportDetails, glassItemDetails);
+
+        byte[] pdfBytes = generatePdf(piValue, reportDetails, "work-order");
+
+        //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
+        //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
+        pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        return pdfBytes;
+    }
+
+    private byte[] generatePdf(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, String template) {
         try {
             Context context = new Context();
             context.setVariable("piValue", piValue);
             context.setVariable("reportDetails", reportDetails);
 
-            String htmlContent = templateEngine.process("proforma-invoice", context);
+            String htmlContent = templateEngine.process(template, context);
 
             ITextRenderer renderer = new ITextRenderer(1000, 710);
             renderer.getSharedContext().setBaseURL("classpath:/static/");
@@ -65,10 +93,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         }
     }
 
-    @Override
-    public byte[] generateInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
-        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
-
+    private void extractCommonLogic(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails) {
         double totalQuantity = glassItemDetails.values().stream()
                 .flatMap(List::stream)
                 .mapToDouble(ProFormaInvoiceItemValue::getQuantity)
@@ -100,29 +125,22 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setTotalAmount(formattedTotalAmount);
         reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
 
-        reportDetails.setGstType("Maharashtras".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
-        reportDetails.setIGst(""+piValue.getGstCharges());
-        reportDetails.setSGst(""+piValue.getGstCharges()/2);
-        reportDetails.setCGst(""+piValue.getGstCharges()/2);
+        reportDetails.setGstType("Maharashtra".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
+        reportDetails.setIGst(""+ piValue.getGstCharges());
+        reportDetails.setSGst(""+ piValue.getGstCharges()/2);
+        reportDetails.setCGst(""+ piValue.getGstCharges()/2);
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() +"" : "0");
         reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() +"" : "0");
         reportDetails.setIPercentAmount((piValue.getInsurancePercentAmount() + ""));
         reportDetails.setUPercentAmount((piValue.getUrgencyPercentAmount() + ""));
         reportDetails.setGrandTotal(Math.round(piValue.getGrandTotal()));
-
-        byte[] pdfBytes = generatePdf(piValue, reportDetails);
-
-        //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
-        //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
-        pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
-    return pdfBytes;
     }
 
     private List<ServiceRateInvoiceValue> serviceRateDetails(ProFormaInvoiceValue piValue) {
         return piValue.getServiceRateInvoices();
     }
 
-    public Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
+    private Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
         List<ProFormaInvoiceItemValue> itemList = piValue.getProFormaInvoiceItems();
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
