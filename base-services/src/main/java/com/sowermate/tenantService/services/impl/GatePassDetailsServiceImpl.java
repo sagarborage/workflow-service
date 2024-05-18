@@ -1,12 +1,9 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.AdditionalChargesEntity;
 import com.sowermate.tenantService.entities.GatePassDetailsEntity;
 import com.sowermate.tenantService.entities.GatePassEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
-import com.sowermate.tenantService.entities.value.AdditionalChargesValue;
 import com.sowermate.tenantService.entities.value.GatePassDetailsValue;
-import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.repositories.GatePassDetailsRepository;
 import com.sowermate.tenantService.repositories.GatePassRepository;
 import com.sowermate.tenantService.repositories.ProFormaInvoiceItemRepository;
@@ -40,7 +37,7 @@ public class GatePassDetailsServiceImpl implements GatePassDetailsService {
 
     @Override
     public GatePassDetailsValue updateGatePassDetails(GatePassDetailsValue gatePassDetailsValue) {
-        GatePassDetailsEntity gatePassDetailsEntityTemp = gatePassDetailsRepository.findByProFormaInvoiceItemEntity_UuidAndGatePassEntityUuidAndGatePassDetailsUuid(gatePassDetailsValue.getGatePassDetailsUuid(),
+        GatePassDetailsEntity gatePassDetailsEntityTemp = gatePassDetailsRepository.findByProFormaInvoiceItemEntity_UuidAndGatePassEntityUuidAndGatePassDetailsUuid(gatePassDetailsValue.getUuid(),
                 gatePassDetailsValue.getProFormaInvoiceItemUuid(), gatePassDetailsValue.getGatePassUuid());
         GatePassDetailsEntity gatePassDetailsEntity = gatePassDetailsValue.toEntity().toBuilder()
                 .proFormaInvoiceItemEntity(proFormaInvoiceItemRepository.findByUuid(gatePassDetailsValue.getProFormaInvoiceItemUuid()))

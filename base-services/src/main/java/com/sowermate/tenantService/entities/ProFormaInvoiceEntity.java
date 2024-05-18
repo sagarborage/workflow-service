@@ -117,6 +117,10 @@ public class ProFormaInvoiceEntity extends Base {
 
     @OneToMany(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
     private List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities;
+
+    @OneToMany(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
+    private List<GatePassEntity> gatePassEntities;
+
     @PostPersist
     void postPersist(){
         if(getProFormaInvoiceItemEntities() != null){
