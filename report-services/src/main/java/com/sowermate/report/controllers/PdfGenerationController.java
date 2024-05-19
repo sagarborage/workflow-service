@@ -1,7 +1,7 @@
 package com.sowermate.report.controllers;
 
 import com.sowermate.image.services.PdfService;
-import com.sowermate.report.dtos.PIReportDetails;
+import com.sowermate.report.dtos.*;
 import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
@@ -43,8 +43,8 @@ public class PdfGenerationController {
         reportDetails.setBillTo(billTo);
         reportDetails.setShipTo(shipTo);
         List<String> piItemsPdfUrls = new ArrayList<>();
-                proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue->{
-            if (ProFormaInvoiceItemValue.getFileUrl()!=null) {
+        proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
+            if (ProFormaInvoiceItemValue.getFileUrl() != null) {
                 if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")) {
                     piItemsPdfUrls.add(ProFormaInvoiceItemValue.getFileUrl());
                 }
@@ -56,7 +56,7 @@ public class PdfGenerationController {
 
         List<String> base64PdfForMerging = new ArrayList<>();
         base64PdfForMerging.add(base64PdfContent);
-        piItemsPdfUrls.stream().peek(piItemsPdfUrl->{
+        piItemsPdfUrls.stream().peek(piItemsPdfUrl -> {
             base64PdfForMerging.add(pdfService.getPdfAsBase64(piItemsPdfUrl));
         }).toList();
 
@@ -73,7 +73,7 @@ public class PdfGenerationController {
 
     @PostMapping("/workOrder/{tenantUuid}/{proFormaInvoiceUuid}")
     public ResponseEntity<byte[]> generateWorkOrderPdf(@PathVariable String tenantUuid,
-                                                     @PathVariable String proFormaInvoiceUuid) throws IOException {
+                                                       @PathVariable String proFormaInvoiceUuid) throws IOException {
         ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
         CompanyInfoProjection billTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
         CompanyInfoProjection shipTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
@@ -81,8 +81,8 @@ public class PdfGenerationController {
         reportDetails.setBillTo(billTo);
         reportDetails.setShipTo(shipTo);
         List<String> piItemsPdfUrls = new ArrayList<>();
-        proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue->{
-            if (ProFormaInvoiceItemValue.getFileUrl()!=null) {
+        proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
+            if (ProFormaInvoiceItemValue.getFileUrl() != null) {
                 if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")) {
                     piItemsPdfUrls.add(ProFormaInvoiceItemValue.getFileUrl());
                 }
@@ -94,7 +94,7 @@ public class PdfGenerationController {
 
         List<String> base64PdfForMerging = new ArrayList<>();
         base64PdfForMerging.add(base64PdfContent);
-        piItemsPdfUrls.stream().peek(piItemsPdfUrl->{
+        piItemsPdfUrls.stream().peek(piItemsPdfUrl -> {
             base64PdfForMerging.add(pdfService.getPdfAsBase64(piItemsPdfUrl));
         }).toList();
 
@@ -109,5 +109,36 @@ public class PdfGenerationController {
         return ResponseEntity.ok().headers(headers).body(finalPdf);
     }
 
+    @PostMapping("/sticker")
+    public ResponseEntity<byte[]> generateToughenSticker(@RequestBody StickerReportDto stickerReportDto) throws IOException {
 
+        byte[] pdfContent = pdfGenerationService.generateToughenSticker(stickerReportDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
+
+    @PostMapping("/gatePass")
+    public ResponseEntity<byte[]> generateGatePass(@RequestBody GatePassRequestDto gatePassRequestDto) throws IOException {
+
+        byte[] pdfContent = pdfGenerationService.generateGatePass(gatePassRequestDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
+
+    @PostMapping("/toughenBatch")
+    public ResponseEntity<byte[]> generateToughenBatchReport(@RequestBody ToughenBatchReportDto toughenBatchReportDto) throws IOException {
+
+        byte[] pdfContent = pdfGenerationService.generateToughenBatch(toughenBatchReportDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
 }

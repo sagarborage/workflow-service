@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
+
+    <style>
+        table {
+        margin: 0 auto;
+        margin-top: 0 auto;
+        width: 100%;
+        border-collapse: collapse;
+        }
+        .font-helva
+        {
+          font-family: 'Helvetica', sans-serif;
+                    font-size: 14px;
+        }
+        td {
+        border: 1px solid black;
+        padding: 8px;
+        }
+        .alignCenter {
+        text-align: center;
+        }
+        .alignLeft {
+        text-align: left;
+        }
+
+    th, td {
+      border: 1px solid black;
+      padding: 0px;
+      text-align: center;
+      height: 30px; /* Adjust the height as needed */
+    }
+    </style>
+</head>
+
+<body>
+<div style="overflow-x: auto;">
+    <table class="alignCenter font-helva font-w-400 font-s-14">
+        <tr>
+            <td style="width: 100%;" colspan="7">
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 50px;" colspan="7">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 100%;" colspan="7">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 31%;height: 30px;" colspan="1">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 31%;height: 30px;" colspan="1">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 23%;height: 30px;" colspan="2">
+            </td>
+            <td style="width: 31%;height: 30px;" colspan="1">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 13%;" colspan="1">
+            </td>
+            <td style="width: 10%;" colspan="1">
+            </td>
+            <td style="width: 13%;" colspan="1">
+            </td>
+            <td style="width: 10%;" colspan="1">
+            </td>
+            <td style="width: 13%;" colspan="1">
+            </td>
+            <td style="width: 10%;" colspan="1">
+            </td>
+            <td style="width: 31%;" colspan="1">
+            </td>
+        </tr>
+        <span th:each="loopData : ${stickerData.getAbc}">
+            <tr>
+                <td style="width: 13%;" colspan="1">
+                </td>
+                <td style="width: 10%;" colspan="1">
+                </td>
+                <td style="width: 13%;" colspan="1">
+                </td>
+                <td style="width: 10%;" colspan="1">
+                </td>
+                <td style="width: 13%;" colspan="1">
+                </td>
+                <td style="width: 10%;" colspan="1">
+                </td>
+                <td style="width: 31%;" colspan="1">
+                </td>
+            </tr>
+        </span>
+    </table>
+</div>
+</body>
+</html>
+

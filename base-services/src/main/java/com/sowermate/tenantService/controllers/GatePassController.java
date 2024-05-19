@@ -44,12 +44,12 @@ public class GatePassController {
         return new ResponseEntity< GatePassValue>(gatePassValue1,HttpStatus.CREATED);
     }
 
-    @GetMapping("/byUuid/{gatePassUuid}/{tenantUuid}")
+    @GetMapping("/byUuid/{gatePassUuid}/{tenantUuid}/{companyUuid}")
     public ResponseEntity<GatePassValue> getGatePass(@PathVariable String gatePassUuid,
-                                                          @PathVariable String tenantUuid) {
+                                                          @PathVariable String tenantUuid, @PathVariable String companyUuid) {
         GatePassValue gatePassValue = null;
         try {
-            gatePassValue = gatePassService.getGatePass(gatePassUuid,tenantUuid);
+            gatePassValue = gatePassService.getGatePass(gatePassUuid,tenantUuid,companyUuid);
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
@@ -68,13 +68,13 @@ public class GatePassController {
         return new ResponseEntity<>(gatePassValues, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{gatePassUuid}/{tenantUuid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{gatePassUuid}/{tenantUuid}/{companyUuid}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<GatePassValue> deleteGatePass(@PathVariable String gatePassUuid,
-                                                             @PathVariable String tenantUuid) {
+                                                             @PathVariable String tenantUuid, @PathVariable String companyUuid) {
         GatePassValue gatePassValue = null;
         try {
-            gatePassValue = gatePassService.deleteGatePass(gatePassUuid,tenantUuid);
+            gatePassValue = gatePassService.deleteGatePass(gatePassUuid,tenantUuid,companyUuid);
         } catch (Exception e) {
             Logger.error("Error while deleting Seller:", e);
         }
