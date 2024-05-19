@@ -5,11 +5,15 @@ import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.report.controllers.PIReportHeaderDetails;
-import com.sowermate.report.dtos.PIReportDetails;
+import com.sowermate.report.dtos.*;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
+import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.tenantService.services.GatePassService;
+import com.sowermate.tenantService.services.PiInfoProjectionForReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -20,23 +24,75 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class PdfGenerationServiceImpl implements PdfGenerationService {
+    private final TemplateEngine templateEngine;
     @Autowired
     private ImageService imageService;
     @Autowired
     private PdfService pdfService;
     @Autowired
+    private GatePassService gatePassService;
+    @Autowired
     private PdfStorageConfig pdfStorageConfig;
-    private final TemplateEngine templateEngine;
 
     @Autowired
     public PdfGenerationServiceImpl(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
+    }
+
+    @Override
+    public byte[] generateToughenSticker(StickerReportDto stickerReportDto) throws IOException {
+        byte[] pdfBytes = generatePdfForSticker(stickerReportDto);
+        pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        return pdfBytes;
+    }
+
+    @Override
+    public byte[] generateGatePass(GatePassRequestDto gatePassRequestDto) throws IOException {
+        String gatePassUuid = gatePassRequestDto.getGatePassUuid();
+        String tenantUuid = gatePassRequestDto.getTenantUuid();
+        String companyUuid = gatePassRequestDto.getCompanyUuid();
+        GatePassReportDto gatePassReportDto = new GatePassReportDto();
+        List<String> gatePassTypes = new ArrayList<>();
+        gatePassTypes.add("GATE PASS (WAREHOUSE COPY)");
+        gatePassTypes.add("GATE PASS (GATE COPY)");
+        gatePassTypes.add("GATE PASS (OFFICE COPY)");
+
+        GatePassValue gatePassValue = gatePassService.getGatePass(gatePassUuid, tenantUuid, companyUuid);
+        List<GlassInfoProjection> glassInfoProjection = gatePassService.getGlassInfoForReport(gatePassUuid);
+        int totalQuantity = 0;
+        for(GlassInfoProjection g : glassInfoProjection){
+            totalQuantity = totalQuantity + g.getQuantity();
+        }
+        gatePassReportDto.setTotalQuantity(totalQuantity);
+        PiInfoProjectionForReport piInfoProjectionForReport = gatePassService.getPiInfoForReport(gatePassUuid);
+
+        gatePassReportDto.setGatePassTypes(gatePassTypes);
+        gatePassReportDto.setGatePassValue(gatePassValue);
+        gatePassReportDto.setGlassInfoProjections(glassInfoProjection);
+        gatePassReportDto.setPiNo(piInfoProjectionForReport.getPiNo());
+        gatePassReportDto.setPartyName(piInfoProjectionForReport.getPartyName());
+        gatePassReportDto.setPartyBillToName(piInfoProjectionForReport.getPartyBillToName());
+        gatePassReportDto.setPiDate(LocalDate.from(piInfoProjectionForReport.getPiDate()));
+
+
+        byte[] pdfBytes = generatePdfForGatePass(gatePassReportDto);
+        pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        return pdfBytes;
+    }
+
+    @Override
+    public byte[] generateToughenBatch(ToughenBatchReportDto toughenBatchReportDto) throws IOException {
+        byte[] pdfBytes = generatePdfForToughenBatch(toughenBatchReportDto);
+        pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+        return pdfBytes;
     }
 
     @Override
@@ -46,11 +102,8 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
 
         byte[] pdfBytes = generatePdf(piValue, reportDetails, "proforma-invoice");
-
-        //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
-        //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
         pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
-    return pdfBytes;
+        return pdfBytes;
     }
 
     @Override
@@ -61,8 +114,6 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
         byte[] pdfBytes = generatePdf(piValue, reportDetails, "work-order");
 
-        //  EmailRequestDto emailRequestDto = getEmailRequestDto(pdfBytes);
-        //  emailRequestService.sendEmailWithTemplateAndAttachment(emailRequestDto);
         pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
     }
@@ -74,6 +125,81 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             context.setVariable("reportDetails", reportDetails);
 
             String htmlContent = templateEngine.process(template, context);
+
+            ITextRenderer renderer = new ITextRenderer(1000, 710);
+            renderer.getSharedContext().setBaseURL("classpath:/static/");
+            renderer.setDocumentFromString(htmlContent);
+
+            renderer.layout();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            renderer.createPDF(outputStream);
+            renderer.finishPDF();
+            return outputStream.toByteArray();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private byte[] generatePdfForSticker(StickerReportDto stickerDataValue) {
+        try {
+            Context context = new Context();
+            context.setVariable("stickerData", stickerDataValue);
+
+            String htmlContent = templateEngine.process("gate-pass", context);
+
+            ITextRenderer renderer = new ITextRenderer(1000, 710);
+            renderer.getSharedContext().setBaseURL("classpath:/static/");
+            renderer.setDocumentFromString(htmlContent);
+
+            renderer.layout();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            renderer.createPDF(outputStream);
+            renderer.finishPDF();
+            return outputStream.toByteArray();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private byte[] generatePdfForGatePass(GatePassReportDto gatePassReportDto) {
+        try {
+            Context context = new Context();
+            context.setVariable("gatePass", gatePassReportDto);
+
+            String htmlContent = templateEngine.process("gate-pass", context);
+
+            ITextRenderer renderer = new ITextRenderer(1000, 710);
+            renderer.getSharedContext().setBaseURL("classpath:/static/");
+            renderer.setDocumentFromString(htmlContent);
+
+            renderer.layout();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            renderer.createPDF(outputStream);
+            renderer.finishPDF();
+            return outputStream.toByteArray();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private byte[] generatePdfForToughenBatch(ToughenBatchReportDto toughenBatchReportDto) {
+        try {
+            Context context = new Context();
+            context.setVariable("toughen", toughenBatchReportDto);
+
+            String htmlContent = templateEngine.process("toughen-batch", context);
 
             ITextRenderer renderer = new ITextRenderer(1000, 710);
             renderer.getSharedContext().setBaseURL("classpath:/static/");
@@ -126,11 +252,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
 
         reportDetails.setGstType("Maharashtra".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
-        reportDetails.setIGst(""+ piValue.getGstCharges());
-        reportDetails.setSGst(""+ piValue.getGstCharges()/2);
-        reportDetails.setCGst(""+ piValue.getGstCharges()/2);
-        reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() +"" : "0");
-        reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() +"" : "0");
+        reportDetails.setIGst("" + piValue.getGstCharges());
+        reportDetails.setSGst("" + piValue.getGstCharges() / 2);
+        reportDetails.setCGst("" + piValue.getGstCharges() / 2);
+        reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
+        reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() + "" : "0");
         reportDetails.setIPercentAmount((piValue.getInsurancePercentAmount() + ""));
         reportDetails.setUPercentAmount((piValue.getUrgencyPercentAmount() + ""));
         reportDetails.setGrandTotal(Math.round(piValue.getGrandTotal()));

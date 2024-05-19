@@ -1,4 +1,4 @@
-package com.sowermate.tenantService.entities.value;
+package com.sowermate.report.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,12 +8,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ToughenStickerDataValue {
+public class StickerReportDto {
     private String piNo;
     private String thickness;
     private String partyName;
     private String size;
     private LocalDate date;
     private String unknownColumn;
-    private List<ToughenStickerDataValue> abc;
+    private List<StickerReportDto> abc;
 }

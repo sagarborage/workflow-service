@@ -3,17 +3,20 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.GatePassDetailsInfoProjection;
 import com.sowermate.tenantService.entities.minimal.GatePassInfoProjection;
+import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.value.GatePassDetailsInfo;
 import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.GatePassService;
+import com.sowermate.tenantService.services.PiInfoProjectionForReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -96,8 +99,8 @@ public class GatePassServiceImpl implements GatePassService {
         return gatePassRepository.save(gatePassEntity).toDTO();
     }
 
-    GatePassEntity getGatePassEntity(String gatePassUuid, String tenantUuid) {
-        GatePassEntity gatePassEntity = gatePassRepository.findByGatePassUuidAndTenantUuid(gatePassUuid, tenantUuid);
+    GatePassEntity getGatePassEntity(String gatePassUuid, String tenantUuid,String companyUuid) {
+        GatePassEntity gatePassEntity = gatePassRepository.findByGatePassUuidAndTenantUuid(gatePassUuid, tenantUuid,companyUuid);
         if (gatePassEntity == null) {
             throw new RuntimeException("gate pass is not found with uuid : " + gatePassUuid);
         }
@@ -105,14 +108,25 @@ public class GatePassServiceImpl implements GatePassService {
     }
 
     @Override
-    public GatePassValue getGatePass(String gatePassUuid, String tenantUuid) {
-        return getGatePassEntity(gatePassUuid, tenantUuid).toDTO();
+    public List<GlassInfoProjection> getGlassInfoForReport(String gatePassUuid) {
+        List<GlassInfoProjection> glassInfoProjections =  gatePassRepository.findGlassItemsInfoByGatePassUuid(gatePassUuid);
+        return Objects.requireNonNullElseGet(glassInfoProjections, ArrayList::new);
+    }
+
+    @Override
+    public PiInfoProjectionForReport getPiInfoForReport(String uuid) {
+        return gatePassRepository.findPiItemsInfoByGatePassUuid(uuid);
+    }
+
+    @Override
+    public GatePassValue getGatePass(String gatePassUuid, String tenantUuid,String companyUuid) {
+        return getGatePassEntity(gatePassUuid, tenantUuid,companyUuid).toDTO();
     }
 
 
     @Override
-    public GatePassValue deleteGatePass(String tenantUuid, String gatePassUuid) {
-        GatePassEntity gatePassEntity = getGatePassEntity(gatePassUuid, tenantUuid);
+    public GatePassValue deleteGatePass(String gatePassUuid, String tenantUuid, String companyUuid) {
+        GatePassEntity gatePassEntity = getGatePassEntity(gatePassUuid, tenantUuid,companyUuid);
         gatePassEntity.setIsActive(false);
         return gatePassEntity.toDTO();
     }

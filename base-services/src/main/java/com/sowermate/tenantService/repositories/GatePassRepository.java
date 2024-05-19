@@ -3,8 +3,8 @@ package com.sowermate.tenantService.repositories;
 import com.sowermate.tenantService.entities.GatePassEntity;
 import com.sowermate.tenantService.entities.minimal.GatePassDetailsInfoProjection;
 import com.sowermate.tenantService.entities.minimal.GatePassInfoProjection;
-import com.sowermate.tenantService.entities.value.GatePassDetailsInfo;
-import com.sowermate.tenantService.entities.value.GatePassInfo;
+import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
+import com.sowermate.tenantService.services.PiInfoProjectionForReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,9 +17,11 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
 
     @Query("SELECT gp FROM GatePassEntity gp " +
             "JOIN gp.tenantEntity t " +
+            "JOIN gp.companyEntity c " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND gp.uuid = :gatePassUuid")
-   GatePassEntity findByGatePassUuidAndTenantUuid(String gatePassUuid,String tenantUuid);
+            "AND gp.uuid = :gatePassUuid " +
+            "AND c.uuid = :companyUuid ")
+   GatePassEntity findByGatePassUuidAndTenantUuid(String gatePassUuid,String tenantUuid,String companyUuid);
 
     @Query("SELECT gp FROM GatePassEntity gp " +
             "JOIN gp.tenantEntity t " +
@@ -57,6 +59,33 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "AND p.uuid = :proformaInvoiceUuid " +
             "GROUP BY g.uuid ")
     List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
+
+    @Query("SELECT " +
+            "gs.name as glassSpecification , " +
+            "gt.name as thickness, " +
+            "pii.quantity as quantity "+
+
+            "FROM GatePassEntity g " +
+            "JOIN g.gatePassDetailsEntities gd "+
+            "JOIN gd.proFormaInvoiceItemEntity pii "+
+            "JOIN pii.glassSpecificationEntity gs "+
+            "JOIN pii.glassThicknessEntity gt "+
+            "Where g.uuid = :gatePassUuid ")
+    List<GlassInfoProjection> findGlassItemsInfoByGatePassUuid(String gatePassUuid);
+
+
+    @Query("SELECT " +
+            "p.piNumber as piNo, " +
+            "p.invoiceDate as piDate, " +
+            "f.companyName as partyName, " +
+            "cb.companyName as partyBillToName, " +
+            "cb.uuid as partyBillToUuid " +
+            "FROM GatePassEntity g " +
+            "JOIN g.proFormaInvoiceEntity p "+
+            "JOIN p.firm f "+
+            "JOIN p.companyIdBill cb "+
+            "Where g.uuid = :gatePassUuid ")
+    PiInfoProjectionForReport findPiItemsInfoByGatePassUuid(String gatePassUuid);
 
 
 }
