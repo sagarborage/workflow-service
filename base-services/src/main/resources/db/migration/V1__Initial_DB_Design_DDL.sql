@@ -1,6 +1,6 @@
 CREATE TABLE tenant (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_name varchar(100) NOT NULL,
   address varchar(300) NOT NULL,
   city varchar(200) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE tenant (
 
 CREATE TABLE company_type (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   type varchar(40) NOT NULL,
   description varchar(50) DEFAULT NULL,
@@ -34,14 +34,13 @@ CREATE TABLE company_type (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uk_company_type_uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT company_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE company (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(40) NOT NULL,
   company_type_id int(10) NOT NULL,
   company_name varchar(100) NOT NULL,
@@ -56,7 +55,6 @@ CREATE TABLE company (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE KEY UUID (uuid),
   KEY fk_company_tenant (tenant_id),
   KEY fk_company_company_type (company_type_id),
   CONSTRAINT fk_company_company_type FOREIGN KEY (company_type_id) REFERENCES company_type (id),
@@ -66,7 +64,7 @@ CREATE TABLE company (
 
 CREATE TABLE address_type (
   id int(11) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   type varchar(40) NOT NULL,
   description varchar(50) DEFAULT NULL,
@@ -77,14 +75,13 @@ CREATE TABLE address_type (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uk_address_type_uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT address_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE address (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   company_id int(10) NOT NULL,
   address_type_id int(10) NOT NULL,
   address_line1 varchar(100) DEFAULT NULL,
@@ -109,14 +106,13 @@ CREATE TABLE address (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE KEY uuid (uuid),
   CONSTRAINT address_company_id_caifk_1 FOREIGN KEY (company_id) REFERENCES company (id),
   CONSTRAINT address_address_type_id_aatifk_1 FOREIGN KEY (address_type_id) REFERENCES address_type (id)
 );
 
 CREATE TABLE role_type (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   name varchar(100) NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -126,14 +122,13 @@ CREATE TABLE role_type (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT role_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE user_auth (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  uuid char(36) DEFAULT (UUID()),
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   role_id int(10) NOT NULL,
   first_name varchar(50),
@@ -162,7 +157,7 @@ CREATE TABLE user_auth (
 
 CREATE TABLE user_profile (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  uuid char(36) DEFAULT (UUID()),
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   user_id INT UNSIGNED NOT NULL,
   first_name varchar(50),
   last_name varchar(50),
@@ -182,7 +177,7 @@ CREATE TABLE user_profile (
 
 CREATE TABLE confirmation_code (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  	uuid CHAR(36) DEFAULT (UUID()),
+  	uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   	user_id INT UNSIGNED NOT NULL,
     code VARCHAR(40) NOT NULL,
     operation VARCHAR(50),
@@ -196,7 +191,7 @@ CREATE TABLE confirmation_code (
 
 create table verification_token(
 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-uuid CHAR(36) DEFAULT (UUID()),
+uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
 user_id INT UNSIGNED NOT NULL,
 token_value varchar(40) NOT NULL,
 created_at DATETIME NOT NULL,
@@ -206,7 +201,7 @@ FOREIGN KEY(user_id) REFERENCES user_auth(id)
 
 CREATE TABLE email_templates (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  	uuid CHAR(36) DEFAULT (UUID()),
+  	uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   	template_code varchar(40) NOT NULL,
     name VARCHAR(255) NOT NULL,
     subject VARCHAR(255) NOT NULL,
@@ -222,7 +217,7 @@ CREATE TABLE email_templates (
 
 CREATE TABLE additional_charges (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   extra_mm decimal(10,2) DEFAULT NULL,
   insurance decimal(10,2) DEFAULT NULL,
@@ -242,7 +237,7 @@ CREATE TABLE additional_charges (
 
 CREATE TABLE confirm_through (
    id int(10) NOT NULL AUTO_INCREMENT,
-   uuid varchar(36) NOT NULL,
+   uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
    tenant_id int(10) NOT NULL,
    name varchar(50) DEFAULT NULL,
    is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -257,7 +252,7 @@ CREATE TABLE confirm_through (
 
 CREATE TABLE glass_specification (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   name varchar(100) NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -267,14 +262,13 @@ CREATE TABLE glass_specification (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT glass_specification_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE glass_thickness (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   name varchar(100) NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -284,14 +278,13 @@ CREATE TABLE glass_thickness (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT glass_thickness_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE glass_type (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   glass_name varchar(100) NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -301,14 +294,13 @@ CREATE TABLE glass_type (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT glass_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE pi_type (
 	id INT(10) NOT NULL AUTO_INCREMENT,
-	uuid VARCHAR(36) NOT NULL,
+	uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
 	tenant_id INT(10) NOT NULL,
 	pi_type_name VARCHAR(10) NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -318,14 +310,13 @@ CREATE TABLE pi_type (
     last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
     version INT NOT NULL DEFAULT 1,
 	PRIMARY KEY (id) USING BTREE,
-	UNIQUE INDEX uk_pi_type_uuid (uuid) USING BTREE,
 	INDEX tenant_id (tenant_id) USING BTREE,
 	CONSTRAINT pi_type_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 
 CREATE TABLE pro_forma_invoice (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   firm_id int(10) NOT NULL,
   id_bill_to int(10) NOT NULL,
@@ -359,7 +350,6 @@ CREATE TABLE pro_forma_invoice (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE KEY uk_pro_forma_invoice_uuid (uuid),
   KEY tenant_id (tenant_id),
   KEY FK_pro_forma_invoice_pi_type (pi_type_id) USING BTREE,
   KEY FK_pro_forma_invoice_confirm_through (confirm_through_id) USING BTREE,
@@ -368,7 +358,7 @@ CREATE TABLE pro_forma_invoice (
 
 CREATE TABLE pro_forma_invoice_item (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   pro_forma_invoice_id int(10) NOT NULL,
   glass_type_id int(10) NOT NULL,
@@ -390,7 +380,7 @@ CREATE TABLE pro_forma_invoice_item (
   rate_per_unit decimal(20,6) DEFAULT NULL,
   unit_measurement_label varchar(20),
   amount decimal(20,6) DEFAULT NULL,
-  status varchar(50) NOT NULL,
+  status ENUM('IN_PROGRESS','HOLD','REJECTED','CANCEL','COMPLETED') NOT NULL,
   status_details varchar(50) DEFAULT NULL,
   `optimize_bucket` int(5) UNSIGNED NOT NULL DEFAULT 0 ,
   `cutting_bucket` int(5) UNSIGNED NOT NULL DEFAULT 0 ,
@@ -409,7 +399,6 @@ CREATE TABLE pro_forma_invoice_item (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE KEY uk_pro_forma_invoice_item_uuid (uuid),
   KEY tenant_id (tenant_id),
   KEY FK_pro_forma_invoice_item_pro_forma_invoice (pro_forma_invoice_id) USING BTREE,
   KEY FK_pro_forma_invoice_item_glass_type (glass_type_id) USING BTREE,
@@ -420,7 +409,7 @@ CREATE TABLE pro_forma_invoice_item (
 
 CREATE TABLE `service_rate_invoice` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
-     uuid varchar(36) NOT NULL,
+     uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
 	`pro_forma_invoice_id` INT(10) NOT NULL,
 	`service_rate_id` INT(10) NOT NULL,
 	`quantity` INT(10) NOT NULL,
@@ -442,7 +431,7 @@ CREATE TABLE `service_rate_invoice` (
 
 CREATE TABLE service_rate (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   name varchar(255) NOT NULL,
   rate decimal(10,2) NOT NULL,
@@ -459,12 +448,11 @@ CREATE TABLE service_rate (
 
 CREATE TABLE status (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+  uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   tenant_id int(10) NOT NULL,
   name varchar(100) NOT NULL,
   is_active tinyint(1) DEFAULT 1,
   PRIMARY KEY (id),
-  UNIQUE KEY uuid (uuid),
   KEY tenant_id (tenant_id),
   CONSTRAINT status_tenant_ibfk_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
@@ -490,7 +478,7 @@ CREATE TABLE work_order (
 
  CREATE TABLE toughen_batch_process (
   id int(10) NOT NULL AUTO_INCREMENT,
-  uuid varchar(36) NOT NULL,
+uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
   batch_no int(10) NOT NULL,
   tenant_id int(10) NOT NULL,
   firm_id int(10) NOT NULL,
@@ -508,7 +496,7 @@ CREATE TABLE work_order (
 
 CREATE TABLE toughen_batch_process_details (
      id int(10) NOT NULL AUTO_INCREMENT,
-     uuid varchar(36) NOT NULL,
+     uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
      proforma_invoice_id int(10) NOT NULL,
      work_order_id int(10) NOT NULL,
      proforma_invoice_item_id int(10) NOT NULL,
@@ -529,7 +517,7 @@ CREATE TABLE toughen_batch_process_details (
 
 CREATE TABLE glass_breakage_details (
      id int(10) NOT NULL AUTO_INCREMENT,
-     uuid varchar(36) NOT NULL,
+     uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
      tenant_id int(10) NOT NULL,
      proforma_invoice_id int(10) NOT NULL,
      proforma_invoice_item_id int(10) NOT NULL,
@@ -549,7 +537,7 @@ CREATE TABLE glass_breakage_details (
 
 CREATE TABLE jb_creation (
     id INT(10) AUTO_INCREMENT,
-    uuid VARCHAR(36) NOT NULL,
+    uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
     toughen_batch_process_id INT(10) NOT NULL,
     party_name VARCHAR(50) NOT NULL,
     width_mm DECIMAL(20,6) DEFAULT NULL,
@@ -575,7 +563,10 @@ CREATE TABLE gate_pass (
     company_id INT(10) NOT NULL,
     party_company_id INT(10) NOT NULL,
     proforma_invoice_id INT(10) NOT NULL,
-    gate_pass_no INT NOT NULL,
+    gate_pass_no INT NOT NULL DEFAULT 1,
+    driver_name VARCHAR(64) DEFAULT NULL,
+    vehicle_no VARCHAR(64) DEFAULT NULL,
+    driver_contact_no VARCHAR(16) DEFAULT NULL,
     is_active BOOLEAN NOT NULL DEFAULT 1,
     created_by VARCHAR(64) NOT NULL,
     created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -596,6 +587,7 @@ CREATE TABLE gate_pass_details (
     uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
     Proforma_invoice_item_id INT(10) NOT NULL,
     gate_pass_id INT(10) NOT NULL,
+    gate_pass_qty INT NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT 1,
     created_by VARCHAR(64) NOT NULL,
     created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -1,18 +1,18 @@
 package com.sowermate.tenantService.services.impl;
 
-import com.sowermate.tenantService.entities.CompanyEntity;
-import com.sowermate.tenantService.entities.GatePassEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.minimal.GatePassDetailsInfoProjection;
+import com.sowermate.tenantService.entities.minimal.GatePassInfoProjection;
+import com.sowermate.tenantService.entities.value.GatePassDetailsInfo;
+import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
-import com.sowermate.tenantService.repositories.CompanyRepository;
-import com.sowermate.tenantService.repositories.GatePassRepository;
-import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
-import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.GatePassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +31,11 @@ public class GatePassServiceImpl implements GatePassService {
     @Autowired
     private ProFormaInvoiceRepository proFormaInvoiceRepository;
 
+    @Autowired
+    private ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
+
     @Override
+    @Transactional
     public GatePassValue createGatePass(GatePassValue gatePassValue) {
 
         TenantEntity tenantEntity = tenantRepository.findByUuid(gatePassValue.getTenantUuid());
@@ -45,6 +49,30 @@ public class GatePassServiceImpl implements GatePassService {
                 .proFormaInvoiceEntity(proFormaInvoiceEntity)
                 .partyCompanyEntity(partyCompanyEntity)
                 .build();
+        Integer gatePassNo = gatePassRepository.findMaxGatePassNoByCompanyUuid(companyEntity.getUuid());
+        List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntityList = proFormaInvoiceEntity.getProFormaInvoiceItemEntities();
+        List<GatePassDetailsEntity> gatePassDetailsEntities = new ArrayList<>();
+
+        for (ProFormaInvoiceItemEntity proFormaInvoiceItemEntity: proFormaInvoiceItemEntityList){
+            if (proFormaInvoiceItemEntity.getGatePassBucket()>0) {
+                GatePassDetailsEntity gatePassDetailsEntity = new GatePassDetailsEntity();
+                gatePassDetailsEntity.setProFormaInvoiceItemEntity(proFormaInvoiceItemEntity);
+                gatePassDetailsEntity.setGatePassEntity(gatePassEntity);
+                gatePassDetailsEntity.setGatePassQty(proFormaInvoiceItemEntity.getGatePassBucket());
+                gatePassDetailsEntity.setIsActive(gatePassEntity.getIsActive());
+                gatePassDetailsEntities.add(gatePassDetailsEntity);
+                proFormaInvoiceItemEntity.setGatePassCompleted(proFormaInvoiceItemEntity.getGatePassBucket());
+                proFormaInvoiceItemEntity.setGatePassBucket(0);
+                proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
+            }
+        }
+        gatePassEntity.setGatePassDetailsEntities(gatePassDetailsEntities);
+        if (gatePassNo==null){
+            gatePassEntity.setGatePassNo(1);
+        }else {
+            gatePassEntity.setGatePassNo(gatePassNo+1);
+        }
+
         return gatePassRepository.save(gatePassEntity).toDTO();
     }
 
@@ -90,9 +118,34 @@ public class GatePassServiceImpl implements GatePassService {
     }
 
     @Override
+    public GatePassInfo getGatePassByProformaInvoice(String companyUuid, String proformaInvoiceUuid) {
+        GatePassInfoProjection gatePassInfoProjection = gatePassRepository.findGatePassInfoByProformaInvoiceUuid(companyUuid,proformaInvoiceUuid);
+        List<GatePassDetailsInfoProjection> gatePassDetailsInfoProjectionList = gatePassRepository.findGatePassDetailsInfoByProformaInvoiceUuid(companyUuid,proformaInvoiceUuid);
+        GatePassInfo gatePassInfo = new GatePassInfo();
+        if (gatePassInfoProjection!=null){
+            gatePassInfo.setTotalQuantity(gatePassInfoProjection.getTotalQuantity());
+            gatePassInfo.setDispatchedQuantity(gatePassInfoProjection.getDispatchedQuantity());
+            gatePassInfo.setGatePassBucket(gatePassInfo.getGatePassBucket());
+            gatePassInfo.setIsIsGatePassCreationEnable(gatePassInfo.getGatePassBucket() !=null && gatePassInfo.getGatePassBucket() > 0);
+        }
+        List<GatePassDetailsInfo> gatePassDetailsInfoList = gatePassDetailsInfoProjectionList.stream().map(gatePassDetailsInfoProjection->{
+            GatePassDetailsInfo gatePassDetailsInfo = new GatePassDetailsInfo();
+            gatePassDetailsInfo.setProFormInvoiceUuid(proformaInvoiceUuid);
+            gatePassDetailsInfo.setGatePassUuid(gatePassDetailsInfoProjection.getGatePassUuid());
+            gatePassDetailsInfo.setGatePassNo(gatePassDetailsInfoProjection.getGatePassNo());
+            gatePassDetailsInfo.setQuantity(gatePassDetailsInfoProjection.getQuantity());
+            return gatePassDetailsInfo;
+        }).toList();
+        gatePassInfo.setGatePassDetailsInfoList(gatePassDetailsInfoList);
+        return gatePassInfo;
+    }
+
+    @Override
     public List<GatePassValue> getAllGatePass(String tenantUuid, String companyUuid) {
         List<GatePassEntity> gatePassEntities = gatePassRepository.findByTenantUuidAndCompanyUuid(tenantUuid, companyUuid);
         return gatePassEntities.stream().map(GatePassEntity::toDTO).collect(Collectors.toList());
     }
+
+
 
 }

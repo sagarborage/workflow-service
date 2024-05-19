@@ -14,11 +14,14 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @Table(name = "gate_pass_details")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class GatePassDetailsEntity extends Base {
 
     private static final long serialVersionUID = -241370177952331642L;
+
+    @Column(name = "gate_pass_qty")
+    private Integer gatePassQty;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Proforma_invoice_item_id")
@@ -30,8 +33,7 @@ public class GatePassDetailsEntity extends Base {
 
     public GatePassDetailsValue toDTO() {
         return GatePassDetailsValue.newBuilder()
-                .gatePassDetailsId(getId())
-                .gatePassDetailsUuid(getUuid())
+                .gatePassQty(getGatePassQty())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())

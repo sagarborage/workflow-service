@@ -1,11 +1,7 @@
 package com.sowermate.tenantService.entities.value;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.base.dtos.BaseDto;
-import com.sowermate.tenantService.entities.CompanyEntity;
 import com.sowermate.tenantService.entities.GatePassEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -27,11 +23,24 @@ public class GatePassValue extends BaseDto {
 
     private Integer gatePassNo;
 
+    private String driverName;
+
+    private String vehicleNo;
+
+    private String driverContactNo;
+
 
     public GatePassEntity toEntity() {
         return GatePassEntity.newBuilder()
                 .uuid(getUuid())
                 .gatePassNo(getGatePassNo())
+                .driverName(getDriverName())
+                .driverContactNo(getDriverContactNo())
+                .vehicleNo(getVehicleNo())
+                .createdBy(getCreatedBy())
+                .createdDateTime(getCreatedDateTime())
+                .lastUpdatedBy(getLastUpdatedBy())
+                .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .version(getVersion())
                 .isActive(getIsActive())
                 .build();

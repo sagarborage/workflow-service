@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.services.GatePassService;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,18 @@ public class GatePassController {
             Logger.error("Error while deleting Seller:", e);
         }
         return new ResponseEntity<GatePassValue>(gatePassValue, HttpStatus.OK);
+    }
+
+    @GetMapping("/info/{companyUuid}/{proformaInvoiceUuid}")
+    public ResponseEntity<GatePassInfo> getGatePassInfo(@PathVariable String companyUuid,
+                                                        @PathVariable String proformaInvoiceUuid) {
+        GatePassInfo gatePassInfo = null;
+        try {
+            gatePassInfo = gatePassService.getGatePassByProformaInvoice(companyUuid,proformaInvoiceUuid);
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(gatePassInfo, HttpStatus.OK);
     }
 
 }

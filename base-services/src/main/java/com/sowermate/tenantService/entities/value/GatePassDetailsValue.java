@@ -14,17 +14,15 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GatePassDetailsValue extends BaseDto {
-    @JsonIgnore
-    private Long gatePassDetailsId;
-    private String gatePassDetailsUuid;
+    private Integer gatePassQty;
     private String proFormaInvoiceItemUuid;
     private String gatePassUuid;
 
     public GatePassDetailsEntity toEntity() {
         return GatePassDetailsEntity.newBuilder()
-                .id(getGatePassDetailsId())
-                .uuid(getGatePassDetailsUuid())
+                .uuid(getUuid())
                 .isActive(getIsActive())
+                .gatePassQty(getGatePassQty())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())

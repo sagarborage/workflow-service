@@ -1,5 +1,6 @@
 package com.sowermate.tenantService.services;
 
+import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 
@@ -16,4 +17,6 @@ public interface GatePassService {
     public GatePassValue getGatePass(String uuid, String tenantUuid);
 
     public GatePassValue deleteGatePass(String uuid, String tenantUuid);
+
+    public GatePassInfo getGatePassByProformaInvoice(String companyUuid, String proformaInvoiceUuid);
 }

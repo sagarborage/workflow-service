@@ -3,7 +3,6 @@ package com.sowermate.tenantService.entities;
 
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.GatePassValue;
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,8 +11,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "gate_pass")
@@ -43,17 +40,29 @@ public class GatePassEntity extends Base {
     @Column(name = "gate_pass_no", nullable = false)
     private Integer gatePassNo;
 
+    @Column(name = "driver_name")
+    private String driverName;
+
+    @Column(name = "vehicle_no")
+    private String vehicleNo;
+
+    @Column(name = "driver_contact_no")
+    private String driverContactNo;
+
     @OneToMany(mappedBy = "gatePassEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GatePassDetailsEntity> gatePassDetailsEntities;
 
     public GatePassValue toDTO() {
         return GatePassValue.newBuilder()
                 .uuid(getUuid())
-                .proFormaInvoiceUuid(getProFormaInvoiceEntity() == null ?null : getProFormaInvoiceEntity().getUuid())
-                .tenantUuid(getTenantEntity()==null?null : getTenantEntity().getUuid())
-                .companyUuid(getCompanyEntity()==null?null : getCompanyEntity().getUuid())
-                .partyCompanyUuid(getPartyCompanyEntity()==null?null : getPartyCompanyEntity().getUuid())
-                .gatePassNo(gatePassNo)
+                .proFormaInvoiceUuid(getProFormaInvoiceEntity() == null ? null : getProFormaInvoiceEntity().getUuid())
+                .tenantUuid(getTenantEntity() == null ? null : getTenantEntity().getUuid())
+                .companyUuid(getCompanyEntity() == null ? null : getCompanyEntity().getUuid())
+                .partyCompanyUuid(getPartyCompanyEntity() == null ? null : getPartyCompanyEntity().getUuid())
+                .gatePassNo(getGatePassNo())
+                .driverName(getDriverName())
+                .driverContactNo(getDriverContactNo())
+                .vehicleNo(getVehicleNo())
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())
