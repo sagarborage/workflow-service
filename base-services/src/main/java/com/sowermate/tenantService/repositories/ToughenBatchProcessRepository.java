@@ -19,9 +19,13 @@ import java.util.Optional;
 public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatchProcessEntity, String> {
 
     List<ToughenBatchProcessEntity> findAllByCompanyEntityUuidAndStatus(String companyUuid, ToughenBatchProcessStatusEnum status);
+
     Optional<ToughenBatchProcessEntity> findFirstByCompanyEntityUuidOrderByCreatedDateTimeDesc(String companyUuid);
+
     Optional<List<ToughenBatchProcessEntity>> findByStatusOrderByCreatedDateTimeDesc(ToughenBatchProcessStatusEnum status);
+
     Optional<List<ToughenBatchProcessEntity>> findByOrderByCreatedDateTimeDesc();
+
     Optional<List<ToughenBatchProcessEntity>> findByStatusNotOrderByCreatedDateTimeDesc(ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT tb " +
@@ -42,12 +46,14 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "AND tb.batchNo = :batchNo " +
             "AND tb.status = :status "
     )
-    Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo,String companyUuid,ToughenBatchProcessStatusEnum status);
+    Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo, String companyUuid, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
             "tbd.uuid as batchItemUuid, " +
             "tb.uuid as batchUuid, " +
             "tb.batchNo as batchNo, " +
+            //" 0 as workOrderNo, " +
+            "wo.id  as workOrderNo, " +
             "pi.uuid as proformaInvoiceItemUuid, " +
             "'WORK_ORDER' as itemType, " +
             "Date(tb.createdDateTime) as batchDate, " +
@@ -55,7 +61,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "p.uuid as proformaInvoiceUuid , " +
             "c.companyName as billToPartyName, " +
             "c.uuid as billToPartyUuid, " +
-            "th.name as thickness, "+
+            "th.name as thickness, " +
             "pi.actualWidth as actualWidth, " +
             "pi.chargeableWidth as chargeableWidth, " +
             "pi.actualHeight as actualHeight, " +
@@ -67,6 +73,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
             "JOIN pi.glassThicknessEntity th " +
             "JOIN pi.proFormaInvoiceEntity p " +
+            "JOIN p.workOrderEntity wo " +
             "JOIN p.companyIdBill c " +
             "WHERE c.uuid =:companyUuid AND " +
             "tb.status = :status UNION " +
@@ -74,14 +81,15 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "jb.uuid as batchItemUuid, " +
             "tbpe.uuid as batchUuid, " +
             "tbpe.batchNo as batchNo, " +
+            "0L as workOrderNo, " +
             "'N/A' as proformaInvoiceItemUuid, " +
             "'JB' as itemType, " +
             "Date(tbpe.createdDateTime) as batchDate, " +
             "'JB/' as piNo, " +
-            "'N/A' as proformaInvoiceUuid , " +
+            "'N/A' as proformaInvoiceUuid, " +
             "jb.partyName as billToPartyName, " +
             "'N/A' as billToPartyUuid, " +
-            "jb.glassThicknessEntity.name as thickness, "+
+            "jb.glassThicknessEntity.name as thickness, " +
             "jb.widthMm as actualWidth, " +
             "jb.widthMm as chargeableWidth, " +
             "jb.heightMm as actualHeight, " +
@@ -99,7 +107,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
             "c.companyName as billToPartyName, " +
-            "th.name as thickness, "+
+            "th.name as thickness, " +
             "pi.actualWidth as actualWidth, " +
             "pi.chargeableWidth as chargeableWidth, " +
             "pi.actualHeight as actualHeight, " +
@@ -113,14 +121,14 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN p.companyIdBill c " +
             "WHERE c.uuid =:companyUuid AND " +
             "t.uuid =:tenantUuid AND " +
-            "Date(tb.createdDateTime) =:batchProcessingDate UNION "+
+            "Date(tb.createdDateTime) =:batchProcessingDate UNION " +
             "SELECT " +
             "tb.uuid as batchUuid," +
             "tb.batchNo as batchNo, " +
             "Date(tb.createdDateTime) as batchDate, " +
-            "CONCAT('JB/', jb.id) AS piNo, "+
+            "CONCAT('JB/', jb.id) AS piNo, " +
             "jb.partyName as billToPartyName, " +
-            "jb.glassThicknessEntity.name as thickness, "+
+            "jb.glassThicknessEntity.name as thickness, " +
             "jb.widthMm as actualWidth, " +
             "jb.widthMm as chargeableWidth, " +
             "jb.heightMm as actualHeight, " +
@@ -160,7 +168,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
             "WHERE tbd.uuid = :uuid " +
             "AND c.uuid = :companyUuid ")
-    ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid,String companyUuid);
+    ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid, String companyUuid);
 
     ToughenBatchProcessEntity findByUuid(@Param("toughenBatchProcessUuid") String toughenBatchProcessUuid);
 

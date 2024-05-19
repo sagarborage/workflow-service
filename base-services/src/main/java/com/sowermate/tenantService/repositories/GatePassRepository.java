@@ -34,17 +34,15 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
     Integer findMaxGatePassNoByCompanyUuid(String companyUuid);
 
     @Query("SELECT " +
-            "(SUM(p.optimizeBucket) + SUM(p.cuttingBucket) + SUM(p.toughenBucket) + " +
-            "SUM(p.dispatchBucket) + SUM(p.gatePassBucket) + SUM(p.optimizeCompleted) + " +
-            "SUM(p.cuttingCompleted) + SUM(p.toughenCompleted) + SUM(p.dispatchCompleted) + " +
-            "SUM(p.gatePassCompleted) ) as totalQuantity, " +
+            "SUM(p.quantity) as totalQuantity, " +
             "SUM(p.gatePassCompleted) as dispatchedQuantity, " +
             "SUM(p.gatePassBucket) as gatePassBucket " +
             "FROM ProFormaInvoiceEntity pi " +
             "JOIN pi.firm c " +
             "JOIN pi.proFormaInvoiceItemEntities p " +
             "WHERE c.uuid = :companyUuid " +
-            "AND pi.uuid = :proformaInvoiceUuid")
+            "AND pi.uuid = :proformaInvoiceUuid " +
+            "GROUP BY pi.uuid ")
     GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
 
     @Query("SELECT " +

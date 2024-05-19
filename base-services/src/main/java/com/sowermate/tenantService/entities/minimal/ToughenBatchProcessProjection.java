@@ -10,6 +10,8 @@ public interface ToughenBatchProcessProjection {
 
     String getBatchUuid();
 
+    Long getWorkOrderNo();
+
     String getBatchNo();
 
     ItemTypeEnum getItemType();
