@@ -18,4 +18,5 @@ public class GeneralParamValue {
     String piItemUuid;
     String batchItemUuid;
     String details;
+    Integer stickerNumber;
 }

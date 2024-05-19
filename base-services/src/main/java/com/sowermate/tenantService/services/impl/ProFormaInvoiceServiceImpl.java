@@ -2,8 +2,8 @@ package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.image.services.PdfService;
 import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
-import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
@@ -21,6 +21,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -342,8 +343,28 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     //TODO: Remove this code lateron
 
     @Override
-    public List<ProFormaInvoiceMinimal> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate) {
-        return proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, startDate, endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate) {
+        List<ProFormaInvoiceEntity> proFormaInvoiceEntity = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, startDate, endDate);
+        List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = new ArrayList<>();
+        for (ProFormaInvoiceEntity formaInvoiceEntity : proFormaInvoiceEntity) {
+            proFormaInvoiceHomeDetails.add(getProFormaInvoiceHomeDetails(formaInvoiceEntity));
+        }
+        return proFormaInvoiceHomeDetails;
+    }
+
+    private ProFormaInvoiceHomeDetails getProFormaInvoiceHomeDetails(ProFormaInvoiceEntity proFormaInvoiceEntity) {
+        return ProFormaInvoiceHomeDetails.newBuilder()
+                .uuid(proFormaInvoiceEntity.getUuid())
+                .invoiceDate(proFormaInvoiceEntity.getInvoiceDate())
+                .confirmThroughUuid(null == proFormaInvoiceEntity.getConfirmThroughEntity() ? null : proFormaInvoiceEntity.getConfirmThroughEntity().getUuid())
+                .partyName(proFormaInvoiceEntity.getCompanyIdBill().getCompanyName())
+                .payableAmount(proFormaInvoiceEntity.getPayableAmount())
+                .piNumber(proFormaInvoiceEntity.getPiNumber())
+                .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())
+                .workOrderNumber(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getId())
+                .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e->e.getDispatchCompleted() > 0))
+                .status(proFormaInvoiceEntity.getStatus())
+                .build();
     }
 
     @Override

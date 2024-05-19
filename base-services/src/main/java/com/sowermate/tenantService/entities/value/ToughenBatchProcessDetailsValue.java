@@ -20,6 +20,7 @@ public class ToughenBatchProcessDetailsValue extends BaseDto {
     private String proFormaInvoiceUuid;
     private String workOrderUuid;
     private String proFormaInvoiceItemUuid;
+    private Integer stickerNumber;
     private ToughenBatchProcessStatusEnum status;
 
     public ToughenBatchProcessDetailsEntity toEntity(){

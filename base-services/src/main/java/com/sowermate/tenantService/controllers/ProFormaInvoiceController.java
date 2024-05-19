@@ -1,7 +1,7 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
-import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
@@ -116,20 +116,20 @@ public class ProFormaInvoiceController {
     }*/
 
     @GetMapping("/{tenantUuid}/{startDate}/{endDate}")
-    public ResponseEntity<List<ProFormaInvoiceMinimal>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
-        List<ProFormaInvoiceMinimal> proFormaInvoiceMinimals = null;
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
+        List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
         try {
             DateTimeFormatter formatter = FORMATTER;
             startDate = startDate + BEGINNING;
             endDate = endDate + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
-            proFormaInvoiceMinimals = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);
-            Logger.info("records " + proFormaInvoiceMinimals.size());
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);
+            Logger.info("records " + proFormaInvoiceHomeDetails.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
         }
-        return new ResponseEntity<>(proFormaInvoiceMinimals, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(proFormaInvoiceHomeDetails, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/work-order-list/{tenantUuid}/{deptType}")

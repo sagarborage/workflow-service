@@ -123,6 +123,7 @@ public class GatePassServiceImpl implements GatePassService {
         List<GatePassDetailsInfoProjection> gatePassDetailsInfoProjectionList = gatePassRepository.findGatePassDetailsInfoByProformaInvoiceUuid(companyUuid,proformaInvoiceUuid);
         GatePassInfo gatePassInfo = new GatePassInfo();
         if (gatePassInfoProjection!=null){
+            gatePassInfo.setProFormInvoiceUuid(proformaInvoiceUuid);
             gatePassInfo.setTotalQuantity(gatePassInfoProjection.getTotalQuantity());
             gatePassInfo.setDispatchedQuantity(gatePassInfoProjection.getDispatchedQuantity());
             gatePassInfo.setGatePassBucket(gatePassInfo.getGatePassBucket());

@@ -501,6 +501,7 @@ CREATE TABLE toughen_batch_process_details (
      work_order_id int(10) NOT NULL,
      proforma_invoice_item_id int(10) NOT NULL,
      toughen_batch_process_id int(10) NOT NULL,
+     sticker_number int(5) NOT NULL,
      status varchar(50) DEFAULT NULL,
      is_active BOOLEAN NOT NULL DEFAULT 1,
      created_by VARCHAR(64) NOT NULL,

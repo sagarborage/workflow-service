@@ -30,6 +30,9 @@ public class ToughenBatchProcessDetailsEntity extends Base {
     @JoinColumn(name = "proforma_invoice_item_id", nullable = false)
     private ProFormaInvoiceItemEntity proFormaInvoiceItemEntity;
 
+    @Column
+    private Integer stickerNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ToughenBatchProcessStatusEnum status;
@@ -43,6 +46,7 @@ public class ToughenBatchProcessDetailsEntity extends Base {
                 .uuid(getUuid())
                 .proFormaInvoiceUuid(getProFormaInvoiceEntity().getUuid())
                 .proFormaInvoiceItemUuid(getProFormaInvoiceItemEntity().getUuid())
+                .stickerNumber(getStickerNumber())
                 .workOrderUuid(getWorkOrderEntity().getUuid())
                 .isActive(getIsActive())
                 .build();

@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class GatePassInfo {
+    private String proFormInvoiceUuid;
     private Integer totalQuantity;
     private Integer dispatchedQuantity;
     private Integer gatePassBucket;

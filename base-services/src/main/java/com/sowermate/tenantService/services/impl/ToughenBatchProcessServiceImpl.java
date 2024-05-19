@@ -230,6 +230,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
                 .proFormaInvoiceEntity(proFormaInvoiceRepository.findByUuid(generalParamValue.getPiUuid()))
                 .workOrderEntity(workOrderRepository.findByUuid(generalParamValue.getWorkOrderUuid()))
                 .proFormaInvoiceItemEntity(proFormaInvoiceItemRepository.findByUuid(generalParamValue.getPiItemUuid()))
+                .stickerNumber(generalParamValue.getStickerNumber())
                 .status(ToughenBatchProcessStatusEnum.IN_PROGRESS)
                 .isActive(true)
                 .build();

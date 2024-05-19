@@ -1,9 +1,7 @@
 package com.sowermate.tenantService.repositories;
 
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
-import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceMinimal;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -42,7 +40,8 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     ProFormaInvoiceEntity findByUuid( String uuid);
 
-    @Query("SELECT pfie.uuid as uuid, " +
+    //TODO: Remove this method later on if below new method works fine
+/*    @Query("SELECT pfie.uuid as uuid, " +
             "c.companyName as partyName, " +
             "pfie.piNumber as piNumber, " +
             "ct.uuid as confirmThroughUuid, " +
@@ -55,7 +54,11 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "LEFT JOIN pfie.confirmThroughEntity ct " +
             "LEFT JOIN pfie.workOrderEntity woe " +
             "where pfie.tenantEntity.uuid = :tenantUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.invoiceDate DESC")
-    List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
+    List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);*/
+
+    @Query("SELECT pfie FROM ProFormaInvoiceEntity pfie " +
+            "where pfie.tenantEntity.uuid = :tenantUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.invoiceDate DESC")
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
