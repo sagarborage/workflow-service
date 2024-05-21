@@ -140,8 +140,8 @@ public class GatePassServiceImpl implements GatePassService {
             gatePassInfo.setProFormInvoiceUuid(proformaInvoiceUuid);
             gatePassInfo.setTotalQuantity(gatePassInfoProjection.getTotalQuantity());
             gatePassInfo.setDispatchedQuantity(gatePassInfoProjection.getDispatchedQuantity());
-            gatePassInfo.setGatePassBucket(gatePassInfo.getGatePassBucket());
-            gatePassInfo.setIsIsGatePassCreationEnable(gatePassInfo.getGatePassBucket() !=null && gatePassInfo.getGatePassBucket() > 0);
+            gatePassInfo.setGatePassBucket(gatePassInfoProjection.getGatePassBucket());
+            gatePassInfo.setIsIsGatePassCreationEnable(gatePassInfoProjection.getGatePassBucket() !=null && gatePassInfoProjection.getGatePassBucket() > 0);
         }
         List<GatePassDetailsInfo> gatePassDetailsInfoList = gatePassDetailsInfoProjectionList.stream().map(gatePassDetailsInfoProjection->{
             GatePassDetailsInfo gatePassDetailsInfo = new GatePassDetailsInfo();
