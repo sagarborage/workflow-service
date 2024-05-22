@@ -120,9 +120,15 @@ public class PdfGenerationController {
         return ResponseEntity.ok().headers(headers).body(pdfContent);
     }
 
-    @PostMapping("/gatePass")
-    public ResponseEntity<byte[]> generateGatePass(@RequestBody GatePassRequestDto gatePassRequestDto) throws IOException {
-
+    @PostMapping("/gatePass/{tenantUuid}/{companyUuid}/{gatePassUuid}")
+    public ResponseEntity<byte[]> generateGatePass(@PathVariable String tenantUuid,
+                                                   @PathVariable String companyUuid,
+                                                   @PathVariable String gatePassUuid
+    ) throws IOException {
+        GatePassRequestDto gatePassRequestDto = new GatePassRequestDto();
+        gatePassRequestDto.setTenantUuid(tenantUuid);
+        gatePassRequestDto.setCompanyUuid(companyUuid);
+        gatePassRequestDto.setGatePassUuid(gatePassUuid);
         byte[] pdfContent = pdfGenerationService.generateGatePass(gatePassRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));

@@ -11,6 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GeneralParamValue {
     Integer batchNo;
+    Integer workOrderNo;
     String tenantUuid;
     String companyUuid;
     String piUuid;

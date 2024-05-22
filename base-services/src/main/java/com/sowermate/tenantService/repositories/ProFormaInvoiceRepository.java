@@ -118,7 +118,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "wo.uuid as workOrderUuid, " +
-            "co.uuid as companyUuid, " +
+            "f.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -130,7 +130,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pii.statusDetails as statusDetails " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
-            "join pi.companyIdBill co " +
+            "join pi.firm f " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
@@ -145,7 +145,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "wo.uuid as workOrderUuid, " +
-            "co.uuid as companyUuid, " +
+            "f.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -157,7 +157,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pii.statusDetails as statusDetails " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
-            "join pi.companyIdBill co " +
+            "join pi.firm f " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
@@ -172,7 +172,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "wo.uuid as workOrderUuid, " +
-            "co.uuid as companyUuid, " +
+            "f.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -184,7 +184,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pii.statusDetails as statusDetails " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
-            "join pi.companyIdBill co " +
+            "join pi.firm f " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +
@@ -199,7 +199,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.piNumber as piNumber, " +
             "wo.id as workOrderNo, " +
             "wo.uuid as workOrderUuid, " +
-            "co.uuid as companyUuid, " +
+            "f.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
@@ -211,7 +211,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pii.statusDetails as statusDetails " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
-            "join pi.companyIdBill co " +
+            "join pi.firm f " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
             "join pii.glassThicknessEntity gth " +

@@ -34,19 +34,19 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
             "JOIN pi.proFormaInvoiceEntity p " +
-            "JOIN p.companyIdBill c " +
-            "WHERE c.uuid =:companyUuid  " +
+            "JOIN p.firm f " +
+            "WHERE f.uuid =:firmUuid  " +
             "AND tb.batchNo = :batchNo " +
             "AND tb.status = :status UNION " +
             "SELECT tb " +
             "FROM ToughenBatchProcessEntity tb " +
             "JOIN tb.companyEntity firm " +
             "JOIN tb.jbCreationEntities jb " +
-            "WHERE firm.uuid =:companyUuid " +
+            "WHERE firm.uuid =:firmUuid " +
             "AND tb.batchNo = :batchNo " +
             "AND tb.status = :status "
     )
-    Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo, String companyUuid, ToughenBatchProcessStatusEnum status);
+    Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo, String firmUuid, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
             "tbd.uuid as batchItemUuid, " +
@@ -59,8 +59,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
             "p.uuid as proformaInvoiceUuid , " +
-            "c.companyName as billToPartyName, " +
-            "c.uuid as billToPartyUuid, " +
+            "p.companyIdBill.companyName as billToPartyName, " +
+            "p.companyIdBill.uuid as billToPartyUuid, " +
             "th.name as thickness, " +
             "pi.actualWidth as actualWidth, " +
             "pi.chargeableWidth as chargeableWidth, " +
@@ -74,8 +74,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN pi.glassThicknessEntity th " +
             "JOIN pi.proFormaInvoiceEntity p " +
             "JOIN p.workOrderEntity wo " +
-            "JOIN p.companyIdBill c " +
-            "WHERE c.uuid =:companyUuid AND " +
+            "JOIN p.firm f " +
+            "WHERE f.uuid =:firmUuid AND " +
             "tb.status = :status UNION " +
             "SELECT " +
             "jb.uuid as batchItemUuid, " +
@@ -99,14 +99,14 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN jb.toughenBatchProcessEntity tbpe " +
             "where tbpe.status = :status"
     )
-    List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String companyUuid, ToughenBatchProcessStatusEnum status);
+    List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String firmUuid, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
             "tb.uuid as batchUuid, " +
             "tb.batchNo as batchNo, " +
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
-            "c.companyName as billToPartyName, " +
+            "p.companyIdBill.companyName as billToPartyName, " +
             "th.name as thickness, " +
             "pi.actualWidth as actualWidth, " +
             "pi.chargeableWidth as chargeableWidth, " +
@@ -118,8 +118,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
             "JOIN pi.glassThicknessEntity th " +
             "JOIN pi.proFormaInvoiceEntity p " +
-            "JOIN p.companyIdBill c " +
-            "WHERE c.uuid =:companyUuid AND " +
+            "JOIN p.firm f " +
+            "WHERE f.uuid =:firmUuid AND " +
             "t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate UNION " +
             "SELECT " +
@@ -140,12 +140,12 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
             "JOIN pi.glassThicknessEntity th " +
             "JOIN pi.proFormaInvoiceEntity p " +
-            "JOIN p.companyIdBill c " +
-            "WHERE c.uuid =:companyUuid AND " +
+            "JOIN p.firm f " +
+            "WHERE f.uuid =:firmUuid AND " +
             "t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate "
     )
-    List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
+    List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String firmUuid, LocalDate batchProcessingDate);
 
 
     @Query("SELECT " +
