@@ -7,11 +7,11 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import java.io.IOException;
 
 public interface PdfGenerationService {
-    byte[] generateToughenSticker(StickerReportDto stickerReportDto) throws IOException;
+    byte[] generateToughenSticker(StickerRequestDto stickerRequestDto) throws IOException;
 
     byte[] generateGatePass(GatePassRequestDto gatePassRequestDto) throws IOException;
 
-    byte[] generateToughenBatch(ToughenBatchReportDto toughenBatchReportDto) throws IOException;
+    byte[] generateToughenBatch(ToughenBatchReportRequestDto toughenBatchReportRequestDto) throws IOException;
 
     byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException;
 

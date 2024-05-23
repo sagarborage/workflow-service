@@ -1,5 +1,4 @@
 package com.sowermate.tenantService.controllers;
-import com.sowermate.tenantService.entities.value.GlassSpecificationValue;
 import com.sowermate.tenantService.entities.value.GlassThicknessValue;
 import com.sowermate.tenantService.services.GlassThicknessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class GlassThicknessController {
 
     @GetMapping("/{tenantUuid}/{glassThicknessUuid}")
     public ResponseEntity<GlassThicknessValue> getSingleGlassThickness(@PathVariable String tenantUuid, @PathVariable String glassThicknessUuid) {
-        GlassThicknessValue glassThicknessValue=glassThicknessService.getGlassThickness(tenantUuid, glassThicknessUuid);
+        GlassThicknessValue glassThicknessValue=glassThicknessService.getGlassThicknessNameById(tenantUuid, glassThicknessUuid);
         return  new ResponseEntity<>(glassThicknessValue, HttpStatus.ACCEPTED);
     }
 

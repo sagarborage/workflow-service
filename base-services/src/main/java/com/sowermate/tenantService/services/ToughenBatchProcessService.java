@@ -1,5 +1,7 @@
 package com.sowermate.tenantService.services;
 
+import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
+import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
@@ -25,4 +27,7 @@ public interface ToughenBatchProcessService {
 
     List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
 
+    StickerReportProjection getStickerReport(String tenantUuid, String companyUuid, String batchItemUuid);
+
+    List<CompletedGlassesProjection> getCompletedGlassesForReport(String tenantUuid, String companyUuid, LocalDate batchItemDate);
 }

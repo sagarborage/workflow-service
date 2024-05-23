@@ -19,6 +19,7 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
             "WHERE t.uuid = :tenantUuid " +
             "AND c.uuid = :companyUuid")
     CompanyEntity findByTenantEntity_UuidAndCompanyEntityUuid(String tenantUuid, String companyUuid);
+
     //CompanyEntity findByCompanyUuid(String companyUuid);
     List<CompanyEntity> findAllByTenantEntityId(Long tenantId);
 
@@ -40,4 +41,9 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
             "WHERE t.uuid = :tenantUuid " +
             "AND c.uuid = :companyUuid")
     CompanyInfoProjection getCompanyInfo(String tenantUuid, String companyUuid);
+
+    @Query("SELECT c.companyName as companyName " +
+            "FROM CompanyEntity c " +
+            "WHERE c.uuid = :companyUuid")
+    String getCompanyNameByUuid(String companyUuid);
 }

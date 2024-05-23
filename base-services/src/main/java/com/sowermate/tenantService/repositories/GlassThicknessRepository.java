@@ -25,4 +25,9 @@ public interface GlassThicknessRepository  extends JpaRepository<GlassThicknessE
     @Query("UPDATE GlassThicknessEntity g SET g.isActive = false WHERE g.uuid = :glassThicknessUuid")
     void softDelete(@Param("glassThicknessUuid") String glassThicknessUuid);
 
+    @Query("SELECT g.name FROM " +
+            "GlassThicknessEntity g " +
+            "WHERE g.id = :id")
+    String getFindGlassThickNess(Long id);
+
 }
