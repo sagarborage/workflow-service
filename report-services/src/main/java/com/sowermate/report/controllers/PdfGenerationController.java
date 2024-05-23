@@ -1,7 +1,10 @@
 package com.sowermate.report.controllers;
 
 import com.sowermate.image.services.PdfService;
-import com.sowermate.report.dtos.*;
+import com.sowermate.report.dtos.GatePassRequestDto;
+import com.sowermate.report.dtos.PIReportDetails;
+import com.sowermate.report.dtos.StickerRequestDto;
+import com.sowermate.report.dtos.ToughenBatchReportRequestDto;
 import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
@@ -110,9 +113,8 @@ public class PdfGenerationController {
     }
 
     @PostMapping("/sticker")
-    public ResponseEntity<byte[]> generateToughenSticker(@RequestBody StickerReportDto stickerReportDto) throws IOException {
-
-        byte[] pdfContent = pdfGenerationService.generateToughenSticker(stickerReportDto);
+    public ResponseEntity<byte[]> generateToughenSticker(@RequestBody StickerRequestDto stickerRequestDto) throws IOException {
+        byte[] pdfContent = pdfGenerationService.generateToughenSticker(stickerRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
         headers.setContentDispositionFormData("attachment", "example.pdf");
@@ -122,7 +124,6 @@ public class PdfGenerationController {
 
     @PostMapping("/gatePass")
     public ResponseEntity<byte[]> generateGatePass(@RequestBody GatePassRequestDto gatePassRequestDto) throws IOException {
-
         byte[] pdfContent = pdfGenerationService.generateGatePass(gatePassRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
@@ -132,9 +133,9 @@ public class PdfGenerationController {
     }
 
     @PostMapping("/toughenBatch")
-    public ResponseEntity<byte[]> generateToughenBatchReport(@RequestBody ToughenBatchReportDto toughenBatchReportDto) throws IOException {
+    public ResponseEntity<byte[]> generateToughenBatchReport(@RequestBody ToughenBatchReportRequestDto toughenBatchReportRequestDto) throws IOException {
 
-        byte[] pdfContent = pdfGenerationService.generateToughenBatch(toughenBatchReportDto);
+        byte[] pdfContent = pdfGenerationService.generateToughenBatch(toughenBatchReportRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
         headers.setContentDispositionFormData("attachment", "example.pdf");

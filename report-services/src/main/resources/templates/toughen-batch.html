@@ -9,6 +9,7 @@
         margin-top: 0 auto;
         width: 100%;
         border-collapse: collapse;
+        vertical-align: middle;
         }
         .font-helva
         {
@@ -39,35 +40,31 @@
 <div style="overflow-x: auto;">
     <table class="alignCenter font-helva font-w-400 font-s-14">
         <tr>
-            <td style="width: 100%;" colspan="7">
+            <td style="width: 100%;font-size: 18px;" colspan="7">TOUGHEN REPORT
             </td>
         </tr>
         <tr>
-            <td style="height: 50px;" colspan="7">
+            <td style="height: 50px;font-weight: bold;font-size: 22px;" colspan="7">
+                <span th:text="${toughen.getPartyName()}"></span>
             </td>
         </tr>
         <tr>
-            <td style="width: 100%;" colspan="7">
+            <td style="width: 100%;font-weight: bold;" colspan="7">
+                Date: <span th:text="${#temporals.format(toughen.getDate(), 'dd-MM-yy')}"></span>
             </td>
         </tr>
         <tr>
-            <td style="width: 23%;height: 30px;" colspan="2">
+            <td style="width: 23%;height: 30px;font-size: 18px;" colspan="2">
+                WORK ORDER
             </td>
-            <td style="width: 23%;height: 30px;" colspan="2">
+            <td style="width: 23%;height: 30px;font-size: 18px;" colspan="2">
+                JB
             </td>
-            <td style="width: 23%;height: 30px;" colspan="2">
+            <td style="width: 23%;height: 30px;font-size: 18px;" colspan="2">
+                REJECTED
             </td>
-            <td style="width: 31%;height: 30px;" colspan="1">
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 23%;height: 30px;" colspan="2">
-            </td>
-            <td style="width: 23%;height: 30px;" colspan="2">
-            </td>
-            <td style="width: 23%;height: 30px;" colspan="2">
-            </td>
-            <td style="width: 31%;height: 30px;" colspan="1">
+            <td style="width: 31%;height: 30px;font-size: 18px;" colspan="1">
+                TOTAL COMPLETED
             </td>
         </tr>
         <tr>
@@ -81,36 +78,59 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 13%;" colspan="1">
+            <td style="width: 23%;height: 30px;font-size: 18px;" colspan="2">
+                Work Order
             </td>
-            <td style="width: 10%;" colspan="1">
+            <td style="width: 23%;height: 30px;font-size: 18px;" colspan="2">
+                JB
             </td>
-            <td style="width: 13%;" colspan="1">
+            <td style="width: 23%;height: 30px;font-size: 18px;" colspan="2">
+                Reject
             </td>
-            <td style="width: 10%;" colspan="1">
-            </td>
-            <td style="width: 13%;" colspan="1">
-            </td>
-            <td style="width: 10%;" colspan="1">
-            </td>
-            <td style="width: 31%;" colspan="1">
+            <td style="width: 31%;height: 30px;font-size: 18px;" colspan="1">
+                Total
             </td>
         </tr>
-        <span th:each="loopData : ${stickerData.getAbc}">
+        <tr>
+            <td style="width: 13%;font-weight: bold;" colspan="1">
+                Thickness
+            </td>
+            <td style="width: 10%;font-weight: bold;" colspan="1">
+                Sqft
+            </td>
+            <td style="width: 13%;font-weight: bold;" colspan="1">
+                Thickness
+            </td>
+            <td style="width: 10%;font-weight: bold;" colspan="1">
+                Sqft
+            </td>
+            <td style="width: 13%;font-weight: bold;" colspan="1">
+                Thickness
+            </td>
+            <td style="width: 10%;font-weight: bold;" colspan="1">
+                Sqft
+            </td>
+            <td style="width: 31%;font-weight: bold;" colspan="1">
+                total
+            </td>
+        </tr>
+        <span th:each="loopData : ${toughen.completedWorkOrders}">
             <tr>
-                <td style="width: 13%;" colspan="1">
+                <td style="width: 13%;height: 20px;vertical-align: middle;" colspan="1">
+                    <span th:text="${loopData.getThickness()}"></span>
                 </td>
-                <td style="width: 10%;" colspan="1">
+                <td style="width: 10%;height: 20px;" colspan="1">
+                    <span th:text="${loopData.getSqft()}"></span>
                 </td>
-                <td style="width: 13%;" colspan="1">
+                <td style="width: 13%;height: 20px;" colspan="1">
                 </td>
-                <td style="width: 10%;" colspan="1">
+                <td style="width: 10%;height: 20px;" colspan="1">
                 </td>
-                <td style="width: 13%;" colspan="1">
+                <td style="width: 13%;height: 20px;" colspan="1">
                 </td>
-                <td style="width: 10%;" colspan="1">
+                <td style="width: 10%;height: 20px;" colspan="1">
                 </td>
-                <td style="width: 31%;" colspan="1">
+                <td style="width: 31%;height: 20px;" colspan="1">
                 </td>
             </tr>
         </span>

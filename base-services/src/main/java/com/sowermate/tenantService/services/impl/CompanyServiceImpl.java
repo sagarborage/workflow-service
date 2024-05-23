@@ -63,6 +63,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public String getCompanyName(String companyUuid) {
+        return companyRepository.getCompanyNameByUuid(companyUuid);
+    }
+
+    @Override
     public CompanyValue deleteCompany(String tenantUuid, String companyUuid) {
         companyRepository.softDelete(tenantUuid, companyUuid);
         return getCompany(tenantUuid, companyUuid);

@@ -1,6 +1,8 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
+import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.entities.value.*;
@@ -215,6 +217,16 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             return list;
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public StickerReportProjection getStickerReport(String tenantUuid, String companyUuid, String batchItemUuid) {
+        return toughenBatchProcessDetailsRepository.findByStickerData(tenantUuid,companyUuid,batchItemUuid);
+    }
+
+    @Override
+    public List<CompletedGlassesProjection> getCompletedGlassesForReport(String tenantUuid, String companyUuid, LocalDate batchItemDate) {
+        return toughenBatchProcessRepository.findByThickness(tenantUuid,companyUuid, batchItemDate);
     }
 
     private void deductItemFromToughenItem(GeneralParamValue generalParamValue) {

@@ -15,11 +15,13 @@
         {
           font-family: 'Helvetica', sans-serif;
                     font-size: 14px;
+                    font-weight: bold;
+
         }
         td {
         border: 1px solid black;
         padding: 8px;
-        vertical-align: center;
+        vertical-align: middle;
         }
         .alignCenter {
         text-align: center;
@@ -42,15 +44,15 @@
     <span th:each="gatePassType : ${gatePass.getGatePassTypes}">
     <table class="alignCenter font-helva font-w-400 font-s-14">
         <tr>
-            <td style="width: 100%;" colspan="3">
+            <td style="width: 100%;font-weight: bold;font-size: 18px;" colspan="3">
                   <span th:text="${gatePassType}"></span>
             </td>
         </tr>
         <tr>
-            <td style="width: 25%;height: 40px;" colspan="1">
+            <td style="width: 25%;height: 40px;font-weight: bold;" colspan="1">
                 Gate Pass No.:<span th:text="${gatePass.getGatePassValue().getGatePassNo()}"></span>
             </td>
-            <td style="width: 70%;height: 40px;" colspan="2">
+            <td style="width: 70%;height: 40px;font-weight: bold;font-size: 22px;" colspan="2">
                 <span th:text="${gatePass.getPartyName()}"></span>
             </td>
         </tr>
