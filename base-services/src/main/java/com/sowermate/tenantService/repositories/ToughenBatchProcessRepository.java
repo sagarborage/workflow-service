@@ -3,6 +3,7 @@ package com.sowermate.tenantService.repositories;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
+import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
 import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
@@ -171,5 +172,25 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid, String companyUuid);
 
     ToughenBatchProcessEntity findByUuid(@Param("toughenBatchProcessUuid") String toughenBatchProcessUuid);
+
+
+    @Query("SELECT " +
+            "gt.id as id, " +
+            "gt.name as thickness, " +
+            "CASE WHEN pii.dispatchCompleted is NULL THEN 0 ELSE pii.dispatchCompleted END as dispatchCompleted, " +
+            "CASE WHEN pii.quantity is NULL THEN 0 ELSE pii.quantity END as totalQuantity, " +
+            "CASE WHEN pii.unitValue is NULL THEN 0 ELSE pii.unitValue END as unitValue " +
+            "FROM GlassThicknessEntity gt " +
+            "JOIN gt.tenantEntity t " +
+            "LEFT JOIN gt.proFormaInvoiceItemEntities pii "+
+            "LEFT JOIN pii.toughenBatchProcessDetailsEntity tbd " +
+            "LEFT JOIN tbd.toughenBatchProcessEntity tb " +
+            "LEFT JOIN tb.companyEntity c " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND(c.uuid is NULL OR c.uuid = :companyUuid) " +
+            "AND(Date(tb.createdDateTime) is NULL OR Date(tb.createdDateTime) =:batchProcessingDate) ")
+    List<CompletedGlassesProjection> findByThickness(String tenantUuid,String companyUuid, LocalDate batchProcessingDate);
+
+
 
 }

@@ -17,5 +17,7 @@ public interface CompanyService {
 
     public List<CompanyValue> getAllCompany(String tenantUuid );
 
+    String getCompanyName(String companyUuid);
+
     public CompanyInfoProjection getCompanyInfo(String companyUuid, String tenantUuid);
 }

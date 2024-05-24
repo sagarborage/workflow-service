@@ -134,6 +134,10 @@ public class ProFormaInvoiceItemEntity extends Base {
     @OneToMany(mappedBy = "proFormaInvoiceItemEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GatePassDetailsEntity> GatePassDetailsEntity;
 
+    @OneToOne(mappedBy="proFormaInvoiceItemEntity",cascade=CascadeType.ALL, orphanRemoval = true)
+    private ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity;
+
+
     public ProFormaInvoiceItemValue toDTO() {
         return ProFormaInvoiceItemValue.newBuilder()
                 .proFormaInvoiceUuid(getProFormaInvoiceEntity().getUuid())

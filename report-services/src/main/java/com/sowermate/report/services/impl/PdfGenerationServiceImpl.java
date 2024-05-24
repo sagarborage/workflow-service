@@ -7,13 +7,14 @@ import com.sowermate.image.services.PdfService;
 import com.sowermate.report.controllers.PIReportHeaderDetails;
 import com.sowermate.report.dtos.*;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
+import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
-import com.sowermate.tenantService.services.GatePassService;
-import com.sowermate.tenantService.services.PiInfoProjectionForReport;
+import com.sowermate.tenantService.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -39,8 +40,20 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     private PdfService pdfService;
     @Autowired
     private GatePassService gatePassService;
+
+    @Autowired
+    private GlassThicknessService glassThicknessService;
+
     @Autowired
     private PdfStorageConfig pdfStorageConfig;
+    @Autowired
+    private ToughenBatchProcessService toughenBatchProcessService;
+    @Autowired
+    private JbCreationService jbCreationService;
+
+    @Autowired
+    private CompanyService companyService;
+
 
     @Autowired
     public PdfGenerationServiceImpl(TemplateEngine templateEngine) {
@@ -48,8 +61,13 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     @Override
-    public byte[] generateToughenSticker(StickerReportDto stickerReportDto) throws IOException {
-        byte[] pdfBytes = generatePdfForSticker(stickerReportDto);
+    public byte[] generateToughenSticker(StickerRequestDto stickerRequestDto) throws IOException {
+        StickerReportProjection stickerReportProjection = toughenBatchProcessService.getStickerReport(stickerRequestDto.getTenantUuid(), stickerRequestDto.getCompanyUuid(), stickerRequestDto.getBatchItemUuid());
+        if (stickerReportProjection == null) {
+            stickerReportProjection = jbCreationService.getStickerData(stickerRequestDto.getBatchItemUuid());
+        }
+
+        byte[] pdfBytes = generatePdfForSticker(stickerReportProjection);
         pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
     }
@@ -68,7 +86,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         GatePassValue gatePassValue = gatePassService.getGatePass(gatePassUuid, tenantUuid, companyUuid);
         List<GlassInfoProjection> glassInfoProjection = gatePassService.getGlassInfoForReport(gatePassUuid);
         int totalQuantity = 0;
-        for(GlassInfoProjection g : glassInfoProjection){
+        for (GlassInfoProjection g : glassInfoProjection) {
             totalQuantity = totalQuantity + g.getQuantity();
         }
         gatePassReportDto.setTotalQuantity(totalQuantity);
@@ -89,7 +107,41 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     @Override
-    public byte[] generateToughenBatch(ToughenBatchReportDto toughenBatchReportDto) throws IOException {
+    public byte[] generateToughenBatch(ToughenBatchReportRequestDto toughenBatchReportRequestDto) throws IOException {
+        ToughenBatchReportDto toughenBatchReportDto = new ToughenBatchReportDto();
+        List<CompletedGlassesProjection> completedWorkOrders = toughenBatchProcessService.getCompletedGlassesForReport(toughenBatchReportRequestDto.getTenantUuid(), toughenBatchReportRequestDto.getCompanyUuid(), toughenBatchReportRequestDto.getBatchItemDate());
+        List<CompletedGlassValue> completedGlassValueList = new ArrayList<>();
+        completedWorkOrders.stream().peek(c -> {
+            CompletedGlassValue completedGlassValue = new CompletedGlassValue();
+            completedGlassValue.setThicknessId(c.getId());
+            if (c.getUnitValue() > 0)
+                completedGlassValue.setSqft((c.getUnitValue() / c.getTotalQuantity()) * c.getDispatchCompleted());
+            else
+                completedGlassValue.setSqft(0.0);
+            completedGlassValueList.add(completedGlassValue);
+        }).collect(Collectors.toList());
+
+        Map<Long, Double> aggregatedMap = completedGlassValueList.stream()
+                .collect(Collectors.groupingBy(
+                        CompletedGlassValue::getThicknessId,
+                        Collectors.summingDouble(CompletedGlassValue::getSqft)
+                ));
+
+        List<CompletedGlassValue> aggregatedList = aggregatedMap.entrySet().stream()
+                .map(entry -> {
+                    CompletedGlassValue aggregatedValue = new CompletedGlassValue();
+                    aggregatedValue.setThicknessId(entry.getKey());
+                    aggregatedValue.setThickness(glassThicknessService.getGlassThicknessNameById(entry.getKey()));
+                    aggregatedValue.setSqft(entry.getValue());
+                    return aggregatedValue;
+                })
+                .toList();
+
+        //TODO need to add data for jb
+
+        toughenBatchReportDto.setCompletedWorkOrders(aggregatedList);
+        toughenBatchReportDto.setDate(toughenBatchReportRequestDto.getBatchItemDate());
+        toughenBatchReportDto.setPartyName(companyService.getCompanyName(toughenBatchReportRequestDto.getCompanyUuid()));
         byte[] pdfBytes = generatePdfForToughenBatch(toughenBatchReportDto);
         pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
@@ -144,12 +196,12 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         }
     }
 
-    private byte[] generatePdfForSticker(StickerReportDto stickerDataValue) {
+    private byte[] generatePdfForSticker(StickerReportProjection stickerDataList) {
         try {
             Context context = new Context();
-            context.setVariable("stickerData", stickerDataValue);
+            context.setVariable("stickerDataList", stickerDataList);
 
-            String htmlContent = templateEngine.process("gate-pass", context);
+            String htmlContent = templateEngine.process("sticker", context);
 
             ITextRenderer renderer = new ITextRenderer(1000, 710);
             renderer.getSharedContext().setBaseURL("classpath:/static/");

@@ -14,6 +14,6 @@ public class StickerReportDto {
     private String partyName;
     private String size;
     private LocalDate date;
-    private String unknownColumn;
+    private String stickerNumber;
     private List<StickerReportDto> abc;
 }

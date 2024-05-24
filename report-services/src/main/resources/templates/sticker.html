@@ -53,13 +53,15 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 30%;height: 30px" colspan="1">1/10</td>
+            <td style="width: 30%;height: 30px" colspan="1">
+                <span th:text="${stickerData.getStickerNumber()}"></span>
+            </td>
             <td class="alignCenter font-12" style="width: 35%;height: 30px" colspan="1">
                 Size <span th:text="${stickerData.getSize()}"></span>
             </td>
             <td class="alignCenter font-12" style="width: 35%;height: 30px" colspan="1">
-                Date
-                <span th:text="${#temporals.format(stickerData.getDate(), 'dd-MM-yy')}"></span>
+                <div>Today</div>
+        <div><span th:text="${#dates.format(new java.util.Date(), 'dd-MM-yyyy')}"></span></div>
             </td>
 
         </tr>

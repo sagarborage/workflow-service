@@ -50,9 +50,14 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
     }
 
     @Override
-    public GlassThicknessValue getGlassThickness(String tenantUuid, String glassThicknessUuid) {
+    public GlassThicknessValue getGlassThicknessNameById(String tenantUuid, String glassThicknessUuid) {
         GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid, glassThicknessUuid);
         return glassThicknessEntity.toDTO().toBuilder().tenantUuid(tenantUuid).build();
+    }
+
+    @Override
+    public String getGlassThicknessNameById(Long id) {
+        return glassThicknessRepository.getFindGlassThickNess(id);
     }
 
     @Override

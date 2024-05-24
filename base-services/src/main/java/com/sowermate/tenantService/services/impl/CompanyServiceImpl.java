@@ -63,6 +63,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public String getCompanyName(String companyUuid) {
+        return companyRepository.getCompanyNameByUuid(companyUuid);
+    }
+
+    @Override
     public CompanyValue deleteCompany(String tenantUuid, String companyUuid) {
         companyRepository.softDelete(tenantUuid, companyUuid);
         return getCompany(tenantUuid, companyUuid);
@@ -89,6 +94,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .tenantEntity(tenantEntity).companyType(companyType)
                     .createdDateTime(companyEntityTemp.getCreatedDateTime())
                     .createdBy(companyEntityTemp.getCreatedBy())
+                    .version(companyEntityTemp.getVersion())
                     .build());
         }
     }
@@ -106,6 +112,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .addressType(addressType).company(companyEntity)
                     .createdDateTime(addressEntityTemp.getCreatedDateTime())
                     .createdBy(addressEntityTemp.getCreatedBy())
+                    .version(addressEntityTemp.getVersion())
                     .build();
             return addressRepository.save(addressEntity);
         }
@@ -118,6 +125,6 @@ public class CompanyServiceImpl implements CompanyService {
                         .addresses(ObjectUtils.isEmpty(ce.getAddresses()) ?
                                 null : Arrays.asList(ce.getAddresses().get(0).toDTO()))
                         .build()
-                ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 }

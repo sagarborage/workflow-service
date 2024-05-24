@@ -343,8 +343,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     //TODO: Remove this code lateron
 
     @Override
-    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate) {
-        List<ProFormaInvoiceEntity> proFormaInvoiceEntity = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, startDate, endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate) {
+        List<ProFormaInvoiceEntity> proFormaInvoiceEntity = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid,companyUuid, startDate, endDate);
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = new ArrayList<>();
         for (ProFormaInvoiceEntity formaInvoiceEntity : proFormaInvoiceEntity) {
             proFormaInvoiceHomeDetails.add(getProFormaInvoiceHomeDetails(formaInvoiceEntity));

@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.GlassThicknessEntity;
 import com.sowermate.tenantService.entities.JbCreationEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
+import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
 import com.sowermate.tenantService.repositories.GlassThicknessRepository;
 import com.sowermate.tenantService.repositories.JbCreationRepository;
@@ -54,6 +55,11 @@ public class JbCreationServiceImpl implements JbCreationService {
     public JbCreationValue deleteJbCreation(String toughenBatchProcessUuid, String jbCreationUuid) {
         jbCreationRepository.softDelete(toughenBatchProcessUuid, jbCreationUuid);
         return getJbCreation(toughenBatchProcessUuid, jbCreationUuid);
+    }
+
+    @Override
+    public StickerReportProjection getStickerData(String jbUuid) {
+        return jbCreationRepository.findByStickerData(jbUuid);
     }
 
 

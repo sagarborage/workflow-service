@@ -9,7 +9,9 @@ public interface GlassThicknessService {
 
     public GlassThicknessValue editGlassThickness(GlassThicknessValue glassThicknessValue);
 
-    public GlassThicknessValue getGlassThickness(String tenantUuid, String glassThicknessUuid);
+    public GlassThicknessValue getGlassThicknessNameById(String tenantUuid, String glassThicknessUuid);
+
+    public String getGlassThicknessNameById(Long id);
 
     public GlassThicknessValue deleteGlassThickness(String tenantUuid, String glassThicknessUuid);
 
