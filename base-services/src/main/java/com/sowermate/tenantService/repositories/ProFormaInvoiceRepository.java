@@ -38,7 +38,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     //ProFormaInvoiceEntity findByUuid(String uuid);
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
 
-    ProFormaInvoiceEntity findByUuid( String uuid);
+    ProFormaInvoiceEntity findByUuid(String uuid);
 
     //TODO: Remove this method later on if below new method works fine
 /*    @Query("SELECT pfie.uuid as uuid, " +
@@ -57,8 +57,8 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);*/
 
     @Query("SELECT pfie FROM ProFormaInvoiceEntity pfie " +
-            "where pfie.tenantEntity.uuid = :tenantUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.invoiceDate DESC")
-    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
+            "where pfie.tenantEntity.uuid = :tenantUuid and pfie.firm.uuid = :companyUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.invoiceDate DESC")
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -115,8 +116,8 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceValues, HttpStatus.ACCEPTED);
     }*/
 
-    @GetMapping("/{tenantUuid}/{startDate}/{endDate}")
-    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
+    @GetMapping("/{tenantUuid}/{companyUuid}/{startDate}/{endDate}")
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid,@PathVariable String companyUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
         try {
             DateTimeFormatter formatter = FORMATTER;
@@ -124,7 +125,26 @@ public class ProFormaInvoiceController {
             endDate = endDate + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
-            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, startingDate, endingDate);
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid,companyUuid, startingDate, endingDate);
+            Logger.info("records " + proFormaInvoiceHomeDetails.size());
+        } catch (Exception e) {
+            Logger.error("Error while getting Seller:", e);
+        }
+        return new ResponseEntity<>(proFormaInvoiceHomeDetails, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{tenantUuid}/{companyUuid}/{month}")
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoiceByMonth(@PathVariable String tenantUuid,@PathVariable String companyUuid, @PathVariable(name = "month") String month) {
+        List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
+        try {
+            YearMonth yearMonth = YearMonth.parse(month, DateTimeFormatter.ofPattern("yyyy-MM"));
+
+            DateTimeFormatter formatter = FORMATTER;
+            String startDate = yearMonth.atDay(1) + BEGINNING;
+            String endDate = yearMonth.atEndOfMonth() + ENDING;
+            LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
+            LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid,companyUuid, startingDate, endingDate);
             Logger.info("records " + proFormaInvoiceHomeDetails.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);

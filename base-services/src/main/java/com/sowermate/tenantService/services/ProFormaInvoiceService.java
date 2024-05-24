@@ -22,7 +22,7 @@ public interface ProFormaInvoiceService {
     public int deleteProFormaInvoice(String tenantUuid,String proFormaInvoiceUuid);
 
     //public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
-    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
 
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType);
 
