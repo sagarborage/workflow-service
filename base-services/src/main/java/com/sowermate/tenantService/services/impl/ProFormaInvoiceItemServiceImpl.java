@@ -177,6 +177,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 .toughenCompleted(proFormaInvoiceItemValue.getToughenCompleted() == null ? tempProFormaInvoiceItemEntity.getToughenCompleted() : proFormaInvoiceItemValue.getToughenCompleted())
                 .dispatchCompleted(proFormaInvoiceItemValue.getDispatchCompleted() == null ? tempProFormaInvoiceItemEntity.getDispatchCompleted() : proFormaInvoiceItemValue.getDispatchCompleted())
                 .gatePassCompleted(proFormaInvoiceItemValue.getGatePassCompleted() == null ? tempProFormaInvoiceItemEntity.getGatePassCompleted() : proFormaInvoiceItemValue.getGatePassCompleted())
+                .status(proFormaInvoiceItemValue.getStatus() == null ? tempProFormaInvoiceItemEntity.getStatus() : proFormaInvoiceItemValue.getStatus())
                 .fileUrl(proFormaInvoiceItemValue.getBase64File() == null ? tempProFormaInvoiceItemEntity.getFileUrl() : fileUrl)
                 .createdDateTime(tempProFormaInvoiceItemEntity.getCreatedDateTime())
                 .createdBy(tempProFormaInvoiceItemEntity.getCreatedBy())
