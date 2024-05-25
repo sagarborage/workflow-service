@@ -26,7 +26,7 @@ public class ToughenBatchProcessDetailsEntity extends Base {
     @JoinColumn(name = "work_order_id", nullable = false)
     private WorkOrderEntity workOrderEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proforma_invoice_item_id", nullable = false)
     private ProFormaInvoiceItemEntity proFormaInvoiceItemEntity;
 

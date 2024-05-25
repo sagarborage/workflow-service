@@ -3,7 +3,6 @@ package com.sowermate.tenantService.entities;
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceItemStatusEnum;
-import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -134,8 +133,8 @@ public class ProFormaInvoiceItemEntity extends Base {
     @OneToMany(mappedBy = "proFormaInvoiceItemEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GatePassDetailsEntity> GatePassDetailsEntity;
 
-    @OneToOne(mappedBy="proFormaInvoiceItemEntity",cascade=CascadeType.ALL, orphanRemoval = true)
-    private ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity;
+    @OneToMany(mappedBy="proFormaInvoiceItemEntity",cascade=CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ToughenBatchProcessDetailsEntity> toughenBatchProcessDetailsEntity;
 
 
     public ProFormaInvoiceItemValue toDTO() {
