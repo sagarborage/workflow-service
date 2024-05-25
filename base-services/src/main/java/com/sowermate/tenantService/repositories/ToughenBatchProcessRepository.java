@@ -122,7 +122,9 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN p.firm f " +
             "WHERE f.uuid =:firmUuid AND " +
             "t.uuid =:tenantUuid AND " +
-            "Date(tb.createdDateTime) =:batchProcessingDate UNION " +
+            "Date(tb.createdDateTime) =:batchProcessingDate " +
+            "AND tb.status = 'COMPLETED'"+
+            "UNION " +
             "SELECT " +
             "tb.uuid as batchUuid," +
             "tb.batchNo as batchNo, " +
@@ -144,7 +146,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN p.firm f " +
             "WHERE f.uuid =:firmUuid AND " +
             "t.uuid =:tenantUuid AND " +
-            "Date(tb.createdDateTime) =:batchProcessingDate "
+            "Date(tb.createdDateTime) =:batchProcessingDate " +
+            "AND tb.status = 'COMPLETED'"
     )
     List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String firmUuid, LocalDate batchProcessingDate);
 
