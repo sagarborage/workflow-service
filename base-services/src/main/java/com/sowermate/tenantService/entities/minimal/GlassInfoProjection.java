@@ -5,5 +5,6 @@ public interface GlassInfoProjection {
 
     String getThickness();
 
-    Integer getQuantity();
+    Integer getTotalItemQty();
+    Integer getGatePassItemQty();
 }

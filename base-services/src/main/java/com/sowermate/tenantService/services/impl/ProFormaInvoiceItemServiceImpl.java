@@ -311,7 +311,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 bucketManipulationValue.setQuantity(entity.getQuantity() - entity.getOptimizeCompleted());
             }
             if(bucketManipulationValue.getCurrentBucket().equalsIgnoreCase("Dispatch")) {
-                bucketManipulationValue.setQuantity(entity.getQuantity() - entity.getDispatchCompleted());
+                bucketManipulationValue.setQuantity(entity.getDispatchBucket());
             }
             proFormaInvoiceIndividualsOrdersProjections = bucketManipulation("add", bucketManipulationValue);
         }

@@ -63,8 +63,8 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
     @Query("SELECT " +
             "gs.name as glassSpecification , " +
             "gt.name as thickness, " +
-            "pii.quantity as quantity "+
-
+            "pii.quantity as totalItemQty, "+
+            "gd.gatePassQty as gatePassItemQty "+
             "FROM GatePassEntity g " +
             "JOIN g.gatePassDetailsEntities gd "+
             "JOIN gd.proFormaInvoiceItemEntity pii "+

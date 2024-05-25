@@ -87,7 +87,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         List<GlassInfoProjection> glassInfoProjection = gatePassService.getGlassInfoForReport(gatePassUuid);
         int totalQuantity = 0;
         for (GlassInfoProjection g : glassInfoProjection) {
-            totalQuantity = totalQuantity + g.getQuantity();
+            totalQuantity = totalQuantity + g.getGatePassItemQty();
         }
         gatePassReportDto.setTotalQuantity(totalQuantity);
         PiInfoProjectionForReport piInfoProjectionForReport = gatePassService.getPiInfoForReport(gatePassUuid);

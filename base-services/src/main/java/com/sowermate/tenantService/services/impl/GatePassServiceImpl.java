@@ -64,7 +64,7 @@ public class GatePassServiceImpl implements GatePassService {
                 gatePassDetailsEntity.setGatePassQty(proFormaInvoiceItemEntity.getGatePassBucket());
                 gatePassDetailsEntity.setIsActive(gatePassEntity.getIsActive());
                 gatePassDetailsEntities.add(gatePassDetailsEntity);
-                proFormaInvoiceItemEntity.setGatePassCompleted(proFormaInvoiceItemEntity.getGatePassBucket());
+                proFormaInvoiceItemEntity.setGatePassCompleted(proFormaInvoiceItemEntity.getGatePassCompleted() + proFormaInvoiceItemEntity.getGatePassBucket());
                 proFormaInvoiceItemEntity.setGatePassBucket(0);
                 proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
             }
