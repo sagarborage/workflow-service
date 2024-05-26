@@ -196,10 +196,10 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         }
     }
 
-    private byte[] generatePdfForSticker(StickerReportProjection stickerDataList) {
+    private byte[] generatePdfForSticker(StickerReportProjection stickerData) {
         try {
             Context context = new Context();
-            context.setVariable("stickerDataList", stickerDataList);
+            context.setVariable("stickerData", stickerData);
 
             String htmlContent = templateEngine.process("sticker", context);
 
