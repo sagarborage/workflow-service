@@ -112,8 +112,16 @@ public class PdfGenerationController {
         return ResponseEntity.ok().headers(headers).body(finalPdf);
     }
 
-    @PostMapping("/sticker")
-    public ResponseEntity<byte[]> generateToughenSticker(@RequestBody StickerRequestDto stickerRequestDto) throws IOException {
+    @PostMapping("/sticker/{tenantUuid}/{companyUuid}/{batchItemUuid}")
+    public ResponseEntity<byte[]> generateToughenSticker(@PathVariable String tenantUuid,
+                                                         @PathVariable String companyUuid,
+                                                         @PathVariable String batchItemUuid) throws IOException {
+
+        StickerRequestDto stickerRequestDto = new StickerRequestDto();
+
+        stickerRequestDto.setTenantUuid(tenantUuid);
+        stickerRequestDto.setCompanyUuid(companyUuid);
+        stickerRequestDto.setBatchItemUuid(batchItemUuid);
         byte[] pdfContent = pdfGenerationService.generateToughenSticker(stickerRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
