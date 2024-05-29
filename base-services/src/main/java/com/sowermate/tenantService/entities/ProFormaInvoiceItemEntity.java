@@ -133,7 +133,7 @@ public class ProFormaInvoiceItemEntity extends Base {
     @OneToMany(mappedBy = "proFormaInvoiceItemEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GatePassDetailsEntity> GatePassDetailsEntity;
 
-    @OneToMany(mappedBy="proFormaInvoiceItemEntity",cascade=CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy="proFormaInvoiceItemEntity",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ToughenBatchProcessDetailsEntity> toughenBatchProcessDetailsEntity;
 
 
