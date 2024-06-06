@@ -304,14 +304,14 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
 
         reportDetails.setGstType("Maharashtra".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
-        reportDetails.setIGst("" + piValue.getGstCharges());
-        reportDetails.setSGst("" + piValue.getGstCharges() / 2);
-        reportDetails.setCGst("" + piValue.getGstCharges() / 2);
+        reportDetails.setIGst("" + (!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() : 0));
+        reportDetails.setSGst("" + (!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0));
+        reportDetails.setCGst("" + (!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0));
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
         reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() + "" : "0");
-        reportDetails.setIPercentAmount((piValue.getInsurancePercentAmount() + ""));
-        reportDetails.setUPercentAmount((piValue.getUrgencyPercentAmount() + ""));
-        reportDetails.setGrandTotal(Math.round(piValue.getGrandTotal()));
+        reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount()  + ""));
+        reportDetails.setUPercentAmount((ObjectUtils.isEmpty(piValue.getUrgencyPercentAmount()) ? "0" : piValue.getUrgencyPercentAmount() + ""));
+        reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0 : Math.round(piValue.getGrandTotal()));
     }
 
     private List<ServiceRateInvoiceValue> serviceRateDetails(ProFormaInvoiceValue piValue) {
