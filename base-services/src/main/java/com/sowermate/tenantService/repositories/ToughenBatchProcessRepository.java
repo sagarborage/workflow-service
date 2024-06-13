@@ -124,7 +124,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate " +
             "AND tb.status = 'COMPLETED'"+
-            "UNION " +
+            "UNION ALL " +
             "SELECT " +
             "tb.uuid as batchUuid," +
             "tb.batchNo as batchNo, " +
@@ -138,17 +138,17 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "jb.heightMm as chargeableHeight " +
             "FROM JbCreationEntity jb " +
             "JOIN jb.toughenBatchProcessEntity tb " +
-            "JOIN tb.tenantEntity t " +
-            "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
-            "JOIN tbd.proFormaInvoiceItemEntity pi " +
-            "JOIN pi.glassThicknessEntity th " +
-            "JOIN pi.proFormaInvoiceEntity p " +
-            "JOIN p.firm f " +
-            "WHERE f.uuid =:firmUuid AND " +
-            "t.uuid =:tenantUuid AND " +
+           // "JOIN tb.tenantEntity t " +
+            //"JOIN tb.toughenBatchProcessDetailsEntities tbd " +
+            //"JOIN tbd.proFormaInvoiceItemEntity pi " +
+            //"JOIN pi.glassThicknessEntity th " +
+            //"JOIN pi.proFormaInvoiceEntity p " +
+            //"JOIN p.firm f " +
+            "WHERE " +
+            //"t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate " +
-            "AND tb.status = 'COMPLETED'"
-    )
+            "ORDER BY tb.batchNo desc"
+    )//TODO:: this has to be handled with multiple company type (JB0
     List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String firmUuid, LocalDate batchProcessingDate);
 
 
