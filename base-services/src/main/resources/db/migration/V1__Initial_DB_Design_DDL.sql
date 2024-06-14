@@ -469,6 +469,7 @@ CREATE TABLE work_order (
    last_updated_by VARCHAR(64) NOT NULL,
    last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
    version INT NOT NULL DEFAULT 1,
+   UNIQUE KEY ONE_WORK_ORDER_PER_PI (tenant_id, firm_id, proforma_invoice_id),
    PRIMARY KEY (id) USING BTREE,
    CONSTRAINT work_order_tenant_ibfk_1
    FOREIGN KEY (tenant_id) REFERENCES tenant (id),
