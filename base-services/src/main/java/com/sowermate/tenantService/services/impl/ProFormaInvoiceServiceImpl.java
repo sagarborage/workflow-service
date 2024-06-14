@@ -290,44 +290,50 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     public ProFormaInvoiceValue updateConfirmThrough(String tenantUuid, String proFormaInvoiceUuid, String confirmThroughUuid) {
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
-        ConfirmThroughEntity confirmThroughEntity = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid);
-        if (confirmThroughEntity == null) {
-            throw new ResourceNotFoundException();
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantUuidPIUuidAndPICurrentStatus(tenantUuid, proFormaInvoiceUuid, ProformaInvoiceStatusEnum.NEW);
+        if(!ObjectUtils.isEmpty(proFormaInvoiceEntity)) {
+            ConfirmThroughEntity confirmThroughEntity = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid);
+            if (confirmThroughEntity == null) {
+                throw new ResourceNotFoundException();
+            }
+            proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughEntity);
+            ProFormaInvoiceEntity proFormaInvoiceEntityUpdated = proFormaInvoiceRepository.save(proFormaInvoiceEntity.toBuilder()
+                    .status(ProformaInvoiceStatusEnum.CONFIRM).build());
+
+            WorkOrderEntity workOrderEntity = new WorkOrderEntity();
+            workOrderEntity.setProFormaInvoiceEntity(proFormaInvoiceEntity);
+            workOrderEntity.setTenantEntity(proFormaInvoiceEntity.getTenantEntity());
+            workOrderEntity.setFirm(proFormaInvoiceEntity.getFirm());
+            workOrderEntity.setIsActive(true);
+            WorkOrderEntity forCheck = workOrderRepository.save(workOrderEntity);
+
+            if (proFormaInvoiceEntityUpdated.getConfirmThroughEntity() != null) {
+                List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntityList = proFormaInvoiceItemRepository.findAllByProFormaInvoiceEntity_uuid(proFormaInvoiceEntity.getUuid());
+                proFormaInvoiceItemEntityList.stream().map(item -> {
+                    item.setOptimizeBucket(item.getQuantity());
+                    return proFormaInvoiceEntity;
+                }).collect(Collectors.toList());
+                proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntityList);
+            }
+
+            return proFormaInvoiceRepository.save(proFormaInvoiceEntityUpdated).toDTO();
         }
-        proFormaInvoiceEntity.setConfirmThroughEntity(confirmThroughEntity);
-        ProFormaInvoiceEntity proFormaInvoiceEntityUpdated = proFormaInvoiceRepository.save(proFormaInvoiceEntity.toBuilder()
-                .status(ProformaInvoiceStatusEnum.CONFIRM).build());
-
-        WorkOrderEntity workOrderEntity = new WorkOrderEntity();
-        workOrderEntity.setProFormaInvoiceEntity(proFormaInvoiceEntity);
-        workOrderEntity.setTenantEntity(proFormaInvoiceEntity.getTenantEntity());
-        workOrderEntity.setFirm(proFormaInvoiceEntity.getFirm());
-        workOrderEntity.setIsActive(true);
-        WorkOrderEntity forCheck = workOrderRepository.save(workOrderEntity);
-
-
-        if (proFormaInvoiceEntityUpdated.getConfirmThroughEntity() != null) {
-            List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntityList = proFormaInvoiceItemRepository.findAllByProFormaInvoiceEntity_uuid(proFormaInvoiceEntity.getUuid());
-            proFormaInvoiceItemEntityList.stream().map(item -> {
-                item.setOptimizeBucket(item.getQuantity());
-                return proFormaInvoiceEntity;
-            }).collect(Collectors.toList());
-            proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntityList);
-        }
-
-        return proFormaInvoiceRepository.save(proFormaInvoiceEntityUpdated).toDTO();
+        return null;
     }
 
     @Override
-    public ProFormaInvoiceValue updatePIStatus(String tenantUuid, String proFormaInvoiceUuid, ProformaInvoiceStatusEnum status, String statusDetails) {
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantUuid, proFormaInvoiceUuid);
-        if (status.equals(ProformaInvoiceStatusEnum.CANCEL) || status.equals(ProformaInvoiceStatusEnum.HOLD)) {
-            proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(status).statusDetails(statusDetails).build();
-        } else if (status.equals(ProformaInvoiceStatusEnum.NEW)) {
-            proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(status).statusDetails("").build();
+    public ProFormaInvoiceValue updatePIStatus(String tenantUuid, String proFormaInvoiceUuid,  ProformaInvoiceStatusEnum currentStatus, ProformaInvoiceStatusEnum newStatus, String statusDetails) {
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantUuidPIUuidAndPICurrentStatus(tenantUuid, proFormaInvoiceUuid, currentStatus);
+
+        if(!ObjectUtils.isEmpty(proFormaInvoiceEntity)) {
+            if (newStatus.equals(ProformaInvoiceStatusEnum.CANCEL) || newStatus.equals(ProformaInvoiceStatusEnum.HOLD)) {
+                proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(newStatus).statusDetails(statusDetails).build();
+            } else if (newStatus.equals(ProformaInvoiceStatusEnum.NEW)) {
+                proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(newStatus).statusDetails("").build();
+            }
+            return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
         }
-        return proFormaInvoiceRepository.save(proFormaInvoiceEntity).toDTO();
+        return null;
     }
 
     @Override

@@ -63,16 +63,17 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<ProFormaInvoiceValue>(proFormaInvoiceValue1, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/updatePIStatus/{tenantUuid}/{proFormaInvoiceUuid}/{status}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updatePIStatus/{tenantUuid}/{proFormaInvoiceUuid}/{currentStatus}/{newStatus}", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ProFormaInvoiceValue> updatePIStatus(@PathVariable String tenantUuid,
                                                                @PathVariable String proFormaInvoiceUuid,
-                                                               @PathVariable ProformaInvoiceStatusEnum status,
+                                                               @PathVariable ProformaInvoiceStatusEnum currentStatus,
+                                                               @PathVariable ProformaInvoiceStatusEnum newStatus,
                                                                @RequestParam(required = false) String statusDetails
     ) {
         ProFormaInvoiceValue proFormaInvoiceValue = null;
         try {
-            proFormaInvoiceValue = proFormaInvoiceService.updatePIStatus(tenantUuid, proFormaInvoiceUuid, status, statusDetails);
+            proFormaInvoiceValue = proFormaInvoiceService.updatePIStatus(tenantUuid, proFormaInvoiceUuid, currentStatus, newStatus, statusDetails);
         } catch (Exception e) {
             Logger.error("Error while update PI Status:", e);
         }

@@ -3,6 +3,7 @@ package com.sowermate.tenantService.repositories;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,6 +31,13 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "WHERE t.uuid = :tenantUuid " +
             "AND p.uuid = :proFormaInvoiceUuid")
     ProFormaInvoiceEntity findByTenantEntity_UuidAndproFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
+
+    @Query("SELECT p FROM ProFormaInvoiceEntity p " +
+            "JOIN p.tenantEntity t " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND p.uuid = :proFormaInvoiceUuid AND p.status = :currentStatus")
+    ProFormaInvoiceEntity findByTenantUuidPIUuidAndPICurrentStatus(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid, @Param("currentStatus") ProformaInvoiceStatusEnum currentStatus);
+
 
     Optional<ProFormaInvoiceEntity> findById(String proFormaInvoiceId);
 
