@@ -10,10 +10,7 @@ import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
-import com.sowermate.tenantService.entities.value.GatePassValue;
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
-import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.tenantService.entities.value.*;
 import com.sowermate.tenantService.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,8 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -149,7 +148,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     @Override
     public byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
-        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = glassItemDetails(piValue);
 
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
 
@@ -160,7 +159,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     @Override
     public byte[] generateWorkOrder(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
-        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = glassItemDetails(piValue);
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = glassItemDetails(piValue);
 
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
 
@@ -271,22 +270,25 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         }
     }
 
-    private void extractCommonLogic(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails) {
+    private void extractCommonLogic(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails) {
         double totalQuantity = glassItemDetails.values().stream()
                 .flatMap(List::stream)
-                .mapToDouble(ProFormaInvoiceItemValue::getQuantity)
+                .mapToDouble(ProFormaInvoiceItemReportValue::getQuantity)
                 .sum();
-        double totalUnitTotal = glassItemDetails.values().stream()
-                .flatMap(List::stream)
-                .mapToDouble(ProFormaInvoiceItemValue::getUnitValue)
-                .sum();
+        BigDecimal totalUnitTotal = BigDecimal.ZERO;
+        for (List<ProFormaInvoiceItemReportValue> itemList : glassItemDetails.values()) {
+            for (ProFormaInvoiceItemReportValue item : itemList) {
+                totalUnitTotal = totalUnitTotal.add(item.getUnitValue());
+            }
+        }
+
         double totalRatePerUnit = glassItemDetails.values().stream()
                 .flatMap(List::stream)
-                .mapToDouble(ProFormaInvoiceItemValue::getRatePerUnit)
+                .mapToDouble(ProFormaInvoiceItemReportValue::getRatePerUnit)
                 .sum();
         double totalAmount = glassItemDetails.values().stream()
                 .flatMap(List::stream)
-                .mapToDouble(ProFormaInvoiceItemValue::getAmount)
+                .mapToDouble(ProFormaInvoiceItemReportValue::getAmount)
                 .sum();
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -304,9 +306,9 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
 
         reportDetails.setGstType("Maharashtra".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
-        reportDetails.setIGst("" + (!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() : 0));
-        reportDetails.setSGst("" + (!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0));
-        reportDetails.setCGst("" + (!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0));
+        reportDetails.setIGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() : 0)));
+        reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
+        reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
         reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() + "" : "0");
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount()  + ""));
@@ -318,24 +320,71 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         return piValue.getServiceRateInvoices();
     }
 
-    private Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
+    private Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
         List<ProFormaInvoiceItemValue> itemList = piValue.getProFormaInvoiceItems();
+
+        List<ProFormaInvoiceItemReportValue> itemsList = itemList.stream().map(this::toReportVal).toList();
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails = itemList.stream()
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = itemsList.stream()
                 .collect(Collectors.groupingBy(
                         glass -> new PIReportHeaderDetails(
                                 glass.getGlassSpecificationName(),
                                 glass.getGlassThicknessName(),
-                                itemList.stream()
+                                decimalFormat.format(itemList.stream()
                                         .filter(g -> g.getGlassSpecificationName().equals(glass.getGlassSpecificationName()) &&
                                                 g.getGlassThicknessName().equals(glass.getGlassThicknessName()))
                                         .mapToDouble(item -> Double.parseDouble(decimalFormat.format(item.getUnitValue())))
-                                        .sum()
+                                        .sum())
                         )
                 ));
         return glassItemDetails;
+    }
+
+    public ProFormaInvoiceItemReportValue toReportVal(ProFormaInvoiceItemValue value) {
+        return ProFormaInvoiceItemReportValue.newBuilder()
+                .id(value.getProFormaInvoiceItemId())
+                .uuid(value.getUuid())
+                .widthInch(value.getWidthInch())
+                .widthMeasurement(value.getWidthMeasurement())
+                .widthMeasurementLabel(value.getWidthMeasurementLabel())
+                .actualWidth(Math.round(value.getActualWidth()) + "")
+                .chargeableWidth(value.getChargeableWidth())
+                .heightInch(value.getHeightInch())
+                .heightMeasurement(value.getHeightMeasurement())
+                .heightMeasurementLabel(value.getHeightMeasurementLabel())
+                .actualHeight(Math.round(value.getActualHeight())+"")
+                .chargeableHeight(value.getChargeableHeight())
+                .extraMm(value.getExtraMm())
+                .quantity(value.getQuantity())
+                .unitValue( BigDecimal.valueOf(value.getUnitValue()).setScale(2, RoundingMode.HALF_UP))
+                .ratePerUnit(value.getRatePerUnit())
+                .unitMeasurementLabel(value.getUnitMeasurementLabel())
+                .amount(value.getAmount())
+                //added below condition to initially inset 0 value in bucket
+                .optimizeBucket(value.getOptimizeBucket() == null ? 0 : value.getOptimizeBucket())
+                .cuttingBucket(value.getCuttingBucket() == null ? 0 : value.getCuttingBucket())
+                .toughenBucket(value.getToughenBucket() == null ? 0 : value.getToughenBucket())
+                .dispatchBucket(value.getDispatchBucket() == null ? 0 : value.getDispatchBucket())
+                .gatePassBucket(value.getGatePassBucket() == null ? 0 : value.getGatePassBucket())
+                .optimizeCompleted(value.getOptimizeCompleted() == null ? 0 : value.getOptimizeCompleted())
+                .cuttingCompleted(value.getCuttingCompleted() == null ? 0 : value.getCuttingCompleted())
+                .toughenCompleted(value.getToughenCompleted() == null ? 0 : value.getToughenCompleted())
+                .dispatchCompleted(value.getDispatchCompleted() == null ? 0 : value.getDispatchCompleted())
+                .gatePassCompleted(value.getGatePassCompleted() == null ? 0 : value.getGatePassCompleted())
+                .glassSpecificationName(value.getGlassSpecificationName())
+                .glassThicknessName(value.getGlassThicknessName())
+                .glassTypeName(value.getGlassTypeName())
+                //.tenantEntity(getTenantValue().toEntity())
+                //.glassTypeEntity(getGlassTypeValue().toEntity())
+                //.glassThicknessEntity(getGlassThicknessValue().toEntity())
+                //.glassSpecificationEntity(getGlassSpecificationValue().toEntity())
+                //.proFormaInvoiceEntity(getProFormaInvoiceValue().toEntity())
+                .status(value.getStatus())
+                .statusDetails(value.getStatusDetails())
+                .isActive(value.getIsActive())
+                .build();
     }
 
 

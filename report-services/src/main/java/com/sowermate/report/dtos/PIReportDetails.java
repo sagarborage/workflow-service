@@ -2,6 +2,7 @@ package com.sowermate.report.dtos;
 
 import com.sowermate.report.controllers.PIReportHeaderDetails;
 import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemReportValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class PIReportDetails {
     CompanyInfoProjection billTo;
     CompanyInfoProjection shipTo;
-    Map<PIReportHeaderDetails, List<ProFormaInvoiceItemValue>> glassItemDetails;
+    Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails;
     List<ServiceRateInvoiceValue> serviceRateDetails;
     String totalQuantity;
     String totalUnitTotal;
