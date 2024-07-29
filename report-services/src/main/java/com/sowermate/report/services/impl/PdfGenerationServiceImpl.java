@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -314,6 +316,16 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount()  + ""));
         reportDetails.setUPercentAmount((ObjectUtils.isEmpty(piValue.getUrgencyPercentAmount()) ? "0" : piValue.getUrgencyPercentAmount() + ""));
         reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0 : Math.round(piValue.getGrandTotal()));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Format the LocalDateTime instance to a string
+        String formattedInvoiceDate = piValue.getInvoiceDate().format(formatter);
+        String formattedWorkOrderDate = piValue.getWorkOrderValue().getCreatedDateTime().format(formatter);
+
+        reportDetails.setFormattedInvoiceDate(formattedInvoiceDate);
+        reportDetails.setFormattedWorkOrderDate(formattedWorkOrderDate);
+
     }
 
     private List<ServiceRateInvoiceValue> serviceRateDetails(ProFormaInvoiceValue piValue) {

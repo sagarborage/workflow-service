@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class BaseDto extends BaseIdDto {
-
+    private Long workOrderNo;
     private Boolean isActive;
     private String createdBy;
     private LocalDateTime createdDateTime;

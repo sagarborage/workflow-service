@@ -61,6 +61,12 @@ public class PdfServiceImpl implements PdfService {
                     case FileTypeConstants.EXCEL:
                         extension = FileExtensionConstants.EXCEL;
                         break;
+                    case FileTypeConstants.JPG:
+                        extension = FileExtensionConstants.JPG;
+                        break;
+                    case FileTypeConstants.PNG:
+                        extension = FileExtensionConstants.PNG;
+                        break;
                     default:
                         extension = ImageExtensionConstants.DAT;
                 }

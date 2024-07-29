@@ -21,6 +21,7 @@ public class ProFormaInvoiceValue extends BaseDto {
     private String proFormaInvoiceUuid;
     private String tenantUuid;
     private String confirmThroughUuid;
+    private String confirmThroughName;
     private String piTypeUuid;
     private String piTypeName;
     private String firmUuid;

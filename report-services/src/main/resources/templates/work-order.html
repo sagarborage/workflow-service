@@ -50,25 +50,25 @@
         </tr>
         <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
         <tr>
-            <td class="alignCenter font-16" style="width: 20%;" colspan="8">HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD. KUPWAD.</td>
+            <td class="alignCenter customPi font-16 padding-t-8 padding-b-8" colspan="8">HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD. KUPWAD.</td>
         </tr>
         <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
         <tr>
-            <td style="width: 46%;" colspan="4"><b>Work Order No: Date</b><span
-                    th:text="${piValue.getPiNumber()}"></span>
+            <td style="width: 46%;" colspan="4"><b>Work Order No: <span
+                    th:text="${piValue.getWorkOrderValue().getWorkOrderNo()}"></span>   (<span th:text="${reportDetails.getFormattedWorkOrderDate()}"></span>)</b>
             </td>
-            <td style="width: 32.4%;" colspan="4"><b>PI Number: Date</b><span th:text="${piValue.getCreatedBy()}"></span></td>
+            <td style="width: 32.4%;" colspan="4"><b>PI Number: <span
+                    th:text="${piValue.getPiNumber()}"></span>   ( <span th:text="${reportDetails.getFormattedInvoiceDate()}"></span>)</b></td>
         </tr>
         <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
         <tr>
-            <td style="width: 46%;" colspan="4">Party Name:- Sagar</td>
-            <td style="width: 54%;" colspan="4">User: Vikas Rajbhar (Confrm on Whats app)</td>
+            <td style="width: 46%;" colspan="4">Party Name:- <span th:text="${piValue.getPartyBillToName()}"></span></td>
+            <td style="width: 54%;" colspan="4">User: <span th:text="${piValue.getCreatedBy()}"></span> (<span th:text="${piValue.getConfirmThroughName()}"></span>)</td>
         </tr>
         <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
         <tr>
             <td style="width: 9.2%;" rowspan="2">
-                <div>Sr.</div>
-                <div>No</div>
+                <div>Sr.No</div>
             </td>
             <td style="width: 9.2%;" rowspan="2">
                 <div>Width</div>

@@ -32,6 +32,7 @@ public class WorkOrderEntity extends Base {
 
     public WorkOrderValue toDTO() {
         return WorkOrderValue.newBuilder()
+                .workOrderNo(getId())
                 .uuid(getUuid())
                 .proFormaInvoiceUuid(getProFormaInvoiceEntity().getUuid())
                 .tenantUuid(getTenantEntity().getUuid())

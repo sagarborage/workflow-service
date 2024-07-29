@@ -32,4 +32,6 @@ public class PIReportDetails {
     String uPercent;
     String uPercentAmount;
     Integer grandTotal;
+    String formattedInvoiceDate;
+    String formattedWorkOrderDate;
 }
