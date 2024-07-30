@@ -9,6 +9,10 @@ import com.sowermate.image.utils.TypeDetection;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.tika.Tika;
 import org.modelmapper.internal.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +39,10 @@ public class PdfServiceImpl implements PdfService {
 
         for (String i : base64Pdfs) {
             byte[] pdfBytes = Base64.getDecoder().decode(i);
-            merger.addSource(new ByteArrayInputStream(pdfBytes));
+            if (!isPdf(pdfBytes)) {
+                merger.addSource(new ByteArrayInputStream(convertImageToPdf(pdfBytes)));
+            } else
+                merger.addSource(new ByteArrayInputStream(pdfBytes));
         }
         ByteArrayOutputStream mergedOutput = new ByteArrayOutputStream();
         merger.setDestinationStream(mergedOutput);
@@ -43,6 +50,49 @@ public class PdfServiceImpl implements PdfService {
 
         return Base64.getEncoder().encodeToString(mergedOutput.toByteArray());
     }
+
+    public byte[] convertImageToPdf(byte[] imageBytes) throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, imageBytes, "image");
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            // Get page dimensions
+            float pageWidth = page.getMediaBox().getWidth();
+            float pageHeight = page.getMediaBox().getHeight();
+
+            // Get image dimensions
+            float imageWidth = pdImage.getWidth();
+            float imageHeight = pdImage.getHeight();
+
+            // Calculate the scaling factors to fit the image to the page
+            float scaleX = pageWidth / imageWidth;
+            float scaleY = pageHeight / imageHeight;
+
+            // Use the smaller scale to keep the image's aspect ratio
+            float scale = Math.min(scaleX, scaleY);
+
+            // Calculate new image dimensions
+            float newImageWidth = imageWidth * scale;
+            float newImageHeight = imageHeight * scale;
+
+            // Center the image on the page
+            float offsetX = (pageWidth - newImageWidth) / 2;
+            float offsetY = (pageHeight - newImageHeight) / 2;
+
+            contentStream.drawImage(pdImage, offsetX, offsetY, newImageWidth, newImageHeight);
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        document.save(byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private boolean isPdf(byte[] fileBytes) {
+        // Check if the byte array represents a PDF
+        return fileBytes.length > 4 && fileBytes[0] == 0x25 && fileBytes[1] == 0x50 && fileBytes[2] == 0x44 && fileBytes[3] == 0x46;
+    }
+
 
     public String handlePdf(byte[] imageBytes, String userProfileUuid, String serviceType, String targetDirectory) {
         try {
