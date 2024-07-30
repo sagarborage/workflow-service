@@ -321,7 +321,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
         // Format the LocalDateTime instance to a string
         String formattedInvoiceDate = piValue.getInvoiceDate().format(formatter);
-        String formattedWorkOrderDate = piValue.getWorkOrderValue().getCreatedDateTime().format(formatter);
+        String formattedWorkOrderDate = piValue.getWorkOrderValue() != null ? piValue.getWorkOrderValue().getCreatedDateTime().format(formatter) : "";
 
         reportDetails.setFormattedInvoiceDate(formattedInvoiceDate);
         reportDetails.setFormattedWorkOrderDate(formattedWorkOrderDate);
