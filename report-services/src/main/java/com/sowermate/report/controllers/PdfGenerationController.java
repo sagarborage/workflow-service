@@ -157,4 +157,15 @@ public class PdfGenerationController {
 
         return ResponseEntity.ok().headers(headers).body(pdfContent);
     }
+
+    @PostMapping("/merge-files")
+    public ResponseEntity<byte[]> mergeFiles(@RequestBody List<String> files) throws IOException {
+        String mergedPdf = pdfService.mergePDFs(files);
+        byte[] pdfContent = Base64.getDecoder().decode(mergedPdf);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
 }
