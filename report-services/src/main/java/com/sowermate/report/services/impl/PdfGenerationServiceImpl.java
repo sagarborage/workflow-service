@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,33 +148,34 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     @Override
-    public byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
+    public byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException {
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = glassItemDetails(piValue);
 
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
 
-        byte[] pdfBytes = generatePdf(piValue, reportDetails, "proforma-invoice");
+        byte[] pdfBytes = generatePdf(piValue, reportDetails, designs, "proforma-invoice");
         pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
     }
 
     @Override
-    public byte[] generateWorkOrder(ProFormaInvoiceValue piValue, PIReportDetails reportDetails) throws IOException {
+    public byte[] generateWorkOrder(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException {
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = glassItemDetails(piValue);
 
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
 
-        byte[] pdfBytes = generatePdf(piValue, reportDetails, "work-order");
+        byte[] pdfBytes = generatePdf(piValue, reportDetails, designs, "work-order");
 
         pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
     }
 
-    private byte[] generatePdf(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, String template) {
+    private byte[] generatePdf(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs, String template) {
         try {
             Context context = new Context();
             context.setVariable("piValue", piValue);
             context.setVariable("reportDetails", reportDetails);
+            context.setVariable("designs", designs);
 
             String htmlContent = templateEngine.process(template, context);
 
@@ -313,7 +313,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
         reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() + "" : "0");
-        reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount()  + ""));
+        reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount() + ""));
         reportDetails.setUPercentAmount((ObjectUtils.isEmpty(piValue.getUrgencyPercentAmount()) ? "0" : piValue.getUrgencyPercentAmount() + ""));
         reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0 : Math.round(piValue.getGrandTotal()));
 
@@ -366,11 +366,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                 .heightInch(value.getHeightInch())
                 .heightMeasurement(value.getHeightMeasurement())
                 .heightMeasurementLabel(value.getHeightMeasurementLabel())
-                .actualHeight(Math.round(value.getActualHeight())+"")
+                .actualHeight(Math.round(value.getActualHeight()) + "")
                 .chargeableHeight(value.getChargeableHeight())
                 .extraMm(value.getExtraMm())
                 .quantity(value.getQuantity())
-                .unitValue( BigDecimal.valueOf(value.getUnitValue()).setScale(2, RoundingMode.HALF_UP))
+                .unitValue(BigDecimal.valueOf(value.getUnitValue()).setScale(2, RoundingMode.HALF_UP))
                 .ratePerUnit(value.getRatePerUnit())
                 .unitMeasurementLabel(value.getUnitMeasurementLabel())
                 .amount(value.getAmount())
