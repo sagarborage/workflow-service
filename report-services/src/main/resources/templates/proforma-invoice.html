@@ -4,6 +4,10 @@
     <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
 
     <style>
+        .resized-image {
+            width: 500px; /* Set the desired width */
+            height: auto; /* Maintain aspect ratio */
+        }
         table {
         width: 100%;
         border-collapse: collapse;
@@ -259,6 +263,19 @@
                 <div class="alignCenter">DESIGNS</div>
             </td>
         </tr>
+        <span th:each="design : ${designs}">
+            <tr>
+                <td colspan="10">
+                    <li th:each="entry : ${design.entrySet()}">
+                    <div th:text="${entry.key}"></div>
+                    <div class="alignCenter" >
+                        <img th:src="@{${entry.value}}" alt="Base64 Image" class="resized-image"/>
+                    </div>
+                    </li>
+
+                </td>
+            </tr>
+        </span>
     </table>
 </div>
 </body>

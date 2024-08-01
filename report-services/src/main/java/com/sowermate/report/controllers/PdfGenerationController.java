@@ -1,5 +1,6 @@
 package com.sowermate.report.controllers;
 
+import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.report.dtos.GatePassRequestDto;
 import com.sowermate.report.dtos.PIReportDetails;
@@ -17,9 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/pdf")
@@ -32,6 +31,9 @@ public class PdfGenerationController {
 
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
+
+    @Autowired
+    private PdfStorageConfig pdfStorageConfig;
 
     @Autowired
     private CompanyService companyService;
@@ -53,19 +55,35 @@ public class PdfGenerationController {
                 }
             }
         }).toList();
-        byte[] pdfContent = pdfGenerationService.generateProformaInvoice(proFormaInvoiceValue, reportDetails);
+
+        List<Map<Integer, String>> designs = new ArrayList<>();
+        List<String> pdfs = new ArrayList<>();
+        int[] count = {1};
+        piItemsPdfUrls.forEach(piItemsPdfUrl -> {
+            String designBase64 = pdfService.getPdfAsBase64(piItemsPdfUrl);
+            Map<Integer, String> design = new HashMap<>();
+            int designRank = count[0];
+            if (isPdf(piItemsPdfUrl)) {
+                pdfs.add(designBase64);
+            } else {
+                String imageUrl = "data:image/png;base64," + designBase64;
+                design.put(designRank, imageUrl);
+                designs.add(design);
+            }
+            count[0]++;
+        });
+        byte[] pdfContent = pdfGenerationService.generateProformaInvoice(proFormaInvoiceValue, reportDetails, designs);
         String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
 
 
         List<String> base64PdfForMerging = new ArrayList<>();
         base64PdfForMerging.add(base64PdfContent);
-        piItemsPdfUrls.stream().peek(piItemsPdfUrl -> {
-            base64PdfForMerging.add(pdfService.getPdfAsBase64(piItemsPdfUrl));
-        }).toList();
+        pdfs.stream().peek(base64PdfForMerging::add).toList();
 
 
         String mergedPdf = pdfService.mergePDFs(base64PdfForMerging);
         byte[] finalPdf = Base64.getDecoder().decode(mergedPdf);
+        pdfService.handlePdf(finalPdf, proFormaInvoiceUuid, "invoice", pdfStorageConfig.getProductInvoicesDirectory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
@@ -91,19 +109,34 @@ public class PdfGenerationController {
                 }
             }
         }).toList();
-        byte[] pdfContent = pdfGenerationService.generateWorkOrder(proFormaInvoiceValue, reportDetails);
-        String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
 
+        List<Map<Integer, String>> designs = new ArrayList<>();
+        List<String> pdfs = new ArrayList<>();
+        int[] count = {1};
+        piItemsPdfUrls.forEach(piItemsPdfUrl -> {
+            String designBase64 = pdfService.getPdfAsBase64(piItemsPdfUrl);
+            Map<Integer, String> design = new HashMap<>();
+            int designRank = count[0];
+            if (isPdf(piItemsPdfUrl)) {
+                pdfs.add(designBase64);
+            } else {
+                String imageUrl = "data:image/png;base64," + designBase64;
+                design.put(designRank, imageUrl);
+                designs.add(design);
+            }
+            count[0]++;
+        });
+
+        byte[] pdfContent = pdfGenerationService.generateWorkOrder(proFormaInvoiceValue, reportDetails, designs);
+        String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
 
         List<String> base64PdfForMerging = new ArrayList<>();
         base64PdfForMerging.add(base64PdfContent);
-        piItemsPdfUrls.stream().peek(piItemsPdfUrl -> {
-            base64PdfForMerging.add(pdfService.getPdfAsBase64(piItemsPdfUrl));
-        }).toList();
-
+        pdfs.stream().peek(base64PdfForMerging::add).toList();
 
         String mergedPdf = pdfService.mergePDFs(base64PdfForMerging);
         byte[] finalPdf = Base64.getDecoder().decode(mergedPdf);
+        pdfService.handlePdf(finalPdf, proFormaInvoiceUuid, "invoice", pdfStorageConfig.getProductInvoicesDirectory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
@@ -167,5 +200,74 @@ public class PdfGenerationController {
         headers.setContentDispositionFormData("attachment", "example.pdf");
 
         return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
+
+    @PostMapping("/test2/{tenantUuid}/{proFormaInvoiceUuid}")
+    public ResponseEntity<byte[]> test2(@PathVariable String tenantUuid,
+                                        @PathVariable String proFormaInvoiceUuid,
+                                        @RequestBody ImageBody imageBody) throws IOException {
+        ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
+        CompanyInfoProjection billTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
+        CompanyInfoProjection shipTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
+        PIReportDetails reportDetails = new PIReportDetails();
+        reportDetails.setBillTo(billTo);
+        reportDetails.setShipTo(shipTo);
+        List<String> piItemsPdfUrls = new ArrayList<>();
+        proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
+            if (ProFormaInvoiceItemValue.getFileUrl() != null) {
+                if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")) {
+                    piItemsPdfUrls.add(ProFormaInvoiceItemValue.getFileUrl());
+                }
+            }
+        }).toList();
+
+        List<String> files = new ArrayList<>();
+        files.add(imageBody.getImageBase64().get(0));
+        files.add(imageBody.getImageBase64().get(1));
+        files.add(imageBody.getImageBase64().get(2));
+        files.add(imageBody.getImageBase64().get(3));
+
+
+        List<Map<Integer, String>> designs = new ArrayList<>();
+        List<String> pdfs = new ArrayList<>();
+        int[] count = {1};
+        files.forEach(piItemsPdfUrl -> {
+            //String designBase64 = pdfService.getPdfAsBase64(piItemsPdfUrl);
+            Map<Integer, String> design = new HashMap<>();
+            int designRank = count[0];
+            if (isPdf(piItemsPdfUrl)) {
+                pdfs.add(piItemsPdfUrl);
+            } else {
+                String imageUrl = "data:image/png;base64," + piItemsPdfUrl;
+                design.put(designRank, imageUrl);
+                designs.add(design);
+            }
+            count[0]++;
+        });
+
+        byte[] pdfContent = pdfGenerationService.generateProformaInvoice(proFormaInvoiceValue, reportDetails, designs);
+
+        String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
+
+
+        List<String> base64PdfForMerging = new ArrayList<>();
+        base64PdfForMerging.add(base64PdfContent);
+        pdfs.stream().peek(base64PdfForMerging::add).toList();
+
+
+        String mergedPdf = pdfService.mergePDFs(base64PdfForMerging);
+        byte[] finalPdf = Base64.getDecoder().decode(mergedPdf);
+        pdfService.handlePdf(finalPdf, proFormaInvoiceUuid, "invoice", pdfStorageConfig.getProductInvoicesDirectory());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(finalPdf);
+    }
+
+    private boolean isPdf(String fileBase64) {
+        byte[] fileBytes = Base64.getDecoder().decode(fileBase64);
+        return fileBytes.length > 4 && fileBytes[0] == 0x25 && fileBytes[1] == 0x50 && fileBytes[2] == 0x44 && fileBytes[3] == 0x46;
     }
 }

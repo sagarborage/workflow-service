@@ -4,6 +4,10 @@
     <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
 
     <style>
+        .resized-image {
+            width: 500px; /* Set the desired width */
+            height: auto; /* Maintain aspect ratio */
+        }
         table {
         width: 100%;
         border-collapse: collapse;
@@ -50,20 +54,27 @@
         </tr>
         <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
         <tr>
-            <td class="alignCenter customPi font-16 padding-t-8 padding-b-8" colspan="8">HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD. KUPWAD.</td>
+            <td class="alignCenter customPi font-16 padding-t-8 padding-b-8" colspan="8">HIMYOUG TUFF GLASS INDUSTRIES
+                PVT. LTD. KUPWAD.
+            </td>
         </tr>
         <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
         <tr>
             <td style="width: 46%;" colspan="4"><b>Work Order No: <span
-                    th:text="${piValue.getWorkOrderValue().getWorkOrderNo()}"></span>   (<span th:text="${reportDetails.getFormattedWorkOrderDate()}"></span>)</b>
+                    th:text="${piValue.getWorkOrderValue().getWorkOrderNo()}"></span> (<span
+                    th:text="${reportDetails.getFormattedWorkOrderDate()}"></span>)</b>
             </td>
             <td style="width: 32.4%;" colspan="4"><b>PI Number: <span
-                    th:text="${piValue.getPiNumber()}"></span>   ( <span th:text="${reportDetails.getFormattedInvoiceDate()}"></span>)</b></td>
+                    th:text="${piValue.getPiNumber()}"></span> ( <span
+                    th:text="${reportDetails.getFormattedInvoiceDate()}"></span>)</b></td>
         </tr>
         <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
         <tr>
-            <td style="width: 46%;" colspan="4">Party Name:- <span th:text="${piValue.getPartyBillToName()}"></span></td>
-            <td style="width: 54%;" colspan="4">User: <span th:text="${piValue.getCreatedBy()}"></span> (<span th:text="${piValue.getConfirmThroughName()}"></span>)</td>
+            <td style="width: 46%;" colspan="4">Party Name:- <span th:text="${piValue.getPartyBillToName()}"></span>
+            </td>
+            <td style="width: 54%;" colspan="4">User: <span th:text="${piValue.getCreatedBy()}"></span> (<span
+                    th:text="${piValue.getConfirmThroughName()}"></span>)
+            </td>
         </tr>
         <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
         <tr>
@@ -143,6 +154,18 @@
                 <div class="alignCenter">DESIGNS</div>
             </td>
         </tr>
+        <span th:each="design : ${designs}">
+            <tr>
+                <td colspan="10">
+                    <li th:each="entry : ${design.entrySet()}">
+                    <div th:text="${entry.key}"></div>
+                    <div class="alignCenter">
+                        <img th:src="@{${entry.value}}" alt="Base64 Image" class="resized-image"/>
+                    </div>
+                    </li>
+                </td>
+            </tr>
+        </span>
     </table>
 </div>
 </body>
