@@ -55,7 +55,6 @@ public class PdfGenerationController {
                 }
             }
         }).toList();
-
         List<Map<Integer, String>> designs = new ArrayList<>();
         List<String> pdfs = new ArrayList<>();
         int[] count = {1};
@@ -63,7 +62,7 @@ public class PdfGenerationController {
             String designBase64 = pdfService.getPdfAsBase64(piItemsPdfUrl);
             Map<Integer, String> design = new HashMap<>();
             int designRank = count[0];
-            if (isPdf(piItemsPdfUrl)) {
+            if (isPdf(designBase64)) {
                 pdfs.add(designBase64);
             } else {
                 String imageUrl = "data:image/png;base64," + designBase64;
@@ -117,7 +116,7 @@ public class PdfGenerationController {
             String designBase64 = pdfService.getPdfAsBase64(piItemsPdfUrl);
             Map<Integer, String> design = new HashMap<>();
             int designRank = count[0];
-            if (isPdf(piItemsPdfUrl)) {
+            if (isPdf(designBase64)) {
                 pdfs.add(designBase64);
             } else {
                 String imageUrl = "data:image/png;base64," + designBase64;
