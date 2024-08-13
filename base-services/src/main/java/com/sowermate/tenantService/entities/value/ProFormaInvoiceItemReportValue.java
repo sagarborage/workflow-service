@@ -42,6 +42,7 @@ public class ProFormaInvoiceItemReportValue extends BaseDto {
     private Float extraMm;
     private Integer quantity;
     private BigDecimal unitValue;//
+    private String sqFt;//
     private Double ratePerUnit;
     private String unitMeasurementLabel;
     private Double amount;

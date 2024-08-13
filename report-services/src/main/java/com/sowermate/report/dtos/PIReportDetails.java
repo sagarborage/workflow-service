@@ -20,6 +20,7 @@ public class PIReportDetails {
     List<ServiceRateInvoiceValue> serviceRateDetails;
     String totalQuantity;
     String totalUnitTotal;
+    String sumSqFtTotal;
     String totalRatePerUnit;
     String totalAmount;
     String unitLabel;

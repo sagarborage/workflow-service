@@ -278,9 +278,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                 .mapToDouble(ProFormaInvoiceItemReportValue::getQuantity)
                 .sum();
         BigDecimal totalUnitTotal = BigDecimal.ZERO;
+        BigDecimal sumSqFtTotal = BigDecimal.ZERO;
         for (List<ProFormaInvoiceItemReportValue> itemList : glassItemDetails.values()) {
             for (ProFormaInvoiceItemReportValue item : itemList) {
                 totalUnitTotal = totalUnitTotal.add(item.getUnitValue());
+                sumSqFtTotal = sumSqFtTotal.add( new BigDecimal(item.getSqFt()));
             }
         }
 
@@ -296,6 +298,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String formattedTotalQuantity = decimalFormat.format(totalQuantity);
         String formattedTotalUnitTotal = decimalFormat.format(totalUnitTotal);
+        String formattedSumSqFtTotal = decimalFormat.format(sumSqFtTotal);
         String formattedTotalRatePerUnit = decimalFormat.format(totalRatePerUnit);
         String formattedTotalAmount = decimalFormat.format(totalAmount);
 
@@ -303,6 +306,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setServiceRateDetails(serviceRateDetails(piValue));
         reportDetails.setTotalQuantity(formattedTotalQuantity);
         reportDetails.setTotalUnitTotal(formattedTotalUnitTotal);
+        reportDetails.setSumSqFtTotal(formattedSumSqFtTotal);
         reportDetails.setTotalRatePerUnit(formattedTotalRatePerUnit);
         reportDetails.setTotalAmount(formattedTotalAmount);
         reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
@@ -360,7 +364,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                 .uuid(value.getUuid())
                 .widthInch(value.getWidthInch())
                 .widthMeasurement(value.getWidthMeasurement())
-                .widthMeasurementLabel(value.getWidthMeasurementLabel())
+                .widthMeasurementLabel(value.getWidthMeasurementLabel()) //onPrintProformaInvoicePdf onDownloadWorkorderdetails
                 .actualWidth(Math.round(value.getActualWidth()) + "")
                 .chargeableWidth(value.getChargeableWidth())
                 .heightInch(value.getHeightInch())
@@ -374,6 +378,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                 .ratePerUnit(value.getRatePerUnit())
                 .unitMeasurementLabel(value.getUnitMeasurementLabel())
                 .amount(value.getAmount())
+                .sqFt(new DecimalFormat("#.00").format(value.getActualHeight() * value.getActualWidth()/92903 * value.getQuantity()))
                 //added below condition to initially inset 0 value in bucket
                 .optimizeBucket(value.getOptimizeBucket() == null ? 0 : value.getOptimizeBucket())
                 .cuttingBucket(value.getCuttingBucket() == null ? 0 : value.getCuttingBucket())

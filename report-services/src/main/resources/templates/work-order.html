@@ -113,7 +113,7 @@
         <th:block th:each="entry : ${reportDetails.getGlassItemDetails()}">
             <tr>
                 <td class="font-s-18 font-w-400"
-                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal} + ' ' + ${reportDetails.getUnitLabel()} +')'"
+                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName}"
                     colspan="8"></td>
             </tr>
             <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
@@ -125,7 +125,7 @@
                 <td style="width: 9.2%;" th:text="${item.actualHeight}"></td>
                 <td style="width: 10.8%;" th:text="${item.glassTypeName}"></td>
                 <td style="width: 10.8%;" th:text="${item.quantity}"></td>
-                <td style="width: 10.8%;" th:text="${item.unitValue}"></td>
+                <td style="width: 10.8%;" th:text="${item.sqFt}"></td>
             </tr>
         </th:block>
         <!-- 9th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
@@ -133,7 +133,7 @@
             <td style="width: 36.8%;" colspan="5"></td>
             <td style="width: 20%;" colspan="1">Sub Total</td>
             <td style="width: 10.8%;" th:text="${reportDetails.getTotalQuantity()}"></td>
-            <td style="width: 10.8%;" th:text="${reportDetails.getTotalUnitTotal()}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getSumSqFtTotal()}"></td>
         </tr>
         <tr>
             <td style="width: 36.8%;" colspan="5"></td>
