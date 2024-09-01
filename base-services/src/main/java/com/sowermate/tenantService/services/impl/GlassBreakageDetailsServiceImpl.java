@@ -41,6 +41,7 @@ public class GlassBreakageDetailsServiceImpl implements GlassBreakageDetailsServ
                 .proFormaInvoiceItemEntity(proFormaInvoiceItemEntity)
                 .deptName(glassBreakageDetailsValue.getDeptName())
                 .details(glassBreakageDetailsValue.getDetails())
+                .isActive(true)
                 .build();
         return glassBreakageDetailsRepository.save(glassBreakageDetailsEntity).toDTO();
     }

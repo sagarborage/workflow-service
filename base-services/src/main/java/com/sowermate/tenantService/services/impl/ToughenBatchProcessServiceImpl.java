@@ -186,13 +186,19 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
         Optional<List<ToughenBatchProcessEntity>> batchListInProgress = toughenBatchProcessRepository.findByBatchNoAndCompanyUuidAndStatus(generalParamValue.getBatchNo(), generalParamValue.getCompanyUuid(), ToughenBatchProcessStatusEnum.IN_PROGRESS);
         List<ToughenBatchProcessEntity> toBeUpdated = batchListInProgress.get().stream().map(e -> {
             e.setStatus(ToughenBatchProcessStatusEnum.COMPLETED);
+            //batchListInProgress.get().get(0).getToughenBatchProcessDetailsEntities().get(3).getProFormaInvoiceItemEntity().getUuid()
+            //TODO optimize this logic
             for(ToughenBatchProcessDetailsEntity tbpd : e.getToughenBatchProcessDetailsEntities()) {
-                Optional<List<ProFormaInvoiceItemEntity>> proFormaInvoiceItemEntityList = toughenBatchProcessRepository.findByBatchNo(e.getId());
-                List<ProFormaInvoiceItemEntity> toBeUpdatedPiItem = proFormaInvoiceItemEntityList.get().stream().map(pi -> {
-                    pi.setToughenCompleted(pi.getToughenCompleted() + 1);
-                    pi.setDispatchBucket(pi.getDispatchBucket() + 1);
-                    return pi;
-                }).toList();
+                if(!tbpd.getStatus().equals(ToughenBatchProcessStatusEnum.BROKEN)) {
+                    Optional<List<ProFormaInvoiceItemEntity>> proFormaInvoiceItemEntityList = toughenBatchProcessRepository.findByBatchNo(e.getId());
+                    proFormaInvoiceItemEntityList.get().stream().map(pi -> {
+                        if(tbpd.getProFormaInvoiceItemEntity().getUuid().equals(pi.getUuid())){
+                            pi.setToughenCompleted(pi.getToughenCompleted() + 1);
+                            pi.setDispatchBucket(pi.getDispatchBucket() + 1);
+                        }
+                        return pi;
+                    }).toList();
+                }
             }
             return e;
         }).collect(Collectors.toList());

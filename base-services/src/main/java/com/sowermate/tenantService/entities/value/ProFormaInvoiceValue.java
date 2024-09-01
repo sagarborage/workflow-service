@@ -42,7 +42,7 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Double otherCharges;
     private Double transportCharges;
     private Float gstCharges;
-    private Float grandTotal;
+    private Double grandTotal;
     private Float roundOffAmount;
     private Float payableAmount;
     private Float previousBalance;

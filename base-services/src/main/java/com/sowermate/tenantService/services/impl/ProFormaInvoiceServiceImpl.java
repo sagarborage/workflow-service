@@ -150,8 +150,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 item.getId() != null && !updatedItemIds.contains(item.getUuid()));
 
 
-
-
         // Remove items from the existing list that are not present in the updated list
         existingInvoice.getServiceRateInvoiceEntities().removeIf(serviceRate ->
                 serviceRate.getId() != null && !toBeUpdatedServiceRateInvoiceItems.contains(serviceRate.getUuid()));

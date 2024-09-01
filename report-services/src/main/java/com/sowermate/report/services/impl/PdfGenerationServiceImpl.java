@@ -319,7 +319,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() + "" : "0");
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount() + ""));
         reportDetails.setUPercentAmount((ObjectUtils.isEmpty(piValue.getUrgencyPercentAmount()) ? "0" : piValue.getUrgencyPercentAmount() + ""));
-        reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0 : Math.round(piValue.getGrandTotal()));
+        reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0.0 : Math.round(piValue.getGrandTotal()));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 

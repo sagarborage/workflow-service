@@ -60,7 +60,7 @@ public class ProFormaInvoiceEntity extends Base {
     private Float gstCharges;
 
     @Column(name = "grand_total")
-    private Float grandTotal;
+    private Double grandTotal;
 
 
     @Column(name = "round_off_amount")
