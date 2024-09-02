@@ -209,6 +209,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "wo.uuid as workOrderUuid, " +
             "f.uuid as companyUuid, " +
             "gt.glassName as glassType, " +
+            "gs.name as glassSpecification, " +
             "pii.actualWidth as actualWidth, " +
             "pii.actualHeight as actualHeight, " +
             "gth.name as glassThickness, " +
@@ -222,6 +223,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pi.firm f " +
             "join pi.proFormaInvoiceItemEntities pii " +
             "join pii.glassTypeEntity gt " +
+            "join pii.glassSpecificationEntity gs " +
             "join pii.glassThicknessEntity gth " +
             "where wo.id = :workOrderNumber and " +
             //"pii.status = 'IN_PROGRESS' and " +

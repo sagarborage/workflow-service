@@ -147,6 +147,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             //toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
             ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.getPIItemToBeCancelled(uuid);
             proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket() + 1);
+            proFormaInvoiceItemEntity.setToughenCompleted(proFormaInvoiceItemEntity.getToughenCompleted() - 1);
             proFormaInvoiceItemRepository.save(proFormaInvoiceItemEntity);
             toughenBatchProcessDetailsRepository.delete(toughenBatchProcessDetailsEntity);
             return toughenBatchProcessDetailsEntity.toDTO();
@@ -170,6 +171,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
             ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = toughenBatchProcessRepository.getPIItemToBeCancelled(toughenBatchProcessDetailsEntity.getUuid());
             proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - 1);
+            proFormaInvoiceItemEntity.setToughenCompleted(proFormaInvoiceItemEntity.getToughenCompleted() - 1);
             proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + 1);
             //Entry into break table
             GlassBreakageDetailsValue breakageDetails = getBreakageDetails(generalParamValue);
@@ -193,7 +195,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
                     Optional<List<ProFormaInvoiceItemEntity>> proFormaInvoiceItemEntityList = toughenBatchProcessRepository.findByBatchNo(e.getId());
                     proFormaInvoiceItemEntityList.get().stream().map(pi -> {
                         if(tbpd.getProFormaInvoiceItemEntity().getUuid().equals(pi.getUuid())){
-                            pi.setToughenCompleted(pi.getToughenCompleted() + 1);
+                            //pi.setToughenCompleted(pi.getToughenCompleted() + 1);
                             pi.setDispatchBucket(pi.getDispatchBucket() + 1);
                         }
                         return pi;
@@ -240,7 +242,8 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     private void deductItemFromToughenItem(GeneralParamValue generalParamValue) {
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(generalParamValue.getTenantUuid(), generalParamValue.getPiItemUuid());
         Integer toughenBucketQty = proFormaInvoiceItemEntity.getToughenBucket();
-        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity = proFormaInvoiceItemEntity.toBuilder().toughenBucket(toughenBucketQty - 1).build();
+        Integer toughenCompleteQty = proFormaInvoiceItemEntity.getToughenCompleted();
+        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity = proFormaInvoiceItemEntity.toBuilder().toughenBucket(toughenBucketQty - 1).toughenCompleted(toughenCompleteQty+1).build();
         proFormaInvoiceItemRepository.saveAndFlush(updatedProFormaInvoiceItemEntity);
     }
 

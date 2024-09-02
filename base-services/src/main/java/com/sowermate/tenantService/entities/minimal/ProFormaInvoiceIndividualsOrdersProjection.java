@@ -23,6 +23,7 @@ public interface ProFormaInvoiceIndividualsOrdersProjection {
     String getGlassThickness();
 
     String getGlassType();
+    String getGlassSpecification();
 
     Long getQuantity();
 
