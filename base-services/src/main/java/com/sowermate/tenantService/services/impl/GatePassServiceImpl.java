@@ -145,6 +145,7 @@ public class GatePassServiceImpl implements GatePassService {
         }
         List<GatePassDetailsInfo> gatePassDetailsInfoList = gatePassDetailsInfoProjectionList.stream().map(gatePassDetailsInfoProjection->{
             GatePassDetailsInfo gatePassDetailsInfo = new GatePassDetailsInfo();
+            gatePassDetailsInfo.setPartyName(gatePassDetailsInfoProjection.getPartyName());
             gatePassDetailsInfo.setProFormInvoiceUuid(proformaInvoiceUuid);
             gatePassDetailsInfo.setGatePassUuid(gatePassDetailsInfoProjection.getGatePassUuid());
             gatePassDetailsInfo.setGatePassNo(gatePassDetailsInfoProjection.getGatePassNo());

@@ -48,6 +48,7 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
     GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
 
     @Query("SELECT " +
+            "p.companyIdBill.companyName as partyName, " +
             "g.uuid as gatePassUuid, " +
             "g.gatePassNo as gatePassNo , " +
             "sum(gd.gatePassQty) as quantity " +
