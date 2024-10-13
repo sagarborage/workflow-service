@@ -311,6 +311,11 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
             if(bucketManipulationValue.getCurrentBucket().equalsIgnoreCase("Optimize")) {
                 bucketManipulationValue.setQuantity(entity.getQuantity() - entity.getOptimizeCompleted());
             }
+
+            if(bucketManipulationValue.getCurrentBucket().equalsIgnoreCase("Cutting")) {
+                bucketManipulationValue.setQuantity(entity.getQuantity() - entity.getCuttingCompleted());
+            }
+
             if(bucketManipulationValue.getCurrentBucket().equalsIgnoreCase("Dispatch")) {
                 bucketManipulationValue.setQuantity(entity.getDispatchBucket());
             }
