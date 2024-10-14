@@ -103,7 +103,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String firmUuid, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
-            "tb.uuid as batchUuid, " +
+            "tbd.uuid as batchItemUuid, " +
             "tb.batchNo as batchNo, " +
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public interface ViewToughenBatchProcessDetailsProjection {
 
-    String getBatchUuid();
+    String getBatchItemUuid();
     String getBatchNo();
     LocalDate getBatchDate();
     String getPiNo();
