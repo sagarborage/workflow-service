@@ -19,17 +19,20 @@ public interface ToughenBatchProcessDetailsRepository extends JpaRepository<Toug
             "th.name as thickness, " +
             "c.companyName as partyName, " +
             "CONCAT(ROUND(pii.actualHeight,0),'*',ROUND(pii.actualWidth,0)) as size, " +
-            "CONCAT(tbd.stickerNumber,'/',pii.quantity) as stickerNumber " +
+            "CONCAT(tbd.stickerNumber,'/', " +
+            "( SELECT SUM(pii_sub.quantity) " +
+            "   FROM ProFormaInvoiceItemEntity pii_sub " +
+            "   WHERE pii_sub.proFormaInvoiceEntity = pi )) as stickerNumber " +
             "From ToughenBatchProcessDetailsEntity tbd " +
             "JOIN tbd.proFormaInvoiceItemEntity pii " +
-            "JOIN pii.glassThicknessEntity th "+
+            "JOIN pii.glassThicknessEntity th " +
             "JOIN pii.proFormaInvoiceEntity pi " +
             "JOIN pi.firm as f " +
             "JOIN pi.companyIdBill as c " +
             "JOIN pi.tenantEntity as t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND f.uuid = :CompanyUuid " +
-            "AND tbd.uuid = :batchItemUuid " )
+            "AND tbd.uuid = :batchItemUuid ")
     StickerReportProjection findByStickerData(String tenantUuid, String CompanyUuid, String batchItemUuid);
 }
 
