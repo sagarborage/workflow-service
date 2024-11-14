@@ -16,6 +16,7 @@ import java.util.Map;
 public class PIReportDetails {
     CompanyInfoProjection billTo;
     CompanyInfoProjection shipTo;
+    String shippingAddress;
     Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails;
     List<ServiceRateInvoiceValue> serviceRateDetails;
     String totalQuantity;

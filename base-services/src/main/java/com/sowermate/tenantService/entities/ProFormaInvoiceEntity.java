@@ -75,6 +75,9 @@ public class ProFormaInvoiceEntity extends Base {
     @Column(name = "adjustment_amount")
     private Integer adjustmentAmount;
 
+    @Column(name = "shipping_address")
+    private String shippingAddress;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ProformaInvoiceStatusEnum status;
@@ -159,6 +162,7 @@ public class ProFormaInvoiceEntity extends Base {
                 .payableAmount(getPayableAmount())
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
+                .shippingAddress(getShippingAddress())
                 .status(getStatus())
                 .statusDetails(getStatusDetails())
                 .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))

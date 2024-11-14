@@ -47,6 +47,7 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Float payableAmount;
     private Float previousBalance;
     private Integer adjustmentAmount;
+    private String shippingAddress;
     private ProformaInvoiceStatusEnum status;
     private String statusDetails;
 
@@ -77,6 +78,7 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .payableAmount(getPayableAmount())
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
+                .shippingAddress(getShippingAddress())
                 .status(getStatus())
                 .statusDetails(getStatusDetails())
                 .isActive(getIsActive())

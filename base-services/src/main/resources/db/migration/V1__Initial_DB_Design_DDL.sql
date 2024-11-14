@@ -341,6 +341,7 @@ CREATE TABLE pro_forma_invoice (
   payable_amount float DEFAULT NULL,
   previous_balance float DEFAULT NULL,
   adjustment_amount int(10) DEFAULT NULL,
+  shipping_address varchar(500) DEFAULT NULL,
   status varchar(50) DEFAULT NULL,
   status_details varchar(50) DEFAULT NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1,
