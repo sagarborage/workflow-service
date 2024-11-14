@@ -90,8 +90,7 @@
             </td>
             <td style="width: 54%;" colspan="5" class="address">
                 <div th:if="${reportDetails.getShippingAddress()} != null">
-                    <div><span th:text="${reportDetails.getShippingAddress()}"></span>
-                    </div>
+                    <div><span th:utext="${reportDetails.getShippingAddress()}"></span></div>
                 </div>
                 <div th:if="${reportDetails.getShippingAddress()} == null and ${reportDetails.getShipTo()} != null">
                     <div class="customPi" th:text="${reportDetails.getShipTo().getCompanyName()}"></div>

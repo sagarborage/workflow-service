@@ -78,7 +78,7 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .payableAmount(getPayableAmount())
                 .previousBalance(getPreviousBalance())
                 .adjustmentAmount(getAdjustmentAmount())
-                .shippingAddress(getShippingAddress())
+                .shippingAddress(getShippingAddress() == null || getShippingAddress().trim().isEmpty() ? null : getShippingAddress())
                 .status(getStatus())
                 .statusDetails(getStatusDetails())
                 .isActive(getIsActive())

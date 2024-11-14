@@ -212,6 +212,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         existingInvoice.setRoundOffAmount(proFormaInvoiceValue.getRoundOffAmount());
         existingInvoice.setPayableAmount(proFormaInvoiceValue.getPayableAmount());
         existingInvoice.setPreviousBalance(proFormaInvoiceValue.getPreviousBalance());
+        existingInvoice.setShippingAddress(proFormaInvoiceValue.getShippingAddress() == null || proFormaInvoiceValue.getShippingAddress().trim().equals("") ? null : proFormaInvoiceValue.getShippingAddress());
         existingInvoice.setAdjustmentAmount(proFormaInvoiceValue.getAdjustmentAmount());
         existingInvoice.setStatus(proFormaInvoiceValue.getStatus());
         return proFormaInvoiceRepository.save(existingInvoice);
