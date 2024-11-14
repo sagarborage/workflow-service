@@ -47,7 +47,7 @@ public class PdfGenerationController {
         PIReportDetails reportDetails = new PIReportDetails();
         reportDetails.setBillTo(billTo);
         reportDetails.setShipTo(shipTo);
-        reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br>"));
+        reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
         List<String> piItemsPdfUrls = new ArrayList<>();
         proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
             if (ProFormaInvoiceItemValue.getFileUrl() != null) {
