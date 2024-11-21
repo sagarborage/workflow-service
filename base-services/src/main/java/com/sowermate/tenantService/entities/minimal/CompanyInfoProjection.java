@@ -1,17 +1,15 @@
 package com.sowermate.tenantService.entities.minimal;
 
+import com.sowermate.tenantService.entities.AddressEntity;
+import com.sowermate.tenantService.entities.CompanyEntity;
+
+import java.util.List;
+
 public interface CompanyInfoProjection {
 
-    String getCompanyName();
-
-    String getAddress();
-
-    String getState();
-
-    String getPinCode();
-
-    String getPhoneNumber();
-
-    String getEmailId();
+    List<AddressEntity> getAddresses();
+    String getGstNumber();
+    String getPanNumber();
+    String getTanNumber();
 
 }

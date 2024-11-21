@@ -14,8 +14,11 @@ import java.util.Map;
 @Getter
 @Setter
 public class PIReportDetails {
-    CompanyInfoProjection billTo;
-    CompanyInfoProjection shipTo;
+    String billToAddress;
+    String billToPartyName;
+    String shipToAddress;
+    String shipToPartyName;
+    String billToPartyStateCode;
     String shippingAddress;
     Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails;
     List<ServiceRateInvoiceValue> serviceRateDetails;

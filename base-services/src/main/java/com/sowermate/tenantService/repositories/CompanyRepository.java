@@ -30,12 +30,10 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     CompanyEntity getCompanyEntityByUuid(@Param("companyUuid") String companyUuid);
 
-    @Query("SELECT c.companyName as companyName, " +
-            "t.address as address," +
-            "t.state as state," +
-            "t.pinCode as pinCode," +
-            "t.phoneNumber as phoneNumber," +
-            "t.emailId as emailId" +
+    @Query("SELECT c.addresses as addresses, " +
+            " c.gstin as gstNumber, " +
+            " c.pan as panNumber, " +
+            " c.tan as tanNumber " +
             " FROM CompanyEntity c " +
             "JOIN c.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +

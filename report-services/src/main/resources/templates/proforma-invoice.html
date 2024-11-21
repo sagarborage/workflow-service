@@ -79,28 +79,16 @@
         </tr>
         <tr>
             <td style="width: 46%;" colspan="5" class="address">
-                <div class="customPi" th:text="${reportDetails.getBillTo().getCompanyName()}"></div>
-                <div><span th:text="${reportDetails.getBillTo().getAddress()+','}"></span>
-                    <span th:text="${reportDetails.getBillTo().getState()+','}"></span>
-                    <span th:text="${reportDetails.getBillTo().getPinCode()}"></span>
-                </div>
-                <div><b>Ph:</b><span th:text="${reportDetails.getBillTo().getPhoneNumber()}"></span>
-                    <b>E-Mail:</b><span th:text="${reportDetails.getBillTo().getEmailId()}"></span>
-                </div>
+                <div class="customPi" th:text="${reportDetails.getBillToPartyName()}"></div>
+                <div><span th:utext="${reportDetails.getBillToAddress()}"></span></div>
             </td>
             <td style="width: 54%;" colspan="5" class="address">
                 <div th:if="${reportDetails.getShippingAddress()} != null">
                     <div><span th:utext="${reportDetails.getShippingAddress()}"></span></div>
                 </div>
-                <div th:if="${reportDetails.getShippingAddress()} == null and ${reportDetails.getShipTo()} != null">
-                    <div class="customPi" th:text="${reportDetails.getShipTo().getCompanyName()}"></div>
-                    <div><span th:text="${reportDetails.getShipTo().getAddress()+','}"></span>
-                        <span th:text="${reportDetails.getShipTo().getState()+','}"></span>
-                        <span th:text="${reportDetails.getShipTo().getPinCode()}"></span>
-                    </div>
-                    <div><b>Ph:</b><span th:text="${reportDetails.getShipTo().getPhoneNumber()}"></span>
-                        <b>E-Mail:</b><span th:text="${reportDetails.getShipTo().getEmailId()}"></span>
-                    </div>
+                <div th:if="${reportDetails.getShippingAddress()} == null and ${reportDetails.getShipToPartyName()} != null">
+                    <div class="customPi" th:text="${reportDetails.getShipToPartyName()}"></div>
+                    <div><span th:utext="${reportDetails.getShipToAddress()}"></span></div>
                 </div>
             </td>
         </tr>

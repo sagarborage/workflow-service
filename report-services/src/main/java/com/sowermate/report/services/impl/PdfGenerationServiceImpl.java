@@ -7,6 +7,9 @@ import com.sowermate.image.services.PdfService;
 import com.sowermate.report.controllers.PIReportHeaderDetails;
 import com.sowermate.report.dtos.*;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.report.services.PdfGenerationUtils;
+import com.sowermate.tenantService.entities.AddressEntity;
+import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
@@ -79,10 +82,12 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         String companyUuid = gatePassRequestDto.getCompanyUuid();
         GatePassReportDto gatePassReportDto = new GatePassReportDto();
         List<String> gatePassTypes = new ArrayList<>();
+
         gatePassTypes.add("GATE PASS (WAREHOUSE COPY)");
         gatePassTypes.add("GATE PASS (GATE COPY)");
         gatePassTypes.add("GATE PASS (OFFICE COPY)");
 
+        CompanyInfoProjection companyInfo = companyService.getCompanyInfo(gatePassRequestDto.getTenantUuid(), gatePassRequestDto.getCompanyUuid());
         GatePassValue gatePassValue = gatePassService.getGatePass(gatePassUuid, tenantUuid, companyUuid);
         List<GlassInfoProjection> glassInfoProjection = gatePassService.getGlassInfoForReport(gatePassUuid);
         int totalQuantity = 0;
@@ -99,7 +104,8 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         gatePassReportDto.setPartyName(piInfoProjectionForReport.getPartyName());
         gatePassReportDto.setPartyBillToName(piInfoProjectionForReport.getPartyBillToName());
         gatePassReportDto.setPiDate(LocalDate.from(piInfoProjectionForReport.getPiDate()));
-
+        AddressEntity address = companyInfo.getAddresses().get(0);
+        gatePassReportDto.setAddress(address.getAddressLine1() + ", " + PdfGenerationUtils.getStateName(address.getStateCode()) + ", " + address.getPinCode());
 
         byte[] pdfBytes = generatePdfForGatePass(gatePassReportDto);
         pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
@@ -311,7 +317,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setTotalAmount(formattedTotalAmount);
         reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
 
-        reportDetails.setGstType("Maharashtra".equalsIgnoreCase(reportDetails.getBillTo().getState()) ? "SGST-CGST" : "IGST");
+        reportDetails.setGstType("MH".equalsIgnoreCase(reportDetails.getBillToPartyStateCode()) ? "SGST-CGST" : "IGST");
         reportDetails.setIGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() : 0)));
         reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
         reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));

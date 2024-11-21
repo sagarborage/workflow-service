@@ -13,6 +13,7 @@ import java.util.List;
 public class GatePassReportDto {
     List<String> gatePassTypes;
     String partyName;
+    String address;
     String partyBillToName;
     List<GlassInfoProjection> glassInfoProjections;
     GatePassValue gatePassValue;

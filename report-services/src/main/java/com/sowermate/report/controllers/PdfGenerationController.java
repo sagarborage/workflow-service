@@ -7,6 +7,7 @@ import com.sowermate.report.dtos.PIReportDetails;
 import com.sowermate.report.dtos.StickerRequestDto;
 import com.sowermate.report.dtos.ToughenBatchReportRequestDto;
 import com.sowermate.report.services.PdfGenerationService;
+import com.sowermate.report.services.PdfGenerationUtils;
 import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.services.CompanyService;
@@ -42,12 +43,18 @@ public class PdfGenerationController {
     public ResponseEntity<byte[]> generateInvoicePdf(@PathVariable String tenantUuid,
                                                      @PathVariable String proFormaInvoiceUuid) throws IOException {
         ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
-        CompanyInfoProjection billTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
-        CompanyInfoProjection shipTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
+        CompanyInfoProjection billToAddress = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
+        CompanyInfoProjection shipToAddress = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
         PIReportDetails reportDetails = new PIReportDetails();
-        reportDetails.setBillTo(billTo);
-        reportDetails.setShipTo(shipTo);
+
+        reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
+        reportDetails.setBillToPartyName(proFormaInvoiceValue.getPartyBillToName());
+        reportDetails.setShipToAddress(PdfGenerationUtils.extractedAddressInfo(shipToAddress));
+        reportDetails.setShipToPartyName(proFormaInvoiceValue.getPartyShipToName());
         reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
+        reportDetails.setBillToPartyStateCode(billToAddress.getAddresses().get(0).getStateCode());
+        reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
+
         List<String> piItemsPdfUrls = new ArrayList<>();
         proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
             if (ProFormaInvoiceItemValue.getFileUrl() != null) {
@@ -96,11 +103,17 @@ public class PdfGenerationController {
     public ResponseEntity<byte[]> generateWorkOrderPdf(@PathVariable String tenantUuid,
                                                        @PathVariable String proFormaInvoiceUuid) throws IOException {
         ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
-        CompanyInfoProjection billTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
-        CompanyInfoProjection shipTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
+        CompanyInfoProjection billToAddress = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
+        CompanyInfoProjection shipToAddress = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
         PIReportDetails reportDetails = new PIReportDetails();
-        reportDetails.setBillTo(billTo);
-        reportDetails.setShipTo(shipTo);
+        reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
+        reportDetails.setBillToPartyName(proFormaInvoiceValue.getPartyBillToName());
+        reportDetails.setShipToAddress(PdfGenerationUtils.extractedAddressInfo(shipToAddress));
+        reportDetails.setShipToPartyName(proFormaInvoiceValue.getPartyShipToName());
+        reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
+        reportDetails.setBillToPartyStateCode(billToAddress.getAddresses().get(0).getStateCode());
+        reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
+
         List<String> piItemsPdfUrls = new ArrayList<>();
         proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
             if (ProFormaInvoiceItemValue.getFileUrl() != null) {
@@ -200,70 +213,6 @@ public class PdfGenerationController {
         headers.setContentDispositionFormData("attachment", "example.pdf");
 
         return ResponseEntity.ok().headers(headers).body(pdfContent);
-    }
-
-    @PostMapping("/test2/{tenantUuid}/{proFormaInvoiceUuid}")
-    public ResponseEntity<byte[]> test2(@PathVariable String tenantUuid,
-                                        @PathVariable String proFormaInvoiceUuid,
-                                        @RequestBody ImageBody imageBody) throws IOException {
-        ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
-        CompanyInfoProjection billTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
-        CompanyInfoProjection shipTo = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
-        PIReportDetails reportDetails = new PIReportDetails();
-        reportDetails.setBillTo(billTo);
-        reportDetails.setShipTo(shipTo);
-        List<String> piItemsPdfUrls = new ArrayList<>();
-        proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {
-            if (ProFormaInvoiceItemValue.getFileUrl() != null) {
-                if (!ProFormaInvoiceItemValue.getFileUrl().equals("Error handling the PDF.")) {
-                    piItemsPdfUrls.add(ProFormaInvoiceItemValue.getFileUrl());
-                }
-            }
-        }).toList();
-
-        List<String> files = new ArrayList<>();
-        files.add(imageBody.getImageBase64().get(0));
-        files.add(imageBody.getImageBase64().get(1));
-        files.add(imageBody.getImageBase64().get(2));
-        files.add(imageBody.getImageBase64().get(3));
-
-
-        List<Map<Integer, String>> designs = new ArrayList<>();
-        List<String> pdfs = new ArrayList<>();
-        int[] count = {1};
-        files.forEach(piItemsPdfUrl -> {
-            //String designBase64 = pdfService.getPdfAsBase64(piItemsPdfUrl);
-            Map<Integer, String> design = new HashMap<>();
-            int designRank = count[0];
-            if (isPdf(piItemsPdfUrl)) {
-                pdfs.add(piItemsPdfUrl);
-            } else {
-                String imageUrl = "data:image/png;base64," + piItemsPdfUrl;
-                design.put(designRank, imageUrl);
-                designs.add(design);
-            }
-            count[0]++;
-        });
-
-        byte[] pdfContent = pdfGenerationService.generateProformaInvoice(proFormaInvoiceValue, reportDetails, designs);
-
-        String base64PdfContent = Base64.getEncoder().encodeToString(pdfContent);
-
-
-        List<String> base64PdfForMerging = new ArrayList<>();
-        base64PdfForMerging.add(base64PdfContent);
-        pdfs.stream().peek(base64PdfForMerging::add).toList();
-
-
-        String mergedPdf = pdfService.mergePDFs(base64PdfForMerging);
-        byte[] finalPdf = Base64.getDecoder().decode(mergedPdf);
-        pdfService.handlePdf(finalPdf, proFormaInvoiceUuid, "invoice", pdfStorageConfig.getProductInvoicesDirectory());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.valueOf("application/pdf"));
-        headers.setContentDispositionFormData("attachment", "example.pdf");
-
-        return ResponseEntity.ok().headers(headers).body(finalPdf);
     }
 
     private boolean isPdf(String fileBase64) {

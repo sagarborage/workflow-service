@@ -41,8 +41,8 @@
 
 <body>
 <div style="overflow-x: auto;">
-    <span th:each="gatePassType : ${gatePass.getGatePassTypes}">
-    <table class="alignCenter font-helva font-w-400 font-s-14">
+    <div th:each="gatePassType : ${gatePass.getGatePassTypes}">
+    <table class="alignCenter font-helva font-w-400 font-s-14"  style="border: 1.5px solid black;">
         <tr>
             <td style="width: 100%;font-weight: bold;font-size: 18px;" colspan="3">
                   <span th:text="${gatePassType}"></span>
@@ -62,7 +62,7 @@
             </td>
             <td style="width: 50%;height: 30px;" colspan="1">
             Driver Name: <span
-                    th:text="${gatePass.getGatePassValue().getDriverName()}+'('+${gatePass.getGatePassValue().getDriverContactNo()}+')'"></span>
+                    th:text="${gatePass.getGatePassValue().getDriverName()}+' ('+${gatePass.getGatePassValue().getDriverContactNo()}+')'"></span>
             </td>
             <td style="width: 25%;height: 30px;" colspan="1">
                 Ref PI No.: <span th:text="${gatePass.getPiNo()}"></span>
@@ -81,7 +81,7 @@
                 <span th:text="${gatePass.getGatePassValue().getVehicleNo()}"></span>
             </td>
             <td style="width: 70%;height: 30px;" colspan="2">
-                <span th:text="${gatePass.getPartyBillToName()}"></span>
+                <span th:text="${gatePass.getPartyBillToName()} + '. '+ ${gatePass.getAddress()} "></span>
             </td>
         </tr>
         <tr>
@@ -89,20 +89,18 @@
             <td style="width: 50%;height: 30px;" colspan="1">Particulars</td>
             <td style="width: 25%;height: 30px;" colspan="1">Quantity</td>
         </tr>
-        <span th:each="glassInfo,stat : ${gatePass.getGlassInfoProjections}">
-        <tr>
-            <td style="width: 25%;height: 50px;vertical-align: center;" colspan="1">
+        <tr th:each="glassInfo,stat : ${gatePass.getGlassInfoProjections}" style="font-size: 16px;background-color: #ECECEC;">
+            <td style="width: 25%;height: 30px;" colspan="1">
                 <span th:text="${stat.index + 1}"></span>
             </td>
-            <td style="width: 50%;height: 50px;vertical-align: center;" colspan="1">
-                <span th:text="${glassInfo.getGlassSpecification()} + ' '+${glassInfo.getThickness()}"></span>
+            <td style="width: 50%;height: 30px;" colspan="1">
+                <span th:text="${glassInfo.getGlassSpecification()} + ' Thickness '+${glassInfo.getThickness()}"></span>
             </td>
 
-            <td style="width: 25%;height: 50px;vertical-align: center;" colspan="1">
+            <td style="width: 25%;height: 30px;" colspan="1">
                 <span th:text="${glassInfo.getGatePassItemQty()}"></span>
             </td>
         </tr>
-        </span>
         <tr>
             <td style="width: 25%;height: 30px;" colspan="1"></td>
             <td style="width: 50%;height: 30px;" colspan="1">Total</td>
@@ -111,12 +109,12 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 25%;height: 70px;vertical-align: bottom;" colspan="1">Signature(Ofc.)</td>
-            <td style="width: 50%;height: 70px;vertical-align: bottom;" colspan="1">Signature(WH.)</td>
-            <td style="width: 25%;height: 70px;vertical-align: bottom;" colspan="1">Signature(Drv.)</td>
+            <td style="width: 25%;height: 60px;vertical-align: bottom;" colspan="1">Signature(Ofc.)</td>
+            <td style="width: 50%;height: 60px;vertical-align: bottom;" colspan="1">Signature(WH.)</td>
+            <td style="width: 25%;height: 60px;vertical-align: bottom;" colspan="1">Signature(Drv.)</td>
         </tr>
     </table>
-        </span>
+        </div>
 </div>
 </body>
 </html>

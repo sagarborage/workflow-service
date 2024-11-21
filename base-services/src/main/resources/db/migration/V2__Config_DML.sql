@@ -29,20 +29,252 @@ INSERT INTO `company` (`uuid`, `tenant_id`, `company_type_id`, `company_name`, `
 (UUID(), 1, 2, 'Test party one', 'CIN0000001', 'GSTIN0000000', 'TAN0000000', 'PAN0000000', '2023-09-09 14:39:57', '2023-09-09 14:39:57', 'ADMIN', 'ADMIN', 1);
 
 INSERT INTO `address` (`uuid`, `company_id`, `address_type_id`, `address_line1`, `address_line2`, `address_line3`, `city`, `state_code`, `country_code`, `pin_code`, `work_phone`, `contact_person`, `aadhaar`, `fax`, `primary_phone_number`, `alternate_phone_number`, `email`, `website`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
-(UUID(), 1, 1, 'Test address one', NULL, NULL, NULL, '123', '1234', '123', NULL, 'Admin', '394395905436', NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1),
-(UUID(), 2, 1, 'Test address two', NULL, NULL, NULL, '123', '1234', '123', NULL, 'Admin', '394395905437', NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
+(UUID(), 1, 1, 'Test address one', NULL, NULL, NULL, 'MH', '1234', '123', NULL, 'Admin', '394395905436', NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1),
+(UUID(), 2, 1, 'Test address two', NULL, NULL, NULL, 'MH', '1234', '123', NULL, 'Admin', '394395905437', NULL, '9049989010', '9049989010', NULL, NULL, '2023-09-22 12:27:41', '2023-09-22 12:27:41', 'ADMIN', 'ADMIN', 1);
 
 INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 (UUID(), 1, 'BLOCK', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
 
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'TEPAR (BLOCK)', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'DOOR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'DRAWING', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'FR (DRAWING)', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'TEPER DRAWING', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'FR (BLOCK)', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'TEPER (DOOR)', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'round', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'ST-167 TOUGHEN GLASS', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'FR (DOOR)', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5MM OPAL PEARL GREY', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'ROUND DRAWING', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'ST 750', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'rubika', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'HALF ROUND', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'HS TOUGHEND 6MM', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'HS TOUGHEND 8MM', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN GLASS', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'FR ROUND', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'KACHA GLASS', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'KACHA GLASS BLOCK', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '6 MM MIRAR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN GLASS DRAWING', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5MM MIRROR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5MM FOREST GREEN', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5MM GRAY MIRROR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'Brown Tinted Block', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'Brown Glass Block', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5 MM BROWN MIRROR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5 MM GRAY MIRROR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'SHEET', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'CLEAR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN TINTED FR DR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN GLASS DOOR', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN TINTED DRAWING', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '12MM GRAY TINTED BLOCK', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'KACHI FLUTED CLASS', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'FOREST GREEN', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'GRAY TINTED', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'TEPAR BROWN TINTED', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN TINTED', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'GRAY TINTED DRAWING', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_type` (`uuid`, `tenant_id`, `glass_name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5MM DARK BLUE BLOCK', '2023-09-10 12:09:31', '2023-09-10 12:09:31', 'ADMIN', 'ADMIN', 1);
+
+
 INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 (UUID(), 1, '12MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '10MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '8MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '6MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '5MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '4MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '3.5MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_thickness` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, '3MM', '2023-09-10 12:13:23', '2023-09-10 12:13:23', 'ADMIN', 'ADMIN', 1);
+
 
 INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 (UUID(), 1, 'TOUGHEN GLASS(HSN:7007)', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
 
-INSERT INTO `service_rate` (`uuid`, `tenant_id`, `name`, `rate`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
-(UUID(), 1, 'Cut Out', 75, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1);
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'MIRROR GLASS(HSN:7009)', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BROWN MIRROR', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'BLUE ONE WAY', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'LAMINATION', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'EXTRA CLEAR TOUGHEN GLASS', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'ST-167 TOUGHEN GLASS', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `glass_specification` (`uuid`, `tenant_id`, `name`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
+(UUID(), 1, 'GRAY MIRROR', '2023-09-10 12:15:10', '2023-09-10 12:15:10', 'ADMIN', 'ADMIN', 1);
+
+INSERT INTO `service_rate` (`uuid`, `tenant_id`, `name`, `rate`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`)
+VALUES (UUID(), 1, 'CUT OUT', 100.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE', 30.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE', 50.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CORNER ROUND', 50.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG CUT OUT', 500.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT', 400.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG CUT OUT', 1500.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 800', 800.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 70', 70.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'FROSTING', 100.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 150', 150.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CHAMFER', 50.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND', 250.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG CUT OUT 700', 700.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CORNER', 20.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE 100', 100.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE', 1000.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE', 750.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ETCHING', 55.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 200', 200.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 300', 300.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 250', 250.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'KATRA', 60.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND 100', 100.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND 50', 50.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND 30', 30.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG CUT OUT 1000', 1000.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 600', 600.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'KATRA', 45.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE', 35.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HARDWARE AND HANDLING CHARGES', 40.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE', 200.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'POLISH', 12.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND 200', 200.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUTOUT 250', 250.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND', 800.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE 40', 40.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 130', 130.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CORNER ROUND 12', 12.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'POLISH CHARGE', 10.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUTOUT', 125.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE', 300.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE 300', 300.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE', 25.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'ROUND 150', 150.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 400', 400.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 500', 500.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 350', 350.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE 50', 50.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CORNER ROUND 25', 25.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'FROSTING 80', 80.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'FROSTING 40', 40.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT', 118.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE 35', 35.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG CUTOUT', 2000.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'HOLE 22', 22.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'BIG HOLE', 270.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CORNER ROUND 15', 15.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1),
+(UUID(), 1, 'CUT OUT 225', 225.00, '2023-10-08 23:11:38', '2023-10-08 23:11:38', 'ADMIN', 'ADMIN', 1);
+
 
 INSERT INTO `additional_charges` (`uuid`, `tenant_id`, `extra_mm`, `insurance`, `admin_charges`, `forwarding_charges`, `gst`, `created_datetime`, `last_updated_datetime`, `created_by`, `last_updated_by`, `is_active`) VALUES
 (UUID(), 1, 11.00, 11.00, 11.00, 11.00, 11.00, '2023-10-17 11:45:46', '2023-10-17 11:45:48', 'ADMIN', 'ADMIN', 1);
