@@ -64,14 +64,15 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
     @Query("SELECT " +
             "gs.name as glassSpecification , " +
             "gt.name as thickness, " +
-            "pii.quantity as totalItemQty, "+
-            "gd.gatePassQty as gatePassItemQty "+
+            "sum(pii.quantity) as totalItemQty, "+
+            "sum(gd.gatePassQty) as gatePassItemQty "+
             "FROM GatePassEntity g " +
             "JOIN g.gatePassDetailsEntities gd "+
             "JOIN gd.proFormaInvoiceItemEntity pii "+
             "JOIN pii.glassSpecificationEntity gs "+
             "JOIN pii.glassThicknessEntity gt "+
-            "Where g.uuid = :gatePassUuid ")
+            "Where g.uuid = :gatePassUuid " +
+            "GROUP BY gs.name, gt.name")
     List<GlassInfoProjection> findGlassItemsInfoByGatePassUuid(String gatePassUuid);
 
 
