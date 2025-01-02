@@ -76,6 +76,10 @@
   font-size: 20px;
 }
 
+.font-s-25 {
+  font-size: 25px;
+}
+
 /* Font Family - Serif */
 .font-serif {
   font-family: 'Times New Roman', Times, serif;

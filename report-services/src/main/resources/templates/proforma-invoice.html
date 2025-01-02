@@ -50,22 +50,22 @@
     <table class="alignCenter font-helva font-w-400 font-s-14">
         <!-- 1st row with colspan 10 -->
         <tr>
-            <td class="alignCenter customPi font-16" colspan="10">PROFORMA INVOICE</td>
+            <td class="alignCenter customPi font-s-20" colspan="10">PROFORMA INVOICE</td>
         </tr>
         <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
         <tr>
             <td style="width: 20%;" colspan="2"></td>
-            <td class="alignCenter font-12" style="width: 80%;" colspan="8">
+            <td class="alignCenter font-s-16"  style="width: 80%;" colspan="8">
                 <div class="customPi">HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD.</div>
-                <div>Plot No E5 Near Chakan Oil Mill, Kupwad MIDC, Sangli 416436</div>
-                <div>GST NO:27AAECH2044N1ZG, PAN NO:AAECH2044N</div>
-                <div>Ph.:8669585198, E-Mail:himyougtuffglass16716@gmail.com</div>
-                <div>Web:www.himyougtuffglass.com</div>
+                    <div>Plot No E5 Near Chakan Oil Mill, Kupwad MIDC, Sangli 416436</div>
+                    <div>GST NO:27AAECH2044N1ZG, PAN NO:AAECH2044N</div>
+                    <div>Ph.:8669585198, E-Mail:himyougtuffglass16716@gmail.com</div>
+                    <div>Web:www.himyougtuffglass.com</div>
             </td>
         </tr>
         <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
         <tr>
-            <td style="width: 46%;" colspan="5"><b>Proforma Invoice No:</b><span
+            <td style="width: 46%; " class="font-s-17" colspan="5"><b>Proforma Invoice No:</b><span
                     th:text="${piValue.getPiNumber()}"></span>
             </td>
             <td style="width: 32.4%;" colspan="3"><b>User:</b><span th:text="${piValue.getCreatedBy()}"></span></td>
@@ -165,7 +165,7 @@
         </tr>
         <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
 
-        <tr th:each="item, iterStat : ${reportDetails.getServiceRateDetails()}">
+        <tr th:each="item, iterStat : ${reportDetails.getServiceRateDetails()}" class="font-s-16">
             <td style="width: 36.8%;" colspan="4"></td>
             <td style="width: 20%;" colspan="2" th:text="${item.getServiceRateName()}"></td>
             <td style="width: 10.8%;" th:text="${item.getQuantity()}">val</td>
