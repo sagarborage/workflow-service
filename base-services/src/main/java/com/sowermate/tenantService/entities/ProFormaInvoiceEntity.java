@@ -56,6 +56,9 @@ public class ProFormaInvoiceEntity extends Base {
     @Column(name = "transport_charges")
     private Double transportCharges;
 
+    @Column(name = "is_gst_applicable")
+    private Boolean isGstApplicable;
+
     @Column(name = "gst_charges")
     private Float gstCharges;
 
@@ -156,6 +159,7 @@ public class ProFormaInvoiceEntity extends Base {
                 .urgencyPercentAmount(getUrgencyPercentAmount())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
+                .isGstApplicable(getIsGstApplicable())
                 .gstCharges(getGstCharges())
                 .grandTotal(getGrandTotal())
                 .roundOffAmount(getRoundOffAmount())

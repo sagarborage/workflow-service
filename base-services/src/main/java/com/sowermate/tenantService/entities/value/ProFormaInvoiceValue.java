@@ -41,6 +41,7 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Float urgencyPercentAmount;
     private Double otherCharges;
     private Double transportCharges;
+    private Boolean isGstApplicable;
     private Float gstCharges;
     private Double grandTotal;
     private Float roundOffAmount;
@@ -72,6 +73,7 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .urgencyPercentAmount(getUrgencyPercentAmount())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
+                .isGstApplicable(getIsGstApplicable())
                 .gstCharges(getGstCharges())
                 .grandTotal(getGrandTotal())
                 .roundOffAmount(getRoundOffAmount())
