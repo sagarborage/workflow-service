@@ -5,7 +5,13 @@ import com.sowermate.image.config.PdfStorageConfig;
 import com.sowermate.image.services.ImageService;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.report.controllers.PIReportHeaderDetails;
-import com.sowermate.report.dtos.*;
+import com.sowermate.report.dtos.CompletedGlassValue;
+import com.sowermate.report.dtos.GatePassReportDto;
+import com.sowermate.report.dtos.GatePassRequestDto;
+import com.sowermate.report.dtos.PIReportDetails;
+import com.sowermate.report.dtos.StickerRequestDto;
+import com.sowermate.report.dtos.ToughenBatchReportDto;
+import com.sowermate.report.dtos.ToughenBatchReportRequestDto;
 import com.sowermate.report.services.PdfGenerationService;
 import com.sowermate.report.services.PdfGenerationUtils;
 import com.sowermate.tenantService.entities.AddressEntity;
@@ -13,8 +19,17 @@ import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
-import com.sowermate.tenantService.entities.value.*;
-import com.sowermate.tenantService.services.*;
+import com.sowermate.tenantService.entities.value.GatePassValue;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemReportValue;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.tenantService.services.CompanyService;
+import com.sowermate.tenantService.services.GatePassService;
+import com.sowermate.tenantService.services.GlassThicknessService;
+import com.sowermate.tenantService.services.JbCreationService;
+import com.sowermate.tenantService.services.PiInfoProjectionForReport;
+import com.sowermate.tenantService.services.ToughenBatchProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -288,7 +303,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         for (List<ProFormaInvoiceItemReportValue> itemList : glassItemDetails.values()) {
             for (ProFormaInvoiceItemReportValue item : itemList) {
                 totalUnitTotal = totalUnitTotal.add(item.getUnitValue());
-                sumSqFtTotal = sumSqFtTotal.add( new BigDecimal(item.getSqFt()));
+                sumSqFtTotal = sumSqFtTotal.add(new BigDecimal(item.getSqFt()));
             }
         }
 
@@ -384,7 +399,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                 .ratePerUnit(value.getRatePerUnit())
                 .unitMeasurementLabel(value.getUnitMeasurementLabel())
                 .amount(value.getAmount())
-                .sqFt(new DecimalFormat("#.00").format(value.getActualHeight() * value.getActualWidth()/92903 * value.getQuantity()))
+                .sqFt(new DecimalFormat("#.00").format(value.getActualHeight() * value.getActualWidth() / 92903 * value.getQuantity()))
                 //added below condition to initially inset 0 value in bucket
                 .optimizeBucket(value.getOptimizeBucket() == null ? 0 : value.getOptimizeBucket())
                 .cuttingBucket(value.getCuttingBucket() == null ? 0 : value.getCuttingBucket())
