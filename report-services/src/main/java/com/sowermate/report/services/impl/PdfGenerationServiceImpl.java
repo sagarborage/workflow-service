@@ -45,6 +45,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -80,14 +81,27 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     @Override
     public byte[] generateToughenSticker(StickerRequestDto stickerRequestDto) throws IOException {
-        StickerReportProjection stickerReportProjection = toughenBatchProcessService.getStickerReport(stickerRequestDto.getTenantUuid(), stickerRequestDto.getCompanyUuid(), stickerRequestDto.getBatchItemUuid());
+        StickerReportProjection stickerReportProjection = toughenBatchProcessService.getStickerOfBatchItem(stickerRequestDto.getTenantUuid(), stickerRequestDto.getCompanyUuid(), stickerRequestDto.getBatchItemUuid());
         if (stickerReportProjection == null) {
             stickerReportProjection = jbCreationService.getStickerData(stickerRequestDto.getBatchItemUuid());
         }
 
-        byte[] pdfBytes = generatePdfForSticker(stickerReportProjection);
+        byte[] pdfBytes = generatePdfForSticker(Collections.singletonList(stickerReportProjection));
         pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
+    }
+
+    @Override
+    public byte[] generateToughenStickers(StickerRequestDto stickerRequestDto) throws IOException {
+        List<StickerReportProjection> stickerReportProjection = toughenBatchProcessService.getStickersOfBatch(stickerRequestDto.getTenantUuid(), stickerRequestDto.getCompanyUuid(), stickerRequestDto.getBatchUuid());
+        if (stickerReportProjection != null) {
+            byte[] pdfBytes = generatePdfForSticker(stickerReportProjection);
+            pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+            return pdfBytes;
+        }
+        else {
+            throw new RuntimeException("data not found");
+        }
     }
 
     @Override
@@ -218,10 +232,10 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         }
     }
 
-    private byte[] generatePdfForSticker(StickerReportProjection stickerData) {
+    private byte[] generatePdfForSticker(List<StickerReportProjection> stickerDataList) {
         try {
             Context context = new Context();
-            context.setVariable("stickerData", stickerData);
+            context.setVariable("stickerDataList", stickerDataList);
 
             String htmlContent = templateEngine.process("sticker", context);
 
@@ -242,6 +256,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             return null;
         }
     }
+
 
     private byte[] generatePdfForGatePass(GatePassReportDto gatePassReportDto) {
         try {

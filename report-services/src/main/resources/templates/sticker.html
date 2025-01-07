@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
-
     <style>
         @page {
             size: 85mm 55mm; /* Adjust to your printer's page size */
             margin: 0; /* No margins for precise sticker printing */
         }
+
         .static-table {
             width: 80mm;
             height: 50mm;
@@ -23,39 +23,46 @@
             vertical-align: middle;
             font-size: 16px; /* Set font size for all table data cells */
         }
+
+        /* Page break after each sticker */
+        .sticker-page {
+            page-break-after: always; /* Force a page break before each sticker */
+        }
     </style>
 </head>
 
 <body>
-<div style="overflow-x: auto;">
-    <table class="alignCenter font-helva font-w-400 font-s-14 static-table">
-        <tr style="height: 63px;">
-            <td style="width: 25%;" colspan="1">
-                <span th:text="${stickerData.getPiNo()}"></span>
-            </td>
-            <td class="alignCenter font-12" style="width: 75%;" colspan="2">
-                <img th:src="@{classpath:static/images/HG-sticker.jpg}" height="60px" width="270px" alt="Logo" />
-            </td>
-        </tr>
-        <tr style="height: 63px;">
-            <td style="width: 25%;" colspan="1">TH:- <span th:text="${stickerData.getThickness()}"></span></td>
-            <td class="alignCenter font-12" style="width: 75%;" colspan="2">
-                Party:- <span th:text="${stickerData.getPartyName()}"></span>
-            </td>
-        </tr>
-        <tr style="height: 63px;">
-            <td style="width: 25%;" colspan="1">
-                <span th:text="${stickerData.getStickerNumber()}"></span>
-            </td>
-            <td class="alignCenter font-12" style="width: 40%;" colspan="1">
-                Size <span th:text="${stickerData.getSize()}"></span>
-            </td>
-            <td class="alignCenter font-12" style="width: 35%;" colspan="1">
-                <div>Today</div>
-                <div><span th:text="${#dates.format(new java.util.Date(), 'dd-MM-yyyy')}"></span></div>
-            </td>
-        </tr>
-    </table>
+<div th:each="stickerData : ${stickerDataList}" class="sticker-page">
+    <div style="overflow-x: auto;">
+        <table class="alignCenter font-helva font-w-400 font-s-14 static-table">
+            <tr style="height: 63px;">
+                <td style="width: 25%;" colspan="1">
+                    <span th:text="${stickerData.piNo}"></span>
+                </td>
+                <td class="alignCenter font-12" style="width: 75%;" colspan="2">
+                    <img th:src="@{classpath:static/images/HG-sticker.jpg}" height="60px" width="270px" alt="Logo" />
+                </td>
+            </tr>
+            <tr style="height: 63px;">
+                <td style="width: 25%;" colspan="1">TH:- <span th:text="${stickerData.thickness}"></span></td>
+                <td class="alignCenter font-12" style="width: 75%;" colspan="2">
+                    Party:- <span th:text="${stickerData.partyName}"></span>
+                </td>
+            </tr>
+            <tr style="height: 63px;">
+                <td style="width: 25%;" colspan="1">
+                    <span th:text="${stickerData.stickerNumber}"></span>
+                </td>
+                <td class="alignCenter font-12" style="width: 40%;" colspan="1">
+                    Size <span th:text="${stickerData.size}"></span>
+                </td>
+                <td class="alignCenter font-12" style="width: 35%;" colspan="1">
+                    <div>Today</div>
+                    <div><span th:text="${#dates.format(new java.util.Date(), 'dd-MM-yyyy')}"></span></div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>
