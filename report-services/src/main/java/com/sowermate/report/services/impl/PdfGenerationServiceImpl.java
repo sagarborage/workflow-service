@@ -84,6 +84,9 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         StickerReportProjection stickerReportProjection = toughenBatchProcessService.getStickerOfBatchItem(stickerRequestDto.getTenantUuid(), stickerRequestDto.getCompanyUuid(), stickerRequestDto.getBatchItemUuid());
         if (stickerReportProjection == null) {
             stickerReportProjection = jbCreationService.getStickerData(stickerRequestDto.getBatchItemUuid());
+            if (stickerReportProjection == null) {
+                throw new RuntimeException("data not found");
+            }
         }
 
         byte[] pdfBytes = generatePdfForSticker(Collections.singletonList(stickerReportProjection));
@@ -98,8 +101,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             byte[] pdfBytes = generatePdfForSticker(stickerReportProjection);
             pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
             return pdfBytes;
-        }
-        else {
+        } else {
             throw new RuntimeException("data not found");
         }
     }
