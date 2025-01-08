@@ -27,7 +27,8 @@ public interface ToughenBatchProcessService {
 
     List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
 
-    StickerReportProjection getStickerReport(String tenantUuid, String companyUuid, String batchItemUuid);
+    StickerReportProjection getStickerOfBatchItem(String tenantUuid, String companyUuid, String batchItemUuid);
+    List<StickerReportProjection> getStickersOfBatch(String tenantUuid, String companyUuid, String batchUuid) ;
 
     List<CompletedGlassesProjection> getCompletedGlassesForReport(String tenantUuid, String companyUuid, LocalDate batchItemDate);
 }

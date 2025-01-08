@@ -9,4 +9,5 @@ public class StickerRequestDto {
     String tenantUuid;
     String companyUuid;
     String batchItemUuid;
+    String batchUuid;
 }

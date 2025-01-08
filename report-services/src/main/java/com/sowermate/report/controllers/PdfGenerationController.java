@@ -16,10 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pdf")
@@ -169,6 +177,24 @@ public class PdfGenerationController {
         stickerRequestDto.setCompanyUuid(companyUuid);
         stickerRequestDto.setBatchItemUuid(batchItemUuid);
         byte[] pdfContent = pdfGenerationService.generateToughenSticker(stickerRequestDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
+
+    @PostMapping("/all-stickers/{tenantUuid}/{companyUuid}/{batchUuid}")
+    public ResponseEntity<byte[]> generateToughenStickers(@PathVariable String tenantUuid,
+                                                          @PathVariable String companyUuid,
+                                                          @PathVariable String batchUuid) throws IOException {
+
+        StickerRequestDto stickerRequestDto = new StickerRequestDto();
+
+        stickerRequestDto.setTenantUuid(tenantUuid);
+        stickerRequestDto.setCompanyUuid(companyUuid);
+        stickerRequestDto.setBatchUuid(batchUuid);
+        byte[] pdfContent = pdfGenerationService.generateToughenStickers(stickerRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
         headers.setContentDispositionFormData("attachment", "example.pdf");

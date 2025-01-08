@@ -230,8 +230,13 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
-    public StickerReportProjection getStickerReport(String tenantUuid, String companyUuid, String batchItemUuid) {
-        return toughenBatchProcessDetailsRepository.findByStickerData(tenantUuid,companyUuid,batchItemUuid);
+    public StickerReportProjection getStickerOfBatchItem(String tenantUuid, String companyUuid, String batchItemUuid) {
+        return toughenBatchProcessDetailsRepository.findStickerDataOfToughenBatchItem(tenantUuid,companyUuid,batchItemUuid);
+    }
+
+    @Override
+    public List<StickerReportProjection> getStickersOfBatch(String tenantUuid, String companyUuid, String batchUuid) {
+        return toughenBatchProcessDetailsRepository.findAllStickerDataOfBatch(tenantUuid,companyUuid,batchUuid);
     }
 
     @Override
