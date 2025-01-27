@@ -3,70 +3,76 @@
 <head>
     <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
     <style>
-        @page {
-            size: 70mm 33mm; /* Adjust to your printer's page size */
-            margin: 0; /* No margins for precise sticker printing */
-        }
+        /* Define the page size for PDF generation */
+               @page {
+                   size: 70mm 35mm;  /* Custom size for each sticker page */
+                   margin: 0.5mm;       /* Margin around the page */
+               }
 
-        .static-table {
-            margin-top:5px;
-            width: 66mm;
-            height: 29mm;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
+               /* Styling for the sticker itself */
+               .sticker {
+                   border: 0.5mm solid black;
+                   text-align: center;
+                   padding: 0;
+               }
 
-        .static-table td {
-            border: 1.5px solid #000; /* Optional: for better visualization */
-            overflow: hidden; /* Ensure content doesn't exceed the cell boundaries */
-            text-align: center;
-            vertical-align: middle;
-        }
+               /* Table styling inside each sticker */
+               table {
+                    width: 68mm;
+                    height: 33mm;
+                   border-collapse: collapse;
+               }
 
-        /* Page break after each sticker */
-        .sticker-page {
-            page-break-after: always; /* Force a page break before each sticker */
-        }
+               td {
+                   border: 0.5mm solid #000;
+                   text-align: center;
+                   vertical-align: middle;
+
+               }
+
+               body {
+                   margin: 0;  /* Remove default margin */
+               }
     </style>
 </head>
 
 <body>
-<div th:each="stickerData : ${stickerDataList}" class="sticker-page">
-    <div>
+<div th:each="stickerData : ${stickerDataList}">
+    <div class="sticker">
         <table class="alignCenter font-sans-serif font-w-500 font-s-14 static-table">
-            <tr style="height: 44px;">
-                <td class="alignCenter" style="width: 40%;" colspan="1">
-                    <div class="margin-4">
-                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" height="40px" width="60px" alt="Logo" />
+            <tr style="height: 11mm;">
+                <td class="alignCenter" colspan="1">
+                    <div class="alignCenter" style="margin-top: 0.6mm">
+                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" style="height: 10mm;" width="10mm" alt="Logo" />
                     </div>
                 </td>
 
-                <td class="alignCenter" style="width: 60%;" colspan="2">
-                    <div class="margin-t-3">
-                        <img th:src="@{classpath:static/images/HG-sticker.jpg}" height="45px" width="185px" alt="Logo" />
+                <td class="alignCenter" colspan="2">
+                    <div class="alignCenter" style="margin-top: 0.6mm">
+                        <img th:src="@{classpath:static/images/HG-sticker.jpg}" style="height: 10mm;" width="52mm" alt="Logo" />
                     </div>
                 </td>
             </tr>
-            <tr style="height: 28px;">
-                <td style="width: 40%;" colspan="1">
+            <tr style="height: 9.38mm;">
+                <td colspan="1">
                 <div class="font-s-16">
                     <span th:text="${stickerData.piNo}"></span>
                 </div>
             </td>
-                <td style="width: 40%;" colspan="2">TH:- <span th:text="${stickerData.thickness}"></span></td>
+                <td colspan="2">TH:- <span th:text="${stickerData.thickness}"></span></td>
             </tr>
-            <tr style="height: 28px;">
-                <td style="width: 40%;" colspan="1">
+            <tr style="height: 11mm;">
+                <td colspan="1">
                     <div class="font-s-16">
                         <span th:text="${stickerData.stickerNumber}"></span>
                     </div>
                 </td>
 
-                <td class="alignCenter" style="width: 30%;" colspan="1">
+                <td class="alignCenter" colspan="1">
                     <div class="font-s-12">Size</div>
                     <div class="font-s-16"><span th:text="${stickerData.size}"></span></div>
                 </td>
-                <td class="alignCenter" style="width: 30%;" colspan="1">
+                <td class="alignCenter" colspan="1">
                     <div class="font-s-12">Date</div>
                     <div class="font-s-16"><span th:text="${#dates.format(new java.util.Date(), 'dd-MM-yyyy')}"></span></div>
                 </td>
