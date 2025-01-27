@@ -36,6 +36,12 @@
 }
 
 /* Font Size 11px to 20px */
+.font-s-4 {
+  font-size: 4px;
+}
+.font-s-5 {
+  font-size: 5px;
+}
 .font-s-11 {
   font-size: 11px;
 }

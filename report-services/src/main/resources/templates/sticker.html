@@ -6,7 +6,10 @@
         /* Define the page size for PDF generation */
                @page {
                    size: 70mm 35mm;  /* Custom size for each sticker page */
-                   margin: 0.5mm;       /* Margin around the page */
+                   margin-top: 0.5mm;       /* Margin around the page */
+                   margin-right: 0.5mm;       /* Margin around the page */
+                   margin-bottom: 0.5mm;       /* Margin around the page */
+                   margin-left: 1mm;       /* Margin around the page */
                }
 
                /* Styling for the sticker itself */
@@ -42,9 +45,12 @@
         <table class="alignCenter font-sans-serif font-w-500 font-s-14 static-table">
             <tr style="height: 11mm;">
                 <td class="alignCenter" colspan="1">
+                    <div class="font-s-5">IS 2553:2018:Part 1</div>
                     <div class="alignCenter">
-                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" style="height: 10mm;" width="10mm" alt="Logo" />
+                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" style="height: 6mm;" width="11mm" alt="Logo" />
                     </div>
+                    <div class="font-s-5">CM/L 7500262816</div>
+                    <div class="font-s-4">www.bsi.gov.in</div>
                 </td>
 
                 <td class="alignCenter" colspan="2">
