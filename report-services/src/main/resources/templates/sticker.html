@@ -43,23 +43,23 @@
 <div th:each="stickerData : ${stickerDataList}">
     <div class="sticker">
         <table class="alignCenter font-sans-serif font-w-500 font-s-14 static-table">
-            <tr style="height: 11mm;">
+            <tr style="height: 14mm;">
                 <td class="alignCenter" colspan="1">
-                    <div class="font-s-5">IS 2553:2018:Part 1</div>
+                    <div class="font-s-7 font-sans-serif">IS 2553:2018:Part 1</div>
                     <div class="alignCenter">
-                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" style="height: 6mm;" width="11mm" alt="Logo" />
+                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" style="height: 8mm;" width="14mm" alt="Logo" />
                     </div>
-                    <div class="font-s-5">CM/L 7500262816</div>
-                    <div class="font-s-4">www.bsi.gov.in</div>
+                    <div class="font-s-7 font-sans-serif">CM/L-7500262816</div>
+                    <div class="font-s-7 font-sans-serif">www.bsi.gov.in</div>
                 </td>
 
                 <td class="alignCenter" colspan="2">
                     <div class="alignCenter">
-                        <img th:src="@{classpath:static/images/HG-sticker.jpg}" style="height: 10mm;" width="50mm" alt="Logo" />
+                        <img th:src="@{classpath:static/images/HG-sticker.jpg}" style="height: 13mm;" width="50mm" alt="Logo" />
                     </div>
                 </td>
             </tr>
-            <tr style="height: 9.35mm;">
+            <tr style="height: 6.35mm;">
                 <td colspan="1">
                 <div class="font-s-16">
                     <span th:text="${stickerData.piNo}"></span>
@@ -67,7 +67,7 @@
             </td>
                 <td colspan="2">TH:- <span th:text="${stickerData.thickness}"></span></td>
             </tr>
-            <tr style="height: 11mm;">
+            <tr style="height: 10mm;">
                 <td colspan="1">
                     <div class="font-s-16">
                         <span th:text="${stickerData.stickerNumber}"></span>
