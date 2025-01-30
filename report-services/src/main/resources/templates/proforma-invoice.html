@@ -42,6 +42,12 @@
       text-align: center;
       height: 20px; /* Adjust the height as needed */
     }
+    .no-sep-l-r-t-b {
+  border-left: none;
+    border-top: none;
+      border-bottom: none;
+        border-right: none;
+}
 .no-sep-l {
   border-left: none;
 }
@@ -71,15 +77,15 @@
                 </div>
             </td>
             <td style="width: 39%;" class="no-sep-l" colspan="4">
-                <table style="border: none;">
-                    <tr>
-                        <td style="width: 40%;" class="no-sep-r no-sep-l margin-t-4 margin-b-4">
+                <table>
+                    <tr class="no-sep-l-r-t-b">
+                        <td style="width: 40%;" class="no-sep-l-r-t-b margin-t-4 margin-b-4">
                             <img th:src="@{classpath:static/images/gold_plus_logo.png}" style="height: 80px;" class="margin-t-4 margin-b-4" width="80px" alt="Logo" />
                         </td>
-                        <td style="width: 30%;" class="no-sep-r no-sep-l margin-t-4 margin-b-4">
+                        <td style="width: 30%;" class="no-sep-l-r-t-b margin-t-4 margin-b-4">
                             <img th:src="@{classpath:static/images/Sisecam_logo.jpg}" style="height: 80px;"  class="margin-t-4 margin-b-4"  width="80px" alt="Logo" />
                         </td>
-                        <td style="width: 40%;" class="no-sep-l margin-t-4 margin-b-4">
+                        <td style="width: 40%;" class="no-sep-l-r-t-b margin-t-4 margin-b-4">
                             <img th:src="@{classpath:static/images/ISO_logo_full.jpg}" style="height: 80px;" width="80px"  class="alignLeft margin-t-4 margin-b-4"  alt="Logo" />
                         </td>
                     </tr>
