@@ -40,9 +40,9 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
 
     Optional<ProFormaInvoiceEntity> findById(String proFormaInvoiceId);
-
+    //PROD issue fix: duplicate PI/Numbers where getting created
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
-
+    ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByIdDesc(long id);
     //ProFormaInvoiceEntity findByUuid(String uuid);
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
 

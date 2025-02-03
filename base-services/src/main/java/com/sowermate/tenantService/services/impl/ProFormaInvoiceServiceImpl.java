@@ -14,6 +14,7 @@ import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     @Transactional
+    @Synchronized
     public ProFormaInvoiceValue createProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
         String tenantUUID = proFormaInvoiceValue.getTenantUuid();
 
@@ -90,7 +92,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     private String generatePiNumber(long tenantId) {
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(tenantId);
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findFirstByTenantEntityIdOrderByIdDesc(tenantId);
 
         LocalDate currentDate = LocalDate.now();
         String currentMonth = currentDate.getMonth().toString().substring(0, 3);
