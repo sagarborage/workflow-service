@@ -376,6 +376,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())
                 .workOrderNumber(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getId())
                 .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e->e.getDispatchCompleted() > 0))
+                .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e->e.getOptimizeCompleted() > 0))
                 .status(proFormaInvoiceEntity.getStatus())
                 .build();
     }

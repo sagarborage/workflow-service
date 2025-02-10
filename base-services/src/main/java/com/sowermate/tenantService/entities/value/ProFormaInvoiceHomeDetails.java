@@ -21,6 +21,7 @@ public class ProFormaInvoiceHomeDetails {
     private String piNumber;
     private Float payableAmount;
     private boolean isGatePassEnabled;
+    private boolean isEditAllowed;
     private LocalDateTime invoiceDate;
     private ProformaInvoiceStatusEnum status;
 }
