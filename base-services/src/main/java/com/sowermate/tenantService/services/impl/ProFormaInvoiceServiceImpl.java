@@ -159,10 +159,11 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         // Update or add items to the existing list
         for (ProFormaInvoiceItemValue updatedItem : proFormaInvoiceItems) {
             ProFormaInvoiceItemEntity existingItem = findItemById(existingInvoice, updatedItem.getUuid());
-
+            WorkOrderEntity workOrderEntity = existingInvoice.getWorkOrderEntity();
             if (existingItem != null) {
                 // Update existing item
-                updateItemFromValue(existingItem,
+                updateItemFromValue(workOrderEntity,
+                        existingItem,
                         updatedItem,
                         glassTypeEntityMap,
                         specificationEntityMap,
@@ -170,7 +171,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 );
             } else {
                 // Add new item
-                ProFormaInvoiceItemEntity newInvoiceItem = addNewInvoiceItem(proFormaInvoiceValue, updatedItem);
+                ProFormaInvoiceItemEntity newInvoiceItem = addNewInvoiceItem(workOrderEntity, proFormaInvoiceValue, updatedItem);
                 existingInvoice.getProFormaInvoiceItemEntities().add(newInvoiceItem);
             }
         }
@@ -235,10 +236,13 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .orElse(null);
     }
 
-    private void updateItemFromValue(ProFormaInvoiceItemEntity itemEntity, ProFormaInvoiceItemValue itemValue, Map<String, GlassTypeEntity> glassTypeEntityMap,
+    private void updateItemFromValue(WorkOrderEntity workOrderEntity , ProFormaInvoiceItemEntity itemEntity, ProFormaInvoiceItemValue itemValue, Map<String, GlassTypeEntity> glassTypeEntityMap,
                                      Map<String, GlassSpecificationEntity> specificationEntityMap, Map<String, GlassThicknessEntity> thicknessEntityMap) {
         // Update fields based on your business logic
         itemEntity.setGlassTypeEntity(glassTypeEntityMap.get(itemValue.getGlassTypeUuid()));
+        if(workOrderEntity != null) {
+            itemEntity.setOptimizeBucket(itemValue.getQuantity());
+        }
         itemEntity.setGlassSpecificationEntity(specificationEntityMap.get(itemValue.getGlassSpecificationUuid()));
         itemEntity.setGlassThicknessEntity(thicknessEntityMap.get(itemValue.getGlassThicknessUuid()));
         itemEntity.setWidthInch(itemValue.getWidthInch());
@@ -259,10 +263,11 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         itemEntity.setAmount(itemValue.getAmount());
     }
 
-    private ProFormaInvoiceItemEntity addNewInvoiceItem(ProFormaInvoiceValue proFormaInvoiceValue, ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
+    private ProFormaInvoiceItemEntity addNewInvoiceItem(WorkOrderEntity workOrderEntity, ProFormaInvoiceValue proFormaInvoiceValue, ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
         String tenantUuid = proFormaInvoiceValue.getTenantUuid();
         return proFormaInvoiceItemValue.toEntity().toBuilder()
                 .tenantEntity(tenantRepository.findByUuid(tenantUuid))
+                .optimizeBucket(workOrderEntity == null ? 0 : proFormaInvoiceItemValue.getQuantity())
                 .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
                         tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
                 .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
