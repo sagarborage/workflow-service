@@ -22,10 +22,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -241,7 +238,18 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         // Update fields based on your business logic
         itemEntity.setGlassTypeEntity(glassTypeEntityMap.get(itemValue.getGlassTypeUuid()));
         if(workOrderEntity != null) {
-            itemEntity.setOptimizeBucket(itemValue.getQuantity());
+            if(!Objects.equals(itemEntity.getQuantity(), itemValue.getQuantity())){
+                if(itemEntity.getQuantity() < itemValue.getQuantity()) {
+                    itemEntity.setOptimizeBucket(itemEntity.getOptimizeBucket() + (itemValue.getQuantity() - itemEntity.getQuantity()));
+                } else {
+                    var result = itemEntity.getOptimizeBucket() - (itemEntity.getQuantity() - itemValue.getQuantity());
+                    if(result > 0) {
+                        itemEntity.setOptimizeBucket(result);
+                    } else {
+                        throw new RuntimeException("Can not decrease Qty as optimize is completed");
+                    }
+                }
+            }
         }
         itemEntity.setGlassSpecificationEntity(specificationEntityMap.get(itemValue.getGlassSpecificationUuid()));
         itemEntity.setGlassThicknessEntity(thicknessEntityMap.get(itemValue.getGlassThicknessUuid()));
@@ -376,7 +384,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())
                 .workOrderNumber(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getId())
                 .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e->e.getDispatchCompleted() > 0))
-                .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e->e.getOptimizeCompleted() > 0))
+                .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e->e.getDispatchCompleted() > 0))
                 .status(proFormaInvoiceEntity.getStatus())
                 .build();
     }
