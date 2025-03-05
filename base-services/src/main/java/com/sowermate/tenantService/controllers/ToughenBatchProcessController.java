@@ -1,9 +1,11 @@
 package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
+import com.sowermate.tenantService.entities.minimal.ToughenReportProjection;
 import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.entities.value.GeneralParamValue;
 import com.sowermate.tenantService.entities.value.JbCreationValue;
+import com.sowermate.tenantService.entities.value.ToughReportDto;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessDetailsValue;
 import com.sowermate.tenantService.entities.value.ToughenBatchProcessValue;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -66,6 +69,12 @@ public class ToughenBatchProcessController {
     @ResponseBody
     public ResponseEntity<List<ToughenBatchProcessProjection>> getToughenBatchProcessByStatus(@PathVariable("companyUuid") String companyUuid, @PathVariable("status") ToughenBatchProcessStatusEnum status) {
         List<ToughenBatchProcessProjection> list = toughenBatchProcessService.getToughenBatchProcessByStatus(companyUuid,status);
+        return new ResponseEntity<>(list, HttpStatus.CREATED);
+    }
+
+    @GetMapping()
+    public ResponseEntity<ToughReportDto> getToughenReportForReport(@RequestParam("date") LocalDate date) {
+        ToughReportDto list = toughenBatchProcessService.getToughenReportForReport(date);
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 

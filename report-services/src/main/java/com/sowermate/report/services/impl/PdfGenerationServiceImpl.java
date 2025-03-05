@@ -19,11 +19,13 @@ import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
+import com.sowermate.tenantService.entities.minimal.ToughenReportProjection;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemReportValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.tenantService.entities.value.ToughReportDto;
 import com.sowermate.tenantService.services.CompanyService;
 import com.sowermate.tenantService.services.GatePassService;
 import com.sowermate.tenantService.services.GlassThicknessService;
@@ -184,6 +186,25 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         return pdfBytes;
     }
 
+//    @Override
+//    public byte[] generateToughenReport(LocalDate date) throws IOException {
+//        ToughReportDto toughReportDto = new ToughReportDto();
+//        List<ToughenReportProjection> toughenReportProjection = toughenBatchProcessService.getToughenReportForReport(date);
+//        byte[] pdfBytes = generatePdfForToughenReport(toughReportDto);
+//        pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
+//        return pdfBytes;
+//    }
+
+    @Override
+    public byte[] generateToughenReport(LocalDate date) throws IOException {
+        ToughReportDto toughenReportData = toughenBatchProcessService.getToughenReportForReport(date);
+
+        byte[] pdfBytes = generatePdfForToughenReport(toughenReportData);
+        pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());
+        return pdfBytes;
+    }
+
+
     @Override
     public byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException {
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = glassItemDetails(piValue);
@@ -291,6 +312,36 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             context.setVariable("toughen", toughenBatchReportDto);
 
             String htmlContent = templateEngine.process("toughen-batch", context);
+
+            ITextRenderer renderer = new ITextRenderer(1000, 710);
+            renderer.getSharedContext().setBaseURL("classpath:/static/");
+            renderer.setDocumentFromString(htmlContent);
+
+            renderer.layout();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            renderer.createPDF(outputStream);
+            renderer.finishPDF();
+            return outputStream.toByteArray();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private byte[] generatePdfForToughenReport(ToughReportDto toughReportDto) {
+        try {
+            if (toughReportDto == null) {
+                throw new IllegalArgumentException("ToughReportDto cannot be null");
+            }
+
+            Context context = new Context();
+            context.setVariable("toughen", List.of(toughReportDto));
+
+
+            String htmlContent = templateEngine.process("toughen-report", context);
 
             ITextRenderer renderer = new ITextRenderer(1000, 710);
             renderer.getSharedContext().setBaseURL("classpath:/static/");

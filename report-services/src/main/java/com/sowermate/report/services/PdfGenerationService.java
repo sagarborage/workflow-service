@@ -8,6 +8,7 @@ import com.sowermate.report.dtos.ToughenBatchReportRequestDto;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +24,6 @@ public interface PdfGenerationService {
     byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException;
 
     byte[] generateWorkOrder(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException;
+
+    byte[] generateToughenReport(LocalDate date) throws IOException;
 }
