@@ -338,7 +338,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             }
 
             Context context = new Context();
-            context.setVariable("toughen", List.of(toughReportDto));
+            context.setVariable("toughen", toughReportDto);
 
 
             String htmlContent = templateEngine.process("toughen-report", context);

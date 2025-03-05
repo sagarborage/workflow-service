@@ -26,7 +26,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="7" th:text="'Date: ' + ${toughen[0].date}"></td>
+        <td colspan="7" th:text="'Date: ' + ${toughen.date}"></td>
     </tr>
     <tr>
         <td colspan="2">WORK ORDER</td>
@@ -35,10 +35,10 @@
         <td>TOTAL COMPLETED</td>
     </tr>
     <tr>
-        <td colspan="2" th:text="${toughen[0].workOrder} + ' Sqft'"></td>
-        <td colspan="2" th:text="${toughen[0].jb} + ' Sqft'"></td>
-        <td colspan="2" th:text="${toughen[0].reject} + ' Sqft'"></td>
-        <td th:text="${toughen[0].totalCompleted} + ' Sqft'"></td>
+        <td colspan="2" th:text="${toughen.workOrder} + ' Sqft'"></td>
+        <td colspan="2" th:text="${toughen.jb} + ' Sqft'"></td>
+        <td colspan="2" th:text="${toughen.reject} + ' Sqft'"></td>
+        <td th:text="${toughen.totalCompleted} + ' Sqft'"></td>
     </tr>
     <tr>
         <td colspan="2">Work Order</td>
@@ -55,14 +55,21 @@
         <th>Sqft</th>
         <th>Total</th>
     </tr>
-    <tr th:each="thickness : ${toughen[0].thickness}">
+    <tr th:each="thickness : ${toughen.getThickness()}">
+        <!-- Work Order Sqft -->
         <td th:text="${thickness}"></td>
-        <td th:text="${toughen[0].workOrderSqft[thickness] ?: '0'}"></td>
+        <td th:text="${toughen.getWorkOrderSqft.get(thickness)}"></td>
+
+        <!-- JB Sqft -->
         <td th:text="${thickness}"></td>
-        <td th:text="${toughen[0].jbSqft[thickness] ?: '0'}"></td>
+        <td th:text="${toughen.getJbSqft.get(thickness)}"></td>
+
+        <!-- Reject Sqft -->
         <td th:text="${thickness}"></td>
-        <td th:text="${toughen[0].rejectSqft[thickness] ?: '0'}"></td>
-        <td th:text="${toughen[0].totalSqft[thickness] ?: '0'}"></td>
+        <td th:text="${toughen.getRejectSqft.get(thickness)}"></td>
+
+        <!-- Total Sqft (No Thickness) -->
+        <td th:text="${toughen.getTotalSqft().get(thickness)}"></td>
     </tr>
 </table>
 </body>
