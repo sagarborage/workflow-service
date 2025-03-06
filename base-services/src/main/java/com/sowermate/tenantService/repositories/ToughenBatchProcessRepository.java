@@ -105,21 +105,6 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     )
     List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String firmUuid, ToughenBatchProcessStatusEnum status);
 
-//    @Query("SELECT " +
-//            "tbp.createdDateTime AS date, " +
-//            "wo.id AS workOrder, " +
-//            "gt.name AS thickness, " +
-//            "SUM(((pii.chargeableWidth * pii.chargeableHeight * 1) / 1000000) * 10.764) AS sqft " +
-//            "FROM ToughenBatchProcessEntity tbp " +
-//            "JOIN tbp.toughenBatchProcessDetailsEntities tbpd " +
-//            "JOIN tbpd.workOrderEntity wo " +
-//            "JOIN tbpd.proFormaInvoiceItemEntity pii " +
-//            "JOIN pii.glassThicknessEntity gt " +
-//            "WHERE DATE(tbp.createdDateTime) = :date " +
-//            "GROUP BY wo.id, gt.name " +
-//            "ORDER BY wo.id, gt.name")
-//    List<ToughenReportProjection> findToughenReportByDate(@Param("date") LocalDate date);
-
     @Query("SELECT " +
             "gt.name AS thickness, " +
             "pii.chargeableWidth AS widthMm, " +
