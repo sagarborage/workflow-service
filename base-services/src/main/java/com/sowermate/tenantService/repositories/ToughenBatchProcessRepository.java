@@ -115,7 +115,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tbpd.proFormaInvoiceItemEntity pii " +
             "JOIN pii.glassThicknessEntity gt " +
             "WHERE DATE(tbp.createdDateTime) = :date " +
-            "AND tbpd.status = 'COMPLETED' ")
+            "AND tbp.status = 'COMPLETED' ")
     List<ToughenReportProjection> findToughenReportByDate(@Param("date") LocalDate date);
 
     @Query("SELECT g.name FROM GlassThicknessEntity g")
@@ -129,8 +129,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "FROM ToughenBatchProcessEntity tbp " +
             "JOIN tbp.jbCreationEntities jb " +
             "JOIN jb.glassThicknessEntity gt " +
-            "WHERE DATE(tbp.createdDateTime) = :date " +
-            "AND jb.status = 'COMPLETED' ")
+            "WHERE DATE(tbp.createdDateTime) = :date ")
     List<ToughenReportProjection> findToughenReportJbCreationByDate(@Param("date") LocalDate date);
 
     @Query("SELECT " +
