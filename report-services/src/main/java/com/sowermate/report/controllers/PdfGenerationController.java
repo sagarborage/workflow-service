@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -223,6 +225,17 @@ public class PdfGenerationController {
     public ResponseEntity<byte[]> generateToughenBatchReport(@RequestBody ToughenBatchReportRequestDto toughenBatchReportRequestDto) throws IOException {
 
         byte[] pdfContent = pdfGenerationService.generateToughenBatch(toughenBatchReportRequestDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+        headers.setContentDispositionFormData("attachment", "example.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfContent);
+    }
+
+    @PostMapping("/toughenReport")
+    public ResponseEntity<byte[]> generateToughenReport(@RequestParam LocalDate date) throws IOException {
+
+        byte[] pdfContent = pdfGenerationService.generateToughenReport(date);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/pdf"));
         headers.setContentDispositionFormData("attachment", "example.pdf");

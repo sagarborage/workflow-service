@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
+import com.sowermate.tenantService.entities.minimal.ToughenReportProjection;
 import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.entities.value.*;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
@@ -14,10 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -132,7 +138,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     private static List<JbCreationEntity> getJbCreationEntities(List<JbCreationValue> jbCreationValues, GlassThicknessEntity thicknessEntity, ToughenBatchProcessEntity toughenBatchProcessEntity) {
         return jbCreationValues.stream()
-                .map(jb-> jb.toEntity().toBuilder().glassThicknessEntity(thicknessEntity)
+                .map(jb -> jb.toEntity().toBuilder().glassThicknessEntity(thicknessEntity)
                         .toughenBatchProcessEntity(toughenBatchProcessEntity).build())
                 .collect(Collectors.toList());
     }
@@ -140,7 +146,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     @Override
     @Transactional
     public ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid) {
-        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid,companyUuid);
+        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid, companyUuid);
         if (toughenBatchProcessDetailsEntity != null) {
             //TODO: changed this logic to completely remove entry from batch process
             //toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
@@ -154,7 +160,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
         } else {
             //Check and remove if the item type is JB
             JbCreationEntity jbCreationEntity = jbCreationRepository.getJbCreationEntityByUuid(uuid);
-            if(jbCreationEntity != null) {
+            if (jbCreationEntity != null) {
                 jbCreationRepository.delete(jbCreationEntity);
             }
         }
@@ -190,11 +196,11 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             e.setStatus(ToughenBatchProcessStatusEnum.COMPLETED);
             //batchListInProgress.get().get(0).getToughenBatchProcessDetailsEntities().get(3).getProFormaInvoiceItemEntity().getUuid()
             //TODO optimize this logic
-            for(ToughenBatchProcessDetailsEntity tbpd : e.getToughenBatchProcessDetailsEntities()) {
-                if(!tbpd.getStatus().equals(ToughenBatchProcessStatusEnum.BROKEN)) {
+            for (ToughenBatchProcessDetailsEntity tbpd : e.getToughenBatchProcessDetailsEntities()) {
+                if (!tbpd.getStatus().equals(ToughenBatchProcessStatusEnum.BROKEN)) {
                     Optional<List<ProFormaInvoiceItemEntity>> proFormaInvoiceItemEntityList = toughenBatchProcessRepository.findByBatchNo(e.getId());
                     proFormaInvoiceItemEntityList.get().stream().map(pi -> {
-                        if(tbpd.getProFormaInvoiceItemEntity().getUuid().equals(pi.getUuid())){
+                        if (tbpd.getProFormaInvoiceItemEntity().getUuid().equals(pi.getUuid())) {
                             //pi.setToughenCompleted(pi.getToughenCompleted() + 1);
                             pi.setDispatchBucket(pi.getDispatchBucket() + 1);
                         }
@@ -220,10 +226,74 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
         return new ArrayList<>();
     }
 
+    public static double scaleValue(double value) {
+        return BigDecimal.valueOf(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    @Override
+    public ToughReportDto getToughenReportForReport(LocalDate date) {
+        List<String> toughenThickness = toughenBatchProcessRepository.findToughenThickness();
+        List<ToughenReportProjection> workOrders = toughenBatchProcessRepository.findToughenReportByDate(date);
+        List<ToughenReportProjection> jbs = toughenBatchProcessRepository.findToughenReportJbCreationByDate(date);
+        Map<String, Double> jbMap = new HashMap<>();
+        Map<String, Double> workOrderMap = new HashMap<>();
+        Map<String, Double> rejectedMap = new HashMap<>();
+        Map<String, Double> totalMap = new HashMap<>();
+        Double totalJbSqft = 0.0;
+        Double totalWoSqft = 0.0;
+        Double totalRejectSqft = 0.0;
+        for (ToughenReportProjection jbData : jbs) {
+            String thickness = jbData.getThickness();
+            Double width = jbData.getWidthMm();
+            Double height = jbData.getHeightMm();
+            Integer quantity = jbData.getQuantity();
+
+            if (thickness != null && width != null && height != null && quantity != null) {
+                double sqft = ((width * height * quantity) / 1000000) * 10.764;
+                jbMap.put(thickness, scaleValue(jbMap.getOrDefault(thickness, 0.0) + sqft));
+                totalMap.put(thickness, scaleValue(totalMap.getOrDefault(thickness, 0.0) + sqft));
+                totalJbSqft += sqft;
+            }
+
+        }
+
+        for (ToughenReportProjection woData : workOrders) {
+            String thickness = woData.getThickness();
+            Double width = woData.getWidthMm();
+            Double height = woData.getHeightMm();
+            Integer quantity = 1;
+
+            if (thickness != null && width != null && height != null) {
+                double sqft = ((width * height * quantity) / 1000000) * 10.764;
+                workOrderMap.put(thickness, scaleValue(workOrderMap.getOrDefault(thickness, 0.0) + sqft));
+                totalMap.put(thickness, scaleValue(totalMap.getOrDefault(thickness, 0.0) + sqft));
+                totalWoSqft += sqft;
+            }
+        }
+        for (String thick : toughenThickness) {
+            workOrderMap.putIfAbsent(thick, 0.0);
+            jbMap.putIfAbsent(thick, 0.0);
+            rejectedMap.putIfAbsent(thick, 0.0);
+            totalMap.putIfAbsent(thick, 0.0);
+        }
+        ToughReportDto toughReportDto = new ToughReportDto();
+        toughReportDto.setDate(date);
+        toughReportDto.setWorkOrder(scaleValue(totalWoSqft));
+        toughReportDto.setJb(scaleValue(totalJbSqft));
+        toughReportDto.setReject(0.0);
+        toughReportDto.setTotalCompleted(scaleValue(totalJbSqft+totalWoSqft+totalRejectSqft));
+        toughReportDto.setThickness(toughenThickness);
+        toughReportDto.setWorkOrderSqft(workOrderMap);
+        toughReportDto.setJbSqft(jbMap);
+        toughReportDto.setRejectSqft(rejectedMap);
+        toughReportDto.setTotalSqft(totalMap);
+        return toughReportDto;
+    }
+
     @Override
     public List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, String companyUuid, LocalDate batchProcessingDate) {
         List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessRepository.findByViewToughBatchProcess(tenantUuid, companyUuid, batchProcessingDate);
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             return list;
         }
         return new ArrayList<>();
@@ -231,24 +301,25 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Override
     public StickerReportProjection getStickerOfBatchItem(String tenantUuid, String companyUuid, String batchItemUuid) {
-        return toughenBatchProcessDetailsRepository.findStickerDataOfToughenBatchItem(tenantUuid,companyUuid,batchItemUuid);
+        return toughenBatchProcessDetailsRepository.findStickerDataOfToughenBatchItem(tenantUuid, companyUuid, batchItemUuid);
     }
 
     @Override
     public List<StickerReportProjection> getStickersOfBatch(String tenantUuid, String companyUuid, String batchUuid) {
-        return toughenBatchProcessDetailsRepository.findAllStickerDataOfBatch(tenantUuid,companyUuid,batchUuid);
+        return toughenBatchProcessDetailsRepository.findAllStickerDataOfBatch(tenantUuid, companyUuid, batchUuid);
     }
 
     @Override
     public List<CompletedGlassesProjection> getCompletedGlassesForReport(String tenantUuid, String companyUuid, LocalDate batchItemDate) {
-        return toughenBatchProcessRepository.findByThickness(tenantUuid,companyUuid, batchItemDate);
+        return toughenBatchProcessRepository.findByThickness(tenantUuid, companyUuid, batchItemDate);
     }
+
 
     private void deductItemFromToughenItem(GeneralParamValue generalParamValue) {
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemRepository.findByTenantEntity_UuidAndProFormaInvoiceItemUuid(generalParamValue.getTenantUuid(), generalParamValue.getPiItemUuid());
         Integer toughenBucketQty = proFormaInvoiceItemEntity.getToughenBucket();
         Integer toughenCompleteQty = proFormaInvoiceItemEntity.getToughenCompleted();
-        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity = proFormaInvoiceItemEntity.toBuilder().toughenBucket(toughenBucketQty - 1).toughenCompleted(toughenCompleteQty+1).build();
+        ProFormaInvoiceItemEntity updatedProFormaInvoiceItemEntity = proFormaInvoiceItemEntity.toBuilder().toughenBucket(toughenBucketQty - 1).toughenCompleted(toughenCompleteQty + 1).build();
         proFormaInvoiceItemRepository.saveAndFlush(updatedProFormaInvoiceItemEntity);
     }
 
@@ -276,7 +347,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     private static GlassBreakageDetailsValue getBreakageDetails(GeneralParamValue generalParamValue) {
-        return  GlassBreakageDetailsValue
+        return GlassBreakageDetailsValue
                 .newBuilder()
                 .tenantUuid(generalParamValue.getTenantUuid())
                 .proFormaInvoiceUuid(generalParamValue.getPiUuid())

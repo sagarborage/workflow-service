@@ -1,10 +1,12 @@
 package com.sowermate.tenantService.repositories;
 
+import com.sowermate.tenantService.entities.GlassThicknessEntity;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessDetailsEntity;
 import com.sowermate.tenantService.entities.ToughenBatchProcessEntity;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.ToughenBatchProcessProjection;
+import com.sowermate.tenantService.entities.minimal.ToughenReportProjection;
 import com.sowermate.tenantService.entities.minimal.ViewToughenBatchProcessDetailsProjection;
 import com.sowermate.tenantService.enums.ToughenBatchProcessStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,6 +106,33 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
     List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String firmUuid, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
+            "gt.name AS thickness, " +
+            "pii.chargeableWidth AS widthMm, " +
+            "pii.chargeableHeight AS heightMm, " +
+            "pii.quantity AS quantity " +
+            "FROM ToughenBatchProcessEntity tbp " +
+            "JOIN tbp.toughenBatchProcessDetailsEntities tbpd " +
+            "JOIN tbpd.proFormaInvoiceItemEntity pii " +
+            "JOIN pii.glassThicknessEntity gt " +
+            "WHERE DATE(tbp.createdDateTime) = :date " +
+            "AND tbp.status = 'COMPLETED' ")
+    List<ToughenReportProjection> findToughenReportByDate(@Param("date") LocalDate date);
+
+    @Query("SELECT g.name FROM GlassThicknessEntity g")
+    List<String> findToughenThickness();
+
+    @Query("SELECT " +
+            "gt.name AS thickness, " +
+            "jb.widthMm AS widthMm, " +
+            "jb.heightMm AS heightMm, " +
+            "jb.quantity AS quantity " +
+            "FROM ToughenBatchProcessEntity tbp " +
+            "JOIN tbp.jbCreationEntities jb " +
+            "JOIN jb.glassThicknessEntity gt " +
+            "WHERE DATE(tbp.createdDateTime) = :date ")
+    List<ToughenReportProjection> findToughenReportJbCreationByDate(@Param("date") LocalDate date);
+
+    @Query("SELECT " +
             "tbd.uuid as batchItemUuid, " +
             "tb.batchNo as batchNo, " +
             "Date(tb.createdDateTime) as batchDate, " +
@@ -123,7 +153,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "WHERE f.uuid =:firmUuid AND " +
             "t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate " +
-            "AND tb.status = 'COMPLETED'"+
+            "AND tb.status = 'COMPLETED'" +
             "UNION ALL " +
             "SELECT " +
             "tb.uuid as batchUuid," +
@@ -138,7 +168,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "jb.heightMm as chargeableHeight " +
             "FROM JbCreationEntity jb " +
             "JOIN jb.toughenBatchProcessEntity tb " +
-           // "JOIN tb.tenantEntity t " +
+            // "JOIN tb.tenantEntity t " +
             //"JOIN tb.toughenBatchProcessDetailsEntities tbd " +
             //"JOIN tbd.proFormaInvoiceItemEntity pi " +
             //"JOIN pi.glassThicknessEntity th " +
@@ -148,7 +178,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             //"t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate " +
             "ORDER BY tb.batchNo desc"
-    )//TODO:: this has to be handled with multiple company type (JB0
+    )
+//TODO:: this has to be handled with multiple company type (JB0
     List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String firmUuid, LocalDate batchProcessingDate);
 
 
@@ -185,15 +216,14 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "CASE WHEN pii.unitValue is NULL THEN 0 ELSE pii.unitValue END as unitValue " +
             "FROM GlassThicknessEntity gt " +
             "JOIN gt.tenantEntity t " +
-            "LEFT JOIN gt.proFormaInvoiceItemEntities pii "+
+            "LEFT JOIN gt.proFormaInvoiceItemEntities pii " +
             "LEFT JOIN pii.toughenBatchProcessDetailsEntity tbd " +
             "LEFT JOIN tbd.toughenBatchProcessEntity tb " +
             "LEFT JOIN tb.companyEntity c " +
             "WHERE t.uuid = :tenantUuid " +
             "AND(c.uuid is NULL OR c.uuid = :companyUuid) " +
             "AND(Date(tb.createdDateTime) is NULL OR Date(tb.createdDateTime) =:batchProcessingDate) ")
-    List<CompletedGlassesProjection> findByThickness(String tenantUuid,String companyUuid, LocalDate batchProcessingDate);
-
+    List<CompletedGlassesProjection> findByThickness(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
 
 
 }
