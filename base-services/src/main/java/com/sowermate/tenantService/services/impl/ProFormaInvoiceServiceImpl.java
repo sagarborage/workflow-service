@@ -203,8 +203,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         existingInvoice.setAdminCharges(proFormaInvoiceValue.getAdminCharges());
         existingInvoice.setInsurancePercent(proFormaInvoiceValue.getInsurancePercent());
         existingInvoice.setInsurancePercentAmount(proFormaInvoiceValue.getInsurancePercentAmount());
-        existingInvoice.setUrgencyPercent(proFormaInvoiceValue.getUrgencyPercent());
-        existingInvoice.setUrgencyPercentAmount(proFormaInvoiceValue.getUrgencyPercentAmount());
+        existingInvoice.setProxSqft(proFormaInvoiceValue.getProxSqft());
+        existingInvoice.setProxPerSqftRate(proFormaInvoiceValue.getProxPerSqftRate());
+        existingInvoice.setProxCharges(proFormaInvoiceValue.getProxCharges());
         existingInvoice.setOtherCharges(proFormaInvoiceValue.getOtherCharges());
         existingInvoice.setTransportCharges(proFormaInvoiceValue.getTransportCharges());
         existingInvoice.setIsGstApplicable(proFormaInvoiceValue.getIsGstApplicable());
@@ -215,7 +216,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         existingInvoice.setPreviousBalance(proFormaInvoiceValue.getPreviousBalance());
         existingInvoice.setShippingAddress(proFormaInvoiceValue.getShippingAddress() == null || proFormaInvoiceValue.getShippingAddress().trim().equals("") ? null : proFormaInvoiceValue.getShippingAddress());
         existingInvoice.setAdjustmentAmount(proFormaInvoiceValue.getAdjustmentAmount());
-        existingInvoice.setStatus(proFormaInvoiceValue.getStatus());
+        //existingInvoice.setStatus(proFormaInvoiceValue.getStatus()); //No need to update status as it has to be same as DB status
         return proFormaInvoiceRepository.save(existingInvoice);
     }
 

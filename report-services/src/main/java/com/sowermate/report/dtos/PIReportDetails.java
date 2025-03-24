@@ -1,9 +1,7 @@
 package com.sowermate.report.dtos;
 
 import com.sowermate.report.controllers.PIReportHeaderDetails;
-import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemReportValue;
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,8 +32,9 @@ public class PIReportDetails {
     String sGst;
     String iPercent;
     String iPercentAmount;
-    String uPercent;
-    String uPercentAmount;
+    String proxSqft;
+    String proxSqftRate;
+    String proxAmount;
     Double grandTotal;
     String formattedInvoiceDate;
     String formattedWorkOrderDate;

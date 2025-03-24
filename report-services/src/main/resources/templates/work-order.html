@@ -66,9 +66,12 @@ font-weight: bold;
         </tr>
         <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
         <tr>
-            <td style="width: 46%;" colspan="5"><b>Work Order No: <span
-                    th:text="${piValue.getWorkOrderValue().getWorkOrderNo()}"></span> (<span
-                    th:text="${reportDetails.getFormattedWorkOrderDate()}"></span>)</b>
+            <td style="width: 46%;" colspan="5">
+                <b>Work Order No:
+                    <span th:text="${piValue.getWorkOrderValue().getWorkOrderNo()}"></span>
+                    <span th:if="${piValue.getProxCharges()} > 0"> PROX</span>
+                    (<span th:text="${reportDetails.getFormattedWorkOrderDate()}"></span>)
+                </b>
             </td>
             <td style="width: 32.4%;" colspan="3"><b>PI Number: <span
                     th:text="${piValue.getPiNumber()}"></span> (<span
@@ -78,20 +81,20 @@ font-weight: bold;
         <tr>
             <td style="width: 46%;" colspan="5">Party Name:- <span th:text="${piValue.getPartyBillToName()}"></span>
             </td>
-            <td style="width: 54%;" colspan="3">User: <span th:text="${piValue.getCreatedBy()}"></span> (<span
+            <td style="width: 54%;" colspan="3">User: <span th:text="${piValue.getWorkOrderValue().getCreatedBy()}"></span> (<span
                     th:text="${piValue.getConfirmThroughName()}"></span>)
             </td>
         </tr>
         <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
         <tr>
-            <td style="width: 9.2%;" rowspan="2">
+            <td style="width: 4.2%;" rowspan="2">
                 <div>Sr.No</div>
             </td>
-            <td style="width: 9.2%;" rowspan="2">
+            <td style="width: 11.2%;" rowspan="2">
                 <div>Width</div>
                 <div>(Inch)</div>
             </td>
-            <td style="width: 9.2%;" rowspan="2">
+            <td style="width: 12.2%;" rowspan="2">
                 <div>Height</div>
                 <div>(Inch)</div>
             </td>

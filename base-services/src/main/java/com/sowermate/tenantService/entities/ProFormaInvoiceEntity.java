@@ -44,11 +44,14 @@ public class ProFormaInvoiceEntity extends Base {
     @Column(name = "insurance_percent_amount")
     private Float insurancePercentAmount;
 
-    @Column(name = "urgency_percent")
-    private Float urgencyPercent;
+    @Column(name = "prox_sqft")
+    private Float proxSqft;
 
-    @Column(name = "urgency_percent_amount")
-    private Float urgencyPercentAmount;
+    @Column(name = "prox_per_sqft_rate")
+    private Float proxPerSqftRate;
+
+    @Column(name = "prox_charges")
+    private Float proxCharges;
 
     @Column(name = "other_charges")
     private Double otherCharges;
@@ -155,8 +158,9 @@ public class ProFormaInvoiceEntity extends Base {
                 .adminCharges(getAdminCharges())
                 .insurancePercent(getInsurancePercent())
                 .insurancePercentAmount(getInsurancePercentAmount())
-                .urgencyPercent(getUrgencyPercent())
-                .urgencyPercentAmount(getUrgencyPercentAmount())
+                .proxSqft(getProxSqft())
+                .proxPerSqftRate(getProxPerSqftRate())
+                .proxCharges(getProxCharges())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
                 .isGstApplicable(getIsGstApplicable())

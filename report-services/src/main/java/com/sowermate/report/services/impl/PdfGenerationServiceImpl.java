@@ -19,7 +19,6 @@ import com.sowermate.tenantService.entities.minimal.CompanyInfoProjection;
 import com.sowermate.tenantService.entities.minimal.CompletedGlassesProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.minimal.StickerReportProjection;
-import com.sowermate.tenantService.entities.minimal.ToughenReportProjection;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemReportValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
@@ -405,9 +404,10 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
         reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
-        reportDetails.setUPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getUrgencyPercent() > 0) ? piValue.getUrgencyPercent() + "" : "0");
+        reportDetails.setProxSqft((piValue.getProxSqft() != null ? piValue.getProxSqft() + "" : "0"));
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount() + ""));
-        reportDetails.setUPercentAmount((ObjectUtils.isEmpty(piValue.getUrgencyPercentAmount()) ? "0" : piValue.getUrgencyPercentAmount() + ""));
+        reportDetails.setProxSqftRate(piValue.getProxPerSqftRate() == null ? "0" : piValue.getProxPerSqftRate() + "");
+        reportDetails.setProxAmount(piValue.getProxCharges() >  0 ? piValue.getProxCharges() + "" : "0" );
         reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0.0 : Math.round(piValue.getGrandTotal()));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

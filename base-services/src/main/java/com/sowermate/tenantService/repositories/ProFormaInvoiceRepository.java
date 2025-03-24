@@ -30,7 +30,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "JOIN p.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND p.uuid = :proFormaInvoiceUuid")
-    ProFormaInvoiceEntity findByTenantEntity_UuidAndproFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
+    ProFormaInvoiceEntity  findByTenantEntity_UuidAndproFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
 
     @Query("SELECT p FROM ProFormaInvoiceEntity p " +
             "JOIN p.tenantEntity t " +

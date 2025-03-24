@@ -37,8 +37,9 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Double adminCharges;
     private Float insurancePercent;
     private Float insurancePercentAmount;
-    private Float urgencyPercent;
-    private Float urgencyPercentAmount;
+    private Float proxSqft;
+    private Float proxPerSqftRate;
+    private Float proxCharges;
     private Double otherCharges;
     private Double transportCharges;
     private Boolean isGstApplicable;
@@ -69,8 +70,9 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .adminCharges(getAdminCharges())
                 .insurancePercent(getInsurancePercent())
                 .insurancePercentAmount(getInsurancePercentAmount())
-                .urgencyPercent(getUrgencyPercent())
-                .urgencyPercentAmount(getUrgencyPercentAmount())
+                .proxSqft(getProxSqft())
+                .proxPerSqftRate(getProxPerSqftRate())
+                .proxCharges(getProxCharges())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
                 .isGstApplicable(getIsGstApplicable())
