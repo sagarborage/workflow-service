@@ -21,6 +21,7 @@ variables:
 stages:
   - build
   - deploy-qa
+  - deploy-prod
 
 build:
   stage: build
@@ -65,3 +66,38 @@ deploy-qa:
   when: manual
   allow_failure: false
 
+deploy-prod:
+  stage: deploy-prod
+  image: maven:3.8.6-openjdk-11
+  before_script:
+    - apt-get update && apt-get install -y openssh-client
+    - chmod 600 "$SSH_FILE_PATH"
+    - mkdir -p /root/.ssh
+    - ssh-keyscan -H "$SERVER_IP" >> /root/.ssh/known_hosts
+  script:
+    - echo "Deploying to Prod server..."
+    # Check and kill process on port $APP_PORT
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if lsof -Pi :$APP_PORT -sTCP:LISTEN -t >/dev/null; then echo 'Port $APP_PORT in use, terminating'; kill \$(lsof -t -i:$APP_PORT); else echo 'Port $APP_PORT available'; fi"
+    # Create backup dirs
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "mkdir -p $APP_BACKUP_DIR $DB_BACKUP_DIR"
+    # Backup existing JAR
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if [ -f '$APP_DEPLOY_DIR/$APP_JAR_NAME' ]; then mv '$APP_DEPLOY_DIR/$APP_JAR_NAME' '$APP_BACKUP_DIR/$APP_JAR_NAME'; else echo 'JAR not found, skipping backup'; fi"
+    # Backup and drop DB if enabled
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if [ '$BACKUP_AND_DROP_DB' = 'true' ]; then TIMESTAMP=\$(date +'%Y%m%d%H%M%S'); mysqldump -u $DB_USER_QA -p'$DB_PASS_QA' $DB_NAME_QA | gzip > '$DB_BACKUP_DIR/$DB_BACKUP_FILE_NAME_PREFIX_\${TIMESTAMP}.sql.gz'; mysql -u $DB_USER_QA -p'$DB_PASS_QA' -e 'DROP DATABASE IF EXISTS $DB_NAME_QA; CREATE DATABASE $DB_NAME_QA;'; fi"
+    # Deploy new JAR
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "mkdir -p $APP_DEPLOY_DIR"
+    - scp -i "$SSH_FILE_PATH" "$APP_JAR_PATH/$APP_JAR_NAME" "$SERVER_USER@$SERVER_IP:$APP_DEPLOY_DIR"
+    # Set permissions
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo chmod -R g+w $APP_DEPLOY_DIR/ && sudo chown -R www-data:www-data $APP_DEPLOY_DIR/"
+    # Start the app
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "nohup java -Dserver.port=$APP_PORT -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/$APP_JAR_NAME > $APP_DEPLOY_DIR/$APP_LOG_FILE_NAME 2>&1 &"
+  dependencies:
+    - build
+  only:
+    - integration
+  when: manual
+  allow_failure: false
+  rules:
+    - if: '$GITLAB_USER_LOGIN =~ /^(sborage|sborage1|pborage)$/'
+      when: manual
+    - when: never  # Prevents the job from appearing for other users
