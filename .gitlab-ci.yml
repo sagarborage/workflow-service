@@ -93,11 +93,8 @@ deploy-prod:
     - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "nohup java -Dserver.port=$APP_PORT -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/$APP_JAR_NAME > $APP_DEPLOY_DIR/$APP_LOG_FILE_NAME 2>&1 &"
   dependencies:
     - build
-  only:
-    - integration
-  when: manual
   allow_failure: false
   rules:
-    - if: '$GITLAB_USER_LOGIN =~ /^(sborage|sborage1|pborage)$/'
+    - if: '$CI_COMMIT_BRANCH == "integration" && $GITLAB_USER_LOGIN =~ /^(sborage|sborage1|pborage)$/'
       when: manual
     - when: never  # Prevents the job from appearing for other users
