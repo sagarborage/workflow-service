@@ -18,7 +18,7 @@ public class GatePassReportDto {
     List<GlassInfoProjection> glassInfoProjections;
     GatePassValue gatePassValue;
     String piNo;
-    LocalDate piDate;
+    LocalDate gatePassDate;
     Integer totalQuantity;
 
 }

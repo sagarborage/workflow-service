@@ -135,7 +135,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         gatePassReportDto.setPiNo(piInfoProjectionForReport.getPiNo());
         gatePassReportDto.setPartyName(piInfoProjectionForReport.getPartyName());
         gatePassReportDto.setPartyBillToName(piInfoProjectionForReport.getPartyBillToName());
-        gatePassReportDto.setPiDate(LocalDate.from(piInfoProjectionForReport.getPiDate()));
+        gatePassReportDto.setGatePassDate(LocalDate.from(gatePassValue.getCreatedDateTime()));
         AddressEntity address = companyInfo.getAddresses().get(0);
         gatePassReportDto.setAddress(address.getAddressLine1() + ", " + PdfGenerationUtils.getStateName(address.getStateCode()) + ", " + address.getPinCode());
 
