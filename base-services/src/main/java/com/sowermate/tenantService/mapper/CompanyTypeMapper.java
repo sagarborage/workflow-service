@@ -1,9 +1,8 @@
 package com.sowermate.tenantService.mapper;
 
-import com.sowermate.tenantService.entities.CompanyTypeEntity;
-import com.sowermate.tenantService.entities.value.CompanyTypeValue;
+import com.sowermate.workflow.domain.entities.CompanyTypeEntity;
+import com.sowermate.workflow.domain.entities.value.CompanyTypeValue;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface CompanyTypeMapper {

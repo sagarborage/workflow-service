@@ -3,10 +3,8 @@
  */
 package com.sowerate.tenantService;
 
-import com.sowermate.tenantService.entities.*;
-import com.sowermate.tenantService.entities.value.TenantValue;
-import com.sowermate.tenantService.repositories.*;
-import com.sowermate.tenantService.services.impl.TenantServiceImpl;
+import com.sowermate.workflow.domain.entities.value.TenantValue;
+import com.sowermate.workflow.service.services.impl.TenantServiceImpl;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -75,8 +73,8 @@ public class TenantServiceImplTest {
     }
 
     /**
-     * Tests {@link TenantServiceImpl#saveTenantDetails(com.sowermate.tenantService.entities.value.TenantValue)}
-     * when valid {@link com.sowermate.tenantService.entities.value.TenantValue} object is passed, expect the record saved in the database.
+     * Tests {@link TenantServiceImpl#saveTenantDetails(com.sowermate.workflow.domain.entities.value.TenantValue)}
+     * when valid {@link com.sowermate.workflow.domain.entities.value.TenantValue} object is passed, expect the record saved in the database.
      *
      * @throws Exception when there is problem while saveTenantDetails.
      */

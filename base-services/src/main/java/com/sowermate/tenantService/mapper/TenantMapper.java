@@ -1,9 +1,8 @@
 package com.sowermate.tenantService.mapper;
 
-import com.sowermate.tenantService.entities.TenantEntity;
-import com.sowermate.tenantService.entities.value.TenantValue;
+import com.sowermate.workflow.domain.entities.TenantEntity;
+import com.sowermate.workflow.domain.entities.value.TenantValue;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface TenantMapper {

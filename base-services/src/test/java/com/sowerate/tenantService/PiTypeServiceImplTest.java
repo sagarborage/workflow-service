@@ -7,17 +7,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
-import com.sowermate.tenantService.entities.PiTypeEntity;
-import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
-import com.sowermate.tenantService.entities.TenantEntity;
-import com.sowermate.tenantService.entities.value.PiTypeValue;
-import com.sowermate.tenantService.repositories.PiTypeRepository;
-import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
-import com.sowermate.tenantService.repositories.TenantRepository;
-import com.sowermate.tenantService.services.impl.PiTypeServiceImpl;
+import com.sowermate.workflow.domain.entities.PiTypeEntity;
+import com.sowermate.workflow.domain.entities.ProFormaInvoiceEntity;
+import com.sowermate.workflow.domain.entities.TenantEntity;
+import com.sowermate.workflow.domain.entities.value.PiTypeValue;
+import com.sowermate.workflow.persistence.repositories.PiTypeRepository;
+import com.sowermate.workflow.persistence.repositories.ProFormaInvoiceRepository;
+import com.sowermate.workflow.persistence.repositories.TenantRepository;
+import com.sowermate.workflow.service.services.impl.PiTypeServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Vithoba Hipparkar

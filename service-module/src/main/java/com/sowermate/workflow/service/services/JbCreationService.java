@@ -1,0 +1,21 @@
+package com.sowermate.workflow.service.services;
+
+import com.sowermate.workflow.domain.entities.minimal.StickerReportProjection;
+import com.sowermate.workflow.domain.entities.value.JbCreationValue;
+
+import java.util.List;
+
+public interface JbCreationService {
+
+    public JbCreationValue createJbCreation(JbCreationValue jbCreationValue);
+
+    public JbCreationValue updateJbCreation(JbCreationValue jbCreationValue);
+
+    public List<JbCreationValue> getAllJbCreation(String toughenBatchProcessUuid);
+
+    public JbCreationValue getJbCreation(String toughenBatchProcessUuid, String jbCreationUuid);
+
+    public JbCreationValue deleteJbCreation(String toughenBatchProcessUuid, String jbCreationUuid);
+
+    StickerReportProjection getStickerData(String jbUuid);
+}
