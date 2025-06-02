@@ -207,10 +207,15 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     @Override
     public byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException {
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = glassItemDetails(piValue);
-
+        String companyName = companyService.getCompanyName(piValue.getFirmUuid());
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
-
-        byte[] pdfBytes = generatePdf(piValue, reportDetails, designs, "proforma-invoice");
+        byte[] pdfBytes;
+        if (!companyName.isBlank() && companyName.equalsIgnoreCase("HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD.")) {
+            pdfBytes = generatePdf(piValue, reportDetails, designs, "proforma-invoice");
+        }
+        else {
+            pdfBytes = generatePdf(piValue, reportDetails, designs, "proforma-invoice-another-company");
+        }
         pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter
         return pdfBytes;
     }
