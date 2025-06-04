@@ -3,6 +3,7 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.image.services.PdfService;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
+import com.sowermate.tenantService.entities.minimal.ProformaInvoiceWithWorkOrderProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
@@ -455,6 +456,30 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             map.put("amount", p.getAmount());
             map.put("user", p.getUser());
             map.put("invoiceDate", p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        return projections.stream().map(p -> {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("tenantUuid", p.getTenantUuid());
+            map.put("workOrderUuid", p.getWorkOrderUuid());
+            map.put("piNumber", p.getPiNumber());
+            map.put("piType", p.getPiType());
+            map.put("partyName", p.getPartyName());
+            map.put("piDate", p.getPIDateTime() != null ? p.getPIDateTime().format(formatter) : null);
+            map.put("workOrderDate", p.getWorkOrderDateTime() != null ? p.getWorkOrderDateTime().format(formatter) : null);
+            map.put("amount", p.getAmount());
+            map.put("user", p.getUser());
+            map.put("SQFT", p.getSQFT());
+            map.put("SQMTR", p.getSQMTR());
             return map;
         }).collect(Collectors.toList());
     }

@@ -4,6 +4,7 @@ import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
+import com.sowermate.tenantService.entities.minimal.ProformaInvoiceWithWorkOrderProjection;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -253,6 +254,30 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             @Param("tenantUuid") String tenantUuid,
             @Param("companyUuid") String companyUuid,
             @Param("partyUuid") String partyUuid,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate);
+
+    @Query("select " +
+            "pi.tenantEntity.uuid as tenantUuid, " +
+            "pi.piNumber as piNumber, " +
+            "pi.tenantEntity.tenantName as partyName, " +
+            "pi.createdDateTime as PIDateTime, " +
+            "pi.payableAmount as amount, " +
+            "pi.createdBy as user, " +
+            "pt.piTypeName as piType, " +
+            "wo.uuid as workOrderUuid, " +
+            "wo.createdDateTime as workOrderDateTime, " +
+            "case when pt.piTypeName = 'SQFT' then pi.proxSqft else null end as SQFT, " +
+            "case when pt.piTypeName = 'MM' then pi.proxSqft else null end as SQMTR " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.workOrderEntity wo " +
+            "join pi.piTypeEntity pt " +
+            "where (:workOrderUuid IS NULL OR wo.uuid = :workOrderUuid) " +
+            "and pi.createdDateTime between :fromDate and :toDate " +
+            "and pi.tenantEntity.uuid = :tenantUuid")
+    List<ProformaInvoiceWithWorkOrderProjection> findAllPiOrdersDetailsWithWorkOrderDetails(
+            @Param("tenantUuid") String tenantUuid,
+            @Param("workOrderUuid") String workOrderUuid,
             @Param("fromDate") LocalDateTime fromDate,
             @Param("toDate") LocalDateTime toDate);
 
