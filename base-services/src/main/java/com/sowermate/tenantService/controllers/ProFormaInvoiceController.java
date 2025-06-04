@@ -1,8 +1,8 @@
 package com.sowermate.tenantService.controllers;
 
-import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
@@ -10,14 +10,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
-import static com.sowermate.tenantService.entities.common.TimeConstant.*;
+import static com.sowermate.tenantService.entities.common.TimeConstant.BEGINNING;
+import static com.sowermate.tenantService.entities.common.TimeConstant.ENDING;
+import static com.sowermate.tenantService.entities.common.TimeConstant.FORMATTER;
 
 @RestController
 @RequestMapping("/proforma-invoices")
@@ -118,7 +129,7 @@ public class ProFormaInvoiceController {
     }*/
 
     @GetMapping("/{tenantUuid}/{companyUuid}/{startDate}/{endDate}")
-    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid,@PathVariable String companyUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable String companyUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
         try {
             DateTimeFormatter formatter = FORMATTER;
@@ -126,7 +137,7 @@ public class ProFormaInvoiceController {
             endDate = endDate + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
-            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid,companyUuid, startingDate, endingDate);
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, companyUuid, startingDate, endingDate);
             Logger.info("records " + proFormaInvoiceHomeDetails.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
@@ -135,7 +146,7 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/{tenantUuid}/{companyUuid}/{month}")
-    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoiceByMonth(@PathVariable String tenantUuid,@PathVariable String companyUuid, @PathVariable(name = "month") String month) {
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoiceByMonth(@PathVariable String tenantUuid, @PathVariable String companyUuid, @PathVariable(name = "month") String month) {
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
         try {
             YearMonth yearMonth = YearMonth.parse(month, DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -145,7 +156,7 @@ public class ProFormaInvoiceController {
             String endDate = yearMonth.atEndOfMonth() + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
-            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid,companyUuid, startingDate, endingDate);
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, companyUuid, startingDate, endingDate);
             Logger.info("records " + proFormaInvoiceHomeDetails.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
@@ -159,8 +170,14 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/work-order-details/{tenantUuid}")
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
+        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate);
+        return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
+    }
+
     @GetMapping("/work-order-individuals-list/{tenantUuid}/{workOrderNo}/{deptType}")
-    public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> getAllProFormOrdersIndividualsDetails(@PathVariable String tenantUuid,@PathVariable Integer workOrderNo, @PathVariable String deptType) {
+    public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> getAllProFormOrdersIndividualsDetails(@PathVariable String tenantUuid, @PathVariable Integer workOrderNo, @PathVariable String deptType) {
         List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceService.getAllProFormIndividualsOrdersDetails(tenantUuid, workOrderNo, deptType);
         return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
     }
