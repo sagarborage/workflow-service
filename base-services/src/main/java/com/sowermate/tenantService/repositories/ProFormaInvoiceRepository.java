@@ -3,6 +3,7 @@ package com.sowermate.tenantService.repositories;
 import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +32,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "JOIN p.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND p.uuid = :proFormaInvoiceUuid")
-    ProFormaInvoiceEntity  findByTenantEntity_UuidAndproFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
+    ProFormaInvoiceEntity findByTenantEntity_UuidAndproFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
 
     @Query("SELECT p FROM ProFormaInvoiceEntity p " +
             "JOIN p.tenantEntity t " +
@@ -40,8 +42,10 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
 
     Optional<ProFormaInvoiceEntity> findById(String proFormaInvoiceId);
+
     //PROD issue fix: duplicate PI/Numbers where getting created
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
+
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByIdDesc(long id);
     //ProFormaInvoiceEntity findByUuid(String uuid);
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
@@ -66,7 +70,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("SELECT pfie FROM ProFormaInvoiceEntity pfie " +
             "where pfie.tenantEntity.uuid = :tenantUuid and pfie.firm.uuid = :companyUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
-    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
@@ -229,5 +233,27 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             //"pii.status = 'IN_PROGRESS' and " +
             "pi.tenantEntity = (select t from TenantEntity  t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, Integer workOrderNumber);
+
+    @Query("select " +
+            "pi.tenantEntity.uuid as tenantUuid, " +
+            "f.companyName as firm, " +
+            "f.uuid as companyUuid, " +
+            "pi.piNumber as piNumber, " +
+            "pi.tenantEntity.tenantName as partyName, " +
+            "pi.invoiceDate as invoiceDateTime, " +
+            "pi.payableAmount as amount, " +
+            "pi.createdBy as user " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.firm f " +
+            "where (:partyUuid IS NULL OR pi.tenantEntity.uuid = :partyUuid) " +
+            "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
+            "and pi.invoiceDate between :fromDate and :toDate " +
+            "and pi.tenantEntity.uuid = :tenantUuid")
+    List<ProformaInvoiceProjection> findAllPiOrdersDetails(
+            @Param("tenantUuid") String tenantUuid,
+            @Param("companyUuid") String companyUuid,
+            @Param("partyUuid") String partyUuid,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate);
 
 }

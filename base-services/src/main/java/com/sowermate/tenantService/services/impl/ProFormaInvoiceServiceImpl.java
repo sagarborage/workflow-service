@@ -2,6 +2,7 @@ package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.image.services.PdfService;
 import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
@@ -22,6 +23,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -234,17 +237,17 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .orElse(null);
     }
 
-    private void updateItemFromValue(WorkOrderEntity workOrderEntity , ProFormaInvoiceItemEntity itemEntity, ProFormaInvoiceItemValue itemValue, Map<String, GlassTypeEntity> glassTypeEntityMap,
+    private void updateItemFromValue(WorkOrderEntity workOrderEntity, ProFormaInvoiceItemEntity itemEntity, ProFormaInvoiceItemValue itemValue, Map<String, GlassTypeEntity> glassTypeEntityMap,
                                      Map<String, GlassSpecificationEntity> specificationEntityMap, Map<String, GlassThicknessEntity> thicknessEntityMap) {
         // Update fields based on your business logic
         itemEntity.setGlassTypeEntity(glassTypeEntityMap.get(itemValue.getGlassTypeUuid()));
-        if(workOrderEntity != null) {
-            if(!Objects.equals(itemEntity.getQuantity(), itemValue.getQuantity())){
-                if(itemEntity.getQuantity() < itemValue.getQuantity()) {
+        if (workOrderEntity != null) {
+            if (!Objects.equals(itemEntity.getQuantity(), itemValue.getQuantity())) {
+                if (itemEntity.getQuantity() < itemValue.getQuantity()) {
                     itemEntity.setOptimizeBucket(itemEntity.getOptimizeBucket() + (itemValue.getQuantity() - itemEntity.getQuantity()));
                 } else {
                     var result = itemEntity.getOptimizeBucket() - (itemEntity.getQuantity() - itemValue.getQuantity());
-                    if(result > 0) {
+                    if (result > 0) {
                         itemEntity.setOptimizeBucket(result);
                     } else {
                         throw new RuntimeException("Can not decrease Qty as optimize is completed");
@@ -307,7 +310,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Override
     public ProFormaInvoiceValue updateConfirmThrough(String tenantUuid, String proFormaInvoiceUuid, String confirmThroughUuid) {
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantUuidPIUuidAndPICurrentStatus(tenantUuid, proFormaInvoiceUuid, ProformaInvoiceStatusEnum.NEW);
-        if(!ObjectUtils.isEmpty(proFormaInvoiceEntity)) {
+        if (!ObjectUtils.isEmpty(proFormaInvoiceEntity)) {
             ConfirmThroughEntity confirmThroughEntity = confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUuid, confirmThroughUuid);
             if (confirmThroughEntity == null) {
                 throw new ResourceNotFoundException();
@@ -338,10 +341,10 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public ProFormaInvoiceValue updatePIStatus(String tenantUuid, String proFormaInvoiceUuid,  ProformaInvoiceStatusEnum currentStatus, ProformaInvoiceStatusEnum newStatus, String statusDetails) {
+    public ProFormaInvoiceValue updatePIStatus(String tenantUuid, String proFormaInvoiceUuid, ProformaInvoiceStatusEnum currentStatus, ProformaInvoiceStatusEnum newStatus, String statusDetails) {
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantUuidPIUuidAndPICurrentStatus(tenantUuid, proFormaInvoiceUuid, currentStatus);
 
-        if(!ObjectUtils.isEmpty(proFormaInvoiceEntity)) {
+        if (!ObjectUtils.isEmpty(proFormaInvoiceEntity)) {
             if (newStatus.equals(ProformaInvoiceStatusEnum.CANCEL) || newStatus.equals(ProformaInvoiceStatusEnum.HOLD)) {
                 proFormaInvoiceEntity = proFormaInvoiceEntity.toBuilder().status(newStatus).statusDetails(statusDetails).build();
             } else if (newStatus.equals(ProformaInvoiceStatusEnum.NEW)) {
@@ -365,8 +368,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     //TODO: Remove this code lateron
 
     @Override
-    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate) {
-        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid,companyUuid, startDate, endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate) {
+        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, companyUuid, startDate, endDate);
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = new ArrayList<>();
         for (ProFormaInvoiceEntity proFormaInvoiceEntity : proFormInvoiceEntities) {
             proFormaInvoiceHomeDetails.add(getProFormaInvoiceHomeDetails(proFormaInvoiceEntity));
@@ -384,8 +387,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .piNumber(proFormaInvoiceEntity.getPiNumber())
                 .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())
                 .workOrderNumber(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getId())
-                .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e->e.getDispatchCompleted() > 0))
-                .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e->e.getDispatchCompleted() > 0))
+                .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e -> e.getDispatchCompleted() > 0))
+                .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e -> e.getDispatchCompleted() > 0))
                 .status(proFormaInvoiceEntity.getStatus())
                 .build();
     }
@@ -434,4 +437,26 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         }
         return proFormaInvoiceOrdersProjections;
     }
+
+    @Override
+    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        return projections.stream().map(p -> {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("tenantUuid", p.getTenantUuid());
+            map.put("firm", p.getFirm());
+            map.put("companyUuid", p.getCompanyUuid());
+            map.put("piNumber", p.getPiNumber());
+            map.put("partyName", p.getPartyName());
+            map.put("amount", p.getAmount());
+            map.put("user", p.getUser());
+            map.put("invoiceDate", p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
+            return map;
+        }).collect(Collectors.toList());
+    }
+
 }
