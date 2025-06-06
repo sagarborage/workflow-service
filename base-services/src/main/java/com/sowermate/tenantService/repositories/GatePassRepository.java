@@ -3,12 +3,15 @@ package com.sowermate.tenantService.repositories;
 import com.sowermate.tenantService.entities.GatePassEntity;
 import com.sowermate.tenantService.entities.minimal.GatePassDetailsInfoProjection;
 import com.sowermate.tenantService.entities.minimal.GatePassInfoProjection;
+import com.sowermate.tenantService.entities.minimal.GatePassProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.services.PiInfoProjectionForReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -89,5 +92,27 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "Where g.uuid = :gatePassUuid ")
     PiInfoProjectionForReport findPiItemsInfoByGatePassUuid(String gatePassUuid);
 
+    @Query("SELECT " +
+            "g.uuid as gatePassUuid, " +
+            "t.uuid as tenantUuid, " +
+            "g.gatePassNo as gatePassNo, " +
+            "g.createdDateTime as dateTime, " +
+            "pi.piNumber as piNumber, " +
+            "f.companyName as companyName, " +
+            "pi.tenantEntity.tenantName as partyName, " +
+            "CONCAT(g.vehicleNo, '/', g.driverName, '/', g.driverContactNo) AS vehicleDetails, " +
+            "SUM(gd.gatePassQty) as quantity " +
+            "FROM GatePassEntity g " +
+            "JOIN g.gatePassDetailsEntities gd " +
+            "JOIN g.tenantEntity t " +
+            "JOIN g.proFormaInvoiceEntity pi " +
+            "JOIN pi.firm f " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND g.createdDateTime BETWEEN :fromDate AND :toDate " +
+            "GROUP BY g.uuid, g.gatePassNo, g.createdDateTime, pi.piNumber, f.companyName, pi.tenantEntity.tenantName, g.vehicleNo, g.driverName, g.driverContactNo")
+    List<GatePassProjection> findGatePassDetailsWithProformaDetails(
+            @Param("tenantUuid") String tenantUuid,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate);
 
 }

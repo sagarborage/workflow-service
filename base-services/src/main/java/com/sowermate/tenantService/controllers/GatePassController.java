@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/gatePass")
@@ -91,6 +93,12 @@ public class GatePassController {
             Logger.error("Error while getting Seller:", e);
         }
         return new ResponseEntity<>(gatePassInfo, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-pass-details/{tenantUuid}")
+    public ResponseEntity<List<Map<String, Object>>> getAllGatePassWithProformaDetails(@PathVariable String tenantUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
+        List<Map<String, Object>> allGatePassWithProformaDetails = gatePassService.getAllGatePassWithProformaDetails(tenantUuid, fromDate, toDate);
+        return new ResponseEntity<>(allGatePassWithProformaDetails, HttpStatus.ACCEPTED);
     }
 
 }
