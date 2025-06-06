@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 public interface ProformaInvoiceWithWorkOrderProjection {
 
+    String getUuid();
+
     String getTenantUuid();
 
     String getWorkOrderUuid();

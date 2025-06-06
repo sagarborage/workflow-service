@@ -440,14 +440,16 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate) {
+    public List<Map<String, Object>> getAllPiOrdersDetails(String uuid, String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime);
+        uuid = (uuid == null) ? "" : uuid;
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(uuid, tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
+            map.put("uuid", p.getUuid());
             map.put("tenantUuid", p.getTenantUuid());
             map.put("firm", p.getFirm());
             map.put("companyUuid", p.getCompanyUuid());
@@ -461,14 +463,16 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
+    public List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String uuid, String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        //uuid = (uuid == null) ? "" : uuid;
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(uuid, tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
+            map.put("uuid", p.getUuid());
             map.put("tenantUuid", p.getTenantUuid());
             map.put("workOrderUuid", p.getWorkOrderUuid());
             map.put("piNumber", p.getPiNumber());

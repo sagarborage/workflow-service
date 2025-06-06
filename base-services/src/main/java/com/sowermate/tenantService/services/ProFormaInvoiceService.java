@@ -31,7 +31,7 @@ public interface ProFormaInvoiceService {
 
     public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid,Integer workOrderNumber, String deptType);
 
-    List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate);
+    List<Map<String, Object>> getAllPiOrdersDetails(String uuid, String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate);
 
-    List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate);
+    List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String uuid, String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate);
 }
