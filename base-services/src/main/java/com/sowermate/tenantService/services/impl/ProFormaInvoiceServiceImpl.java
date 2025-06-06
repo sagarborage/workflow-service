@@ -443,7 +443,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     public List<Map<String, Object>> getAllPiOrdersDetails(String uuid, String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-        uuid = (uuid == null) ? "" : uuid;
         List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(uuid, tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -466,7 +465,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     public List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String uuid, String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-        //uuid = (uuid == null) ? "" : uuid;
         List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(uuid, tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
