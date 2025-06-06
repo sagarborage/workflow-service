@@ -448,6 +448,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
+            map.put("uuid", p.getUuid());
             map.put("tenantUuid", p.getTenantUuid());
             map.put("firm", p.getFirm());
             map.put("companyUuid", p.getCompanyUuid());
@@ -469,6 +470,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
+            map.put("uuid", p.getUuid());
             map.put("tenantUuid", p.getTenantUuid());
             map.put("workOrderUuid", p.getWorkOrderUuid());
             map.put("piNumber", p.getPiNumber());

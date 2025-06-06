@@ -236,6 +236,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, Integer workOrderNumber);
 
     @Query("select " +
+            "pi.uuid as uuid, " +
             "pi.tenantEntity.uuid as tenantUuid, " +
             "f.companyName as firm, " +
             "f.uuid as companyUuid, " +
@@ -258,6 +259,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             @Param("toDate") LocalDateTime toDate);
 
     @Query("select " +
+            "pi.uuid as uuid, " +
             "pi.tenantEntity.uuid as tenantUuid, " +
             "pi.piNumber as piNumber, " +
             "pi.tenantEntity.tenantName as partyName, " +
