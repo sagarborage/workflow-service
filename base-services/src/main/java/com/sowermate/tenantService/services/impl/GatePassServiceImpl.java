@@ -3,7 +3,9 @@ package com.sowermate.tenantService.services.impl;
 import com.sowermate.tenantService.entities.*;
 import com.sowermate.tenantService.entities.minimal.GatePassDetailsInfoProjection;
 import com.sowermate.tenantService.entities.minimal.GatePassInfoProjection;
+import com.sowermate.tenantService.entities.minimal.GatePassProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
+import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
 import com.sowermate.tenantService.entities.value.GatePassDetailsInfo;
 import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
@@ -14,8 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -105,6 +113,27 @@ public class GatePassServiceImpl implements GatePassService {
             throw new RuntimeException("gate pass is not found with uuid : " + gatePassUuid);
         }
         return gatePassEntity;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+        List<GatePassProjection> projections = gatePassRepository.findGatePassDetailsWithProformaDetails(tenantUuid, fromDateTime, toDateTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        return projections.stream().map(p -> {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("gatePassUuid", p.getGatePassUuid());
+            map.put("gatePassNo", p.getGatePassNo());
+            map.put("piNumber", p.getPiNumber());
+            map.put("partyName", p.getPartyName());
+            map.put("companyName", p.getCompanyName());
+            map.put("getPassDate", p.getDateTime() != null ? p.getDateTime().format(formatter) : null);
+            map.put("quantity", p.getQuantity());
+            map.put("vehicleDetails", p.getVehicleDetails());
+            return map;
+        }).collect(Collectors.toList());
     }
 
     @Override
