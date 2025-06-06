@@ -247,13 +247,11 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.createdBy as user " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.firm f " +
-            "where (:uuid IS NULL OR pi.uuid = :uuid) " +
-            "and (:partyUuid IS NULL OR pi.tenantEntity.uuid = :partyUuid) " +
+            "where (:partyUuid IS NULL OR pi.tenantEntity.uuid = :partyUuid) " +
             "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
             "and pi.invoiceDate between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
     List<ProformaInvoiceProjection> findAllPiOrdersDetails(
-            @Param("uuid") String uuid,
             @Param("tenantUuid") String tenantUuid,
             @Param("companyUuid") String companyUuid,
             @Param("partyUuid") String partyUuid,
@@ -276,12 +274,10 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
             "join pi.piTypeEntity pt " +
-            "where (:uuid IS NULL OR pi.uuid = :uuid) " +
-            "and (:workOrderUuid IS NULL OR wo.uuid = :workOrderUuid) " +
+            "where (:workOrderUuid IS NULL OR wo.uuid = :workOrderUuid) " +
             "and pi.createdDateTime between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
     List<ProformaInvoiceWithWorkOrderProjection> findAllPiOrdersDetailsWithWorkOrderDetails(
-            @Param("uuid") String uuid,
             @Param("tenantUuid") String tenantUuid,
             @Param("workOrderUuid") String workOrderUuid,
             @Param("fromDate") LocalDateTime fromDate,

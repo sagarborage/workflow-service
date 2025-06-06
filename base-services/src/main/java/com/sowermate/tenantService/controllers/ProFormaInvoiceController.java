@@ -170,15 +170,15 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/pi-register")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@RequestParam (required = false) String uuid, @RequestParam String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
-        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(uuid, tenantUuid, companyUuid, partyUuid, fromDate, toDate);
+    @GetMapping("/pi-register/{tenantUuid}")
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
+        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate);
         return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/work-order-details")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetailsWithWorkOrderDetails(@RequestParam (required = false) String uuid, @RequestParam String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
-        List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllPiOrdersDetailsWithWorkOrderDetails(uuid, tenantUuid, workOrderUuid, fromDate, toDate);
+    @GetMapping("/work-order-details/{tenantUuid}")
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetailsWithWorkOrderDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
+        List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDate, toDate);
         return new ResponseEntity<>(allPiOrdersDetailsWithWorkOrderDetails, HttpStatus.ACCEPTED);
     }
 
