@@ -116,15 +116,17 @@ public class GatePassServiceImpl implements GatePassService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, LocalDate fromDate, LocalDate toDate) {
+    public List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, String companyUuid, String firmUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-        List<GatePassProjection> projections = gatePassRepository.findGatePassDetailsWithProformaDetails(tenantUuid, fromDateTime, toDateTime);
+        List<GatePassProjection> projections = gatePassRepository.findGatePassDetailsWithProformaDetails(tenantUuid, companyUuid, firmUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("gatePassUuid", p.getGatePassUuid());
+            map.put("companyUuid", p.getCompanyUuid());
+            map.put("firmUuid", p.getFirmUuid());
             map.put("gatePassNo", p.getGatePassNo());
             map.put("piNumber", p.getPiNumber());
             map.put("partyName", p.getPartyName());

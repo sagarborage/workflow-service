@@ -9,6 +9,10 @@ public interface GatePassProjection {
 
     String getTenantUuid();
 
+    String getCompanyUuid();
+
+    String getFirmUuid();
+
     String getGatePassUuid();
 
     Integer getGatePassNo();

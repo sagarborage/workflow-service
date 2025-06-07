@@ -16,7 +16,7 @@ public interface GatePassService {
 
     public List<GatePassValue> getAllGatePass(String tenantUuid,String companyUuid);
 
-    List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, LocalDate fromDate, LocalDate toDate);
+    List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, String companyUuid, String firmUuid, LocalDate fromDate, LocalDate toDate);
 
     public GatePassValue getGatePass(String uuid, String tenantUuid,String companyUuid);
     public List<GlassInfoProjection> getGlassInfoForReport(String uuid);
