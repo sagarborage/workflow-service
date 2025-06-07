@@ -4,7 +4,9 @@ import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
 import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface GatePassService {
 
@@ -13,6 +15,8 @@ public interface GatePassService {
     public GatePassValue updateGatePass(GatePassValue gatePassValue);
 
     public List<GatePassValue> getAllGatePass(String tenantUuid,String companyUuid);
+
+    List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, String companyUuid, String firmUuid, LocalDate fromDate, LocalDate toDate);
 
     public GatePassValue getGatePass(String uuid, String tenantUuid,String companyUuid);
     public List<GlassInfoProjection> getGlassInfoForReport(String uuid);
