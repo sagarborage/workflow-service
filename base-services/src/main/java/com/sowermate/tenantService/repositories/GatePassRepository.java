@@ -108,7 +108,8 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "JOIN g.proFormaInvoiceEntity pi " +
             "JOIN pi.firm f " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND g.createdDateTime BETWEEN :fromDate AND :toDate")
+            "AND g.createdDateTime BETWEEN :fromDate AND :toDate " +
+            "GROUP BY g.uuid")
     List<GatePassProjection> findGatePassDetailsWithProformaDetails(
             @Param("tenantUuid") String tenantUuid,
             @Param("fromDate") LocalDateTime fromDate,
