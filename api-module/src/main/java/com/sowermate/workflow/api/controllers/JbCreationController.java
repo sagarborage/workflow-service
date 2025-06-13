@@ -29,11 +29,7 @@ public class JbCreationController {
     @ResponseBody
     public ResponseEntity<JbCreationValue> createJbCreation(@RequestBody JbCreationValue jbCreationValue) {
         JbCreationValue jbCreationValue1 = null;
-//        try {
-            jbCreationValue1 = jbCreationService.createJbCreation(jbCreationValue);
-//        } catch (Exception e) {
-//            Logger.error("Error while creating Seller:", e);
-//        }
+        jbCreationValue1 = jbCreationService.createJbCreation(jbCreationValue);
         return new ResponseEntity<JbCreationValue>(jbCreationValue1, HttpStatus.CREATED);
     }
 
@@ -41,11 +37,7 @@ public class JbCreationController {
     @ResponseBody
     public ResponseEntity<JbCreationValue> updateJbCreation(@RequestBody JbCreationValue jbCreationValue) {
         JbCreationValue jbCreationValue1 = null;
-        try {
-            jbCreationValue1 = jbCreationService.updateJbCreation(jbCreationValue);
-        } catch (Exception e) {
-            Logger.error("Error while editing Seller:", e);
-        }
+        jbCreationValue1 = jbCreationService.updateJbCreation(jbCreationValue);
         return new ResponseEntity<JbCreationValue>(jbCreationValue1, HttpStatus.CREATED);
     }
 
@@ -64,12 +56,7 @@ public class JbCreationController {
     @GetMapping(value = "/{toughenBatchProcessUuid}")
     public ResponseEntity<List<JbCreationValue>> getAllJbCreation(@PathVariable String toughenBatchProcessUuid) {
         List<JbCreationValue> jbCreationValues = null;
-//        try {
-            jbCreationValues = jbCreationService.getAllJbCreation(toughenBatchProcessUuid);
-//            Logger.info("records " + jbCreationValues.size());
-//        } catch (Exception e) {
-//            Logger.error("Error while getting Seller:", e);
-//        }
+        jbCreationValues = jbCreationService.getAllJbCreation(toughenBatchProcessUuid);
         return new ResponseEntity<>(jbCreationValues, HttpStatus.OK);
     }
 
@@ -85,5 +72,4 @@ public class JbCreationController {
         }
         return new ResponseEntity<JbCreationValue>(jbCreationValue, HttpStatus.OK);
     }
-
 }

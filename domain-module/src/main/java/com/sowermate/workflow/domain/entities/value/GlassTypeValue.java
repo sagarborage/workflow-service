@@ -25,5 +25,4 @@ public class GlassTypeValue extends BaseDto {
                 .isActive(getIsActive())
                 .build();
     }
-    
 }

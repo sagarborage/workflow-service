@@ -12,8 +12,6 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdditionalChargesValue extends BaseDto {
-//    private Long additionalChargesId;
-//    private String additionalChargesUuid;
     private String tenantUuid;
     private float extraMm;
     private float insurance;
@@ -24,8 +22,6 @@ public class AdditionalChargesValue extends BaseDto {
 
     public AdditionalChargesEntity toEntity() {
         return AdditionalChargesEntity.newBuilder()
-//                .id(getAdditionalChargesId())
-//                .uuid(getAdditionalChargesUuid())
                 .uuid(getUuid())
                 .extraMm(getExtraMm())
                 .insurance(getInsurance())

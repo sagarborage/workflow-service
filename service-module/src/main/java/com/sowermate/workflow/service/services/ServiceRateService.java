@@ -14,5 +14,4 @@ public interface ServiceRateService {
     public ServiceRateValue getServiceRate(String tenantUuid, String serviceRateUuid);
 
     public ServiceRateValue deleteServiceRate(String tenantUuid, String serviceRateUuid);
-
 }

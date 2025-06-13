@@ -18,12 +18,12 @@ SET time_zone = "+05:30";
 -- -----------------------------------------------------
 CREATE TABLE `service_rate_invoice` (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-     uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
-	`pro_forma_invoice_id` INT(10) UNSIGNED NOT NULL,
-	`service_rate_id` INT(10) UNSIGNED NOT NULL,
-	`quantity` INT(10) NOT NULL,
-	`rate` decimal(10,2) NOT NULL,
-	`total` decimal(10,2) NOT NULL,
+    uuid CHAR(36) UNIQUE NOT NULL DEFAULT (UUID()),
+	pro_forma_invoice_id INT(10) UNSIGNED NOT NULL,
+	service_rate_id INT(10) UNSIGNED NOT NULL,
+	quantity INT(10) NOT NULL,
+	rate decimal(10,2) NOT NULL,
+	total decimal(10,2) NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT 1,
     created_by VARCHAR(64) NOT NULL,
     created_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),

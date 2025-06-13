@@ -1,7 +1,7 @@
 package com.sowermate.workflow.domain.entities.value;
 
-import com.sowermate.workflow.domain.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.core.base.dtos.BaseDto;
+import com.sowermate.workflow.domain.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceItemStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,7 +56,6 @@ public class ProFormaInvoiceItemValue extends BaseDto {
 
     public ProFormaInvoiceItemEntity toEntity() {
         return ProFormaInvoiceItemEntity.newBuilder()
-                //.id(getProFormaInvoiceItemId())
                 .uuid(getUuid())
                 .widthInch(getWidthInch())
                 .toughenBucket(getToughenBucket())

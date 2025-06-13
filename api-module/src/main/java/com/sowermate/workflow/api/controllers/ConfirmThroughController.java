@@ -57,6 +57,4 @@ public class ConfirmThroughController {
         ConfirmThroughValue confirmThroughValue1 = confirmThroughService.editConfirmThrough(confirmThroughValue);
         return new ResponseEntity<ConfirmThroughValue>(confirmThroughValue1, HttpStatus.CREATED);
     }
-
-
 }

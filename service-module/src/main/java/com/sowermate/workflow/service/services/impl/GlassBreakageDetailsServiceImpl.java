@@ -93,5 +93,4 @@ public class GlassBreakageDetailsServiceImpl implements GlassBreakageDetailsServ
     public int deleteGlassBreakageDetails(String glassBreakageDetailsUuid, String tenantUuid, String companyUuid, String proFormaInvoiceUuid, String workOrderUuid, String proFormaInvoiceItemUuid) {
         return glassBreakageDetailsRepository.deleteByGlassBreakageDetailsUuid(glassBreakageDetailsUuid);
     }
-
 }

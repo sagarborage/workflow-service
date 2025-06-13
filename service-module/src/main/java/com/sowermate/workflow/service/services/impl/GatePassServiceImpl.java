@@ -1,10 +1,8 @@
 package com.sowermate.workflow.service.services.impl;
 
-import com.sowermate.core.tenant.entities.Company;
 import com.sowermate.core.tenant.entities.Tenant;
-import com.sowermate.core.tenant.repositories.CompanyRepository;
 import com.sowermate.core.tenant.repositories.TenantRepository;
-import com.sowermate.core.tenant.services.CompanyService;
+import com.sowermate.core.tenant.services.TenantService;
 import com.sowermate.workflow.domain.entities.GatePassDetailsEntity;
 import com.sowermate.workflow.domain.entities.GatePassEntity;
 import com.sowermate.workflow.domain.entities.ProFormaInvoiceEntity;
@@ -39,16 +37,13 @@ public class GatePassServiceImpl implements GatePassService {
     private TenantRepository tenantRepository;
 
     @Autowired
-    private CompanyRepository companyRepository;
-
-    @Autowired
     private ProFormaInvoiceRepository proFormaInvoiceRepository;
 
     @Autowired
     private ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
 
     @Autowired
-    private CompanyService companyService;
+    private TenantService tenantService;
 
     @Override
     @Transactional
@@ -57,8 +52,9 @@ public class GatePassServiceImpl implements GatePassService {
         Tenant tenantEntity = tenantRepository.findByUuid(gatePassValue.getTenantUuid());
         ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantEntity.getUuid(), gatePassValue.getProFormaInvoiceUuid());
         //Company companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantEntity.getUuid(), gatePassValue.getCompanyUuid());
-        Company companyEntity = companyService.getCompanyEntity(gatePassValue.getCompanyUuid(), tenantEntity.getUuid());
-        Company partyCompanyEntity = companyService.getCompanyEntity(proFormaInvoiceEntity.getCompanyIdBill().getUuid());
+        Tenant companyEntity = tenantService.getTenantEntity(gatePassValue.getCompanyUuid());
+        //Company partyCompanyEntity = companyService.getCompanyEntity(proFormaInvoiceEntity.getCompanyIdBill().getUuid());
+        Tenant partyCompanyEntity = tenantService.getTenantEntity(proFormaInvoiceEntity.getCompanyIdBill().getUuid());
 
         GatePassEntity gatePassEntity = gatePassValue.toEntity().toBuilder()
                 .tenantEntity(tenantEntity)
@@ -102,9 +98,9 @@ public class GatePassServiceImpl implements GatePassService {
                 .createdDateTime(tempGatePassEntity.getCreatedDateTime())
                 .createdBy(tempGatePassEntity.getCreatedBy())
                 .tenantEntity(tenantEntity)
-                .companyEntity(companyService.getCompanyEntity(gatePassValue.getCompanyUuid()))
+                .companyEntity(tenantService.getTenantEntity(gatePassValue.getCompanyUuid()))
                 .proFormaInvoiceEntity(proFormaInvoiceRepository.findByUuid(gatePassValue.getProFormaInvoiceUuid()))
-                .partyCompanyEntity(companyService.getCompanyEntity(gatePassValue.getPartyCompanyUuid()))
+                .partyCompanyEntity(tenantService.getTenantEntity(gatePassValue.getPartyCompanyUuid()))
                 .gatePassNo(gatePassValue.getGatePassNo())
                 .createdDateTime(tempGatePassEntity.getCreatedDateTime())
                 .createdBy(tempGatePassEntity.getCreatedBy())
@@ -175,6 +171,4 @@ public class GatePassServiceImpl implements GatePassService {
         List<GatePassEntity> gatePassEntities = gatePassRepository.findByTenantUuidAndCompanyUuid(tenantUuid, companyUuid);
         return gatePassEntities.stream().map(GatePassEntity::toDTO).collect(Collectors.toList());
     }
-
-
 }

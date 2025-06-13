@@ -33,11 +33,7 @@ public class ProFormaInvoiceItemController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ProFormaInvoiceItemValue> createProFormaInvoiceItem(@RequestBody ProFormaInvoiceItemValue proFormaInvoiceItemValue) {
-//        try {
-            proFormaInvoiceItemValue = proFormaInvoiceItemService.createProFormaInvoiceItem(proFormaInvoiceItemValue);
-//        } catch (Exception e) {
-//            Logger.error("Error while creating Seller:", e);
-//        }
+        proFormaInvoiceItemValue = proFormaInvoiceItemService.createProFormaInvoiceItem(proFormaInvoiceItemValue);
         return new ResponseEntity<ProFormaInvoiceItemValue>(proFormaInvoiceItemValue, HttpStatus.CREATED);
     }
 

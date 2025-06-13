@@ -87,5 +87,4 @@ public class GatePassDetailsController {
         }
         return new ResponseEntity<GatePassDetailsValue>(gatePassDetailsValue, HttpStatus.OK);
     }
-
 }

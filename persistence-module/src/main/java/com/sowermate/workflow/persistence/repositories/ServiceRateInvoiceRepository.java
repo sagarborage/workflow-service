@@ -24,7 +24,6 @@ public interface ServiceRateInvoiceRepository extends JpaRepository<ServiceRateI
             "AND s.uuid = :serviceRateInvoiceUuid")
     public ServiceRateInvoiceEntity findByProFormaInvoiceUuidUuidAndServiceRateInvoiceUuid(@Param("proFormaInvoiceUuid") String proFormaInvoiceUuid, @Param("serviceRateInvoiceUuid") String serviceRateInvoiceUuid);
 
-
     public int deleteByUuid(@Param("serviceRateInvoiceUuid") String serviceRateInvoiceUuid);
 
     public List<ServiceRateInvoiceEntity> findAllByProFormaInvoiceEntity_Id(Long proFormaInvoiceId);

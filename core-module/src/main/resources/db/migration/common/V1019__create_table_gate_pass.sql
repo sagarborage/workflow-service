@@ -34,8 +34,8 @@ CREATE TABLE gate_pass (
     last_updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     version INT NOT NULL DEFAULT 1,
     FOREIGN KEY (tenant_id) REFERENCES tenant (id),
-    FOREIGN KEY (company_id) REFERENCES company (id),
-    FOREIGN KEY (party_company_id) REFERENCES company (id),
+    FOREIGN KEY (company_id) REFERENCES tenant (id),
+    FOREIGN KEY (party_company_id) REFERENCES tenant (id),
     FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id)
 );
 -- -----------------------------------------------------

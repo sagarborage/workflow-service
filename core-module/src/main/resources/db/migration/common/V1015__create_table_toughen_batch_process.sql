@@ -30,7 +30,7 @@ CREATE TABLE toughen_batch_process (
   last_updated_datetime TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
   version INT NOT NULL DEFAULT 1,
   CONSTRAINT T_BD_FK_1 FOREIGN KEY (tenant_id) REFERENCES tenant (id),
-  CONSTRAINT C_BD_FK_1 FOREIGN KEY (firm_id) REFERENCES company (id)
+  CONSTRAINT C_BD_FK_1 FOREIGN KEY (firm_id) REFERENCES tenant (id)
  );
 -- -----------------------------------------------------
 -- Commit transaction

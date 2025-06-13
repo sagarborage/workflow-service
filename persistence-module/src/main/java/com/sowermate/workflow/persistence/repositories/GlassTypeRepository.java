@@ -25,5 +25,4 @@ public interface GlassTypeRepository extends JpaRepository<GlassTypeEntity, Stri
     @Modifying
     @Query("UPDATE GlassTypeEntity g SET g.isActive = false WHERE g.uuid = :glassTypeUuid")
     void softDelete(@Param("glassTypeUuid") String glassTypeUuid);
-
 }

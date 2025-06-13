@@ -1,6 +1,5 @@
 package com.sowermate.workflow.persistence.repositories;
 
-import com.sowermate.workflow.domain.entities.AdditionalChargesEntity;
 import com.sowermate.workflow.domain.entities.ConfirmThroughEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,6 +26,4 @@ public interface ConfirmThroughRepository extends JpaRepository<ConfirmThroughEn
     @Modifying
     @Query("DELETE FROM ConfirmThroughEntity c WHERE c.uuid = :confirmThroughUuid")
     int deleteByConfirmThroughUuid(@Param("confirmThroughUuid") String confirmThroughUuid);
-
-
 }

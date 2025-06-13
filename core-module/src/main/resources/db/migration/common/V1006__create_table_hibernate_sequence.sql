@@ -18,8 +18,8 @@ SET time_zone = "+05:30";
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `hibernate_sequence`;
 CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `next_val` bigint(20) DEFAULT NULL,
+   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+   next_val bigint(20) DEFAULT NULL,
    is_active BOOLEAN NOT NULL DEFAULT 1,
    created_by VARCHAR(64) NOT NULL,
    created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

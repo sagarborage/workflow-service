@@ -20,7 +20,6 @@ import java.util.List;
 @RequestMapping(value = "/glass-types", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GlassTypeController {
 
-
     @Autowired
     private GlassTypeService glassTypeService;
 
@@ -59,5 +58,4 @@ public class GlassTypeController {
         GlassTypeValue glassTypeValue1 = glassTypeService.editGlassType(glassTypeValue);
         return new ResponseEntity<GlassTypeValue>(glassTypeValue1, HttpStatus.CREATED);
     }
-
 }

@@ -5,9 +5,8 @@ import com.sowermate.core.base.common.constants.MessageConstants;
 import com.sowermate.core.base.exceptions.ResourceNotFoundException;
 import com.sowermate.core.image.services.PdfService;
 import com.sowermate.core.tenant.entities.Tenant;
-import com.sowermate.core.tenant.repositories.CompanyRepository;
 import com.sowermate.core.tenant.repositories.TenantRepository;
-import com.sowermate.core.tenant.services.CompanyService;
+import com.sowermate.core.tenant.services.TenantService;
 import com.sowermate.workflow.domain.entities.ConfirmThroughEntity;
 import com.sowermate.workflow.domain.entities.DeptTypeEnum;
 import com.sowermate.workflow.domain.entities.GlassSpecificationEntity;
@@ -77,13 +76,12 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Autowired
     private PiTypeRepository piTypeRepository;
     @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
     private TenantRepository tenantRepository;
     @Autowired(required = true)
     private PdfService pdfService;
+
     @Autowired
-    private CompanyService companyService;
+    private TenantService tenantService;
 
     @Override
     @Transactional
@@ -105,9 +103,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                                     confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
                     )
                     .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
-                    .firm(companyService.getCompanyEntity(proFormaInvoiceValue.getFirmUuid(), tenantUUID))
-                    .companyIdBill(companyService.getCompanyEntity(proFormaInvoiceValue.getPartyBillToUuid(), tenantUUID))
-                    .companyIdShip(companyService.getCompanyEntity(proFormaInvoiceValue.getPartyShipToUuid(), tenantUUID))
+                    .firm(tenantService.getTenantEntity(proFormaInvoiceValue.getFirmUuid()))
+                    .companyIdBill(tenantService.getTenantEntity(proFormaInvoiceValue.getPartyBillToUuid()))
+                    .companyIdShip(tenantService.getTenantEntity(proFormaInvoiceValue.getPartyShipToUuid()))
                     .piNumber(piNumber)
                     .invoiceDate(LocalDateTime.now())
                     .version(proFormaInvoiceValue.getVersion())
@@ -222,9 +220,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         );
 
         existingInvoice.setPiTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()));
-        existingInvoice.setFirm(companyService.getCompanyEntity(proFormaInvoiceValue.getFirmUuid(), tenantUUID));
-        existingInvoice.setCompanyIdBill(companyService.getCompanyEntity(proFormaInvoiceValue.getPartyBillToUuid(), tenantUUID));
-        existingInvoice.setCompanyIdShip(companyService.getCompanyEntity(proFormaInvoiceValue.getPartyShipToUuid(), tenantUUID));
+        existingInvoice.setFirm(tenantService.getTenantEntity(proFormaInvoiceValue.getFirmUuid()));
+        existingInvoice.setCompanyIdBill(tenantService.getTenantEntity(proFormaInvoiceValue.getPartyBillToUuid()));
+        existingInvoice.setCompanyIdShip(tenantService.getTenantEntity(proFormaInvoiceValue.getPartyShipToUuid()));
         existingInvoice.setProFormaInvoiceAmount(proFormaInvoiceValue.getProFormaInvoiceAmount());
         existingInvoice.setServiceRateInvoiceAmount(proFormaInvoiceValue.getServiceRateInvoiceAmount());
         existingInvoice.setBasicAmount(proFormaInvoiceValue.getBasicAmount());
@@ -407,7 +405,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .uuid(proFormaInvoiceEntity.getUuid())
                 .invoiceDate(proFormaInvoiceEntity.getInvoiceDate())
                 .confirmThroughUuid(null == proFormaInvoiceEntity.getConfirmThroughEntity() ? null : proFormaInvoiceEntity.getConfirmThroughEntity().getUuid())
-                .partyName(proFormaInvoiceEntity.getCompanyIdBill().getCompanyName())
+                .partyName(proFormaInvoiceEntity.getCompanyIdBill().getTenantName())
                 .payableAmount(proFormaInvoiceEntity.getPayableAmount())
                 .piNumber(proFormaInvoiceEntity.getPiNumber())
                 .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())

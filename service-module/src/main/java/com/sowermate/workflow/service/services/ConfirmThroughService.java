@@ -15,5 +15,4 @@ public interface ConfirmThroughService {
     public ConfirmThroughValue getConfirmThrough(String tenantUuid, String confirmThroughUuid);
 
     public int deleteConfirmThrough(String tenantUuid, String confirmThroughUuid);
-
 }

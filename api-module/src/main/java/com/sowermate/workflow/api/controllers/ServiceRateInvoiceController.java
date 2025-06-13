@@ -24,7 +24,6 @@ public class ServiceRateInvoiceController {
     @Autowired
     private ServiceRateInvoiceService serviceRateInvoiceService;
 
-
     private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ServiceRateInvoiceController.class);
 
     @RequestMapping(method = RequestMethod.POST)
@@ -87,6 +86,4 @@ public class ServiceRateInvoiceController {
         return new ResponseEntity<>(serviceRateInvoiceValues, HttpStatus.ACCEPTED);
 
     }
-
-
 }

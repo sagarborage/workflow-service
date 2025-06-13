@@ -25,7 +25,6 @@ public interface GatePassDetailsRepository extends JpaRepository<GatePassDetails
             "AND gpd.uuid =:gatePassDetailsUuid")
     GatePassDetailsEntity findByProFormaInvoiceItemEntity_UuidAndGatePassEntityUuidAndGatePassDetailsUuid(String gatePassDetailsUuid, String proFormaInvoiceItemUuid, String gatePassUuid);
 
-
     @Transactional
     @Modifying
     @Query("UPDATE GatePassDetailsEntity g SET g.isActive = false WHERE g.uuid = :gatePassDetailsUuid")
@@ -34,5 +33,4 @@ public interface GatePassDetailsRepository extends JpaRepository<GatePassDetails
 //    @Modifying
 //    @Query("DELETE FROM GatePassDetailsEntity g WHERE g.gatePassDetailsUuid = :gatePassDetailsUuid AND g.proFormaInvoiceItemUuid =:proFormaInvoiceItemUuid AND g.gatePassUuid =:gatePassUuid")
 //    int deleteByGatePassDetailsUuid(@Param("gatePassDetailsUuid") String gatePassDetailsUuid, @Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid, @Param("gatePassUuid") String gatePassUuid);
-
 }

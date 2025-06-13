@@ -52,6 +52,4 @@ public interface ProFormaInvoiceItemRepository extends JpaRepository<ProFormaInv
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceItemEntity p WHERE p.uuid = :proFormaInvoiceItemUuid")
     int deleteByUuid(@Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
-
-
 }

@@ -61,7 +61,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
             "p.uuid as proformaInvoiceUuid , " +
-            "p.companyIdBill.companyName as billToPartyName, " +
+            "p.companyIdBill.tenantName as billToPartyName, " +
             "p.companyIdBill.uuid as billToPartyUuid, " +
             "th.name as thickness, " +
             "pi.actualWidth as actualWidth, " +
@@ -135,7 +135,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "tb.batchNo as batchNo, " +
             "Date(tb.createdDateTime) as batchDate, " +
             "p.piNumber as piNo, " +
-            "p.companyIdBill.companyName as billToPartyName, " +
+            "p.companyIdBill.tenantName as billToPartyName, " +
             "th.name as thickness, " +
             "pi.actualWidth as actualWidth, " +
             "pi.chargeableWidth as chargeableWidth, " +
@@ -222,6 +222,4 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "AND(c.uuid is NULL OR c.uuid = :companyUuid) " +
             "AND(Date(tb.createdDateTime) is NULL OR Date(tb.createdDateTime) =:batchProcessingDate) ")
     List<CompletedGlassesProjection> findByThickness(String tenantUuid, String companyUuid, LocalDate batchProcessingDate);
-
-
 }

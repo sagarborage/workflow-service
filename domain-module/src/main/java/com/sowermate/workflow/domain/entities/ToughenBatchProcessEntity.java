@@ -1,7 +1,6 @@
 package com.sowermate.workflow.domain.entities;
 
 import com.sowermate.core.base.entities.Base;
-import com.sowermate.core.tenant.entities.Company;
 import com.sowermate.core.tenant.entities.Tenant;
 import com.sowermate.workflow.domain.entities.value.ToughenBatchProcessValue;
 import com.sowermate.workflow.domain.enums.ToughenBatchProcessStatusEnum;
@@ -41,7 +40,7 @@ public class ToughenBatchProcessEntity extends Base {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "firm_id", nullable = false)
-    private Company companyEntity;
+    private Tenant companyEntity;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

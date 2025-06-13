@@ -22,7 +22,6 @@ public interface JbCreationRepository extends JpaRepository<JbCreationEntity, Lo
 
     List<JbCreationEntity> findAllByToughenBatchProcessEntityUuid(String toughenBatchProcessUuid);
 
-
     @Transactional
     @Modifying
     @Query("UPDATE JbCreationEntity j SET j.isActive = false WHERE j.toughenBatchProcessEntity.uuid = :toughenBatchProcessUuid and j.uuid = :jbCreationUuid")
@@ -30,7 +29,6 @@ public interface JbCreationRepository extends JpaRepository<JbCreationEntity, Lo
 
 
     JbCreationEntity getJbCreationEntityByUuid(@Param("jbCreationUuid") String jbCreationUuid);
-
 
     @Query("Select " +
             "'-' as piNo, " +
@@ -42,5 +40,4 @@ public interface JbCreationRepository extends JpaRepository<JbCreationEntity, Lo
             "JOIN jb.glassThicknessEntity th " +
             "WHERE jb.uuid = :jbUuid ")
     StickerReportProjection findByStickerData(String jbUuid);
-
 }

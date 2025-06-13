@@ -32,7 +32,7 @@ CREATE TABLE work_order (
    CONSTRAINT work_order_tenant_ibfk_1
    FOREIGN KEY (tenant_id) REFERENCES tenant (id),
    FOREIGN KEY (proforma_invoice_id) REFERENCES pro_forma_invoice (id),
-   FOREIGN KEY (firm_id) REFERENCES company (id)
+   FOREIGN KEY (firm_id) REFERENCES tenant (id)
  );
 -- -----------------------------------------------------
 -- Commit transaction

@@ -1,7 +1,6 @@
 package com.sowermate.workflow.domain.entities;
 
 import com.sowermate.core.base.entities.Base;
-import com.sowermate.core.tenant.entities.Company;
 import com.sowermate.core.tenant.entities.Tenant;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceValue;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
@@ -117,15 +116,15 @@ public class ProFormaInvoiceEntity extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "firm_id")
-    private Company firm;
+    private Tenant firm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bill_to")
-    private Company companyIdBill;
+    private Tenant companyIdBill;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ship_to")
-    private Company companyIdShip;
+    private Tenant companyIdShip;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
@@ -161,9 +160,9 @@ public class ProFormaInvoiceEntity extends Base {
                 .confirmThroughName(null == getConfirmThroughEntity() ? null : getConfirmThroughEntity().getName())
                 .firmUuid(getFirm().getUuid())
                 .partyBillToUuid(getCompanyIdBill().getUuid())
-                .partyBillToName(getCompanyIdBill().getCompanyName())
+                .partyBillToName(getCompanyIdBill().getTenantName())
                 .partyShipToUuid(null != getCompanyIdShip() ? getCompanyIdShip().getUuid() : "")
-                .partyShipToName(null != getCompanyIdShip() ? getCompanyIdShip().getCompanyName() : "")
+                .partyShipToName(null != getCompanyIdShip() ? getCompanyIdShip().getTenantName() : "")
                 .piTypeUuid(getPiTypeEntity().getUuid())
                 .piTypeName(getPiTypeEntity().getPiTypeName())
                 .piNumber(getPiNumber())

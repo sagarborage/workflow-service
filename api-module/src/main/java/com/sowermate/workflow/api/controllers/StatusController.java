@@ -26,7 +26,7 @@ public class StatusController {
     @ResponseBody
     public ResponseEntity<StatusValue> createStatus(@RequestBody StatusValue statusValue) {
         StatusValue statusValue1 = statusService.createStatus(statusValue);
-        return new ResponseEntity<StatusValue>(statusValue, HttpStatus.CREATED);
+        return new ResponseEntity<StatusValue>(statusValue1, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{tenantUuid}/{statusUuid}")
@@ -54,5 +54,4 @@ public class StatusController {
         StatusValue statusValue1 = statusService.editStatus(statusValue);
         return new ResponseEntity<StatusValue>(statusValue1, HttpStatus.CREATED);
     }
-
 }

@@ -23,5 +23,4 @@ public interface PiTypeRepository extends JpaRepository<PiTypeEntity, String> {
     @Modifying
     @Query("DELETE FROM PiTypeEntity p WHERE p.uuid = :piTypeUuid")
     public int deleteByUuid(@Param("piTypeUuid") String piTypeUuid);
-
 }

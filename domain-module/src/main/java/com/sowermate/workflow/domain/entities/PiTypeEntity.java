@@ -50,5 +50,4 @@ public class PiTypeEntity extends Base {
                 .lastUpdatedBy(getLastUpdatedBy())
                 .build();
     }
-
 }

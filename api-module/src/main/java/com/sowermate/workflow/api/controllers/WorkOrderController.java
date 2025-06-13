@@ -26,11 +26,7 @@ public class WorkOrderController {
     @ResponseBody
     public ResponseEntity<WorkOrderValue> createWorkOrder(@RequestBody WorkOrderValue workOrderValue) {
         WorkOrderValue workOrderValue1 = null;
-//        try {
-            workOrderValue1 = workOrderService.createWorkOrder(workOrderValue);
-//        } catch (Exception e) {
-//            Logger.error("Error while getting Seller:", e);
-//        }
+        workOrderValue1 = workOrderService.createWorkOrder(workOrderValue);
         return new ResponseEntity<WorkOrderValue>(workOrderValue1, HttpStatus.CREATED);
     }
 }

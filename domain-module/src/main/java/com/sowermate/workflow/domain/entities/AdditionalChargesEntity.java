@@ -45,8 +45,6 @@ public class AdditionalChargesEntity extends Base {
 
     public AdditionalChargesValue toDTO() {
         return AdditionalChargesValue.newBuilder()
-//                .additionalChargesId(getId())
-//                .additionalChargesUuid(getUuid())
                 .uuid(getUuid())
                 .tenantUuid(tenantEntity.getUuid())
                 .extraMm(getExtraMm())

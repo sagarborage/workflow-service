@@ -27,5 +27,4 @@ public interface AdditionalChargesRepository extends JpaRepository<AdditionalCha
     @Modifying
     @Query("DELETE FROM AdditionalChargesEntity a WHERE a.uuid = :additionalChargesUuid")
     int deleteByAdditionalChargesUuid(@Param("additionalChargesUuid") String additionalChargesUuid);
-
 }

@@ -14,5 +14,4 @@ public interface AdditionalChargesService {
     public AdditionalChargesValue getAdditionalCharges(String tenantUuid, String additionalChargesUuid);
 
     int deleteAdditionalCharges(String tenantUuid, String additionalChargesUuid);
-
 }

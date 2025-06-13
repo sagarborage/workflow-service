@@ -2,7 +2,6 @@ package com.sowermate.workflow.domain.entities;
 
 
 import com.sowermate.core.base.entities.Base;
-import com.sowermate.core.tenant.entities.Company;
 import com.sowermate.core.tenant.entities.Tenant;
 import com.sowermate.workflow.domain.entities.value.GatePassValue;
 import jakarta.persistence.CascadeType;
@@ -35,11 +34,11 @@ public class GatePassEntity extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
-    private Company companyEntity;
+    private Tenant companyEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "party_company_id", nullable = false)
-    private Company partyCompanyEntity;
+    private Tenant partyCompanyEntity;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

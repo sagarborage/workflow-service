@@ -31,7 +31,6 @@ public class PiTypeServiceImpl implements PiTypeService {
                 .tenantEntity(tenantEntity)
                 .build();
         return piTypeRepository.save(piTypeEntity).toDTO();
-
     }
 
     @Override

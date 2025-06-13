@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class GlassTypeServiceImpl implements GlassTypeService {
 
     @Autowired
-    GlassTypeRepository glassTypeRepository;
+    private GlassTypeRepository glassTypeRepository;
 
     @Autowired
-    TenantRepository tenantRepository;
+    private TenantRepository tenantRepository;
 
     @Override
     public GlassTypeValue createGlassType(GlassTypeValue glassTypeValue) {

@@ -2,9 +2,7 @@ package com.sowermate.workflow.service.services.impl;
 
 import com.sowermate.core.tenant.entities.Tenant;
 import com.sowermate.core.tenant.repositories.TenantRepository;
-import com.sowermate.workflow.domain.entities.AdditionalChargesEntity;
 import com.sowermate.workflow.domain.entities.ConfirmThroughEntity;
-import com.sowermate.workflow.domain.entities.value.AdditionalChargesValue;
 import com.sowermate.workflow.domain.entities.value.ConfirmThroughValue;
 import com.sowermate.workflow.persistence.repositories.ConfirmThroughRepository;
 import com.sowermate.workflow.service.services.ConfirmThroughService;
@@ -24,7 +22,7 @@ public class ConfirmThroughServiceImpl implements ConfirmThroughService {
     private ConfirmThroughRepository confirmThroughRepository;
 
     @Autowired
-    TenantRepository tenantRepository;
+    private TenantRepository tenantRepository;
 
     @Override
     public ConfirmThroughValue createConfirmThrough(ConfirmThroughValue confirmThroughValue) {

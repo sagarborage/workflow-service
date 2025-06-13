@@ -17,7 +17,7 @@ public interface ToughenBatchProcessDetailsRepository extends JpaRepository<Toug
     @Query("Select " +
             "pi.piNumber as piNo, " +
             "th.name as thickness, " +
-            "c.companyName as partyName, " +
+            "c.tenantName as partyName, " +
             "CONCAT(ROUND(pii.actualHeight,0),'*',ROUND(pii.actualWidth,0)) as size, " +
             "CONCAT(tbd.stickerNumber,'/', " +
             "( SELECT SUM(pii_sub.quantity) " +
@@ -38,7 +38,7 @@ public interface ToughenBatchProcessDetailsRepository extends JpaRepository<Toug
     @Query("Select " +
             "pi.piNumber as piNo, " +
             "th.name as thickness, " +
-            "c.companyName as partyName, " +
+            "c.tenantName as partyName, " +
             "CONCAT(ROUND(pii.actualHeight,0),'*',ROUND(pii.actualWidth,0)) as size, " +
             "CONCAT(tbd.stickerNumber,'/', " +
             "( SELECT SUM(pii_sub.quantity) " +
@@ -56,6 +56,5 @@ public interface ToughenBatchProcessDetailsRepository extends JpaRepository<Toug
             "AND f.uuid = :companyUuid " +
             "AND tb.uuid = :batchUuid ")
     List<StickerReportProjection> findAllStickerDataOfBatch(String tenantUuid, String companyUuid, String batchUuid);
-
 }
 

@@ -25,7 +25,6 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     //   public List<ProFormaInvoiceEntity> findAll();
     // public List<ProFormaInvoiceEntity> findByProFormaInvoiceId(int proFormaInvoiceId);
 
-
     @Query("SELECT p FROM ProFormaInvoiceEntity p " +
             "JOIN p.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
@@ -76,7 +75,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.companyName as partyBillTo, " +
+            "co.tenantName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -88,7 +87,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.companyName as partyBillTo, " +
+            "co.tenantName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -100,7 +99,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.companyName as partyBillTo, " +
+            "co.tenantName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -112,7 +111,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("Select pi.uuid as proformaInvoiceUuid, " +
             "pi.piNumber as piNumber, " +
-            "co.companyName as partyBillTo, " +
+            "co.tenantName as partyBillTo, " +
             "wo.id as workOrderNo " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
@@ -231,5 +230,4 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             //"pii.status = 'IN_PROGRESS' and " +
             "pi.tenantEntity = (select t from Tenant t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, Integer workOrderNumber);
-
 }

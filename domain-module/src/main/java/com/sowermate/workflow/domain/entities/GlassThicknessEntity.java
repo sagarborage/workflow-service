@@ -33,7 +33,6 @@ public class GlassThicknessEntity extends Base {
     @OneToMany(mappedBy = "glassThicknessEntity", cascade = CascadeType.ALL)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
     private Tenant tenantEntity;

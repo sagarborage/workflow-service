@@ -29,5 +29,4 @@ public interface GlassThicknessRepository extends JpaRepository<GlassThicknessEn
             "GlassThicknessEntity g " +
             "WHERE g.id = :id")
     String getFindGlassThickNess(Long id);
-
 }

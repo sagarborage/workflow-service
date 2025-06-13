@@ -79,11 +79,7 @@ public class GatePassController {
     public ResponseEntity<GatePassValue> deleteGatePass(@PathVariable String gatePassUuid,
                                                         @PathVariable String tenantUuid, @PathVariable String companyUuid) {
         GatePassValue gatePassValue = null;
-//        try {
-            gatePassValue = gatePassService.deleteGatePass(gatePassUuid, tenantUuid, companyUuid);
-//        } catch (Exception e) {
-//            Logger.error("Error while deleting Seller:", e);
-//        }
+        gatePassValue = gatePassService.deleteGatePass(gatePassUuid, tenantUuid, companyUuid);
         return new ResponseEntity<GatePassValue>(gatePassValue, HttpStatus.OK);
     }
 
@@ -98,5 +94,4 @@ public class GatePassController {
         }
         return new ResponseEntity<>(gatePassInfo, HttpStatus.OK);
     }
-
 }

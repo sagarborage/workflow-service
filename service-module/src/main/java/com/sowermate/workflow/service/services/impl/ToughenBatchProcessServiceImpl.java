@@ -1,8 +1,7 @@
 package com.sowermate.workflow.service.services.impl;
 
-import com.sowermate.core.tenant.repositories.CompanyRepository;
 import com.sowermate.core.tenant.repositories.TenantRepository;
-import com.sowermate.core.tenant.services.CompanyService;
+import com.sowermate.core.tenant.services.TenantService;
 import com.sowermate.workflow.domain.entities.DeptTypeEnum;
 import com.sowermate.workflow.domain.entities.GlassThicknessEntity;
 import com.sowermate.workflow.domain.entities.JbCreationEntity;
@@ -63,12 +62,13 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Autowired
     private TenantRepository tenantRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
+
     @Autowired
     private ProFormaInvoiceRepository proFormaInvoiceRepository;
+
     @Autowired
     private WorkOrderRepository workOrderRepository;
+
     @Autowired
     private ProFormaInvoiceItemRepository proFormaInvoiceItemRepository;
 
@@ -79,7 +79,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     private GlassBreakageDetailsServiceImpl glassBreakageDetailsService;
 
     @Autowired
-    private CompanyService companyService;
+    private TenantService tenantService;
 
     @Override
     @Transactional
@@ -360,7 +360,8 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
             batchNO) {
         return ToughenBatchProcessEntity.newBuilder()
                 .tenantEntity(tenantRepository.findByUuid(generalParamValue.getTenantUuid()))
-                .companyEntity(companyService.getCompanyEntity(generalParamValue.getCompanyUuid(), generalParamValue.getTenantUuid()))
+                //.companyEntity(companyService.getCompanyEntity(generalParamValue.getCompanyUuid(), generalParamValue.getTenantUuid()))
+                .companyEntity(tenantService.getTenantEntity(generalParamValue.getCompanyUuid()))
                 .batchNo(batchNO)
                 .status(ToughenBatchProcessStatusEnum.IN_PROGRESS)
                 .isActive(true)

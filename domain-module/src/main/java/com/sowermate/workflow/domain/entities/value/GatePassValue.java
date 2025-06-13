@@ -29,7 +29,6 @@ public class GatePassValue extends BaseDto {
 
     private String driverContactNo;
 
-
     public GatePassEntity toEntity() {
         return GatePassEntity.newBuilder()
                 .uuid(getUuid())

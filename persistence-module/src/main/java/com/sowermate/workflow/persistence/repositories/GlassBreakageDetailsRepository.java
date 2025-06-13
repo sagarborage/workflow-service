@@ -17,10 +17,7 @@ public interface GlassBreakageDetailsRepository extends JpaRepository<GlassBreak
             "And g.uuid = :glassBreakageDetailsUuid")
     public GlassBreakageDetailsEntity findByUuidAndProfileInvoiceItemUuid(@Param("glassBreakageDetailsUuid") String glassBreakageDetailsUuid, @Param("proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid);
 
-
     @Modifying
     @Query("DELETE FROM GlassBreakageDetailsEntity g WHERE g.uuid = :glassBreakageDetailsUuid")
     int deleteByGlassBreakageDetailsUuid(@Param("glassBreakageDetailsUuid") String glassBreakageDetailsUuid);
-
-
 }

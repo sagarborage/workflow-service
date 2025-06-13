@@ -54,17 +54,6 @@ public class ServiceRateInvoiceServieImpl implements ServiceRateInvoiceService {
                 .build();
 
         return serviceRateInvoiceRepository.save(serviceRateInvoiceEntity).toDTO();
-
-
-//        TenantEntity tenantEntity = tenantRepository.findByUuid(serviceRateValue.getTenantUuid());
-//        ServiceRateEntity tempServiceRateEntity = serviceRateRepository.findByTenantEntity_UuidAndServiceRateUuid(serviceRateValue.getTenantUuid(), serviceRateValue.getServiceRateUuid());
-//
-//        ServiceRateEntity serviceRateEntity = serviceRateValue.toEntity().toBuilder()
-//                .id(tempServiceRateEntity.getId())
-//                .tenantEntity(tenantEntity)
-//                .createdDateTime(tempServiceRateEntity.getCreatedDateTime())
-//                .createdBy(tempServiceRateEntity.getCreatedBy())
-//                .build();
     }
 
     @Override

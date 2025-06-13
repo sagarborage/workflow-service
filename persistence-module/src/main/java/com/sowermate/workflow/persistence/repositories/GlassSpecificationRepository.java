@@ -20,10 +20,8 @@ public interface GlassSpecificationRepository extends JpaRepository<GlassSpecifi
 
     public List<GlassSpecificationEntity> findAllByTenantEntity_Uuid(String tenantUuid);
 
-
     @Transactional
     @Modifying
     @Query("UPDATE GlassSpecificationEntity g SET g.isActive = false WHERE g.uuid = :glassSpecificationUuid")
     void softDelete(@Param("glassSpecificationUuid") String glassSpecificationUuid);
-
 }

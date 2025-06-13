@@ -15,7 +15,6 @@ public interface ServiceRateRepository extends JpaRepository<ServiceRateEntity, 
 
     //   public ServiceRateEntity findByServiceRateUuid(@Param("serviceRateUuid")String serviceRateUuid);
 
-
     @Query("SELECT s FROM ServiceRateEntity s " +
             "JOIN s.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +

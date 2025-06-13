@@ -88,5 +88,4 @@ public class GatePassDetailsServiceImpl implements GatePassDetailsService {
         }
         return gatePassDetailsEntity;
     }
-
 }

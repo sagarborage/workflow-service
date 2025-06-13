@@ -36,13 +36,13 @@ public class GlassBreakageDetailsController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<GlassBreakageDetailsValue> editConfirmThroughValue(@RequestBody GlassBreakageDetailsValue glassBreakageDetailsValue) throws Exception {
+    public ResponseEntity<GlassBreakageDetailsValue> editGlassBreakageDetails(@RequestBody GlassBreakageDetailsValue glassBreakageDetailsValue) throws Exception {
         GlassBreakageDetailsValue glassBreakageDetailsValue1 = glassBreakageDetailsService.editGlassBreakageDetails(glassBreakageDetailsValue);
         return new ResponseEntity<GlassBreakageDetailsValue>(glassBreakageDetailsValue1, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<GlassBreakageDetailsValue>> getAllConfirmThrough(@RequestParam(name = "tenantUuid") String tenantUuid, @RequestParam(name = "companyUuid") String companyUuid, @RequestParam(name = "proFormaInvoiceUuid") String proFormaInvoiceUuid, @RequestParam(name = "workOrderUuid") String workOrderUuid, @RequestParam(name = "proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid) {
+    public ResponseEntity<List<GlassBreakageDetailsValue>> getAllGlassBreakageDetails(@RequestParam(name = "tenantUuid") String tenantUuid, @RequestParam(name = "companyUuid") String companyUuid, @RequestParam(name = "proFormaInvoiceUuid") String proFormaInvoiceUuid, @RequestParam(name = "workOrderUuid") String workOrderUuid, @RequestParam(name = "proFormaInvoiceItemUuid") String proFormaInvoiceItemUuid) {
         List<GlassBreakageDetailsValue> glassBreakageDetailsValues = glassBreakageDetailsService.getAllGlassBreakageDetails(tenantUuid, companyUuid, proFormaInvoiceUuid, workOrderUuid, proFormaInvoiceItemUuid);
         return new ResponseEntity<>(glassBreakageDetailsValues, HttpStatus.ACCEPTED);
     }
@@ -59,5 +59,4 @@ public class GlassBreakageDetailsController {
         deleteCharges = glassBreakageDetailsService.deleteGlassBreakageDetails(glassBreakageDetailsUuid, tenantUuid, companyUuid, workOrderUuid, proFormaInvoiceUuid, proFormaInvoiceItemUuid);
         return new ResponseEntity<Integer>(deleteCharges, HttpStatus.ACCEPTED);
     }
-
 }

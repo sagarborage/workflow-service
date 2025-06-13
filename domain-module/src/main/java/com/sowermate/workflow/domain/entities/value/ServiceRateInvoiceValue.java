@@ -23,7 +23,6 @@ public class ServiceRateInvoiceValue extends BaseDto {
 
     public ServiceRateInvoiceEntity toEntity() {
         return ServiceRateInvoiceEntity.newBuilder()
-                //.id(getId())
                 .uuid(getUuid())
                 .quantity(getQuantity())
                 .rate(getRate())

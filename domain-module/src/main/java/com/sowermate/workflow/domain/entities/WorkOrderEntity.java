@@ -1,7 +1,6 @@
 package com.sowermate.workflow.domain.entities;
 
 import com.sowermate.core.base.entities.Base;
-import com.sowermate.core.tenant.entities.Company;
 import com.sowermate.core.tenant.entities.Tenant;
 import com.sowermate.workflow.domain.entities.value.WorkOrderValue;
 import jakarta.persistence.Entity;
@@ -29,7 +28,7 @@ public class WorkOrderEntity extends Base {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "firm_id")
-    private Company firm;
+    private Tenant firm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")

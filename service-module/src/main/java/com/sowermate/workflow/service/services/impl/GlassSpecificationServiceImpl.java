@@ -22,10 +22,10 @@ public class GlassSpecificationServiceImpl implements GlassSpecificationService 
     private GlassSpecificationRepository glassSpecificationRepository;
 
     @Autowired
-    TenantRepository tenantRepository;
+    private TenantRepository tenantRepository;
 
     @Autowired
-    ProFormaInvoiceRepository proFormaInvoiceRepository;
+    private ProFormaInvoiceRepository proFormaInvoiceRepository;
 
     @Override
     public GlassSpecificationValue createGlassSpecification(GlassSpecificationValue glassSpecificationValue) {

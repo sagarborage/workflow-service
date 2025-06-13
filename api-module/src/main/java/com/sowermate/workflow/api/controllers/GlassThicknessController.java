@@ -58,6 +58,4 @@ public class GlassThicknessController {
         GlassThicknessValue glassThicknessValue1 = glassThicknessService.editGlassThickness(glassThicknessValue);
         return new ResponseEntity<GlassThicknessValue>(glassThicknessValue1, HttpStatus.CREATED);
     }
-
-
 }

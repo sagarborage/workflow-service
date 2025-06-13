@@ -21,7 +21,7 @@ public class GlassThicknessServiceImpl implements GlassThicknessService {
     private GlassThicknessRepository glassThicknessRepository;
 
     @Autowired
-    TenantRepository tenantRepository;
+    private TenantRepository tenantRepository;
 
     @Override
     public GlassThicknessValue createGlassThickness(GlassThicknessValue glassThicknessValue) {

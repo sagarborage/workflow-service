@@ -1,7 +1,6 @@
 package com.sowermate.workflow.domain.entities.value;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class Sample {
@@ -16,6 +15,6 @@ public class Sample {
         String formattedValue = df.format(roundedValue);
         System.out.println(formattedValue);
         float f = 12.54f;
-        System.out.println(Math.round(f) );
+        System.out.println(Math.round(f));
     }
 }
