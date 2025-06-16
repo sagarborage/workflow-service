@@ -124,7 +124,7 @@ public class GatePassServiceImpl implements GatePassService {
 
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
-            map.put("gatePassUuid", p.getGatePassUuid());
+            map.put("uuid", p.getUuid());
             map.put("companyUuid", p.getCompanyUuid());
             map.put("firmUuid", p.getFirmUuid());
             map.put("gatePassNo", p.getGatePassNo());

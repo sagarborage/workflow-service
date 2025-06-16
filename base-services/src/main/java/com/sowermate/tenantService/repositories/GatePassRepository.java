@@ -93,7 +93,7 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
     PiInfoProjectionForReport findPiItemsInfoByGatePassUuid(String gatePassUuid);
 
  @Query("SELECT " +
-         "g.uuid as gatePassUuid, " +
+         "g.uuid as uuid, " +
          "t.uuid as tenantUuid, " +
          "c.uuid as companyUuid, " +
          "f.uuid as firmUuid, " +

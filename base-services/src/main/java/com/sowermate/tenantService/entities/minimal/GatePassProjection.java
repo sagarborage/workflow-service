@@ -13,7 +13,7 @@ public interface GatePassProjection {
 
     String getFirmUuid();
 
-    String getGatePassUuid();
+    String getUuid();
 
     Integer getGatePassNo();
 
