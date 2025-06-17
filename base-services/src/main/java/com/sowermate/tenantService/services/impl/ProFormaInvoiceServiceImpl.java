@@ -17,6 +17,7 @@ import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.Synchronized;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -442,7 +443,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Override
     public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
-        LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        companyUuid = StringUtils.isBlank(companyUuid) ? null : companyUuid;
+        partyUuid = StringUtils.isBlank(partyUuid) ? null : partyUuid;
         List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
