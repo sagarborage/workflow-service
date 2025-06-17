@@ -247,7 +247,8 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.createdBy as user " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.firm f " +
-            "where (:partyUuid IS NULL OR pi.tenantEntity.uuid = :partyUuid) " +
+            "join pi.companyIdBill cb " +
+            "where (:partyUuid IS NULL OR cb.uuid = :partyUuid) " +
             "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
             "and pi.invoiceDate between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
