@@ -12,6 +12,7 @@ import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.repositories.*;
 import com.sowermate.tenantService.services.GatePassService;
 import com.sowermate.tenantService.services.PiInfoProjectionForReport;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,7 +119,9 @@ public class GatePassServiceImpl implements GatePassService {
     @Override
     public List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, String companyUuid, String firmUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
-        LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        companyUuid = StringUtils.isBlank(companyUuid) ? null : companyUuid;
+        firmUuid = StringUtils.isBlank(firmUuid) ? null : firmUuid;
         List<GatePassProjection> projections = gatePassRepository.findGatePassDetailsWithProformaDetails(tenantUuid, companyUuid, firmUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
