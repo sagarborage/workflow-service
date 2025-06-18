@@ -467,7 +467,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     @Override
     public List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
-        LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        workOrderUuid = StringUtils.isBlank(workOrderUuid) ? null : workOrderUuid;
         List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 

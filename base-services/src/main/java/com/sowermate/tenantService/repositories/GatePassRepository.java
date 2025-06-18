@@ -109,7 +109,7 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
          "JOIN g.tenantEntity t " +
          "JOIN g.companyEntity c " +
          "JOIN g.proFormaInvoiceEntity pi " +
-         "JOIN pi.firm f " +
+         "JOIN g.partyCompanyEntity f " +
          "WHERE t.uuid = :tenantUuid " +
          "AND g.createdDateTime BETWEEN :fromDate AND :toDate " +
          "AND (:companyUuid IS NULL OR c.uuid = :companyUuid) " +
