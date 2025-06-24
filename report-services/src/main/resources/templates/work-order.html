@@ -60,8 +60,13 @@ font-weight: bold;
         </tr>
         <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
         <tr>
-            <td class="alignCenter customPi font-18 padding-t-8 padding-b-8" colspan="8">HIMYOUG TUFF GLASS INDUSTRIES
-                PVT. LTD. KUPWAD.
+            <td class="alignCenter customPi font-18 padding-t-8 padding-b-8" colspan="8"
+                th:switch="${reportDetails.getFirmName()}">
+                    <span th:case="'HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD.'">
+                        HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD. KUPWAD.
+                    </span>
+                <span th:case="'HIMANSHU GLASS WORK'">HIMANSHU GLASS WORK KUPWAD.</span>
+                <span th:case="*"></span>
             </td>
         </tr>
         <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->

@@ -11,6 +11,8 @@ public interface ProformaInvoiceWithWorkOrderProjection {
 
     String getTenantUuid();
 
+    String getFirmName();
+
     String getWorkOrderUuid();
 
     String getPiNumber();

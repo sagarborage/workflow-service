@@ -45,10 +45,11 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "FROM ProFormaInvoiceEntity pi " +
             "JOIN pi.firm c " +
             "JOIN pi.proFormaInvoiceItemEntities p " +
-            "WHERE c.uuid = :companyUuid " +
-            "AND pi.uuid = :proformaInvoiceUuid " +
+            "WHERE " +
+            //"c.uuid = :companyUuid AND " + //TODO: Sagar
+            "pi.uuid = :proformaInvoiceUuid " +
             "GROUP BY pi.uuid ")
-    GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
+    GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(/*String companyUuid,*/ String proformaInvoiceUuid);
 
     @Query("SELECT " +
             "p.companyIdBill.companyName as partyName, " +
@@ -59,10 +60,11 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "JOIN p.firm c " +
             "JOIN p.gatePassEntities g "+
             "JOIN g.gatePassDetailsEntities gd "+
-            "WHERE c.uuid = :companyUuid " +
-            "AND p.uuid = :proformaInvoiceUuid " +
+            "WHERE " +
+            //"c.uuid = :companyUuid AND " + //TODO: Sagar
+            "p.uuid = :proformaInvoiceUuid " +
             "GROUP BY g.uuid ")
-    List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
+    List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(/*String companyUuid,*/ String proformaInvoiceUuid);
 
     @Query("SELECT " +
             "gs.name as glassSpecification , " +
@@ -96,12 +98,12 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
          "g.uuid as uuid, " +
          "t.uuid as tenantUuid, " +
          "c.uuid as companyUuid, " +
-         "f.uuid as firmUuid, " +
+         "pi.firm.uuid  as firmUuid, " +
          "g.gatePassNo as gatePassNo, " +
          "g.createdDateTime as dateTime, " +
          "pi.piNumber as piNumber, " +
-         "f.companyName as companyName, " +
-         "pi.tenantEntity.tenantName as partyName, " +
+         "pi.companyIdBill.companyName as partyName, " +
+         "pi.firm.companyName as firmName, " +
          "CONCAT(g.vehicleNo, '/', g.driverName, '/', g.driverContactNo) as vehicleDetails, " +
          "SUM(gd.gatePassQty) as quantity " +
          "FROM GatePassEntity g " +
@@ -109,11 +111,10 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
          "JOIN g.tenantEntity t " +
          "JOIN g.companyEntity c " +
          "JOIN g.proFormaInvoiceEntity pi " +
-         "JOIN g.partyCompanyEntity f " +
          "WHERE t.uuid = :tenantUuid " +
          "AND g.createdDateTime BETWEEN :fromDate AND :toDate " +
-         "AND (:companyUuid IS NULL OR c.uuid = :companyUuid) " +
-         "AND (:firmUuid IS NULL OR f.uuid = :firmUuid) " +
+         "AND (:companyUuid IS NULL OR pi.companyIdBill.uuid = :companyUuid) " +
+         "AND (:firmUuid IS NULL OR pi.firm.uuid = :firmUuid) " + //TODO: temp fix to refer firm froPI but it should be from gate pass
          "GROUP BY g.uuid")
  List<GatePassProjection> findGatePassDetailsWithProformaDetails(
          @Param("tenantUuid") String tenantUuid,

@@ -13,6 +13,8 @@ public interface GatePassProjection {
 
     String getFirmUuid();
 
+    String getFirmName();
+
     String getUuid();
 
     Integer getGatePassNo();

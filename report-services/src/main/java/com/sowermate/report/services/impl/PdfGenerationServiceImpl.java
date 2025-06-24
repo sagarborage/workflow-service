@@ -226,6 +226,8 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
         extractCommonLogic(piValue, reportDetails, glassItemDetails);
 
+        String templateName = reportDetails.getFirmName();
+
         byte[] pdfBytes = generatePdf(piValue, reportDetails, designs, "work-order");
 
         pdfService.handlePdf(pdfBytes, piValue.getProFormaInvoiceUuid(), "invoice", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter

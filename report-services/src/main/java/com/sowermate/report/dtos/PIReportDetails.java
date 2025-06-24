@@ -13,6 +13,7 @@ import java.util.Map;
 @Setter
 public class PIReportDetails {
     String billToAddress;
+    String firmName;
     String billToPartyName;
     String shipToAddress;
     String shipToPartyName;

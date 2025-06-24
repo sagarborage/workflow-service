@@ -115,6 +115,7 @@ public class PdfGenerationController {
         ProFormaInvoiceValue proFormaInvoiceValue = proFormaInvoiceService.getProFormaInvoice(tenantUuid, proFormaInvoiceUuid);
         CompanyInfoProjection billToAddress = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyBillToUuid());
         CompanyInfoProjection shipToAddress = companyService.getCompanyInfo(proFormaInvoiceValue.getTenantUuid(), proFormaInvoiceValue.getPartyShipToUuid());
+        String companyName = companyService.getCompanyName(proFormaInvoiceValue.getFirmUuid());
         PIReportDetails reportDetails = new PIReportDetails();
         reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
         reportDetails.setBillToPartyName(proFormaInvoiceValue.getPartyBillToName());
@@ -123,6 +124,7 @@ public class PdfGenerationController {
         reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
         reportDetails.setBillToPartyStateCode(billToAddress.getAddresses().get(0).getStateCode());
         reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
+        reportDetails.setFirmName(companyName);
 
         List<String> piItemsPdfUrls = new ArrayList<>();
         proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {

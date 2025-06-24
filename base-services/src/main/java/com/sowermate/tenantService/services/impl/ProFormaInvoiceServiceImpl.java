@@ -371,7 +371,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate) {
-        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, companyUuid, startDate, endDate);
+        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, /*, companyUuid,*/ startDate, endDate);
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = new ArrayList<>();
         for (ProFormaInvoiceEntity proFormaInvoiceEntity : proFormInvoiceEntities) {
             proFormaInvoiceHomeDetails.add(getProFormaInvoiceHomeDetails(proFormaInvoiceEntity));
@@ -476,6 +476,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("uuid", p.getUuid());
             map.put("tenantUuid", p.getTenantUuid());
+            map.put("firmName", p.getFirmName());
             map.put("workOrderUuid", p.getWorkOrderUuid());
             map.put("piNumber", p.getPiNumber());
             map.put("piType", p.getPiType());

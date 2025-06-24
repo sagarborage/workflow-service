@@ -70,8 +70,10 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);*/
 
     @Query("SELECT pfie FROM ProFormaInvoiceEntity pfie " +
-            "where pfie.tenantEntity.uuid = :tenantUuid and pfie.firm.uuid = :companyUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
-    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
+            "where pfie.tenantEntity.uuid = :tenantUuid and " +
+            //"pfie.firm.uuid = :companyUuid and " + //TODO: temp fix to allow all company, but it should be tenant specific companies
+            "pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, /*String companyUuid, */LocalDateTime startDate, LocalDateTime endDate);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
@@ -241,7 +243,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "f.companyName as firm, " +
             "f.uuid as companyUuid, " +
             "pi.piNumber as piNumber, " +
-            "pi.tenantEntity.tenantName as partyName, " +
+            "pi.companyIdBill.companyName as partyName, " +
             "pi.invoiceDate as invoiceDateTime, " +
             "pi.payableAmount as amount, " +
             "pi.createdBy as user " +
@@ -263,7 +265,8 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.uuid as uuid, " +
             "pi.tenantEntity.uuid as tenantUuid, " +
             "pi.piNumber as piNumber, " +
-            "pi.tenantEntity.tenantName as partyName, " +
+            "pi.companyIdBill.companyName as partyName, " +
+            "pi.firm.companyName as firmName, " +
             "pi.createdDateTime as PIDateTime, " +
             "pi.payableAmount as amount, " +
             "pi.createdBy as user, " +

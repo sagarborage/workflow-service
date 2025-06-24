@@ -96,8 +96,8 @@ public class GatePassController {
     }
 
     @GetMapping("/get-pass-details/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllGatePassWithProformaDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String firmUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
-        List<Map<String, Object>> allGatePassWithProformaDetails = gatePassService.getAllGatePassWithProformaDetails(tenantUuid, companyUuid, firmUuid, fromDate, toDate);
+    public ResponseEntity<List<Map<String, Object>>> getAllGatePassWithProformaDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String partyUuid, @RequestParam(required = false) String firmUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
+        List<Map<String, Object>> allGatePassWithProformaDetails = gatePassService.getAllGatePassWithProformaDetails(tenantUuid, partyUuid, firmUuid, fromDate, toDate);
         return new ResponseEntity<>(allGatePassWithProformaDetails, HttpStatus.ACCEPTED);
     }
 
