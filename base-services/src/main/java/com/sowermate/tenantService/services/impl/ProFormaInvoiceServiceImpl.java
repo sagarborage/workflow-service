@@ -389,6 +389,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .piNumber(proFormaInvoiceEntity.getPiNumber())
                 .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())
                 .workOrderNumber(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getId())
+                .firmShortName(proFormaInvoiceEntity.getFirm().getCompanyName().toUpperCase().contains("HIMYOUG") ? "HIMYOUG" : "HIMANSHU") //TODO: Sagar temp condition
                 .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e -> e.getDispatchCompleted() > 0))
                 .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e -> e.getDispatchCompleted() > 0))
                 .status(proFormaInvoiceEntity.getStatus())
