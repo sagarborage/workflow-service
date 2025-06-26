@@ -29,5 +29,5 @@ public interface ProformaInvoiceProjection {
 
     String getUser();
 
-    String getPiStatus();
+    String getStatus();
 }
