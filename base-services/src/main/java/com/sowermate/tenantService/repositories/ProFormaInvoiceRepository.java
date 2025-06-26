@@ -246,14 +246,14 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pi.companyIdBill.companyName as partyName, " +
             "pi.invoiceDate as invoiceDateTime, " +
             "pi.payableAmount as amount, " +
-            "pi.status as PiStatus, " +
+            "pi.status as status, " +
             "pi.createdBy as user " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.firm f " +
             "join pi.companyIdBill cb " +
             "where (:partyUuid IS NULL OR cb.uuid = :partyUuid) " +
             "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
-            "and (:PiStatus IS NULL OR pi.status = :PiStatus) " +
+            "and (:status IS NULL OR pi.status = :status) " +
             "and pi.invoiceDate between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
     List<ProformaInvoiceProjection> findAllPiOrdersDetails(
@@ -262,7 +262,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             @Param("partyUuid") String partyUuid,
             @Param("fromDate") LocalDateTime fromDate,
             @Param("toDate") LocalDateTime toDate,
-            @Param("PiStatus") ProformaInvoiceStatusEnum PiStatus);
+            @Param("status") ProformaInvoiceStatusEnum status);
 
     @Query("select " +
             "pi.uuid as uuid, " +

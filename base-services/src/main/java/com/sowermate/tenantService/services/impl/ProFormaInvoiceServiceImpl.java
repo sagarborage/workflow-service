@@ -486,7 +486,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             map.put("amount", p.getAmount());
             map.put("user", p.getUser());
             map.put("invoiceDate", p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
-            map.put("status", p.getPiStatus());
+            map.put("status", p.getStatus());
             return map;
         }).collect(Collectors.toList());
     }
