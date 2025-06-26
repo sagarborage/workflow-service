@@ -138,6 +138,7 @@ public class GatePassServiceImpl implements GatePassService {
             map.put("getPassDate", p.getDateTime() != null ? p.getDateTime().format(formatter) : null);
             map.put("quantity", p.getQuantity());
             map.put("vehicleDetails", p.getVehicleDetails());
+            map.put("createdBy", p.getCreatedBy());
             return map;
         }).collect(Collectors.toList());
     }

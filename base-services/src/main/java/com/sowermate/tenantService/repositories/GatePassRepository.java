@@ -101,6 +101,7 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
          "pi.firm.uuid  as firmUuid, " +
          "g.gatePassNo as gatePassNo, " +
          "g.createdDateTime as dateTime, " +
+         "g.createdBy AS createdBy, " +
          "pi.piNumber as piNumber, " +
          "pi.companyIdBill.companyName as partyName, " +
          "pi.firm.companyName as firmName, " +

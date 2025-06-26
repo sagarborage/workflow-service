@@ -171,8 +171,8 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/pi-register/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
-        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate);
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status) {
+        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status);
         return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
     }
 
