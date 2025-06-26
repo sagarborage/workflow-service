@@ -276,16 +276,16 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "pt.piTypeName as piType, " +
             "wo.uuid as workOrderUuid, " +
             "wo.createdDateTime as workOrderDateTime, " +
-            "pit.unitValue as unitValue, +" +
-            "case when pt.piTypeName = 'SQFT' then pi.proxSqft else null end as SQFT, " +
-            "case when pt.piTypeName = 'MM' then pi.proxSqft else null end as SQMTR " +
+            "case when pt.piTypeName = 'SQFT' then SUM(pit.unitValue) else null end as SQFT, " +
+            "case when pt.piTypeName = 'MM' then SUM(pit.unitValue) else null end as SQMTR " +
             "from ProFormaInvoiceEntity pi " +
             "join pi.workOrderEntity wo " +
             "join pi.piTypeEntity pt " +
             "join pi.proFormaInvoiceItemEntities pit " +
             "where (:workOrderUuid IS NULL OR wo.uuid = :workOrderUuid) " +
             "and pi.createdDateTime between :fromDate and :toDate " +
-            "and pi.tenantEntity.uuid = :tenantUuid")
+            "and pi.tenantEntity.uuid = :tenantUuid " +
+            "GROUP BY pi.uuid")
     List<ProformaInvoiceWithWorkOrderProjection> findAllPiOrdersDetailsWithWorkOrderDetails(
             @Param("tenantUuid") String tenantUuid,
             @Param("workOrderUuid") String workOrderUuid,

@@ -38,6 +38,4 @@ public interface ProformaInvoiceWithWorkOrderProjection {
     Double getSQFT();
 
     Double getSQMTR();
-
-    Double getUnitValue();
 }

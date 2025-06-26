@@ -498,11 +498,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        Map<String, Double> piUnitValueMap = projections.stream()
-                .collect(Collectors.groupingBy(
-                        ProformaInvoiceWithWorkOrderProjection::getUuid,
-                        Collectors.summingDouble(p -> Objects.requireNonNullElse(p.getUnitValue(), 0.0))));
-
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("uuid", p.getUuid());
@@ -518,7 +513,6 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             map.put("user", p.getUser());
             map.put("SQFT", p.getSQFT());
             map.put("SQMTR", p.getSQMTR());
-            map.put("unitValue", piUnitValueMap.getOrDefault(p.getUuid(), 0.0));
             return map;
         }).collect(Collectors.toList());
     }
