@@ -1,22 +1,42 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.image.services.PdfService;
-import com.sowermate.tenantService.entities.*;
+import com.sowermate.tenantService.entities.ConfirmThroughEntity;
+import com.sowermate.tenantService.entities.DeptTypeEnum;
+import com.sowermate.tenantService.entities.GlassSpecificationEntity;
+import com.sowermate.tenantService.entities.GlassThicknessEntity;
+import com.sowermate.tenantService.entities.GlassTypeEntity;
+import com.sowermate.tenantService.entities.ProFormaInvoiceEntity;
+import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
+import com.sowermate.tenantService.entities.ServiceRateInvoiceEntity;
+import com.sowermate.tenantService.entities.TenantEntity;
+import com.sowermate.tenantService.entities.WorkOrderEntity;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
+import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
 import com.sowermate.tenantService.entities.minimal.ProformaInvoiceWithWorkOrderProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
-import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
-import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
-import com.sowermate.tenantService.repositories.*;
+import com.sowermate.tenantService.repositories.CompanyRepository;
+import com.sowermate.tenantService.repositories.ConfirmThroughRepository;
+import com.sowermate.tenantService.repositories.GlassSpecificationRepository;
+import com.sowermate.tenantService.repositories.GlassThicknessRepository;
+import com.sowermate.tenantService.repositories.GlassTypeRepository;
+import com.sowermate.tenantService.repositories.PiTypeRepository;
+import com.sowermate.tenantService.repositories.ProFormaInvoiceItemRepository;
+import com.sowermate.tenantService.repositories.ProFormaInvoiceRepository;
+import com.sowermate.tenantService.repositories.ServiceRateRepository;
+import com.sowermate.tenantService.repositories.TenantRepository;
+import com.sowermate.tenantService.repositories.WorkOrderRepository;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.Synchronized;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,9 +45,13 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -442,12 +466,13 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate) {
+    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
         companyUuid = StringUtils.isBlank(companyUuid) ? null : companyUuid;
         partyUuid = StringUtils.isBlank(partyUuid) ? null : partyUuid;
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime);
+        ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, status);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         return projections.stream().map(p -> {

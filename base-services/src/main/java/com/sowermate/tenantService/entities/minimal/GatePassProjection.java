@@ -33,4 +33,6 @@ public interface GatePassProjection {
     Integer getQuantity();
 
     String getVehicleDetails();
+
+    String getCreatedBy();
 }
