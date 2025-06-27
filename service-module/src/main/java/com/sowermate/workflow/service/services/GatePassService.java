@@ -5,7 +5,9 @@ import com.sowermate.workflow.domain.entities.value.GatePassInfo;
 import com.sowermate.workflow.domain.entities.value.GatePassValue;
 import com.sowermate.workflow.domain.projection.PiInfoProjectionForReport;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface GatePassService {
 
@@ -24,4 +26,6 @@ public interface GatePassService {
     public GatePassValue deleteGatePass(String uuid, String tenantUuid, String companyUuid);
 
     public GatePassInfo getGatePassByProformaInvoice(String companyUuid, String proformaInvoiceUuid);
+
+    public List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, String companyUuid, String firmUuid, LocalDate fromDate, LocalDate toDate);
 }

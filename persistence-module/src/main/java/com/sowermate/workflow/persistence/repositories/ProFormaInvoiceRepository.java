@@ -4,6 +4,8 @@ import com.sowermate.workflow.domain.entities.ProFormaInvoiceEntity;
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
+import com.sowermate.workflow.domain.projection.ProformaInvoiceProjection;
+import com.sowermate.workflow.domain.projection.ProformaInvoiceWithWorkOrderProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -230,4 +232,49 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             //"pii.status = 'IN_PROGRESS' and " +
             "pi.tenantEntity = (select t from Tenant t where t.uuid = :tenantUuid)")
     List<ProFormaInvoiceIndividualsOrdersProjection> findAllPiOrdersDetailsOfToughenIndividual(String tenantUuid, Integer workOrderNumber);
+
+    @Query("select " +
+            "pi.uuid as uuid, " +
+            "pi.tenantEntity.uuid as tenantUuid, " +
+            "f.tenantName as firm, " +
+            "f.uuid as companyUuid, " +
+            "pi.piNumber as piNumber, " +
+            "pi.companyIdBill.tenantName as partyName, " +
+            "pi.invoiceDate as invoiceDateTime, " +
+            "pi.payableAmount as amount, " +
+            "pi.status as status, " +
+            "pi.createdBy as user " +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.firm f " +
+            "join pi.companyIdBill cb " +
+            "where (:partyUuid IS NULL OR cb.uuid = :partyUuid) " +
+            "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
+            "and (:status IS NULL OR pi.status = :status) " +
+            "and pi.invoiceDate between :fromDate and :toDate " +
+            "and pi.tenantEntity.uuid = :tenantUuid")
+    List<ProformaInvoiceProjection> findAllPiOrdersDetails(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid, @Param("partyUuid") String partyUuid, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate, @Param("status") ProformaInvoiceStatusEnum status);
+
+    @Query("select " +
+            "pi.uuid as uuid, " +
+            "pi.tenantEntity.uuid as tenantUuid, " +
+            "pi.piNumber as piNumber, " +
+            "pi.companyIdBill.tenantName as partyName, " +
+            "pi.firm.tenantName as firmName, " +
+            "pi.createdDateTime as PIDateTime, " +
+            "pi.payableAmount as amount, " +
+            "pi.createdBy as user, " +
+            "pt.piTypeName as piType, " +
+            "wo.uuid as workOrderUuid, " +
+            "wo.createdDateTime as workOrderDateTime, " +
+            "case when pt.piTypeName = 'SQFT' then SUM(pit.unitValue) else null end as SQFT, " +
+            "case when pt.piTypeName = 'MM' then SUM(pit.unitValue) else null end as SQMTR " + "" +
+            "from ProFormaInvoiceEntity pi " +
+            "join pi.workOrderEntity wo " +
+            "join pi.piTypeEntity pt " +
+            "join pi.proFormaInvoiceItemEntities pit " +
+            "where (:workOrderUuid IS NULL OR wo.uuid = :workOrderUuid) " +
+            "and pi.createdDateTime between :fromDate and :toDate " +
+            "and pi.tenantEntity.uuid = :tenantUuid " +
+            "GROUP BY pi.uuid")
+    List<ProformaInvoiceWithWorkOrderProjection> findAllWorkOrderDetails(@Param("tenantUuid") String tenantUuid, @Param("workOrderUuid") String workOrderUuid, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
 }

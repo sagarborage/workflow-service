@@ -23,6 +23,8 @@ import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceValue;
 import com.sowermate.workflow.domain.entities.value.ServiceRateInvoiceValue;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
+import com.sowermate.workflow.domain.projection.ProformaInvoiceProjection;
+import com.sowermate.workflow.domain.projection.ProformaInvoiceWithWorkOrderProjection;
 import com.sowermate.workflow.persistence.repositories.ConfirmThroughRepository;
 import com.sowermate.workflow.persistence.repositories.GlassSpecificationRepository;
 import com.sowermate.workflow.persistence.repositories.GlassThicknessRepository;
@@ -37,6 +39,8 @@ import com.sowermate.workflow.service.services.ProFormaInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.Synchronized;
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +48,9 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -459,5 +465,56 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 throw new ResourceNotFoundException(WorkFlowServiceConstant.DEPT_TYPE_ENUM, MessageConstants.NAME, deptType);
         }
         return proFormaInvoiceOrdersProjections;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status) {
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        companyUuid = StringUtils.isBlank(companyUuid) ? null : companyUuid;
+        partyUuid = StringUtils.isBlank(partyUuid) ? null : partyUuid;
+        ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, status);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return projections.stream().map(p -> {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("uuid", p.getUuid());
+            map.put("tenantUuid", p.getTenantUuid());
+            map.put("firm", p.getFirm());
+            map.put("companyUuid", p.getCompanyUuid());
+            map.put("piNumber", p.getPiNumber());
+            map.put("partyName", p.getPartyName());
+            map.put("amount", p.getAmount());
+            map.put("user", p.getUser());
+            map.put("invoiceDate", p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
+            map.put("status", p.getStatus());
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        workOrderUuid = StringUtils.isBlank(workOrderUuid) ? null : workOrderUuid;
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return projections.stream().map(p -> {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("uuid", p.getUuid());
+            map.put("tenantUuid", p.getTenantUuid());
+            map.put("firmName", p.getFirmName());
+            map.put("workOrderUuid", p.getWorkOrderUuid());
+            map.put("piNumber", p.getPiNumber());
+            map.put("piType", p.getPiType());
+            map.put("partyName", p.getPartyName());
+            map.put("piDate", p.getPIDateTime() != null ? p.getPIDateTime().format(formatter) : null);
+            map.put("workOrderDate", p.getWorkOrderDateTime() != null ? p.getWorkOrderDateTime().format(formatter) : null);
+            map.put("amount", p.getAmount());
+            map.put("user", p.getUser());
+            map.put("SQFT", p.getSQFT());
+            map.put("SQMTR", p.getSQMTR());
+            return map;
+        }).collect(Collectors.toList());
     }
 }

@@ -4,11 +4,14 @@ import com.sowermate.workflow.domain.entities.GatePassEntity;
 import com.sowermate.workflow.domain.entities.minimal.GatePassDetailsInfoProjection;
 import com.sowermate.workflow.domain.entities.minimal.GatePassInfoProjection;
 import com.sowermate.workflow.domain.entities.minimal.GlassInfoProjection;
+import com.sowermate.workflow.domain.projection.GatePassProjection;
 import com.sowermate.workflow.domain.projection.PiInfoProjectionForReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -88,4 +91,28 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "JOIN p.companyIdBill cb " +
             "Where g.uuid = :gatePassUuid ")
     PiInfoProjectionForReport findPiItemsInfoByGatePassUuid(String gatePassUuid);
+
+    @Query("SELECT " +
+            "g.uuid as uuid, " +
+            "t.uuid as tenantUuid, " +
+            "c.uuid as companyUuid, " +
+            "pi.firm.uuid  as firmUuid, " +
+            "g.gatePassNo as gatePassNo, " +
+            "g.createdDateTime as dateTime, " +
+            "g.createdBy AS createdBy, " +
+            "pi.piNumber as piNumber, " +
+            "pi.companyIdBill.tenantName as partyName, " +
+            "pi.firm.tenantName as firmName, " +
+            "CONCAT(g.vehicleNo, '/', g.driverName, '/', g.driverContactNo) as vehicleDetails, " +
+            "SUM(gd.gatePassQty) as quantity " +
+            "FROM GatePassEntity g " +
+            "JOIN g.gatePassDetailsEntities gd " +
+            "JOIN g.tenantEntity t " +
+            "JOIN g.companyEntity c " +
+            "JOIN g.proFormaInvoiceEntity pi " +
+            "WHERE t.uuid = :tenantUuid " +
+            "AND g.createdDateTime BETWEEN :fromDate AND :toDate " +
+            "AND (:companyUuid IS NULL OR pi.companyIdBill.uuid = :companyUuid) " +
+            "AND (:firmUuid IS NULL OR pi.firm.uuid = :firmUuid) " + //TODO: temp fix to refer firm froPI but it should be from gate pass        "GROUP BY g.uuid")List<GatePassProjection> findGatePassDetailsWithProformaDetails(        @Param("tenantUuid") String tenantUuid,        @Param("companyUuid") String companyUuid,        @Param("firmUuid") String firmUuid,        @Param("fromDate") LocalDateTime fromDate,        @Param("toDate") LocalDateTime toDate);
+            "GROUP BY g.uuid")List<GatePassProjection> findGatePassDetailsWithProformaDetails(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid, @Param("firmUuid") String firmUuid, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
 }

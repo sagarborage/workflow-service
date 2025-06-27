@@ -6,8 +6,10 @@ import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceValue;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface ProFormaInvoiceService {
 
@@ -29,4 +31,8 @@ public interface ProFormaInvoiceService {
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType);
 
     public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid, Integer workOrderNumber, String deptType);
+
+    List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status);
+
+    List<Map<String, Object>> getAllWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate);
 }
