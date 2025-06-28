@@ -25,4 +25,6 @@ public interface TenantService {
  Long getTenantId(String tenantUuid);
  String getTenantUuid(Long tenantId);
 
+ String getTenantName(String tenantUuid);
+
 }

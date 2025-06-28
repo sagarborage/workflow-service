@@ -75,4 +75,8 @@ public class TenantServiceImpl implements TenantService {
         return this.tenantRepository.findUuidById(tenantId)
                 .orElseThrow(() -> new ResourceNotFoundException("tenant", "tenantId", String.valueOf(tenantId)));
     }
+
+    public String getTenantName(String tenantUuid) {
+        return (String)this.tenantRepository.findNameByUuid(tenantUuid).orElseThrow(() -> new ResourceNotFoundException("Tenant", "uuid", tenantUuid));
+    }
 }

@@ -2,9 +2,12 @@ package com.sowermate.tenantService.controllers;
 
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReport;
+import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReportData;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
+import com.sowermate.tenantService.services.GenerateExcelService;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -36,6 +41,9 @@ public class ProFormaInvoiceController {
     private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ProFormaInvoiceController.class);
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
+
+    @Autowired
+    private GenerateExcelService generateExcelService;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -170,12 +178,6 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/pi-register/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status) {
-        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status);
-        return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
-    }
-
     @GetMapping("/work-order-details/{tenantUuid}")
     public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetailsWithWorkOrderDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
         List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDate, toDate);
@@ -186,5 +188,18 @@ public class ProFormaInvoiceController {
     public ResponseEntity<List<ProFormaInvoiceIndividualsOrdersProjection>> getAllProFormOrdersIndividualsDetails(@PathVariable String tenantUuid, @PathVariable Integer workOrderNo, @PathVariable String deptType) {
         List<ProFormaInvoiceIndividualsOrdersProjection> proFormaInvoiceIndividualsOrdersProjections = proFormaInvoiceService.getAllProFormIndividualsOrdersDetails(tenantUuid, workOrderNo, deptType);
         return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/pi-excel")
+    public ResponseEntity<List<ProFormaInvoiceExcelReportData>> getProFormaInvoice(@RequestBody ProFormaInvoiceExcelReport proFormaInvoiceExcelReport) {
+        List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReports = this.proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
+        return new ResponseEntity<>(proFormaInvoiceExcelReports, HttpStatus.OK);
+    }
+
+    @PostMapping("/proforma-invoice-excel")
+    public ResponseEntity<String> getProformaInvoiceExcel(@RequestBody ProFormaInvoiceExcelReport proFormaInvoiceExcelReport) throws IOException {
+        List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReportData = this.proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
+        String base64Excel = generateExcelService.generateProformaInvoiceReportsExcelSheet(proFormaInvoiceExcelReportData, proFormaInvoiceExcelReport);
+        return new ResponseEntity<>(base64Excel, HttpStatus.OK);
     }
 }

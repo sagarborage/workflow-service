@@ -27,6 +27,9 @@ public interface TenantRepository extends JpaRepository<TenantEntity, String> {
     @Query("select tenant.uuid from TenantEntity tenant where tenant.id = :tenantId")
     Optional<String> findUuidById(Long tenantId);
 
+    @Query("select tenant.tenantName from TenantEntity tenant where tenant.uuid = :uuid")
+    Optional<String> findNameByUuid(@Param("uuid") String uuid);
+
     /*@Modifying
     @Query("DELETE FROM TenantEntity t WHERE t.tenantUuid = :tenantUuid")
     public int deleteByTenantUuid(@Param("tenantUuid")String tenantUuid);
