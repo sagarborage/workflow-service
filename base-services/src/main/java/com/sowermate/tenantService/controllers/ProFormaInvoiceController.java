@@ -178,12 +178,6 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceOrdersProjections, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/pi-register/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status) {
-        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status);
-        return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
-    }
-
     @GetMapping("/work-order-details/{tenantUuid}")
     public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetailsWithWorkOrderDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
         List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDate, toDate);
