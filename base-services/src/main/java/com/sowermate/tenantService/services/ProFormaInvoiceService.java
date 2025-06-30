@@ -7,6 +7,8 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.tenantService.entities.minimal.ProFormaInvoiceOrdersProjection;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReport;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReportData;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 
 import java.time.LocalDate;
@@ -38,4 +40,6 @@ public interface ProFormaInvoiceService {
     List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate);
 
     List<ProFormaInvoiceExcelReportData> getProFormaInvoice(ProFormaInvoiceExcelReport proFormaInvoiceExcelReport);
+
+    List<WorkOrderExcelReportData> getWorkOrderDetails(WorkOrderExcelReport workOrderExcelReport);
 }

@@ -21,6 +21,8 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReport;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReportData;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.exceptions.ResourceNotFoundException;
 import com.sowermate.tenantService.repositories.CompanyRepository;
@@ -544,6 +546,35 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             report.setInvoiceDateTime(p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
             report.setStatus(p.getStatus());
             return report;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<WorkOrderExcelReportData> getWorkOrderDetails(WorkOrderExcelReport filter) {
+        String tenantUuid = filter.getTenantUuid();
+        String workOrderUuid = StringUtils.isBlank(filter.getWorkOrderUuid()) ? null : filter.getWorkOrderUuid();
+
+        LocalDate fromDate = LocalDate.parse(filter.getFromDate());
+        LocalDate toDate = LocalDate.parse(filter.getToDate());
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        return projections.stream().map(p -> {
+            WorkOrderExcelReportData data = new WorkOrderExcelReportData();
+            data.setFirmName(p.getFirmName());
+            data.setPiNumber(p.getPiNumber());
+            data.setPiType(p.getPiType());
+            data.setPartyName(p.getPartyName());
+            data.setPiDate(p.getPIDateTime() != null ? p.getPIDateTime().format(dateFormatter) : null);
+            data.setWorkOrderDate(p.getWorkOrderDateTime() != null ? p.getWorkOrderDateTime().format(dateFormatter) : null);
+            data.setAmount(p.getAmount());
+            data.setUser(p.getUser());
+            data.setSQFT(p.getSQFT());
+            data.setSQMTR(p.getSQMTR());
+            return data;
         }).collect(Collectors.toList());
     }
 

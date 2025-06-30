@@ -6,6 +6,8 @@ import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReport;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReportData;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReport;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReportData;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.tenantService.services.GenerateExcelService;
 import com.sowermate.tenantService.services.ProFormaInvoiceService;
@@ -206,6 +208,19 @@ public class ProFormaInvoiceController {
     public ResponseEntity<String> getProformaInvoiceExcel(@RequestBody ProFormaInvoiceExcelReport proFormaInvoiceExcelReport) throws IOException {
         List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReportData = this.proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
         String base64Excel = generateExcelService.generateProformaInvoiceReportsExcelSheet(proFormaInvoiceExcelReportData, proFormaInvoiceExcelReport);
+        return new ResponseEntity<>(base64Excel, HttpStatus.OK);
+    }
+
+    @PostMapping("/work-order-excel-data")
+    public ResponseEntity<List<WorkOrderExcelReportData>> getWorkOrderDetails(@RequestBody WorkOrderExcelReport workOrderExcelReport) {
+        List<WorkOrderExcelReportData> workOrderDetails = this.proFormaInvoiceService.getWorkOrderDetails(workOrderExcelReport);
+        return new ResponseEntity<>(workOrderDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/work-order-excel")
+    public ResponseEntity<String> getWorkOrderDetailsExcel(@RequestBody WorkOrderExcelReport workOrderExcelReport) throws IOException {
+        List<WorkOrderExcelReportData> workOrderExcelReportData = this.proFormaInvoiceService.getWorkOrderDetails(workOrderExcelReport);
+        String base64Excel = generateExcelService.generateWorkOrderDetailsExcelSheet(workOrderExcelReportData, workOrderExcelReport);
         return new ResponseEntity<>(base64Excel, HttpStatus.OK);
     }
 }
