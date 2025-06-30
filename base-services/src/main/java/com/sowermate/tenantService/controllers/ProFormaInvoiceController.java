@@ -198,29 +198,17 @@ public class ProFormaInvoiceController {
         return new ResponseEntity<>(proFormaInvoiceIndividualsOrdersProjections, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/pi-excel")
-    public ResponseEntity<List<ProFormaInvoiceExcelReportData>> getProFormaInvoice(@RequestBody ProFormaInvoiceExcelReport proFormaInvoiceExcelReport) {
-        List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReports = this.proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
-        return new ResponseEntity<>(proFormaInvoiceExcelReports, HttpStatus.OK);
-    }
-
     @PostMapping("/proforma-invoice-excel")
     public ResponseEntity<String> getProformaInvoiceExcel(@RequestBody ProFormaInvoiceExcelReport proFormaInvoiceExcelReport) throws IOException {
-        List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReportData = this.proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
-        String base64Excel = generateExcelService.generateProformaInvoiceReportsExcelSheet(proFormaInvoiceExcelReportData, proFormaInvoiceExcelReport);
-        return new ResponseEntity<>(base64Excel, HttpStatus.OK);
-    }
-
-    @PostMapping("/work-order-excel-data")
-    public ResponseEntity<List<WorkOrderExcelReportData>> getWorkOrderDetails(@RequestBody WorkOrderExcelReport workOrderExcelReport) {
-        List<WorkOrderExcelReportData> workOrderDetails = this.proFormaInvoiceService.getWorkOrderDetails(workOrderExcelReport);
-        return new ResponseEntity<>(workOrderDetails, HttpStatus.OK);
+        List<ProFormaInvoiceExcelReportData> reportData = proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
+        String base64Excel = generateExcelService.generateProformaInvoiceReportsExcelSheet(reportData, proFormaInvoiceExcelReport);
+        return ResponseEntity.ok(base64Excel);
     }
 
     @PostMapping("/work-order-excel")
     public ResponseEntity<String> getWorkOrderDetailsExcel(@RequestBody WorkOrderExcelReport workOrderExcelReport) throws IOException {
-        List<WorkOrderExcelReportData> workOrderExcelReportData = this.proFormaInvoiceService.getWorkOrderDetails(workOrderExcelReport);
-        String base64Excel = generateExcelService.generateWorkOrderDetailsExcelSheet(workOrderExcelReportData, workOrderExcelReport);
-        return new ResponseEntity<>(base64Excel, HttpStatus.OK);
+        List<WorkOrderExcelReportData> reportData = proFormaInvoiceService.getWorkOrderDetails(workOrderExcelReport);
+        String base64Excel = generateExcelService.generateWorkOrderDetailsExcelSheet(reportData, workOrderExcelReport);
+        return ResponseEntity.ok(base64Excel);
     }
 }

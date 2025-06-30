@@ -47,6 +47,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -533,10 +534,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
         ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, filter.getStatus());
-
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
         return projections.stream().map(p -> {
             ProFormaInvoiceExcelReportData report = new ProFormaInvoiceExcelReportData();
             report.setPiNumber(p.getPiNumber());
@@ -558,8 +558,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         LocalDate toDate = LocalDate.parse(filter.getToDate());
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         return projections.stream().map(p -> {
@@ -568,8 +567,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             data.setPiNumber(p.getPiNumber());
             data.setPiType(p.getPiType());
             data.setPartyName(p.getPartyName());
-            data.setPiDate(p.getPIDateTime() != null ? p.getPIDateTime().format(dateFormatter) : null);
-            data.setWorkOrderDate(p.getWorkOrderDateTime() != null ? p.getWorkOrderDateTime().format(dateFormatter) : null);
+            data.setPiDate(p.getPIDateTime() != null ? p.getPIDateTime().format(formatter) : null);
+            data.setWorkOrderDate(p.getWorkOrderDateTime() != null ? p.getWorkOrderDateTime().format(formatter) : null);
             data.setAmount(p.getAmount());
             data.setUser(p.getUser());
             data.setSQFT(p.getSQFT());
