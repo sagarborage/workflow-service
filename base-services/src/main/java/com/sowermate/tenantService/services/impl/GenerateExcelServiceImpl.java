@@ -1,8 +1,11 @@
 package com.sowermate.tenantService.services.impl;
 
 import com.sowermate.tenantService.entities.common.PiExcelConstant;
+import com.sowermate.tenantService.entities.common.WorkOrderExcelConstant;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReport;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReportData;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReport;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReportData;
 import com.sowermate.tenantService.services.GenerateExcelService;
 import com.sowermate.tenantService.services.TenantService;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -160,7 +163,7 @@ public class GenerateExcelServiceImpl implements GenerateExcelService {
         int rowNum = addTitleRows(sheet, proFormaInvoiceExcelReport, tenantStyle, datesBetweenStyle, generatedOnStyle);
         addColumnHeaders(sheet, rowNum++, tableHeaderStyle);
         if (!proFormaInvoiceExcelReportDataList.isEmpty()) {
-            populateAttendanceData(sheet, rowNum, proFormaInvoiceExcelReportDataList, reportsValueStyle);
+            populatePiData(sheet, rowNum, proFormaInvoiceExcelReportDataList, reportsValueStyle);
         }
         autoSizeAllColumns(10, sheet);
         return encodeWorkbookToBase64(workbook);
@@ -206,7 +209,7 @@ public class GenerateExcelServiceImpl implements GenerateExcelService {
         return rowNum;
     }
 
-    private void populateAttendanceData(Sheet sheet, int rowNum, List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReportDataList, CellStyle reportsValueStyle) {
+    private void populatePiData(Sheet sheet, int rowNum, List<ProFormaInvoiceExcelReportData> proFormaInvoiceExcelReportDataList, CellStyle reportsValueStyle) {
         int srNo = 1;
 
         for (ProFormaInvoiceExcelReportData proformaInvoice : proFormaInvoiceExcelReportDataList) {
@@ -231,6 +234,117 @@ public class GenerateExcelServiceImpl implements GenerateExcelService {
 
             row.createCell(6).setCellValue(proformaInvoice.getStatus());
             row.getCell(6).setCellStyle(reportsValueStyle);
+        }
+    }
+
+    // Work order details excel report
+
+    @Override
+    public String generateWorkOrderDetailsExcelSheet(List<WorkOrderExcelReportData> workOrderExcelReportDataList, WorkOrderExcelReport workOrderExcelReport) throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet(WorkOrderExcelConstant.DATA);
+
+        CellStyle tenantStyle = createTenantStyle(workbook);
+        CellStyle datesBetweenStyle = createDatesBetweenStyle(workbook);
+        CellStyle generatedOnStyle = createGeneratedOnStyle(workbook);
+        CellStyle reportsValueStyle = createReportsValueStyle(workbook);
+        CellStyle tableHeaderStyle = createTableHeaderStyle(workbook);
+
+        int rowNum = addWorkOrderTitleRows(sheet, workOrderExcelReport, tenantStyle, datesBetweenStyle, generatedOnStyle);
+        addWorkOrderColumnHeaders(sheet, rowNum++, tableHeaderStyle);
+        if (!workOrderExcelReportDataList.isEmpty()) {
+            populateWorkOrderData(sheet, rowNum, workOrderExcelReportDataList, reportsValueStyle);
+        }
+        autoSizeAllColumns(10, sheet);
+        return encodeWorkbookToBase64(workbook);
+    }
+
+    private void addWorkOrderColumnHeaders(Sheet sheet, int rowNum, CellStyle tableHeaderStyle) {
+        Row headerRow = sheet.createRow(rowNum);
+        String[] headers = {WorkOrderExcelConstant.SR_NO, WorkOrderExcelConstant.FIRM_NAME, WorkOrderExcelConstant.PI_NUMBER, WorkOrderExcelConstant.PI_TYPE, WorkOrderExcelConstant.PARTY_NAME, WorkOrderExcelConstant.PI_DATE, WorkOrderExcelConstant.WORK_ORDER_DATE, WorkOrderExcelConstant.AMOUNT, WorkOrderExcelConstant.USER, WorkOrderExcelConstant.SQFT, WorkOrderExcelConstant.SQMTR};
+
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellStyle(tableHeaderStyle);
+            cell.setCellValue(headers[i]);
+            sheet.autoSizeColumn(i);
+        }
+    }
+
+    private int addWorkOrderTitleRows(Sheet sheet, WorkOrderExcelReport workOrderExcelReport, CellStyle tenantStyle, CellStyle datesBetweenStyle, CellStyle generatedOnStyle) {
+        int rowNum = 0;
+        int columnLength = 10;
+
+        String partyName = tenantService.getTenantName(workOrderExcelReport.getTenantUuid());
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        Row titleRow1 = createRow(sheet, 0, 25);
+        createCell(titleRow1, 0, partyName.toUpperCase(), tenantStyle);
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        Row titleRow2 = createRow(sheet, rowNum - 1, 22);
+        createCell(titleRow2, 0, WorkOrderExcelConstant.WORK_ORDER_REPORT, tenantStyle);
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        createCell(createRow(sheet, rowNum, 15), 0,
+                LocalDate.parse(workOrderExcelReport.getFromDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        + WorkOrderExcelConstant.TO + LocalDate.parse(workOrderExcelReport.getToDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), datesBetweenStyle);
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        Row titleRow4 = createRow(sheet, rowNum - 1, 15);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, h:mm:ss a");
+        createCell(titleRow4, 0, WorkOrderExcelConstant.GENERATED_ON + LocalDateTime.now().format(dateTimeFormatter), generatedOnStyle);
+
+        return rowNum;
+    }
+
+    private void populateWorkOrderData(Sheet sheet, int rowNum, List<WorkOrderExcelReportData> workOrderExcelReportDataList, CellStyle reportsValueStyle) {
+        int srNo = 1;
+
+        for (WorkOrderExcelReportData workOrderExcelReport : workOrderExcelReportDataList) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(srNo++);
+            row.getCell(0).setCellStyle(reportsValueStyle);
+
+            row.createCell(1).setCellValue(workOrderExcelReport.getFirmName());
+            row.getCell(1).setCellStyle(reportsValueStyle);
+
+            row.createCell(2).setCellValue(workOrderExcelReport.getPiNumber());
+            row.getCell(2).setCellStyle(reportsValueStyle);
+
+            row.createCell(3).setCellValue(workOrderExcelReport.getPiType());
+            row.getCell(3).setCellStyle(reportsValueStyle);
+
+            row.createCell(4).setCellValue(workOrderExcelReport.getPartyName());
+            row.getCell(4).setCellStyle(reportsValueStyle);
+
+            row.createCell(5).setCellValue(workOrderExcelReport.getPiDate());
+            row.getCell(5).setCellStyle(reportsValueStyle);
+
+            row.createCell(6).setCellValue(workOrderExcelReport.getWorkOrderDate());
+            row.getCell(6).setCellStyle(reportsValueStyle);
+
+            row.createCell(7).setCellValue(workOrderExcelReport.getAmount());
+            row.getCell(7).setCellStyle(reportsValueStyle);
+
+            row.createCell(8).setCellValue(workOrderExcelReport.getUser());
+            row.getCell(8).setCellStyle(reportsValueStyle);
+
+            if (workOrderExcelReport.getSQFT() != null) {
+                row.createCell(9).setCellValue(workOrderExcelReport.getSQFT());
+            } else {
+                row.createCell(9).setCellValue("-");
+            }
+            row.getCell(9).setCellStyle(reportsValueStyle);
+
+            if (workOrderExcelReport.getSQMTR() != null) {
+                row.createCell(10).setCellValue(workOrderExcelReport.getSQMTR());
+            } else {
+                row.createCell(10).setCellValue("-");
+            }
+            row.getCell(10).setCellStyle(reportsValueStyle);
+
         }
     }
 }
