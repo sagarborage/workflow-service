@@ -1,14 +1,20 @@
 package com.sowermate.tenantService.controllers;
 
+import com.sowermate.tenantService.entities.value.GatePassExcelReport;
+import com.sowermate.tenantService.entities.value.GatePassExcelReportData;
 import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReport;
+import com.sowermate.tenantService.entities.value.WorkOrderExcelReportData;
 import com.sowermate.tenantService.services.GatePassService;
+import com.sowermate.tenantService.services.GenerateExcelService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +25,9 @@ public class GatePassController {
 
     @Autowired
     private GatePassService gatePassService;
+
+    @Autowired
+    private GenerateExcelService generateExcelService;
 
     private static final org.slf4j.Logger Logger= LoggerFactory.getLogger(GatePassController.class);
 
@@ -101,4 +110,10 @@ public class GatePassController {
         return new ResponseEntity<>(allGatePassWithProformaDetails, HttpStatus.ACCEPTED);
     }
 
+    @PostMapping("/gate-pass-excel-report")
+    public ResponseEntity<String> getWorkOrderDetailsExcel(@RequestBody GatePassExcelReport gatePassExcelReport) throws IOException {
+        List<GatePassExcelReportData> gatePassExcelReportData = this.gatePassService.getGatePassExcel(gatePassExcelReport);
+        String base64Excel = generateExcelService.generateGatePassExcelSheet(gatePassExcelReportData, gatePassExcelReport);
+        return new ResponseEntity<>(base64Excel, HttpStatus.OK);
+    }
 }

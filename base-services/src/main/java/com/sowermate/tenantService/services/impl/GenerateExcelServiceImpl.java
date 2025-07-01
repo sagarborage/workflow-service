@@ -1,7 +1,10 @@
 package com.sowermate.tenantService.services.impl;
 
+import com.sowermate.tenantService.entities.common.GatePassExcelConstant;
 import com.sowermate.tenantService.entities.common.PiExcelConstant;
 import com.sowermate.tenantService.entities.common.WorkOrderExcelConstant;
+import com.sowermate.tenantService.entities.value.GatePassExcelReport;
+import com.sowermate.tenantService.entities.value.GatePassExcelReportData;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReport;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceExcelReportData;
 import com.sowermate.tenantService.entities.value.WorkOrderExcelReport;
@@ -345,6 +348,102 @@ public class GenerateExcelServiceImpl implements GenerateExcelService {
             }
             row.getCell(10).setCellStyle(reportsValueStyle);
 
+        }
+    }
+
+    // Work order details excel report
+
+    @Override
+    public String generateGatePassExcelSheet(List<GatePassExcelReportData> gatePassExcelReportDataList, GatePassExcelReport gatePassExcelReport) throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet(GatePassExcelConstant.DATA);
+
+        CellStyle tenantStyle = createTenantStyle(workbook);
+        CellStyle datesBetweenStyle = createDatesBetweenStyle(workbook);
+        CellStyle generatedOnStyle = createGeneratedOnStyle(workbook);
+        CellStyle reportsValueStyle = createReportsValueStyle(workbook);
+        CellStyle tableHeaderStyle = createTableHeaderStyle(workbook);
+
+        int rowNum = addGatePassTitleRows(sheet, gatePassExcelReport, tenantStyle, datesBetweenStyle, generatedOnStyle);
+        addGatePassColumnHeaders(sheet, rowNum++, tableHeaderStyle);
+        if (!gatePassExcelReportDataList.isEmpty()) {
+            populateGatePassData(sheet, rowNum, gatePassExcelReportDataList, reportsValueStyle);
+        }
+        autoSizeAllColumns(8, sheet);
+        return encodeWorkbookToBase64(workbook);
+    }
+
+    private void addGatePassColumnHeaders(Sheet sheet, int rowNum, CellStyle tableHeaderStyle) {
+        Row headerRow = sheet.createRow(rowNum);
+        String[] headers = {GatePassExcelConstant.SR_NO, GatePassExcelConstant.GATE_PASS_NO, GatePassExcelConstant.CREATED_BY, GatePassExcelConstant.PI_NUMBER, GatePassExcelConstant.PARTY_NAME, GatePassExcelConstant.FIRM_NAME, GatePassExcelConstant.VEHICLE_DETAILS, GatePassExcelConstant.QUANTITY, GatePassExcelConstant.DATE_TIME};
+
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellStyle(tableHeaderStyle);
+            cell.setCellValue(headers[i]);
+            sheet.autoSizeColumn(i);
+        }
+    }
+
+    private int addGatePassTitleRows(Sheet sheet, GatePassExcelReport gatePassExcelReport, CellStyle tenantStyle, CellStyle datesBetweenStyle, CellStyle generatedOnStyle) {
+        int rowNum = 0;
+        int columnLength = 8;
+
+        String partyName = tenantService.getTenantName(gatePassExcelReport.getTenantUuid());
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        Row titleRow1 = createRow(sheet, 0, 25);
+        createCell(titleRow1, 0, partyName.toUpperCase(), tenantStyle);
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        Row titleRow2 = createRow(sheet, rowNum - 1, 22);
+        createCell(titleRow2, 0, GatePassExcelConstant.GATE_PASS_REPORT, tenantStyle);
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        createCell(createRow(sheet, rowNum, 15), 0,
+                LocalDate.parse(gatePassExcelReport.getFromDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        + GatePassExcelConstant.TO + LocalDate.parse(gatePassExcelReport.getToDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), datesBetweenStyle);
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum++, 0, columnLength));
+        Row titleRow4 = createRow(sheet, rowNum - 1, 15);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, h:mm:ss a");
+        createCell(titleRow4, 0, GatePassExcelConstant.GENERATED_ON + LocalDateTime.now().format(dateTimeFormatter), generatedOnStyle);
+
+        return rowNum;
+    }
+
+    private void populateGatePassData(Sheet sheet, int rowNum, List<GatePassExcelReportData> gatePassExcelReportDataList, CellStyle reportsValueStyle) {
+        int srNo = 1;
+
+        for (GatePassExcelReportData excelReportData : gatePassExcelReportDataList) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(srNo++);
+            row.getCell(0).setCellStyle(reportsValueStyle);
+
+            row.createCell(1).setCellValue(excelReportData.getGatePassNo());
+            row.getCell(1).setCellStyle(reportsValueStyle);
+
+            row.createCell(2).setCellValue(excelReportData.getCreatedBy());
+            row.getCell(2).setCellStyle(reportsValueStyle);
+
+            row.createCell(3).setCellValue(excelReportData.getPiNumber());
+            row.getCell(3).setCellStyle(reportsValueStyle);
+
+            row.createCell(4).setCellValue(excelReportData.getPartyName());
+            row.getCell(4).setCellStyle(reportsValueStyle);
+
+            row.createCell(5).setCellValue(excelReportData.getFirmName());
+            row.getCell(5).setCellStyle(reportsValueStyle);
+
+            row.createCell(6).setCellValue(excelReportData.getVehicleDetails());
+            row.getCell(6).setCellStyle(reportsValueStyle);
+
+            row.createCell(7).setCellValue(excelReportData.getQuantity());
+            row.getCell(7).setCellStyle(reportsValueStyle);
+
+            row.createCell(8).setCellValue(excelReportData.getDateTime());
+            row.getCell(8).setCellStyle(reportsValueStyle);
         }
     }
 }
