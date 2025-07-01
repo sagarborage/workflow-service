@@ -5,8 +5,9 @@ import com.sowermate.tenantService.entities.minimal.GatePassDetailsInfoProjectio
 import com.sowermate.tenantService.entities.minimal.GatePassInfoProjection;
 import com.sowermate.tenantService.entities.minimal.GatePassProjection;
 import com.sowermate.tenantService.entities.minimal.GlassInfoProjection;
-import com.sowermate.tenantService.entities.minimal.ProformaInvoiceProjection;
 import com.sowermate.tenantService.entities.value.GatePassDetailsInfo;
+import com.sowermate.tenantService.entities.value.GatePassExcelReport;
+import com.sowermate.tenantService.entities.value.GatePassExcelReportData;
 import com.sowermate.tenantService.entities.value.GatePassInfo;
 import com.sowermate.tenantService.entities.value.GatePassValue;
 import com.sowermate.tenantService.repositories.*;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -128,6 +128,7 @@ public class GatePassServiceImpl implements GatePassService {
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("uuid", p.getUuid());
+            map.put("tenantUuid", p.getTenantUuid());
             map.put("companyUuid", p.getCompanyUuid());
             map.put("firmUuid", p.getFirmUuid());
             map.put("firmName", p.getFirmName());
@@ -140,6 +141,35 @@ public class GatePassServiceImpl implements GatePassService {
             map.put("vehicleDetails", p.getVehicleDetails());
             map.put("createdBy", p.getCreatedBy());
             return map;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GatePassExcelReportData> getGatePassExcel(GatePassExcelReport filter) {
+        String tenantUuid = filter.getTenantUuid();
+        String companyUuid = StringUtils.isBlank(filter.getPartyUuid()) ? null : filter.getPartyUuid(); // Assuming partyUuid = companyUuid
+        String firmUuid = StringUtils.isBlank(filter.getFirmUuid()) ? null : filter.getFirmUuid();
+
+        LocalDate fromDate = LocalDate.parse(filter.getFromDate());
+        LocalDate toDate = LocalDate.parse(filter.getToDate());
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        List<GatePassProjection> projections = gatePassRepository.findGatePassDetailsWithProformaDetails(
+                tenantUuid, companyUuid, firmUuid, fromDateTime, toDateTime);
+
+        return projections.stream().map(p -> {
+            GatePassExcelReportData data = new GatePassExcelReportData();
+            data.setGatePassNo(p.getGatePassNo());
+            data.setCreatedBy(p.getCreatedBy());
+            data.setPiNumber(p.getPiNumber());
+            data.setPartyName(p.getPartyName());
+            data.setFirmName(p.getFirmName());
+            data.setVehicleDetails(p.getVehicleDetails());
+            data.setQuantity(p.getQuantity());
+            data.setDateTime(p.getDateTime() != null ? p.getDateTime().format(formatter) : null);
+            return data;
         }).collect(Collectors.toList());
     }
 
