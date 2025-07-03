@@ -1,6 +1,8 @@
 package com.sowermate.workflow.service.services;
 
 import com.sowermate.workflow.domain.entities.minimal.GlassInfoProjection;
+import com.sowermate.workflow.domain.entities.value.GatePassExcelReport;
+import com.sowermate.workflow.domain.entities.value.GatePassExcelReportData;
 import com.sowermate.workflow.domain.entities.value.GatePassInfo;
 import com.sowermate.workflow.domain.entities.value.GatePassValue;
 import com.sowermate.workflow.domain.projection.PiInfoProjectionForReport;
@@ -28,4 +30,6 @@ public interface GatePassService {
     public GatePassInfo getGatePassByProformaInvoice(String companyUuid, String proformaInvoiceUuid);
 
     public List<Map<String, Object>> getAllGatePassWithProformaDetails(String tenantUuid, String companyUuid, String firmUuid, LocalDate fromDate, LocalDate toDate);
+
+    List<GatePassExcelReportData> getGatePassExcel(GatePassExcelReport gatePassExcelReport);
 }

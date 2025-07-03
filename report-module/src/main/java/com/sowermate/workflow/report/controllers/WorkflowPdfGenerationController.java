@@ -65,6 +65,7 @@ public class WorkflowPdfGenerationController {
         reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
         reportDetails.setBillToPartyStateCode(billToAddress.getStateCode());
         reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
+        reportDetails.setFirmName(tenantName);
 
         List<String> piItemsPdfUrls = new ArrayList<>();
         proFormaInvoiceValue.getProFormaInvoiceItems().stream().peek(ProFormaInvoiceItemValue -> {

@@ -11,6 +11,8 @@ import com.sowermate.workflow.domain.entities.minimal.GatePassDetailsInfoProject
 import com.sowermate.workflow.domain.entities.minimal.GatePassInfoProjection;
 import com.sowermate.workflow.domain.entities.minimal.GlassInfoProjection;
 import com.sowermate.workflow.domain.entities.value.GatePassDetailsInfo;
+import com.sowermate.workflow.domain.entities.value.GatePassExcelReport;
+import com.sowermate.workflow.domain.entities.value.GatePassExcelReportData;
 import com.sowermate.workflow.domain.entities.value.GatePassInfo;
 import com.sowermate.workflow.domain.entities.value.GatePassValue;
 import com.sowermate.workflow.domain.projection.GatePassProjection;
@@ -202,6 +204,35 @@ public class GatePassServiceImpl implements GatePassService {
             map.put("vehicleDetails", p.getVehicleDetails());
             map.put("createdBy", p.getCreatedBy());
             return map;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GatePassExcelReportData> getGatePassExcel(GatePassExcelReport filter) {
+        String tenantUuid = filter.getTenantUuid();
+        String companyUuid = StringUtils.isBlank(filter.getPartyUuid()) ? null : filter.getPartyUuid(); // Assuming partyUuid = companyUuid
+        String firmUuid = StringUtils.isBlank(filter.getFirmUuid()) ? null : filter.getFirmUuid();
+
+        LocalDate fromDate = LocalDate.parse(filter.getFromDate());
+        LocalDate toDate = LocalDate.parse(filter.getToDate());
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        List<GatePassProjection> projections = gatePassRepository.findGatePassDetailsWithProformaDetails(
+                tenantUuid, companyUuid, firmUuid, fromDateTime, toDateTime);
+
+        return projections.stream().map(p -> {
+            GatePassExcelReportData data = new GatePassExcelReportData();
+            data.setGatePassNo(p.getGatePassNo());
+            data.setCreatedBy(p.getCreatedBy());
+            data.setPiNumber(p.getPiNumber());
+            data.setPartyName(p.getPartyName());
+            data.setFirmName(p.getFirmName());
+            data.setVehicleDetails(p.getVehicleDetails());
+            data.setQuantity(p.getQuantity());
+            data.setDateTime(p.getDateTime() != null ? p.getDateTime().format(formatter) : null);
+            return data;
         }).collect(Collectors.toList());
     }
 }

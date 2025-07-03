@@ -2,9 +2,14 @@ package com.sowermate.workflow.api.controllers;
 
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceExcelReport;
+import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceExcelReportData;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceValue;
+import com.sowermate.workflow.domain.entities.value.WorkOrderExcelReport;
+import com.sowermate.workflow.domain.entities.value.WorkOrderExcelReportData;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
+import com.sowermate.workflow.service.services.GenerateExcelService;
 import com.sowermate.workflow.service.services.ProFormaInvoiceService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -34,8 +41,13 @@ import static com.sowermate.core.common.constants.TimeConstant.FORMATTER;
 @RequestMapping("/proforma-invoices")
 public class ProFormaInvoiceController {
     private static final org.slf4j.Logger Logger = LoggerFactory.getLogger(ProFormaInvoiceController.class);
+
     @Autowired
     private ProFormaInvoiceService proFormaInvoiceService;
+
+    @Autowired
+    private GenerateExcelService generateExcelService;
+
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -182,5 +194,19 @@ public class ProFormaInvoiceController {
     public ResponseEntity<List<Map<String, Object>>> getAllWorkOrderDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
         List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllWorkOrderDetails(tenantUuid, workOrderUuid, fromDate, toDate);
         return new ResponseEntity<>(allPiOrdersDetailsWithWorkOrderDetails, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/proforma-invoice-excel")
+    public ResponseEntity<String> getProformaInvoiceExcel(@RequestBody ProFormaInvoiceExcelReport proFormaInvoiceExcelReport) throws IOException {
+        List<ProFormaInvoiceExcelReportData> reportData = proFormaInvoiceService.getProFormaInvoice(proFormaInvoiceExcelReport);
+        String base64Excel = generateExcelService.generateProformaInvoiceReportsExcelSheet(reportData, proFormaInvoiceExcelReport);
+        return ResponseEntity.ok(base64Excel);
+    }
+
+    @PostMapping("/work-order-excel")
+    public ResponseEntity<String> getWorkOrderDetailsExcel(@RequestBody WorkOrderExcelReport workOrderExcelReport) throws IOException {
+        List<WorkOrderExcelReportData> reportData = proFormaInvoiceService.getWorkOrderDetails(workOrderExcelReport);
+        String base64Excel = generateExcelService.generateWorkOrderDetailsExcelSheet(reportData, workOrderExcelReport);
+        return ResponseEntity.ok(base64Excel);
     }
 }

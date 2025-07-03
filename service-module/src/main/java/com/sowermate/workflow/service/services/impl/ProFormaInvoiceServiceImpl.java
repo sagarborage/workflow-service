@@ -18,10 +18,14 @@ import com.sowermate.workflow.domain.entities.ServiceRateInvoiceEntity;
 import com.sowermate.workflow.domain.entities.WorkOrderEntity;
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceExcelReport;
+import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceExcelReportData;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceItemValue;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceValue;
 import com.sowermate.workflow.domain.entities.value.ServiceRateInvoiceValue;
+import com.sowermate.workflow.domain.entities.value.WorkOrderExcelReport;
+import com.sowermate.workflow.domain.entities.value.WorkOrderExcelReportData;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
 import com.sowermate.workflow.domain.projection.ProformaInvoiceProjection;
 import com.sowermate.workflow.domain.projection.ProformaInvoiceWithWorkOrderProjection;
@@ -516,6 +520,60 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             map.put("SQFT", p.getSQFT());
             map.put("SQMTR", p.getSQMTR());
             return map;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProFormaInvoiceExcelReportData> getProFormaInvoice(ProFormaInvoiceExcelReport filter) {
+        String tenantUuid = filter.getTenantUuid();
+        String companyUuid = StringUtils.isBlank(filter.getCompanyUuid()) ? null : filter.getCompanyUuid();
+        String partyUuid = StringUtils.isBlank(filter.getPartyUuid()) ? null : filter.getPartyUuid();
+
+        LocalDate fromDate = LocalDate.parse(filter.getFromDate());
+        LocalDate toDate = LocalDate.parse(filter.getToDate());
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, filter.getStatus());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
+        return projections.stream().map(p -> {
+            ProFormaInvoiceExcelReportData report = new ProFormaInvoiceExcelReportData();
+            report.setPiNumber(p.getPiNumber());
+            report.setPartyName(p.getPartyName());
+            report.setAmount(p.getAmount());
+            report.setUser(p.getUser());
+            report.setInvoiceDateTime(p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
+            report.setStatus(p.getStatus());
+            return report;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<WorkOrderExcelReportData> getWorkOrderDetails(WorkOrderExcelReport filter) {
+        String tenantUuid = filter.getTenantUuid();
+        String workOrderUuid = StringUtils.isBlank(filter.getWorkOrderUuid()) ? null : filter.getWorkOrderUuid();
+
+        LocalDate fromDate = LocalDate.parse(filter.getFromDate());
+        LocalDate toDate = LocalDate.parse(filter.getToDate());
+        LocalDateTime fromDateTime = fromDate.atStartOfDay();
+        LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        return projections.stream().map(p -> {
+            WorkOrderExcelReportData data = new WorkOrderExcelReportData();
+            data.setFirmName(p.getFirmName());
+            data.setPiNumber(p.getPiNumber());
+            data.setPiType(p.getPiType());
+            data.setPartyName(p.getPartyName());
+            data.setPiDate(p.getPIDateTime() != null ? p.getPIDateTime().format(formatter) : null);
+            data.setWorkOrderDate(p.getWorkOrderDateTime() != null ? p.getWorkOrderDateTime().format(formatter) : null);
+            data.setAmount(p.getAmount());
+            data.setUser(p.getUser());
+            data.setSQFT(p.getSQFT());
+            data.setSQMTR(p.getSQMTR());
+            return data;
         }).collect(Collectors.toList());
     }
 }

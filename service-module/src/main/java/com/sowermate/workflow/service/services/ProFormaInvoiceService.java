@@ -2,8 +2,12 @@ package com.sowermate.workflow.service.services;
 
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceIndividualsOrdersProjection;
 import com.sowermate.workflow.domain.entities.minimal.ProFormaInvoiceOrdersProjection;
+import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceExcelReport;
+import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceExcelReportData;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceHomeDetails;
 import com.sowermate.workflow.domain.entities.value.ProFormaInvoiceValue;
+import com.sowermate.workflow.domain.entities.value.WorkOrderExcelReport;
+import com.sowermate.workflow.domain.entities.value.WorkOrderExcelReportData;
 import com.sowermate.workflow.domain.enums.ProformaInvoiceStatusEnum;
 
 import java.time.LocalDate;
@@ -26,6 +30,7 @@ public interface ProFormaInvoiceService {
     public int deleteProFormaInvoice(String tenantUuid, String proFormaInvoiceUuid);
 
     //public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
+
     public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
 
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType);
@@ -35,4 +40,8 @@ public interface ProFormaInvoiceService {
     List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status);
 
     List<Map<String, Object>> getAllWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate);
+
+    List<ProFormaInvoiceExcelReportData> getProFormaInvoice(ProFormaInvoiceExcelReport proFormaInvoiceExcelReport);
+
+    List<WorkOrderExcelReportData> getWorkOrderDetails(WorkOrderExcelReport workOrderExcelReport);
 }
