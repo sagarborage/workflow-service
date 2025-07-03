@@ -139,7 +139,7 @@ public class ProFormaInvoiceController {
     }*/
 
     @GetMapping("/{tenantUuid}/{companyUuid}/{startDate}/{endDate}")
-    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable String companyUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate) {
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoice(@PathVariable String tenantUuid, @PathVariable String companyUuid, @PathVariable(name = "startDate") String startDate, @PathVariable(name = "endDate") String endDate, @RequestParam(required = false) String creationType) {
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
         try {
             DateTimeFormatter formatter = FORMATTER;
@@ -147,7 +147,7 @@ public class ProFormaInvoiceController {
             endDate = endDate + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
-            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, companyUuid, startingDate, endingDate);
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, companyUuid, startingDate, endingDate,creationType);
             Logger.info("records " + proFormaInvoiceHomeDetails.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
@@ -156,7 +156,7 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/{tenantUuid}/{companyUuid}/{month}")
-    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoiceByMonth(@PathVariable String tenantUuid, @PathVariable String companyUuid, @PathVariable(name = "month") String month) {
+    public ResponseEntity<List<ProFormaInvoiceHomeDetails>> getAllProFormaInvoiceByMonth(@PathVariable String tenantUuid, @PathVariable String companyUuid, @PathVariable(name = "month") String month, @RequestParam(required = false) String creationType) {
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = null;
         try {
             YearMonth yearMonth = YearMonth.parse(month, DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -166,7 +166,7 @@ public class ProFormaInvoiceController {
             String endDate = yearMonth.atEndOfMonth() + ENDING;
             LocalDateTime startingDate = LocalDateTime.parse(startDate, formatter);
             LocalDateTime endingDate = LocalDateTime.parse(endDate, formatter);
-            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, companyUuid, startingDate, endingDate);
+            proFormaInvoiceHomeDetails = proFormaInvoiceService.getAllProFormaInvoice(tenantUuid, companyUuid, startingDate, endingDate,creationType);
             Logger.info("records " + proFormaInvoiceHomeDetails.size());
         } catch (Exception e) {
             Logger.error("Error while getting Seller:", e);
@@ -181,8 +181,8 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/pi-register/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status) {
-        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status);
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status, @RequestParam(required = false) String creationType) {
+        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status,creationType);
         return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
     }
 

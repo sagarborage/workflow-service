@@ -47,7 +47,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -102,7 +101,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         if (ObjectUtils.isEmpty(tenantEntity)) {
             return null;
         } else {
-            String piNumber = generatePiNumber(tenantEntity.getId());
+            String piNumber = generatePiNumber(tenantEntity.getId(), proFormaInvoiceValue.getCreationType());
 
             ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceValue.toEntity().toBuilder()
                     .tenantEntity(tenantRepository.findByUuid(proFormaInvoiceValue.getTenantUuid()))
@@ -110,7 +109,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                             null == proFormaInvoiceValue.getConfirmThroughUuid() ? null :
                                     confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
                     )
-                    .piTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
+                    .piTypeEntity(proFormaInvoiceValue.getPiTypeUuid() == null ? null : piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()))
                     .firm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()))
                     .companyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyBillToUuid()))
                     .companyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyShipToUuid()))
@@ -122,23 +121,44 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         }
     }
 
-    private String generatePiNumber(long tenantId) {
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findFirstByTenantEntityIdOrderByIdDesc(tenantId);
+    private String generatePiNumber(long tenantId, String creationType) {
+        ProFormaInvoiceEntity proFormaInvoiceEntity =
+                proFormaInvoiceRepository.findFirstByTenantEntityIdAndCreationTypeOrderByIdDesc(tenantId, creationType);
 
         LocalDate currentDate = LocalDate.now();
         String currentMonth = currentDate.getMonth().toString().substring(0, 3);
-        int newSequenceNumber = 1; // Default if no existing piNumber
+        int nextSequenceNumber = getNextSequenceNumber(proFormaInvoiceEntity, creationType, currentMonth);
 
-        if (null != proFormaInvoiceEntity) {
+        if ("rg".equalsIgnoreCase(creationType)) {
+            return "K/" + currentMonth + "/" + nextSequenceNumber;
+        } else {
+            return currentMonth + "/" + nextSequenceNumber;
+        }
+    }
+
+    public int getNextSequenceNumber(ProFormaInvoiceEntity proFormaInvoiceEntity, String creationType, String currentMonth) {
+        int newSequenceNumber = 1;
+
+        if (proFormaInvoiceEntity != null) {
             String piNumber = proFormaInvoiceEntity.getPiNumber();
-            String sequenceMonth = piNumber.substring(0, 3);
-            if (sequenceMonth.equals(currentMonth)) {
-                int sequenceNumber = Integer.parseInt(piNumber.substring(4, piNumber.length()));
+            String[] parts = piNumber.split("/");
+
+            String sequenceMonth;
+            if ("rg".equalsIgnoreCase(creationType)) {
+                sequenceMonth = parts[1];
+            } else {
+                sequenceMonth = parts[0];
+            }
+
+            if (sequenceMonth.equalsIgnoreCase(currentMonth)) {
+                int sequenceNumber = Integer.parseInt(parts[parts.length - 1]);
                 newSequenceNumber = sequenceNumber + 1;
             }
         }
-        return currentMonth + "/" + newSequenceNumber;
+
+        return newSequenceNumber;
     }
+
 
     @Override
     public ProFormaInvoiceValue editProFormaInvoice(ProFormaInvoiceValue proFormaInvoiceValue) {
@@ -227,7 +247,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                         confirmThroughRepository.findByTenantEntity_UuidAndConfirmThroughUuid(tenantUUID, proFormaInvoiceValue.getConfirmThroughUuid())
         );
 
-        existingInvoice.setPiTypeEntity(piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()));
+        existingInvoice.setPiTypeEntity(proFormaInvoiceValue.getPiTypeUuid()==null?null:piTypeRepository.findByTenantEntity_UuidAndPiTypeUuid(tenantUUID, proFormaInvoiceValue.getPiTypeUuid()));
         existingInvoice.setFirm(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getFirmUuid()));
         existingInvoice.setCompanyIdBill(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyBillToUuid()));
         existingInvoice.setCompanyIdShip(companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantUUID, proFormaInvoiceValue.getPartyShipToUuid()));
@@ -399,8 +419,9 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     //TODO: Remove this code lateron
 
     @Override
-    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate) {
-        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, /*, companyUuid,*/ startDate, endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate, String creationType) {
+        creationType = StringUtils.isNotBlank(creationType) ? creationType : null;
+        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, /*, companyUuid,*/ startDate, endDate, creationType);
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = new ArrayList<>();
         for (ProFormaInvoiceEntity proFormaInvoiceEntity : proFormInvoiceEntities) {
             proFormaInvoiceHomeDetails.add(getProFormaInvoiceHomeDetails(proFormaInvoiceEntity));
@@ -471,13 +492,14 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status) {
+    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status, String creationType) {
+        creationType = StringUtils.isBlank(creationType) ? null : creationType;
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
         companyUuid = StringUtils.isBlank(companyUuid) ? null : companyUuid;
         partyUuid = StringUtils.isBlank(partyUuid) ? null : partyUuid;
         ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, status);
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum, creationType);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         return projections.stream().map(p -> {
@@ -528,7 +550,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         String tenantUuid = filter.getTenantUuid();
         String companyUuid = StringUtils.isBlank(filter.getCompanyUuid()) ? null : filter.getCompanyUuid();
         String partyUuid = StringUtils.isBlank(filter.getPartyUuid()) ? null : filter.getPartyUuid();
-
+        String creationType = StringUtils.isBlank(filter.getCreationType()) ? null : filter.getCreationType();
         LocalDate fromDate = LocalDate.parse(filter.getFromDate());
         LocalDate toDate = LocalDate.parse(filter.getToDate());
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
@@ -536,7 +558,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, filter.getStatus());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum, creationType);
         return projections.stream().map(p -> {
             ProFormaInvoiceExcelReportData report = new ProFormaInvoiceExcelReportData();
             report.setPiNumber(p.getPiNumber());
@@ -546,7 +568,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             report.setInvoiceDateTime(p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
             report.setStatus(p.getStatus());
             return report;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     @Override

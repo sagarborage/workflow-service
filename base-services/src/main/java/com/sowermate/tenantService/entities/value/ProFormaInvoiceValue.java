@@ -23,6 +23,7 @@ public class ProFormaInvoiceValue extends BaseDto {
     private String confirmThroughUuid;
     private String confirmThroughName;
     private String piTypeUuid;
+    private String creationType;
     private String piTypeName;
     private String firmUuid;
     private String partyBillToUuid;
@@ -63,6 +64,7 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .id(getProFormaInvoiceId())
                 .uuid(getProFormaInvoiceUuid())
                 .piNumber(getPiNumber())
+                .creationType(getCreationType()==null?"pi":getCreationType())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())
                 .serviceRateInvoiceAmount(getServiceRateInvoiceAmount())

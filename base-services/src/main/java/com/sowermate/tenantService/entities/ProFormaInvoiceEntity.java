@@ -3,10 +3,24 @@ package com.sowermate.tenantService.entities;
 import com.sowermate.base.entities.Base;
 import com.sowermate.tenantService.entities.value.ProFormaInvoiceValue;
 import com.sowermate.tenantService.enums.ProformaInvoiceStatusEnum;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +33,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class ProFormaInvoiceEntity extends Base {
+
+    @Column(name = "creation_type")
+    private String creationType;
 
     @Column(name = "pi_number")
     private String piNumber;
@@ -101,39 +118,39 @@ public class ProFormaInvoiceEntity extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "firm_id")
-    private  CompanyEntity firm;
+    private CompanyEntity firm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bill_to")
-    private  CompanyEntity companyIdBill;
+    private CompanyEntity companyIdBill;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ship_to")
-    private  CompanyEntity companyIdShip;
+    private CompanyEntity companyIdShip;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="tenant_id")
+    @JoinColumn(name = "tenant_id")
     private TenantEntity tenantEntity;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntities;
 
-    @OneToMany(mappedBy="proFormaInvoiceEntity",cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServiceRateInvoiceEntity> serviceRateInvoiceEntities;
 
-    @OneToOne(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
+    @OneToOne(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL)
     private WorkOrderEntity workOrderEntity;
 
-    @OneToMany(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
+    @OneToMany(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL)
     private List<GlassBreakageDetailsEntity> glassBreakageDetailsEntities;
 
-    @OneToMany(mappedBy = "proFormaInvoiceEntity",cascade =CascadeType.ALL )
+    @OneToMany(mappedBy = "proFormaInvoiceEntity", cascade = CascadeType.ALL)
     private List<GatePassEntity> gatePassEntities;
 
     @PostPersist
-    void postPersist(){
-        if(getProFormaInvoiceItemEntities() != null){
-            getProFormaInvoiceItemEntities().forEach(item->item.setProFormaInvoiceEntity(this));
+    void postPersist() {
+        if (getProFormaInvoiceItemEntities() != null) {
+            getProFormaInvoiceItemEntities().forEach(item -> item.setProFormaInvoiceEntity(this));
         }
     }
 
@@ -148,8 +165,9 @@ public class ProFormaInvoiceEntity extends Base {
                 .partyBillToName(getCompanyIdBill().getCompanyName())
                 .partyShipToUuid(null != getCompanyIdShip() ? getCompanyIdShip().getUuid() : "")
                 .partyShipToName(null != getCompanyIdShip() ? getCompanyIdShip().getCompanyName() : "")
-                .piTypeUuid(getPiTypeEntity().getUuid())
-                .piTypeName(getPiTypeEntity().getPiTypeName())
+                .piTypeUuid(piTypeEntity != null ? piTypeEntity.getUuid() : null)
+                .piTypeName(piTypeEntity != null ? piTypeEntity.getPiTypeName() : null)
+                .creationType(getCreationType())
                 .piNumber(getPiNumber())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())
@@ -173,9 +191,9 @@ public class ProFormaInvoiceEntity extends Base {
                 .shippingAddress(getShippingAddress())
                 .status(getStatus())
                 .statusDetails(getStatusDetails())
-                .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e->e.stream().map(el->el.toDTO()).collect(Collectors.toList())).orElse(null))
+                .proFormaInvoiceItems(Optional.ofNullable(getProFormaInvoiceItemEntities()).map(e -> e.stream().map(el -> el.toDTO()).collect(Collectors.toList())).orElse(null))
                 .workOrderValue(getWorkOrderEntity() != null ? getWorkOrderEntity().toDTO() : null)
-                .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity->entity.toDTO()).collect(Collectors.toList())).orElse(null))
+                .serviceRateInvoices(Optional.ofNullable(getServiceRateInvoiceEntities()).map(e -> e.stream().map(entity -> entity.toDTO()).collect(Collectors.toList())).orElse(null))
                 .createdDateTime(getCreatedDateTime())
                 .lastUpdatedDateTime(getLastUpdatedDateTime())
                 .createdBy(getCreatedBy())

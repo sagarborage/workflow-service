@@ -29,13 +29,13 @@ public interface ProFormaInvoiceService {
     public int deleteProFormaInvoice(String tenantUuid,String proFormaInvoiceUuid);
 
     //public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
-    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid,String companyUuid, LocalDateTime startDate, LocalDateTime endDate,String creationType);
 
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType);
 
     public List<ProFormaInvoiceIndividualsOrdersProjection> getAllProFormIndividualsOrdersDetails(String tenantUuid,Integer workOrderNumber, String deptType);
 
-    List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status);
+    List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status,String creationType);
 
     List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate);
 

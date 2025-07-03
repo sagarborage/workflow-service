@@ -47,7 +47,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     //PROD issue fix: duplicate PI/Numbers where getting created
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
 
-    ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByIdDesc(long id);
+    ProFormaInvoiceEntity findFirstByTenantEntityIdAndCreationTypeOrderByIdDesc(long id,String creationType);
     //ProFormaInvoiceEntity findByUuid(String uuid);
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
 
@@ -60,7 +60,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "ct.uuid as confirmThroughUuid, " +
             "woe.uuid as workOrderUuid, " +
             "woe.id as workOrderNumber, " +
-            "pfie.payableAmount as payableAmount, " +
+            "pfie.payableAmount as payableAmo© 2024 Sowermate Tech. All Rights Reserved.unt, " +
             "pfie.invoiceDate as invoiceDate, " +
             "pfie.status as status FROM ProFormaInvoiceEntity pfie " +
             "JOIN pfie.companyIdBill c " +
@@ -71,9 +71,10 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
 
     @Query("SELECT pfie FROM ProFormaInvoiceEntity pfie " +
             "where pfie.tenantEntity.uuid = :tenantUuid and " +
+            "(:creationType IS NULL OR pfie.creationType = :creationType) and " +
             //"pfie.firm.uuid = :companyUuid and " + //TODO: temp fix to allow all company, but it should be tenant specific companies
             "pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
-    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, /*String companyUuid, */LocalDateTime startDate, LocalDateTime endDate);
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, /*String companyUuid, */LocalDateTime startDate, LocalDateTime endDate,String creationType);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
@@ -254,6 +255,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "where (:partyUuid IS NULL OR cb.uuid = :partyUuid) " +
             "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
             "and (:status IS NULL OR pi.status = :status) " +
+            "and (:creationType IS NULL OR pi.creationType = :creationType) " +
             "and pi.invoiceDate between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
     List<ProformaInvoiceProjection> findAllPiOrdersDetails(
@@ -262,7 +264,8 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             @Param("partyUuid") String partyUuid,
             @Param("fromDate") LocalDateTime fromDate,
             @Param("toDate") LocalDateTime toDate,
-            @Param("status") ProformaInvoiceStatusEnum status);
+            @Param("status") ProformaInvoiceStatusEnum status,
+            @Param("creationType") String creationType);
 
     @Query("select " +
             "pi.uuid as uuid, " +
