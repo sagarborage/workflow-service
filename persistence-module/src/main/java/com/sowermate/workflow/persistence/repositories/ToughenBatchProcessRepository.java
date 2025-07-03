@@ -37,18 +37,20 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN tbd.proFormaInvoiceItemEntity pi " +
             "JOIN pi.proFormaInvoiceEntity p " +
             "JOIN p.firm f " +
-            "WHERE f.uuid =:firmUuid  " +
-            "AND tb.batchNo = :batchNo " +
+            "WHERE " +
+            //"f.uuid =:firmUuid  " + //TODO: temp fix to allow all company, but it should be tenant specific companies
+            "tb.batchNo = :batchNo " +
             "AND tb.status = :status UNION " +
             "SELECT tb " +
             "FROM ToughenBatchProcessEntity tb " +
             "JOIN tb.companyEntity firm " +
             "JOIN tb.jbCreationEntities jb " +
-            "WHERE firm.uuid =:firmUuid " +
-            "AND tb.batchNo = :batchNo " +
+            "WHERE " +
+           //"firm.uuid =:firmUuid " + //TODO: temp fix to allow all company, but it should be tenant specific companies
+            "tb.batchNo = :batchNo " +
             "AND tb.status = :status "
     )
-    Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo, String firmUuid, ToughenBatchProcessStatusEnum status);
+    Optional<List<ToughenBatchProcessEntity>> findByBatchNoAndCompanyUuidAndStatus(Integer batchNo, ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
             "tbd.uuid as batchItemUuid, " +
@@ -77,7 +79,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN pi.proFormaInvoiceEntity p " +
             "JOIN p.workOrderEntity wo " +
             "JOIN p.firm f " +
-            "WHERE f.uuid =:firmUuid AND " +
+            "WHERE " +
+            //"f.uuid =:firmUuid AND " + //TODO: temp fix to allow all company, but it should be tenant specific companies
             "tb.status = :status UNION " +
             "SELECT " +
             "jb.uuid as batchItemUuid, " +
@@ -101,7 +104,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN jb.toughenBatchProcessEntity tbpe " +
             "where tbpe.status = :status"
     )
-    List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(String firmUuid, ToughenBatchProcessStatusEnum status);
+    List<ToughenBatchProcessProjection> findByCompanyUuidAndStatus(ToughenBatchProcessStatusEnum status);
 
     @Query("SELECT " +
             "gt.name AS thickness, " +
@@ -148,7 +151,8 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "JOIN pi.glassThicknessEntity th " +
             "JOIN pi.proFormaInvoiceEntity p " +
             "JOIN p.firm f " +
-            "WHERE f.uuid =:firmUuid AND " +
+            "WHERE " +
+            //"f.uuid =:firmUuid AND " + //TODO: temp fix to allow all company, but it should be tenant specific companies
             "t.uuid =:tenantUuid AND " +
             "Date(tb.createdDateTime) =:batchProcessingDate " +
             "AND tb.status = 'COMPLETED'" +
@@ -178,7 +182,7 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "ORDER BY tb.batchNo desc"
     )
 //TODO:: this has to be handled with multiple company type (JB0
-    List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, String firmUuid, LocalDate batchProcessingDate);
+    List<ViewToughenBatchProcessDetailsProjection> findByViewToughBatchProcess(String tenantUuid, LocalDate batchProcessingDate);
 
 
     @Query("SELECT " +
@@ -199,9 +203,10 @@ public interface ToughenBatchProcessRepository extends JpaRepository<ToughenBatc
             "FROM ToughenBatchProcessEntity tb " +
             "JOIN tb.companyEntity c " +
             "JOIN tb.toughenBatchProcessDetailsEntities tbd " +
-            "WHERE tbd.uuid = :uuid " +
-            "AND c.uuid = :companyUuid ")
-    ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid, String companyUuid);
+            "WHERE tbd.uuid = :uuid "
+            //"AND c.uuid = :companyUuid " //TODO: sagar
+            )
+    ToughenBatchProcessDetailsEntity findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(String uuid/*, String companyUuid*/);
 
     ToughenBatchProcessEntity findByUuid(@Param("toughenBatchProcessUuid") String toughenBatchProcessUuid);
 

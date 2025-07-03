@@ -398,7 +398,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
 
     @Override
     public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate) {
-        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid, companyUuid, startDate, endDate);
+        List<ProFormaInvoiceEntity> proFormInvoiceEntities = proFormaInvoiceRepository.findAllByTenantUuid(tenantUuid,/* companyUuid, */startDate, endDate);
         List<ProFormaInvoiceHomeDetails> proFormaInvoiceHomeDetails = new ArrayList<>();
         for (ProFormaInvoiceEntity proFormaInvoiceEntity : proFormInvoiceEntities) {
             proFormaInvoiceHomeDetails.add(getProFormaInvoiceHomeDetails(proFormaInvoiceEntity));
@@ -416,6 +416,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 .piNumber(proFormaInvoiceEntity.getPiNumber())
                 .workOrderUuid(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getUuid())
                 .workOrderNumber(null == proFormaInvoiceEntity.getWorkOrderEntity() ? null : proFormaInvoiceEntity.getWorkOrderEntity().getId())
+                .firmShortName(proFormaInvoiceEntity.getFirm().getTenantName().toUpperCase().contains("HIMYOUG") ? "HIMYOUG" : "HIMANSHU") //TODO: Sagar temp condition
                 .isGatePassEnabled(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().anyMatch(e -> e.getDispatchCompleted() > 0))
                 .isEditAllowed(proFormaInvoiceEntity.getProFormaInvoiceItemEntities().stream().noneMatch(e -> e.getDispatchCompleted() > 0))
                 .status(proFormaInvoiceEntity.getStatus())

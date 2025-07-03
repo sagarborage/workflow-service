@@ -167,7 +167,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     @Override
     @Transactional
     public ToughenBatchProcessDetailsValue toughenBatchProcessItemCancel(String uuid, String companyUuid) {
-        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid, companyUuid);
+        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(uuid/*, companyUuid*/);
         if (toughenBatchProcessDetailsEntity != null) {
             //TODO: changed this logic to completely remove entry from batch process
             //toughenBatchProcessDetailsEntity.setStatus(ToughenBatchProcessStatusEnum.CANCEL);
@@ -191,7 +191,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     @Override
     public ToughenBatchProcessDetailsValue toughenBatchProcessItemBroke(GeneralParamValue generalParamValue) {
         //TODO: rewrite this logic later on, specially param GeneralParamValue
-        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(generalParamValue.getBatchItemUuid(), generalParamValue.getCompanyUuid());
+        ToughenBatchProcessDetailsEntity toughenBatchProcessDetailsEntity = toughenBatchProcessRepository.findToughenBatchProcessDetailsEntityByUuidAndCompanyUuid(generalParamValue.getBatchItemUuid()/*, generalParamValue.getCompanyUuid()*/);
         if (toughenBatchProcessDetailsEntity != null) {
             toughenBatchProcessDetailsEntity = toughenBatchProcessDetailsEntity.toBuilder().status(ToughenBatchProcessStatusEnum.BROKEN).build();
             toughenBatchProcessDetailsRepository.save(toughenBatchProcessDetailsEntity);
@@ -212,7 +212,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     @Override
     @Transactional
     public List<ToughenBatchProcessValue> markToughenBatchProcessComplete(GeneralParamValue generalParamValue) {
-        Optional<List<ToughenBatchProcessEntity>> batchListInProgress = toughenBatchProcessRepository.findByBatchNoAndCompanyUuidAndStatus(generalParamValue.getBatchNo(), generalParamValue.getCompanyUuid(), ToughenBatchProcessStatusEnum.IN_PROGRESS);
+        Optional<List<ToughenBatchProcessEntity>> batchListInProgress = toughenBatchProcessRepository.findByBatchNoAndCompanyUuidAndStatus(generalParamValue.getBatchNo(), ToughenBatchProcessStatusEnum.IN_PROGRESS);
         List<ToughenBatchProcessEntity> toBeUpdated = batchListInProgress.get().stream().map(e -> {
             e.setStatus(ToughenBatchProcessStatusEnum.COMPLETED);
             //batchListInProgress.get().get(0).getToughenBatchProcessDetailsEntities().get(3).getProFormaInvoiceItemEntity().getUuid()
@@ -240,7 +240,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Override
     public List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum) {
-        List<ToughenBatchProcessProjection> list = toughenBatchProcessRepository.findByCompanyUuidAndStatus(companyUuid, toughenBatchProcessStatusEnum);
+        List<ToughenBatchProcessProjection> list = toughenBatchProcessRepository.findByCompanyUuidAndStatus(toughenBatchProcessStatusEnum);
         if (!list.isEmpty()) {
             return list;
         }
@@ -313,7 +313,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Override
     public List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, String companyUuid, LocalDate batchProcessingDate) {
-        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessRepository.findByViewToughBatchProcess(tenantUuid, companyUuid, batchProcessingDate);
+        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessRepository.findByViewToughBatchProcess(tenantUuid, batchProcessingDate);
         if (!list.isEmpty()) {
             return list;
         }
@@ -322,12 +322,12 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
 
     @Override
     public StickerReportProjection getStickerOfBatchItem(String tenantUuid, String companyUuid, String batchItemUuid) {
-        return toughenBatchProcessDetailsRepository.findStickerDataOfToughenBatchItem(tenantUuid, companyUuid, batchItemUuid);
+        return toughenBatchProcessDetailsRepository.findStickerDataOfToughenBatchItem(tenantUuid, /*companyUuid, */batchItemUuid);
     }
 
     @Override
     public List<StickerReportProjection> getStickersOfBatch(String tenantUuid, String companyUuid, String batchUuid) {
-        return toughenBatchProcessDetailsRepository.findAllStickerDataOfBatch(tenantUuid, companyUuid, batchUuid);
+        return toughenBatchProcessDetailsRepository.findAllStickerDataOfBatch(tenantUuid, /*companyUuid, */batchUuid);
     }
 
     @Override

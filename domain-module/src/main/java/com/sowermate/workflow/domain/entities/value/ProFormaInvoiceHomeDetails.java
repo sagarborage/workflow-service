@@ -19,6 +19,7 @@ public class ProFormaInvoiceHomeDetails {
     private Long workOrderNumber;
     private String partyName;
     private String piNumber;
+    private String firmShortName;
     private Float payableAmount;
     private boolean isGatePassEnabled;
     private boolean isEditAllowed;

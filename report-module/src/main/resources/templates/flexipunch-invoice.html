@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Invoice</title>
+    <link th:href="@{classpath:static/css/flexipunch-invoice.css}" rel="stylesheet" type="text/css"
+          href="/static/css/flexipunch-invoice.css"></link>
+</head>
+<body>
+<header class="header">
+    <div class="heading-bar"></div>
+
+
+    <img th:src="@{classpath:static/images/sowermate-logo.png}" height="50px" width="130px" style="margin-left: 10px;" alt="Logo"/>
+
+
+    <div class="heading-name">
+        <p class="heading-name2"><b>SOWERMATE TECHNOLOGIES PRIVATE LIMITED</b></p>
+        <p class="head-site"><u>www.sowermate.com</u></p>
+    </div>
+    <hr id="line1"/>
+
+</header>
+
+<main class="main">
+
+    <div class="invoice-name">INVOICE</div>
+    <div class="invoice-number"><strong>Invoice Number:</strong> <span th:text="${invoiceDto.getInvoiceNumber()}"></span>
+    </div>
+
+
+
+
+    <div>
+
+
+
+        <div class="address">
+            <b>FROM</b><br/>
+            <span>Priyanka Borage</span><br/>
+            <span><b>SOWERMATE TECHNOLOGIES PRIVATE LIMITED</b></span><br/>
+            <span>Flat No 104/105, Building E, Swapnapurti Co-operative
+        Housing Society, Near D Mart, Sasane Nagar, Hadapsar,
+           Pune, 411028</span><br/>
+            <span>  <b>GSTIN:</b> 27ABJCS5929H1ZV</span>
+        </div>
+
+        <div class="address">
+            <b>TO</b><br/>
+            <span><b th:text="${invoiceDto.getToName()}"></b></span><br/>
+            <span th:text="${invoiceDto.getToAddress()}"></span><br/>
+            <span><b th:text="${invoiceDto.getDocumentType()}+':'"></b> </span> <span th:text="${invoiceDto.getDocumentNumber()}"></span>
+        </div>
+
+
+    </div>
+    <hr id="line2"/>
+    <div class="terms">
+        <strong>Invoice Number:</strong> <span th:text="${invoiceDto.getInvoiceNumber()}"></span><br/><br/>
+        <strong>Date:</strong> <span th:text="${invoiceDto.dateInfo.value}"></span><br/><br/>
+        <strong>Terms:</strong> <span th:text="${invoiceDto.getTerms()}"></span><br/>
+    </div>
+
+    <div class="calculation">
+        <table>
+            <tr>
+                <th>DESCRIPTION</th>
+                <th>Subscription Type</th>
+                <th> No Of Users</th>
+                <th>Cost</th>
+                <th>AMOUNT</th>
+            </tr>
+            <tr>
+                <td>Flexipunch App Subscription</td>
+                <td th:text="${invoiceDto.getSubscriptionType()}"></td>
+                <td th:text="${invoiceDto.getNoOfUsersSubscription()}"></td>
+                <td th:text="${invoiceDto.getSubscriptionCost()} + '/-per user'"></td>
+                <td th:with="subscriptionAmount=${invoiceDto.getNoOfUsersSubscription() * invoiceDto.getSubscriptionCost() }"><span th:text="${subscriptionAmount}"></span></td>
+            </tr>
+            <tr>
+                <td>Installation Charges</td>
+                <td></td>
+                <td th:text="${invoiceDto.getNoOfUsersInstallationCharges()}"></td>
+                <td th:text="${invoiceDto.getInstallationChargesCost()} + '/-per user'"></td>
+                <td th:with="installationChargesAmount=${invoiceDto.getNoOfUsersInstallationCharges() * invoiceDto.getInstallationChargesCost() }"><span th:text="${installationChargesAmount}"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="data" th:with="subscriptionAmount=${invoiceDto.getNoOfUsersSubscription() * invoiceDto.getSubscriptionCost()},
+    installationChargesAmount=${invoiceDto.getNoOfUsersInstallationCharges() * invoiceDto.getInstallationChargesCost()},
+    subtotal=${subscriptionAmount + installationChargesAmount},
+    gstRate=${invoiceDto.getApplicableGstRate()},
+    igstRate=${gstRate},
+    cgstRate=${gstRate / 2},
+    sgstRate=${gstRate / 2},
+    igstAmount=${subtotal * igstRate / 100},
+    cgstAmount=${subtotal * cgstRate / 100},
+    sgstAmount=${subtotal * sgstRate / 100},
+    applicableGstType=${invoiceDto.getApplicableGstType()}">
+
+        <strong>Subtotal:</strong> <span th:text="${subtotal}"></span><br/><br/>
+
+        <th:block th:if="${applicableGstType=='igst'}">
+            <strong>IGST (<span th:text="${igstRate}"></span>%):</strong><span th:text="${igstAmount}"></span><br/><br/>
+            <strong>Total:</strong><span th:text="${subtotal + igstAmount}"></span><br/><br/>
+            <strong>Balance Due:</strong><span th:text="${subtotal + igstAmount}"></span><br/><br/>
+        </th:block>
+
+        <th:block th:unless="${applicableGstType=='igst'}">
+            <strong>CGST (<span th:text="${cgstRate}"></span>%):</strong><span th:text="${cgstAmount}"></span><br/><br/>
+            <strong>SGST (<span th:text="${sgstRate}"></span>%):</strong> <span th:text="${sgstAmount}"></span><br/><br/>
+            <strong>Total:</strong><span th:text="${subtotal + cgstAmount + sgstAmount}"></span><br/><br/>
+            <strong>Balance Due:</strong><span th:text="${subtotal + cgstAmount + sgstAmount}"></span><br/><br/>
+        </th:block>
+
+
+    </div>
+
+    <div class="bank-details">
+        <table border="1">
+            <tr>
+                <td>Account Name</td>
+                <td>SOWERMATE TECHNOLOGIES PRIVATE LIMITED</td>
+            </tr>
+            <tr>
+                <td>Account No</td>
+                <td>50200073452814</td>
+            </tr>
+            <tr>
+                <td>RTGS/NEFT IFSC</td>
+                <td> HDFC0000007</td>
+            </tr>
+            <tr>
+                <td>Bank Name</td>
+                <td>HDFC BANK LTD</td>
+            </tr>
+            <tr>
+                <td>Branch Name</td>
+                <td>BHANDARKAR ROAD</td>
+            </tr>
+        </table>
+    </div>
+
+</main>
+
+<footer>
+
+    <hr id="line3"/>
+    <footer>
+        <div class="footer-heading"><b>corporate office</b>
+            <p>SWAPNAPURTI, SNO 25/30/232 KALE PADAL, SASANE NAGAR, HADAPSAR, PUNE, MAHARASHTRA, INDIA, 411028</p>
+            <p>CIN: U72900PN2022PTC215556 | Email: <span id="email"><u>reachus@sowermate.com</u></span> | <span id="site"><u>www.sowermate.com</u></span></p></div>
+    </footer>
+    <div class="footer-bar"></div>
+
+</footer>
+
+</body>
+</html>

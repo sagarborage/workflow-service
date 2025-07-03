@@ -45,10 +45,11 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "FROM ProFormaInvoiceEntity pi " +
             "JOIN pi.firm c " +
             "JOIN pi.proFormaInvoiceItemEntities p " +
-            "WHERE c.uuid = :companyUuid " +
-            "AND pi.uuid = :proformaInvoiceUuid " +
+            "WHERE " +
+            //"c.uuid = :companyUuid " +
+            "pi.uuid = :proformaInvoiceUuid " +
             "GROUP BY pi.uuid ")
-    GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
+    GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(/*String companyUuid,*/ String proformaInvoiceUuid);
 
     @Query("SELECT " +
             "p.companyIdBill.tenantName as partyName, " +
@@ -59,10 +60,11 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "JOIN p.firm c " +
             "JOIN p.gatePassEntities g " +
             "JOIN g.gatePassDetailsEntities gd " +
-            "WHERE c.uuid = :companyUuid " +
-            "AND p.uuid = :proformaInvoiceUuid " +
+            "WHERE " +
+            //"c.uuid = :companyUuid " +
+            "p.uuid = :proformaInvoiceUuid " +
             "GROUP BY g.uuid ")
-    List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
+    List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(/*String companyUuid,*/ String proformaInvoiceUuid);
 
     @Query("SELECT " +
             "gs.name as glassSpecification , " +
@@ -114,5 +116,11 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "AND g.createdDateTime BETWEEN :fromDate AND :toDate " +
             "AND (:companyUuid IS NULL OR pi.companyIdBill.uuid = :companyUuid) " +
             "AND (:firmUuid IS NULL OR pi.firm.uuid = :firmUuid) " + //TODO: temp fix to refer firm froPI but it should be from gate pass        "GROUP BY g.uuid")List<GatePassProjection> findGatePassDetailsWithProformaDetails(        @Param("tenantUuid") String tenantUuid,        @Param("companyUuid") String companyUuid,        @Param("firmUuid") String firmUuid,        @Param("fromDate") LocalDateTime fromDate,        @Param("toDate") LocalDateTime toDate);
-            "GROUP BY g.uuid")List<GatePassProjection> findGatePassDetailsWithProformaDetails(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid, @Param("firmUuid") String firmUuid, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
+            "GROUP BY g.uuid")
+    List<GatePassProjection> findGatePassDetailsWithProformaDetails(
+            @Param("tenantUuid") String tenantUuid,
+            @Param("companyUuid") String companyUuid,
+            @Param("firmUuid") String firmUuid,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate);
 }

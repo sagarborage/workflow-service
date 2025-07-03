@@ -150,8 +150,8 @@ public class GatePassServiceImpl implements GatePassService {
 
     @Override
     public GatePassInfo getGatePassByProformaInvoice(String companyUuid, String proformaInvoiceUuid) {
-        GatePassInfoProjection gatePassInfoProjection = gatePassRepository.findGatePassInfoByProformaInvoiceUuid(companyUuid, proformaInvoiceUuid);
-        List<GatePassDetailsInfoProjection> gatePassDetailsInfoProjectionList = gatePassRepository.findGatePassDetailsInfoByProformaInvoiceUuid(companyUuid, proformaInvoiceUuid);
+        GatePassInfoProjection gatePassInfoProjection = gatePassRepository.findGatePassInfoByProformaInvoiceUuid(/*companyUuid, */proformaInvoiceUuid);
+        List<GatePassDetailsInfoProjection> gatePassDetailsInfoProjectionList = gatePassRepository.findGatePassDetailsInfoByProformaInvoiceUuid(/*companyUuid, */proformaInvoiceUuid);
         GatePassInfo gatePassInfo = new GatePassInfo();
         if (gatePassInfoProjection != null) {
             gatePassInfo.setProFormInvoiceUuid(proformaInvoiceUuid);

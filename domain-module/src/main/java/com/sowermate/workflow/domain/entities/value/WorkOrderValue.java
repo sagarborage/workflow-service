@@ -15,6 +15,7 @@ public class WorkOrderValue extends BaseDto {
     private String proFormaInvoiceUuid;
     private String firmUuid;
     private String tenantUuid;
+    private Long workOrderNo;
 
     public WorkOrderEntity toEntity() {
         return WorkOrderEntity.newBuilder()

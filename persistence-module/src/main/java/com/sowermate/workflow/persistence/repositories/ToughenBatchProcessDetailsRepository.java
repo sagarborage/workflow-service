@@ -31,9 +31,9 @@ public interface ToughenBatchProcessDetailsRepository extends JpaRepository<Toug
             "JOIN pi.companyIdBill as c " +
             "JOIN pi.tenantEntity as t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND f.uuid = :companyUuid " +
+            //"AND f.uuid = :companyUuid " + //TODO:Sagar
             "AND tbd.uuid = :batchItemUuid ")
-    StickerReportProjection findStickerDataOfToughenBatchItem(String tenantUuid, String companyUuid, String batchItemUuid);
+    StickerReportProjection findStickerDataOfToughenBatchItem(String tenantUuid, /*String companyUuid,*/ String batchItemUuid);
 
     @Query("Select " +
             "pi.piNumber as piNo, " +
@@ -53,8 +53,8 @@ public interface ToughenBatchProcessDetailsRepository extends JpaRepository<Toug
             "JOIN pi.companyIdBill as c " +
             "JOIN pi.tenantEntity as t " +
             "WHERE t.uuid = :tenantUuid " +
-            "AND f.uuid = :companyUuid " +
+            //"AND f.uuid = :companyUuid " + //TODO:Sagar
             "AND tb.uuid = :batchUuid ")
-    List<StickerReportProjection> findAllStickerDataOfBatch(String tenantUuid, String companyUuid, String batchUuid);
+    List<StickerReportProjection> findAllStickerDataOfBatch(String tenantUuid, /*String companyUuid,*/ String batchUuid);
 }
 

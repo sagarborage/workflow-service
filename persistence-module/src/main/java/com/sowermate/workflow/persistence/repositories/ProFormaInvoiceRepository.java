@@ -67,9 +67,12 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "where pfie.tenantEntity.uuid = :tenantUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.invoiceDate DESC")
     List<ProFormaInvoiceMinimal> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, LocalDateTime startDate, LocalDateTime endDate);*/
 
-    @Query("SELECT pfie FROM ProFormaInvoiceEntity pfie " +
-            "where pfie.tenantEntity.uuid = :tenantUuid and pfie.firm.uuid = :companyUuid and pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
-    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
+    @Query("SELECT pfie " +
+            "FROM ProFormaInvoiceEntity pfie " +
+            "where pfie.tenantEntity.uuid = :tenantUuid and " +
+            //"pfie.firm.uuid = :companyUuid and " + //TODO: temp fix to allow all company, but it should be tenant specific companies
+            "pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, /*String companyUuid,*/ LocalDateTime startDate, LocalDateTime endDate);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")
@@ -252,7 +255,13 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "and (:status IS NULL OR pi.status = :status) " +
             "and pi.invoiceDate between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
-    List<ProformaInvoiceProjection> findAllPiOrdersDetails(@Param("tenantUuid") String tenantUuid, @Param("companyUuid") String companyUuid, @Param("partyUuid") String partyUuid, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate, @Param("status") ProformaInvoiceStatusEnum status);
+    List<ProformaInvoiceProjection> findAllPiOrdersDetails(
+            @Param("tenantUuid") String tenantUuid,
+            @Param("companyUuid") String companyUuid,
+            @Param("partyUuid") String partyUuid,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate,
+            @Param("status") ProformaInvoiceStatusEnum status);
 
     @Query("select " +
             "pi.uuid as uuid, " +
@@ -276,5 +285,9 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "and pi.createdDateTime between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid " +
             "GROUP BY pi.uuid")
-    List<ProformaInvoiceWithWorkOrderProjection> findAllWorkOrderDetails(@Param("tenantUuid") String tenantUuid, @Param("workOrderUuid") String workOrderUuid, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
+    List<ProformaInvoiceWithWorkOrderProjection> findAllWorkOrderDetails(
+            @Param("tenantUuid") String tenantUuid,
+            @Param("workOrderUuid") String workOrderUuid,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate);
 }
