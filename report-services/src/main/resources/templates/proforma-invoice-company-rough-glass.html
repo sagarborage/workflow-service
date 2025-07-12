@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
+
+    <style>
+
+        @page {
+            size: 210mm 297mm; /* A4 size */
+            margin: 10mm 3mm 10mm 3mm;
+            }
+        .resized-image {
+            width: 500px; /* Set the desired width */
+            height: auto; /* Maintain aspect ratio */
+        }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+        .font-helva
+        {
+          font-family: 'Helvetica', sans-serif;
+                    font-size: 15px;
+        }
+        .customPi {
+        font-size: 1.5em; /* Adjust as needed */
+        font-weight: bold; /* Adjust as needed */
+        }
+        .address{
+       text-align: left;
+       padding-left:10px;
+        }
+        td {
+        border: 1px solid black;
+        padding-left: 2px;
+        padding-right: 2px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        }
+        .alignCenter {
+        text-align: center;
+        }
+        .alignLeft {
+        text-align: left;
+        }
+
+    th, td {
+      border: 1px solid black;
+      text-align: center;
+      height: 20px; /* Adjust the height as needed */
+       font-weight: bold;
+    }
+    .no-sep-l-r-t-b {
+  border-left: none;
+    border-top: none;
+      border-bottom: none;
+        border-right: none;
+}
+.no-sep-l {
+  border-left: none;
+}
+
+.no-sep-r {
+  border-right: none;
+}
+    </style>
+</head>
+
+<body>
+<div style="overflow-x: auto; font-weight: bold;">
+    <table class="alignCenter font-sans-serif font-w-400 font-s-15">
+        <!-- 1st row with colspan 10 -->
+        <tr>
+            <td class="alignCenter customPi font-s-20" colspan="8">PROFORMA INVOICE(ROUGH GLASS)</td>
+        </tr>
+        <!-- 2nd row with colspan 2, 8 and width 20%, 80% respectively -->
+        <tr>
+            <td style="width: 30%;" colspan="3">
+
+            </td>
+            <td style="width: 70%;" colspan="5">
+                <div class="font-s-16 image-row alignCenter">
+                    <div style="font-size: 24px;"><b>HIMANSHU GLASS WORK</b></div>
+                    <div>Datta Nagar, Bamnoli, Mahashtra</div>
+                    <div>Sangli, PIN: 416436, GST NO: 27AAECH2044N1ZG,</div>
+                    <div>GST NO:27ARXPR1195F1Z4, PAN NO:ARXPR1195F1Z</div>
+                    <div>Ph.:8669585198,</div>
+                    <div class="margin-b-4">Web: www.himyougtuffglass.com </div>
+                </div>
+            </td>
+        </tr>
+        <!-- 3rd row with colspan 5, 3, 2 and width 46%, 27%, 27% respectively -->
+        <tr>
+            <td style="width: 40%;" class="font-s-17" colspan="4"><b>Proforma Invoice No: </b><span
+                    th:text="${piValue.getPiNumber()}"></span>
+            </td>
+            <td style="width: 35.4%;" colspan="2"><b>User: </b><span th:text="${piValue.getCreatedBy()}"></span></td>
+            <td style="width: 24.6%;" colspan="2"><b>Date: </b><span
+                    th:text="${#temporals.format(piValue.getInvoiceDate(), 'dd-MM-yyyy')}"></span></td>
+        </tr>
+        <!-- 4th and 5th rows with colspan 5, 5 and width 46%, 54% respectively -->
+        <tr>
+            <td style="width: 40%;" colspan="4">Invoice To</td>
+            <td style="width: 60%;" colspan="4">Dispatch To</td>
+        </tr>
+        <tr>
+            <td style="width: 40%;" colspan="4" class="address">
+                <div class="customPi" th:text="${reportDetails.getBillToPartyName()}"></div>
+                <div><span th:utext="${reportDetails.getBillToAddress()}"></span></div>
+            </td>
+<!--            <td style="width: 60%;" colspan="4" class="address">-->
+<!--                <div th:if="${reportDetails.getShippingAddress()} != null">-->
+<!--                    <div><span th:utext="${reportDetails.getShippingAddress()}"></span></div>-->
+<!--                </div>-->
+<!--                <div th:if="${reportDetails.getShippingAddress()} == null and ${reportDetails.getShipToPartyName()} != null">-->
+<!--                    <div class="customPi" th:text="${reportDetails.getShipToPartyName()}"></div>-->
+<!--                    <div><span th:utext="${reportDetails.getShipToAddress()}"></span></div>-->
+<!--                </div>-->
+<!--            </td>-->
+            <td style="width: 40%;" colspan="4" class="address">
+                <div class="customPi" th:text="${reportDetails.getBillToPartyName()}"></div>
+                <div><span th:utext="${reportDetails.getBillToAddress()}"></span></div>
+            </td>
+        </tr>
+        <!-- 6th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
+        <tr>
+            <td style="width: 2%;">
+                <div><b>Sr.</b></div>
+                <div><b>No</b></div>
+            </td>
+            <td style="width: 12%;">
+                <div><b>Width</b></div>
+                <div><b>(MM)</b></div>
+            </td>
+            <td style="width: 12%;">
+                <div><b>Height</b></div>
+                <div><b>(MM)</b></div>
+            </td>
+            <td style="width: 14%;"><b>Glass Type</b></td>
+            <td style="width: 10%;"><b>QTY</b></td>
+            <td style="width: 10%;">
+                <div>
+                    <div><b>SQ FT</b></div>
+                </div>
+            </td>
+            <td style="width: 20%;"><b>Rate</b></td>
+            <td style="width: 20%;"><b>Amount</b></td>
+        </tr>
+        <!-- 7th row with colspan 10 -->
+        <th:block th:each="entry : ${reportDetails.getGlassItemDetails()}">
+            <tr>
+                <td class="font-s-20 font-w-bold"
+                    th:text="${entry.key.glassSpecificationName + ' Thickness ' + entry.key.glassThicknessName + '  (' + entry.key.unitTotal} + ' ' + 'Sq.ft' +')'"
+                    colspan="8"></td>
+            </tr>
+            <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
+            <tr th:each="item,iterStat : ${entry.value}">
+                <td style="width: 9.2%;" th:text="${iterStat.index} + 1"></td>
+                <td style="width: 9.4%;" th:text="${item.widthMeasurementLabel}"></td>
+                <td style="width: 9.4%;" th:text="${item.heightMeasurementLabel}"></td>
+                <td style="width: 14.4%;" th:text="${item.glassTypeName}"></td>
+                <td style="width: 14.4%;" th:text="${item.quantity}"></td>
+                <td style="width: 14.4%;" th:text="${item.unitValue}"></td>
+                <td style="width: 14.4%;" th:text="${item.ratePerUnit}"></td>
+                <td style="width: 14.4%;" th:text="${item.amount}"></td>
+            </tr>
+        </th:block>
+        <!-- 9th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
+        <tr>
+            <td style="width: 36.8%;" colspan="2"></td>
+            <td style="width: 20%;" colspan="2">Sub Total</td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalQuantity()}"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalUnitTotal()}"></td>
+            <td style="width: 10.8%;"></td>
+            <td style="width: 10.8%;" th:text="${reportDetails.getTotalAmount()}"></td>
+        </tr>
+        <!-- 10th row with colspan 4, 2, 1, 1, 1, 1 and width 36.8%, 20%, 10.8% for remaining 4 -->
+
+        <tr th:each="item, iterStat : ${reportDetails.getServiceRateDetails()}" class="font-s-16">
+            <td style="width: 36.8%;" colspan="2"></td>
+            <td style="width: 20%;" colspan="2" th:text="${item.getServiceRateName()}"></td>
+            <td style="width: 10.8%;" th:text="${item.getQuantity()}">val</td>
+            <td style="width: 10.8%;"></td>
+            <td style="width: 10.8%;" th:text="${item.getRate()}">val</td>
+            <td style="width: 10.8%;" th:text="${item.getTotal()}">val</td>
+        </tr>
+        <!-- 11th row with colspan 6, 3, 1 and width 47.6%, 32.4%, 10.8% -->
+        <tr>
+            <td class="alignLeft padding-8 font-s-15 font-w-400" rowspan="2" style="width: 40%;" colspan="4">
+                <div class="customPi">BANK DETAILS</div>
+                <div><b>Bank- Kotak Mahindra Bank</b></div>
+                <div><b>Branch- Sangli</b></div>
+                <div><b>A/C No- 8421344464</b></div>
+                <div><b>IFSC Code- KKBK0002058</b></div>
+            </td>
+            <td class="padding-8 font-s-16 font-w-500" style="width: 40%;" colspan="3">
+                <div><b>Basic Amount</b></div>
+                <div th:if="${piValue.getAdminCharges() > 0}">
+                    <div><b>Admin Charges</b></div>
+                </div>
+            </td>
+            <td style="width: 20%;" colspan="2">
+                <div th:text="${piValue.getBasicAmount()}"></div>
+                <div th:if="${piValue.getAdminCharges() > 0}" th:text="${piValue.getAdminCharges()}"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="padding-8" style="width: 40;" colspan="3">
+                <div><b>Grand Total</b></div>
+            </td>
+            <td style="width: 20%;">
+                <div th:text="${reportDetails.getGrandTotal()}"></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <div class="alignLeft padding-8 font-s-13 font-w-700">
+                    <div>(1) PAYMENT: 50% ADVANCE, 50% AFTER DELIVERY.(2) TRANSPORTATION: EXTRA AT ACTUAL.</div>
+                    <div>(3) UNLOADING: BY BUYER.(4) OFFER VALIDITY: 7 DAYS.</div>
+                    <div>(5) PLEASE CHECK ALL THE SIZES AND DRAWINGS BEFORE CONFIRMATION AS NO CHANGES AND DISPUTES
+                        WILL BE ENTERTAINED THERE AFTER.
+                    </div>
+                    <div>(6) TAXES (GST) AS PER GOVT RULES.</div>
+                    <div>(7) ANY CLAIM OR REJECTION HAS TO BE BROUGHT TO OUR NOTICE WITHIN 24 Hrs. In WRITTEN.</div>
+                    <div>(8) TRANSIT BREAKAGE OF ANNEALED GLASS IS BUYERS LIABILITY.9) DELIVERY PERIOD: 7-8 BUSINESS
+                        DAYS.
+                    </div>
+                    <div>(10) PAYMENT IF NOT CLEARED IN 15 DAYS, 3% EXTRA PAYMENT SHALL BE CHARGED.</div>
+                    <div>(11) INSURANCE COVER UPTO COMPANY GATE.</div>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <div class="alignCenter">DESIGNS</div>
+            </td>
+        </tr>
+        <span th:each="design : ${designs}">
+            <tr>
+                <td colspan="8">
+                    <li th:each="entry : ${design.entrySet()}">
+                    <div th:text="${entry.key}"></div>
+                    <div class="alignCenter">
+                        <img th:src="@{${entry.value}}" alt="Base64 Image" class="resized-image"/>
+                    </div>
+                    </li>
+
+                </td>
+            </tr>
+        </span>
+    </table>
+</div>
+</body>
+</html>
