@@ -23,6 +23,8 @@ public interface PdfGenerationService {
 
     byte[] generateProformaInvoice(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException;
 
+    byte[] generateProformaInvoicePdfRoughGlass(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException;
+
     byte[] generateWorkOrder(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, List<Map<Integer, String>> designs) throws IOException;
 
     byte[] generateToughenReport(LocalDate date) throws IOException;
