@@ -78,7 +78,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         String tenantUuid = proFormaInvoiceItemValue.getTenantUuid();
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .tenantEntity(tenantRepository.findByUuid(tenantUuid))
-                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormaInvoiceUuid(
                         tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
                 .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
                         proFormaInvoiceItemValue.getGlassThicknessUuid()))
@@ -94,7 +94,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
     public List<ProFormaInvoiceItemValue> saveAllProFormaInvoiceItem(String tenantUuid, List<ProFormaInvoiceItemValue> proFormaInvoiceItems) {
         ProFormaInvoiceItemValue proFormaInvoiceItemValue = proFormaInvoiceItems.get(0);
         Tenant tenantEntity = tenantRepository.findByUuid(tenantUuid);
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormaInvoiceUuid(
                 tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid());
         GlassThicknessEntity glassThicknessEntity = glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
                 proFormaInvoiceItemValue.getGlassThicknessUuid());
@@ -155,7 +155,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
         ProFormaInvoiceItemEntity proFormaInvoiceItemEntity = proFormaInvoiceItemValue.toEntity().toBuilder()
                 .id(tempProFormaInvoiceItemEntity.getId())
                 .tenantEntity(tenantRepository.findByUuid(tenantUuid))
-                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(
+                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormaInvoiceUuid(
                         tenantUuid, proFormaInvoiceItemValue.getProFormaInvoiceUuid()))
                 .glassThicknessEntity(glassThicknessRepository.findByTenantEntity_UuidAndGlassThicknessUuid(tenantUuid,
                         proFormaInvoiceItemValue.getGlassThicknessUuid()))

@@ -16,5 +16,4 @@ public class WorkOrderExcelConstant {
     public static final String WORK_ORDER_REPORT = "Work Order Report";
     public static final String GENERATED_ON = "Generated On ";
     public static final String TO = " to ";
-
 }

@@ -31,7 +31,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "JOIN p.tenantEntity t " +
             "WHERE t.uuid = :tenantUuid " +
             "AND p.uuid = :proFormaInvoiceUuid")
-    ProFormaInvoiceEntity findByTenantEntity_UuidAndproFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
+    ProFormaInvoiceEntity findByTenantEntity_UuidAndProFormaInvoiceUuid(@Param("tenantUuid") String tenantUuid, @Param("proFormaInvoiceUuid") String proFormaInvoiceUuid);
 
     @Query("SELECT p FROM ProFormaInvoiceEntity p " +
             "JOIN p.tenantEntity t " +
@@ -45,7 +45,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     //PROD issue fix: duplicate PI/Numbers where getting created
     ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByCreatedDateTimeDesc(long id);
 
-    ProFormaInvoiceEntity findFirstByTenantEntityIdOrderByIdDesc(long id);
+    ProFormaInvoiceEntity findFirstByTenantEntityIdAndCreationTypeOrderByIdDesc(long id, String creationType);
     //ProFormaInvoiceEntity findByUuid(String uuid);
     //List<ProFormaInvoiceEntity> findAllByTenantEntity_Id(long tenantId);
 
@@ -70,9 +70,10 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
     @Query("SELECT pfie " +
             "FROM ProFormaInvoiceEntity pfie " +
             "where pfie.tenantEntity.uuid = :tenantUuid and " +
+            "(:creationType IS NULL OR pfie.creationType = :creationType) and " +
             //"pfie.firm.uuid = :companyUuid and " + //TODO: temp fix to allow all company, but it should be tenant specific companies
             "pfie.invoiceDate between :startDate and :endDate ORDER BY pfie.lastUpdatedDateTime DESC")
-    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, /*String companyUuid,*/ LocalDateTime startDate, LocalDateTime endDate);
+    List<ProFormaInvoiceEntity> findAllByTenantUuid(@Param("tenantUuid") String tenantUuid, /*String companyUuid, */LocalDateTime startDate, LocalDateTime endDate,String creationType);
 
     @Modifying
     @Query("DELETE FROM ProFormaInvoiceEntity g WHERE g.uuid = :proFormaInvoiceUuid")

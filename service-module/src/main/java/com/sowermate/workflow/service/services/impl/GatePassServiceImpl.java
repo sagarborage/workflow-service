@@ -59,7 +59,7 @@ public class GatePassServiceImpl implements GatePassService {
     public GatePassValue createGatePass(GatePassValue gatePassValue) {
 
         Tenant tenantEntity = tenantRepository.findByUuid(gatePassValue.getTenantUuid());
-        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(tenantEntity.getUuid(), gatePassValue.getProFormaInvoiceUuid());
+        ProFormaInvoiceEntity proFormaInvoiceEntity = proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormaInvoiceUuid(tenantEntity.getUuid(), gatePassValue.getProFormaInvoiceUuid());
         //Company companyEntity = companyRepository.findByTenantEntity_UuidAndCompanyEntityUuid(tenantEntity.getUuid(), gatePassValue.getCompanyUuid());
         Tenant companyEntity = tenantService.getTenantEntity(gatePassValue.getCompanyUuid());
         //Company partyCompanyEntity = companyService.getCompanyEntity(proFormaInvoiceEntity.getCompanyIdBill().getUuid());

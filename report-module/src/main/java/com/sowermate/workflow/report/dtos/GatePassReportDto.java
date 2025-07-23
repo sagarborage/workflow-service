@@ -20,5 +20,4 @@ public class GatePassReportDto {
     String piNo;
     LocalDate gatePassDate;
     Integer totalQuantity;
-
 }

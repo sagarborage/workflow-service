@@ -29,7 +29,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         WorkOrderEntity workOrderEntity = workOrderValue.toEntity().toBuilder()
                 .firm(tenantService.getTenantEntity(workOrderValue.getFirmUuid()))
                 .tenantEntity(tenantRepository.findByUuid(workOrderValue.getTenantUuid()))
-                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndproFormaInvoiceUuid(workOrderValue.getTenantUuid(), workOrderValue.getProFormaInvoiceUuid()))
+                .proFormaInvoiceEntity(proFormaInvoiceRepository.findByTenantEntity_UuidAndProFormaInvoiceUuid(workOrderValue.getTenantUuid(), workOrderValue.getProFormaInvoiceUuid()))
                 .build();
         return workOrderRepository.save(workOrderEntity).toDTO();
     }

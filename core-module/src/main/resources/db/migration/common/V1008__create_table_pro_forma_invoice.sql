@@ -25,6 +25,7 @@ CREATE TABLE pro_forma_invoice (
   id_ship_to int(10) UNSIGNED DEFAULT NULL,
   pi_type_id int(10) UNSIGNED NOT NULL,
   confirm_through_id int(10) UNSIGNED DEFAULT NULL,
+  creation_type varchar(10) NOT NULL,
   pi_number varchar(10) NOT NULL,
   invoice_date datetime NOT NULL,
   pro_forma_invoice_amount double DEFAULT NULL,

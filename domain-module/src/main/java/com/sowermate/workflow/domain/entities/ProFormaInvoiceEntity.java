@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
 @SuperBuilder(builderMethodName = "newBuilder", toBuilder = true)
 public class ProFormaInvoiceEntity extends Base {
 
+    @Column(name = "creation_type")
+    private String creationType;
+
     @Column(name = "pi_number")
     private String piNumber;
 
@@ -163,8 +166,9 @@ public class ProFormaInvoiceEntity extends Base {
                 .partyBillToName(getCompanyIdBill().getTenantName())
                 .partyShipToUuid(null != getCompanyIdShip() ? getCompanyIdShip().getUuid() : "")
                 .partyShipToName(null != getCompanyIdShip() ? getCompanyIdShip().getTenantName() : "")
-                .piTypeUuid(getPiTypeEntity().getUuid())
-                .piTypeName(getPiTypeEntity().getPiTypeName())
+                .piTypeUuid(piTypeEntity != null ? piTypeEntity.getUuid() : null)
+                .piTypeName(piTypeEntity != null ? piTypeEntity.getPiTypeName() : null)
+                .creationType(getCreationType())
                 .piNumber(getPiNumber())
                 .invoiceDate(getInvoiceDate())
                 .proFormaInvoiceAmount(getProFormaInvoiceAmount())

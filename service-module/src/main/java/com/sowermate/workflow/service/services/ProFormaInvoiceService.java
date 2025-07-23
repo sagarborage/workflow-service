@@ -31,7 +31,7 @@ public interface ProFormaInvoiceService {
 
     //public List<ProFormaInvoiceValue> getAllProFormaInvoice(String tenantUuid);
 
-    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate);
+    public List<ProFormaInvoiceHomeDetails> getAllProFormaInvoice(String tenantUuid, String companyUuid, LocalDateTime startDate, LocalDateTime endDate, String creationType);
 
     public List<ProFormaInvoiceOrdersProjection> getAllProFormOrdersDetails(String tenantUuid, String deptType);
 

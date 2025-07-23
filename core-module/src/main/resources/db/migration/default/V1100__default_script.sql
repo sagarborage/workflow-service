@@ -63,7 +63,7 @@ INSERT INTO app_config_settings
     ('is.tenant.doc.required', 'false', 'Tenant', 'Specify if tenant documents are required during registration', 1, 'System', NOW(), 'System', NOW(), 1),
 
     -- User config
-    ('is.user.doc.required', 'false', 'User', 'Specify if user documents are required during registration', 1, 'System', NOW(), 'System', NOW(), 1);
+    ('is.user.doc.required', 'false', 'User', 'Specify if user documents are required during registration', 1, 'System', NOW(), 'System', NOW(), 1),
 
     -- Tenant subscription config
     ('subscription.expiry.check.validity', '0 10 0 * * *', 'TenantSubscription', 'Cron expression to schedule daily check for expired tenant subscriptions at 12:10 AM', 1, 'System', NOW(), 'System', NOW(), 1),
