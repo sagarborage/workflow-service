@@ -156,8 +156,8 @@
             <!-- 8th row with nocolspan width for first 5 column 5 9.2% and remaining 5 with width 10.8% -->
             <tr th:each="item,iterStat : ${entry.value}">
                 <td style="width: 9.2%;" th:text="${iterStat.index} + 1"></td>
-                <td style="width: 9.4%;" th:text="${item.widthMeasurementLabel}"></td>
-                <td style="width: 9.4%;" th:text="${item.heightMeasurementLabel}"></td>
+                <td style="width: 9.4%;" th:text="${item.actualWidth}"></td>
+                <td style="width: 9.4%;" th:text="${item.actualHeight}"></td>
                 <td style="width: 14.4%;" th:text="${item.glassTypeName}"></td>
                 <td style="width: 14.4%;" th:text="${item.quantity}"></td>
                 <td style="width: 14.4%;" th:text="${item.unitValue}"></td>
