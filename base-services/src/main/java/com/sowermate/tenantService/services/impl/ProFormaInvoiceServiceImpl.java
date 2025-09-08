@@ -265,6 +265,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         existingInvoice.setIsGstApplicable(proFormaInvoiceValue.getIsGstApplicable());
         existingInvoice.setGstCharges(proFormaInvoiceValue.getGstCharges());
         existingInvoice.setGrandTotal(proFormaInvoiceValue.getGrandTotal());
+        existingInvoice.setIsProxGstApplicable(proFormaInvoiceValue.getIsProxGstApplicable());
+        existingInvoice.setProxGstCharges(proFormaInvoiceValue.getProxGstCharges());
         existingInvoice.setRoundOffAmount(proFormaInvoiceValue.getRoundOffAmount());
         existingInvoice.setPayableAmount(proFormaInvoiceValue.getPayableAmount());
         existingInvoice.setPreviousBalance(proFormaInvoiceValue.getPreviousBalance());

@@ -405,16 +405,20 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         //reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
         reportDetails.setUnitLabel("MM".equals(piValue.getPiTypeName()) ? "Sq.mtr" : "Sq.ft");
 
-
+        float gstCharges = piValue.getGstCharges() != null ? piValue.getGstCharges() : 0f;
+        if (piValue.getIsProxGstApplicable() && piValue.getProxGstCharges() > 0) {
+            gstCharges = gstCharges + piValue.getProxGstCharges();
+        }
         reportDetails.setGstType("MH".equalsIgnoreCase(reportDetails.getBillToPartyStateCode()) ? "SGST-CGST" : "IGST");
-        reportDetails.setIGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() : 0)));
-        reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
-        reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(piValue.getGstCharges()) ? piValue.getGstCharges() / 2 : 0)));
+        reportDetails.setIGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges : 0)));
+        reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges / 2 : 0)));
+        reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges / 2 : 0)));
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
         reportDetails.setProxSqft((piValue.getProxSqft() != null ? piValue.getProxSqft() + "" : "0"));
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount() + ""));
         reportDetails.setProxSqftRate(piValue.getProxPerSqftRate() == null ? "0" : piValue.getProxPerSqftRate() + "");
-        reportDetails.setProxAmount(piValue.getProxCharges() != null ? (piValue.getProxCharges() > 0 ? piValue.getProxCharges() + "" : "0") : null);
+        float proxAmount = piValue.getProxCharges() != null ? piValue.getProxCharges() : 0f;
+        reportDetails.setProxAmount(String.valueOf(proxAmount));
         reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0.0 : Math.round(piValue.getGrandTotal()));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
