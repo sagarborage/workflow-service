@@ -268,9 +268,7 @@
                     <div th:text="${reportDetails.getCGst()}"></div>
                 </div>
             </td>
-        </tr><div th:if="${reportDetails.getProxSqft() != '0'}">
-                    <div><b th:text="'Prox Sqft / Rate (' + ${reportDetails.getProxSqft()} + ' / ' + ${reportDetails.getProxSqftRate} + ')'"></b></div>
-                </div>
+        </tr>
         <tr>
             <td class="padding-8" style="width: 32.4%;" colspan="3">
                 <div><b>Grand Total</b></div>
