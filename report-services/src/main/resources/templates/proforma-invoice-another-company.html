@@ -236,7 +236,7 @@
                     <div><b th:text="'Insurance (' + ${reportDetails.getIPercent()} + '%)'"></b></div>
                 </div>
                 <div th:if="${reportDetails.getProxSqft() != '0'}">
-                    <b th:utext="'Prox Sqft/Rate (' + ${reportDetails.getProxSqft()} + '/' + ${reportDetails.getProxSqftRate()} + ')' + (${piValue.getIsProxGstApplicable()} ? ' <small>(inc. gst)</small>' : '') "></b>
+                    <b th:utext="'Prox Sqft/Rate (' + ${reportDetails.getProxSqft()} + '/' + ${reportDetails.getProxSqftRate()} + ')'"></b>
                 </div>
                 <div th:if="${reportDetails.getGstType() == 'IGST' && reportDetails.getIGst() != '0.0'}">
                     <div><b>IGST (18%)</b></div>
