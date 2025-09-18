@@ -3,7 +3,7 @@ variables:
   MAVEN_LOCAL_REPO: "/builds/.m2/repository"  # Custom local repo in container
   APP_JAR_PATH: "$MAVEN_LOCAL_REPO/com/sowermate/workflow/workflow-app-services/0.0.1-SNAPSHOT"
   SERVER_USER: "smuser"
-  SERVER_IP: "103.174.103.136"         # QA server IP (replace with actual IP)
+  SERVER_IP: "103.86.176.96"         # QA server IP (replace with actual IP)
   SSH_FILE_PATH: "/ssh_keys/sowermate-qa.pem"  # SSH key path in container
   SERVICE_NAME: "workflow-apis.service"
   APP_DEPLOY_DIR: "/opt/sowermate_apps/sm_qa_apps_java_running"
