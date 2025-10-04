@@ -184,14 +184,14 @@ public class ProFormaInvoiceController {
     }
 
     @GetMapping("/pi-register/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status) {
-        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status);
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String companyUuid, @RequestParam(required = false) String partyUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate, @RequestParam(required = false) String status, @RequestParam(required = false) String creationType) {
+        List<Map<String, Object>> proformaInvoiceDetails = proFormaInvoiceService.getAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDate, toDate, status,creationType);
         return new ResponseEntity<>(proformaInvoiceDetails, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/work-order-details/{tenantUuid}")
-    public ResponseEntity<List<Map<String, Object>>> getAllWorkOrderDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
-        List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllWorkOrderDetails(tenantUuid, workOrderUuid, fromDate, toDate);
+    public ResponseEntity<List<Map<String, Object>>> getAllPiOrdersDetailsWithWorkOrderDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String workOrderUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
+        List<Map<String, Object>> allPiOrdersDetailsWithWorkOrderDetails = proFormaInvoiceService.getAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDate, toDate);
         return new ResponseEntity<>(allPiOrdersDetailsWithWorkOrderDetails, HttpStatus.ACCEPTED);
     }
 

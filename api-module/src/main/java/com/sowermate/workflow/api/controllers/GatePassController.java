@@ -106,14 +106,14 @@ public class GatePassController {
         return new ResponseEntity<>(gatePassInfo, HttpStatus.OK);
     }
 
-    @GetMapping("/get-pass/{tenantUuid}")
+    @GetMapping("/get-pass-details/{tenantUuid}")
     public ResponseEntity<List<Map<String, Object>>> getAllGatePassWithProformaDetails(@PathVariable String tenantUuid, @RequestParam(required = false) String partyUuid, @RequestParam(required = false) String firmUuid, @RequestParam LocalDate fromDate, @RequestParam LocalDate toDate) {
         List<Map<String, Object>> allGatePassWithProformaDetails = gatePassService.getAllGatePassWithProformaDetails(tenantUuid, partyUuid, firmUuid, fromDate, toDate);
         return new ResponseEntity<>(allGatePassWithProformaDetails, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/gate-pass-excel-report")
-    public ResponseEntity<String> getGatePassExcel(@RequestBody GatePassExcelReport gatePassExcelReport) throws IOException {
+    public ResponseEntity<String> getWorkOrderDetailsExcel(@RequestBody GatePassExcelReport gatePassExcelReport) throws IOException {
         List<GatePassExcelReportData> gatePassExcelReportData = this.gatePassService.getGatePassExcel(gatePassExcelReport);
         String base64Excel = generateExcelService.generateGatePassExcelSheet(gatePassExcelReportData, gatePassExcelReport);
         return new ResponseEntity<>(base64Excel, HttpStatus.OK);

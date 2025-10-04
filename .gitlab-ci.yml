@@ -3,9 +3,10 @@ variables:
   MAVEN_LOCAL_REPO: "/builds/.m2/repository"  # Custom local repo in container
   APP_JAR_PATH: "$MAVEN_LOCAL_REPO/com/sowermate/workflow/workflow-app-services/0.0.1-SNAPSHOT"
   SERVER_USER: "smuser"
-  SERVER_IP: "103.174.103.136"         # QA server IP (replace with actual IP)
+  SERVER_IP: "103.86.176.96"         # QA server IP (replace with actual IP)
   SSH_FILE_PATH: "/ssh_keys/sowermate-qa.pem"  # SSH key path in container
 
+  SERVICE_NAME: "workflow-apis.service"
   APP_DEPLOY_DIR: "/opt/sowermate_apps/sm_qa_apps_java_running"
   APP_JAR_NAME: "workflow-app-services-0.0.1-SNAPSHOT.jar"
   APP_PORT: "8183"
@@ -57,8 +58,8 @@ deploy-qa:
     - scp -i "$SSH_FILE_PATH" "$APP_JAR_PATH/$APP_JAR_NAME" "$SERVER_USER@$SERVER_IP:$APP_DEPLOY_DIR"
     # Set permissions
     - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo chmod -R g+w $APP_DEPLOY_DIR/ && sudo chown -R www-data:www-data $APP_DEPLOY_DIR/"
-    # Start the app
-    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "nohup java -Dserver.port=$APP_PORT -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/$APP_JAR_NAME > $APP_DEPLOY_DIR/$APP_LOG_FILE_NAME 2>&1 &"
+    # Restart service
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo systemctl restart \"$SERVICE_NAME\""
   dependencies:
     - build
   only:
@@ -89,8 +90,8 @@ deploy-prod:
     - scp -i "$SSH_FILE_PATH" "$APP_JAR_PATH/$APP_JAR_NAME" "$SERVER_USER@$SERVER_IP:$APP_DEPLOY_DIR"
     # Set permissions
     - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo chmod -R g+w $APP_DEPLOY_DIR/ && sudo chown -R www-data:www-data $APP_DEPLOY_DIR/"
-    # Start the app
-    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "nohup java -Dserver.port=$APP_PORT -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/$APP_JAR_NAME > $APP_DEPLOY_DIR/$APP_LOG_FILE_NAME 2>&1 &"
+    # Restart service
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo systemctl restart \"$SERVICE_NAME\""
   dependencies:
     - build
   when: manual

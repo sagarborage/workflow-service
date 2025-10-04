@@ -135,7 +135,7 @@ public class WorkflowPdfGenerationServiceImpl implements WorkflowPdfGenerationSe
         gatePassReportDto.setPartyBillToName(piInfoProjectionForReport.getPartyBillToName());
         gatePassReportDto.setGatePassDate(LocalDate.from(gatePassValue.getCreatedDateTime()));
         //AddressEntity address = companyInfo.getAddresses().get(0);
-        gatePassReportDto.setAddress(companyInfo.getAddressLine1() + ", " + PdfGenerationUtils.getStateName(companyInfo.getStateCode()) + ", " + companyInfo.getPinCode());
+        gatePassReportDto.setAddress(companyInfo.getAddressLine1() + ", " + PdfGenerationUtils.getStateName(companyInfo.getStateName()) + ", " + companyInfo.getPinCode());
 
         byte[] pdfBytes = generatePdfForGatePass(gatePassReportDto);
         pdfService.handlePdf(pdfBytes, "JAYDEEP", "SICKER", pdfStorageConfig.getProductInvoicesDirectory());//TODO: some modification remaining in uuid parameter

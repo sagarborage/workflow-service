@@ -239,7 +239,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
-    public List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(String companyUuid, ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum) {
+    public List<ToughenBatchProcessProjection> getToughenBatchProcessByStatus(ToughenBatchProcessStatusEnum toughenBatchProcessStatusEnum) {
         List<ToughenBatchProcessProjection> list = toughenBatchProcessRepository.findByCompanyUuidAndStatus(toughenBatchProcessStatusEnum);
         if (!list.isEmpty()) {
             return list;
@@ -312,7 +312,7 @@ public class ToughenBatchProcessServiceImpl implements ToughenBatchProcessServic
     }
 
     @Override
-    public List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, String companyUuid, LocalDate batchProcessingDate) {
+    public List<ViewToughenBatchProcessDetailsProjection> viewToughenBatchProcessDetails(String tenantUuid, LocalDate batchProcessingDate) {
         List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessRepository.findByViewToughBatchProcess(tenantUuid, batchProcessingDate);
         if (!list.isEmpty()) {
             return list;

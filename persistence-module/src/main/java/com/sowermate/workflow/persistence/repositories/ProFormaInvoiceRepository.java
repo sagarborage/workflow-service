@@ -254,6 +254,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "where (:partyUuid IS NULL OR cb.uuid = :partyUuid) " +
             "and (:companyUuid IS NULL OR f.uuid = :companyUuid) " +
             "and (:status IS NULL OR pi.status = :status) " +
+            "and (:creationType IS NULL OR pi.creationType = :creationType) " +
             "and pi.invoiceDate between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid")
     List<ProformaInvoiceProjection> findAllPiOrdersDetails(
@@ -262,7 +263,8 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             @Param("partyUuid") String partyUuid,
             @Param("fromDate") LocalDateTime fromDate,
             @Param("toDate") LocalDateTime toDate,
-            @Param("status") ProformaInvoiceStatusEnum status);
+            @Param("status") ProformaInvoiceStatusEnum status,
+            @Param("creationType") String creationType);
 
     @Query("select " +
             "pi.uuid as uuid, " +
@@ -286,7 +288,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "and pi.createdDateTime between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid " +
             "GROUP BY pi.uuid")
-    List<ProformaInvoiceWithWorkOrderProjection> findAllWorkOrderDetails(
+    List<ProformaInvoiceWithWorkOrderProjection> findAllPiOrdersDetailsWithWorkOrderDetails(
             @Param("tenantUuid") String tenantUuid,
             @Param("workOrderUuid") String workOrderUuid,
             @Param("fromDate") LocalDateTime fromDate,

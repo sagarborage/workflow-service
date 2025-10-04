@@ -42,6 +42,8 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Double transportCharges;
     private Boolean isGstApplicable;
     private Float gstCharges;
+    private Boolean isProxGstApplicable;
+    private Float proxGstCharges;
     private Double grandTotal;
     private Float roundOffAmount;
     private Float payableAmount;
@@ -73,7 +75,9 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .proxCharges(getProxCharges())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
-                .isGstApplicable(getIsGstApplicable())
+                .isProxGstApplicable(getIsProxGstApplicable())
+                .proxGstCharges(getProxGstCharges())
+                .isGstApplicable(getIsGstApplicable() != null && getIsGstApplicable())
                 .gstCharges(getGstCharges())
                 .grandTotal(getGrandTotal())
                 .roundOffAmount(getRoundOffAmount())

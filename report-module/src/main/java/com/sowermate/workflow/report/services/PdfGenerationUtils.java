@@ -9,7 +9,7 @@ import java.util.Map;
 public class PdfGenerationUtils {
 
     public static String extractedAddressInfo(TenantInfoProjection address) {
-        return address != null ? address.getAddressLine1() + ", " + getStateName(address.getStateCode()) + ", " + address.getPinCode()
+        return address != null ? address.getAddressLine1() + ", " + getStateName(address.getStateName()) + ", " + address.getPinCode()
                 + "<br/>" +
                 "<b>Ph:</b> " + address.getPrimaryPhoneNumber() + ", <b>E-mail:</b> " + address.getEmail()
                 + "<br/>" +

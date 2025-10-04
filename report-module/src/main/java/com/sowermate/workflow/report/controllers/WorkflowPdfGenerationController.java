@@ -63,7 +63,7 @@ public class WorkflowPdfGenerationController {
         reportDetails.setShipToAddress(PdfGenerationUtils.extractedAddressInfo(shipToAddress));
         reportDetails.setShipToPartyName(proFormaInvoiceValue.getPartyShipToName());
         reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
-        reportDetails.setBillToPartyStateCode(billToAddress.getStateCode());
+        reportDetails.setBillToPartyStateCode(billToAddress.getStateName());
         reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
         reportDetails.setFirmName(tenantName);
 
@@ -124,7 +124,7 @@ public class WorkflowPdfGenerationController {
         reportDetails.setShipToAddress(PdfGenerationUtils.extractedAddressInfo(shipToAddress));
         reportDetails.setShipToPartyName(proFormaInvoiceValue.getPartyShipToName());
         reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
-        reportDetails.setBillToPartyStateCode(billToAddress.getStateCode());
+        reportDetails.setBillToPartyStateCode(billToAddress.getStateName());
         reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
 
         List<String> piItemsPdfUrls = new ArrayList<>();
@@ -185,7 +185,7 @@ public class WorkflowPdfGenerationController {
         reportDetails.setShipToAddress(PdfGenerationUtils.extractedAddressInfo(shipToAddress));
         reportDetails.setShipToPartyName(proFormaInvoiceValue.getPartyShipToName());
         reportDetails.setShippingAddress(proFormaInvoiceValue.getShippingAddress() != null ? proFormaInvoiceValue.getShippingAddress().replaceAll("\n", "<br/>") : null);
-        reportDetails.setBillToPartyStateCode(billToAddress.getStateCode()/*.get(0).getStateCode()*/);
+        reportDetails.setBillToPartyStateCode(billToAddress.getStateName()/*.get(0).getStateCode()*/);
         reportDetails.setBillToAddress(PdfGenerationUtils.extractedAddressInfo(billToAddress));
         reportDetails.setFirmName(companyName);
 

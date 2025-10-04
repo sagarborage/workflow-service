@@ -70,10 +70,10 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/getToughenBatchProcessByStatus/{companyUuid}/{status}")
+    @RequestMapping(method = RequestMethod.GET, path = "/getToughenBatchProcessByStatus/{status}")
     @ResponseBody
-    public ResponseEntity<List<ToughenBatchProcessProjection>> getToughenBatchProcessByStatus(@PathVariable("companyUuid") String companyUuid, @PathVariable("status") ToughenBatchProcessStatusEnum status) {
-        List<ToughenBatchProcessProjection> list = toughenBatchProcessService.getToughenBatchProcessByStatus(companyUuid, status);
+    public ResponseEntity<List<ToughenBatchProcessProjection>> getToughenBatchProcessByStatus(@PathVariable("status") ToughenBatchProcessStatusEnum status) {
+        List<ToughenBatchProcessProjection> list = toughenBatchProcessService.getToughenBatchProcessByStatus(status);
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
@@ -83,10 +83,10 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/viewToughenBatchProcessDetails/{tenantUuid}/{companyUuid}/{batchProcessingDate}")
+    @RequestMapping(method = RequestMethod.GET, path = "/viewToughenBatchProcessDetails/{tenantUuid}/{batchProcessingDate}")
     @ResponseBody
-    public ResponseEntity<List<ViewToughenBatchProcessDetailsProjection>> viewToughenBatchProcessDetails(@PathVariable("tenantUuid") String tenantUuid, @PathVariable("companyUuid") String companyUuid, @PathVariable("batchProcessingDate") LocalDate batchProcessingDate) {
-        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessService.viewToughenBatchProcessDetails(tenantUuid, companyUuid, batchProcessingDate);
+    public ResponseEntity<List<ViewToughenBatchProcessDetailsProjection>> viewToughenBatchProcessDetails(@PathVariable("tenantUuid") String tenantUuid, @PathVariable("batchProcessingDate") LocalDate batchProcessingDate) {
+        List<ViewToughenBatchProcessDetailsProjection> list = toughenBatchProcessService.viewToughenBatchProcessDetails(tenantUuid, batchProcessingDate);
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 }

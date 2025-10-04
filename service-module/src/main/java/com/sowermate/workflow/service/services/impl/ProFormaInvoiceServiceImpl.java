@@ -266,6 +266,8 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         existingInvoice.setIsGstApplicable(proFormaInvoiceValue.getIsGstApplicable());
         existingInvoice.setGstCharges(proFormaInvoiceValue.getGstCharges());
         existingInvoice.setGrandTotal(proFormaInvoiceValue.getGrandTotal());
+        existingInvoice.setIsProxGstApplicable(proFormaInvoiceValue.getIsProxGstApplicable());
+        existingInvoice.setProxGstCharges(proFormaInvoiceValue.getProxGstCharges());
         existingInvoice.setRoundOffAmount(proFormaInvoiceValue.getRoundOffAmount());
         existingInvoice.setPayableAmount(proFormaInvoiceValue.getPayableAmount());
         existingInvoice.setPreviousBalance(proFormaInvoiceValue.getPreviousBalance());
@@ -493,13 +495,14 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status) {
+    public List<Map<String, Object>> getAllPiOrdersDetails(String tenantUuid, String companyUuid, String partyUuid, LocalDate fromDate, LocalDate toDate, String status, String creationType) {
+        creationType = StringUtils.isBlank(creationType) ? null : creationType;
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
         companyUuid = StringUtils.isBlank(companyUuid) ? null : companyUuid;
         partyUuid = StringUtils.isBlank(partyUuid) ? null : partyUuid;
         ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, status);
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum, creationType);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
@@ -518,11 +521,11 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
+    public List<Map<String, Object>> getAllPiOrdersDetailsWithWorkOrderDetails(String tenantUuid, String workOrderUuid, LocalDate fromDate, LocalDate toDate) {
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
         workOrderUuid = StringUtils.isBlank(workOrderUuid) ? null : workOrderUuid;
-        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return projections.stream().map(p -> {
             Map<String, Object> map = new LinkedHashMap<>();
@@ -548,7 +551,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         String tenantUuid = filter.getTenantUuid();
         String companyUuid = StringUtils.isBlank(filter.getCompanyUuid()) ? null : filter.getCompanyUuid();
         String partyUuid = StringUtils.isBlank(filter.getPartyUuid()) ? null : filter.getPartyUuid();
-
+        String creationType = StringUtils.isBlank(filter.getCreationType()) ? null : filter.getCreationType();
         LocalDate fromDate = LocalDate.parse(filter.getFromDate());
         LocalDate toDate = LocalDate.parse(filter.getToDate());
         LocalDateTime fromDateTime = fromDate.atStartOfDay();
@@ -556,7 +559,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         ProformaInvoiceStatusEnum statusEnum = EnumUtils.getEnum(ProformaInvoiceStatusEnum.class, filter.getStatus());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum);
+        List<ProformaInvoiceProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetails(tenantUuid, companyUuid, partyUuid, fromDateTime, toDateTime, statusEnum, creationType);
         return projections.stream().map(p -> {
             ProFormaInvoiceExcelReportData report = new ProFormaInvoiceExcelReportData();
             report.setPiNumber(p.getPiNumber());
@@ -566,7 +569,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             report.setInvoiceDateTime(p.getInvoiceDateTime() != null ? p.getInvoiceDateTime().format(formatter) : null);
             report.setStatus(p.getStatus());
             return report;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     @Override
@@ -580,7 +583,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         LocalDateTime toDateTime = toDate.atTime(23, 59, 59, 999_999_999);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
+        List<ProformaInvoiceWithWorkOrderProjection> projections = proFormaInvoiceRepository.findAllPiOrdersDetailsWithWorkOrderDetails(tenantUuid, workOrderUuid, fromDateTime, toDateTime);
         return projections.stream().map(p -> {
             WorkOrderExcelReportData data = new WorkOrderExcelReportData();
             data.setFirmName(p.getFirmName());

@@ -86,6 +86,11 @@ public class ProFormaInvoiceEntity extends Base {
     @Column(name = "grand_total")
     private Double grandTotal;
 
+    @Column(name = "is_prox_gst_applicable")
+    private Boolean isProxGstApplicable;
+
+    @Column(name = "prox_gst_charges")
+    private Float proxGstCharges;
 
     @Column(name = "round_off_amount")
     private Float roundOffAmount;
@@ -182,6 +187,8 @@ public class ProFormaInvoiceEntity extends Base {
                 .proxCharges(getProxCharges())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
+                .isProxGstApplicable(getIsProxGstApplicable())
+                .proxGstCharges(getProxGstCharges())
                 .isGstApplicable(getIsGstApplicable())
                 .gstCharges(getGstCharges())
                 .grandTotal(getGrandTotal())

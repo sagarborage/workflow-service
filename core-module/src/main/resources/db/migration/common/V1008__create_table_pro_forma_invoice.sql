@@ -46,6 +46,8 @@ CREATE TABLE pro_forma_invoice (
   previous_balance DOUBLE(10,2) DEFAULT NULL,
   adjustment_amount int(10) DEFAULT NULL,
   shipping_address varchar(500) DEFAULT NULL,
+  is_prox_gst_applicable BOOLEAN DEFAULT NULL,
+  prox_gst_charges DOUBLE(10,2) DEFAULT NULL,
   status varchar(50) DEFAULT NULL,
   status_details varchar(50) DEFAULT NULL,
   is_gst_applicable bit NOT NULL DEFAULT 0,

@@ -13,4 +13,5 @@ public class ProFormaInvoiceExcelReport {
     private String fromDate;
     private String toDate;
     private String status;
+    private String creationType;
 }
