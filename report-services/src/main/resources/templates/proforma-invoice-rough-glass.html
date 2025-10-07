@@ -198,10 +198,26 @@
                 <div th:if="${piValue.getAdminCharges() > 0}">
                     <div><b>Admin Charges</b></div>
                 </div>
+                <div th:if="${piValue.getOtherCharges() > 0}">
+                    <div><b>Other Extra Charges</b></div>
+                </div>
+                <div th:if="${reportDetails.getGstType() == 'IGST' && reportDetails.getIGst() != '0.0'}">
+                    <div><b>IGST (18%)</b></div>
+                </div>
+                <div th:if="${reportDetails.getGstType() == 'SGST-CGST' && (reportDetails.getSGst() != '0.0'|| reportDetails.getCGst() != '0.0')}">
+                    <div><b>SGST (9%)</b></div>
+                    <div><b>CGST (9%)</b></div>
+                </div>
             </td>
             <td style="width: 20%;" colspan="2">
                 <div th:text="${piValue.getBasicAmount()}"></div>
                 <div th:if="${piValue.getAdminCharges() > 0}" th:text="${piValue.getAdminCharges()}"></div>
+                <div th:if="${piValue.getOtherCharges() > 0}" th:text="${piValue.getOtherCharges()}"></div>
+                <div th:if="${reportDetails.getGstType() == 'IGST' && reportDetails.getIGst() != '0.0'}" th:text="${reportDetails.getIGst()}"></div>
+                <div th:if="${reportDetails.getGstType() == 'SGST-CGST' && (reportDetails.getSGst() != '0.0' || reportDetails.getCGst() != '0.0')}">
+                    <div th:text="${reportDetails.getSGst()}"></div>
+                    <div th:text="${reportDetails.getCGst()}"></div>
+                </div>
             </td>
         </tr>
         <tr>

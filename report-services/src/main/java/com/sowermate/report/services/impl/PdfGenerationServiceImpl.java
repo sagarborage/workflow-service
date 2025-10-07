@@ -47,8 +47,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -437,14 +440,36 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     }
 
     private Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
+
         List<ProFormaInvoiceItemValue> itemList = piValue.getProFormaInvoiceItems();
 
-        List<ProFormaInvoiceItemReportValue> itemsList = itemList.stream().map(this::toReportVal).toList();
+        List<ProFormaInvoiceItemReportValue> itemsList = new ArrayList<>(itemList.stream().map(this::toReportVal).toList());
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = itemsList.stream().collect(Collectors.groupingBy(glass -> new PIReportHeaderDetails(glass.getGlassSpecificationName(), glass.getGlassThicknessName(), decimalFormat.format(itemList.stream().filter(g -> g.getGlassSpecificationName().equals(glass.getGlassSpecificationName()) && g.getGlassThicknessName().equals(glass.getGlassThicknessName())).mapToDouble(item -> Double.parseDouble(decimalFormat.format(item.getUnitValue()))).sum()))));
-        return glassItemDetails;
+        itemsList.sort(Comparator.comparing(ProFormaInvoiceItemReportValue::getGlassSpecificationName, Comparator.reverseOrder())
+                .thenComparing(
+                        Comparator.comparing(
+                                item -> Double.parseDouble(item.getGlassThicknessName().replaceAll("[^\\d.]", "")),
+                                Comparator.reverseOrder()
+                        )
+                ));
+       return itemsList.stream()
+                .collect(Collectors.groupingBy(
+                        glass -> new PIReportHeaderDetails(
+                                glass.getGlassSpecificationName(),
+                                glass.getGlassThicknessName(),
+                                decimalFormat.format(
+                                        itemList.stream()
+                                                .filter(g -> g.getGlassSpecificationName().equals(glass.getGlassSpecificationName()) &&
+                                                        g.getGlassThicknessName().equals(glass.getGlassThicknessName()))
+                                                .mapToDouble(item -> Double.parseDouble(decimalFormat.format(item.getUnitValue())))
+                                                .sum()
+                                )
+                        ),
+                        LinkedHashMap::new, // Maintain insertion order!
+                        Collectors.toList()
+                ));
     }
 
     public ProFormaInvoiceItemReportValue toReportVal(ProFormaInvoiceItemValue value) {
