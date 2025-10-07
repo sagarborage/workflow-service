@@ -408,14 +408,24 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         //reportDetails.setUnitLabel(piValue.getPiTypeName().equals("MM") ? "Sq.mtr" : "Sq.ft");
         reportDetails.setUnitLabel("MM".equals(piValue.getPiTypeName()) ? "Sq.mtr" : "Sq.ft");
 
-        float gstCharges = piValue.getGstCharges() != null ? piValue.getGstCharges() : 0f;
+        float taxableAmount = piValue.getGstCharges() != null ? piValue.getGstCharges() : 0f;
         if (piValue.getIsProxGstApplicable() && piValue.getProxGstCharges() > 0) {
-            gstCharges = gstCharges + piValue.getProxGstCharges();
+            taxableAmount += piValue.getProxGstCharges();
         }
-        reportDetails.setGstType("MH".equalsIgnoreCase(reportDetails.getBillToPartyStateCode()) ? "SGST-CGST" : "IGST");
-        reportDetails.setIGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges : 0)));
-        reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges / 2 : 0)));
-        reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges / 2 : 0)));
+        boolean isMHState = "MH".equalsIgnoreCase(reportDetails.getBillToPartyStateCode());
+        reportDetails.setGstType(isMHState ? "SGST-CGST" : "IGST");
+        if (isMHState) {
+            float sgst = taxableAmount * 9 / 100f;
+            float cgst = taxableAmount * 9 / 100f;
+            reportDetails.setSGst(decimalFormat.format(sgst));
+            reportDetails.setCGst(decimalFormat.format(cgst));
+            reportDetails.setIGst("0");
+        } else {
+            float igst = taxableAmount * 18 / 100f;
+            reportDetails.setIGst(decimalFormat.format(igst));
+            reportDetails.setSGst("0");
+            reportDetails.setCGst("0");
+        }
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
         reportDetails.setProxSqft((piValue.getProxSqft() != null ? piValue.getProxSqft() + "" : "0"));
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount() + ""));
@@ -444,15 +454,17 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         List<ProFormaInvoiceItemReportValue> itemsList = itemList.stream().map(this::toReportVal).toList();
         BiFunction<String, String, String> calculateTotalUnitValue = (spec, thickness) ->
-                decimalFormat.format(itemList.stream().filter(item -> item.getGlassSpecificationName().equals(spec) && item.getGlassThicknessName().equals(thickness))
+                decimalFormat.format(itemList.stream()
+                        .filter(item -> item.getGlassSpecificationName().equals(spec) &&
+                                item.getGlassThicknessName().equals(thickness))
                         .mapToDouble(ProFormaInvoiceItemValue::getUnitValue)
                         .sum());
         Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> grouped = itemsList.stream()
                 .collect(Collectors.groupingBy(item -> new PIReportHeaderDetails(item.getGlassSpecificationName(), item.getGlassThicknessName(),
                         calculateTotalUnitValue.apply(item.getGlassSpecificationName(), item.getGlassThicknessName()))));
-        return grouped.entrySet().stream()
-                .sorted(Comparator.comparingDouble((Map.Entry<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> e) ->
-                        Double.parseDouble(e.getKey().getGlassThicknessName().replaceAll("[^\\d.]", ""))).reversed())
+        return grouped.entrySet().stream().sorted(Comparator
+                        .comparing((Map.Entry<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> e) -> e.getKey().getGlassSpecificationName()).reversed()
+                        .thenComparing(e -> Double.parseDouble(e.getKey().getGlassThicknessName().replaceAll("[^\\d.]", "")), Comparator.reverseOrder()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
