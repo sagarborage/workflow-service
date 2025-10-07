@@ -47,8 +47,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -438,13 +441,23 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     private Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails(ProFormaInvoiceValue piValue) {
         List<ProFormaInvoiceItemValue> itemList = piValue.getProFormaInvoiceItems();
-
-        List<ProFormaInvoiceItemReportValue> itemsList = itemList.stream().map(this::toReportVal).toList();
-
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails = itemsList.stream().collect(Collectors.groupingBy(glass -> new PIReportHeaderDetails(glass.getGlassSpecificationName(), glass.getGlassThicknessName(), decimalFormat.format(itemList.stream().filter(g -> g.getGlassSpecificationName().equals(glass.getGlassSpecificationName()) && g.getGlassThicknessName().equals(glass.getGlassThicknessName())).mapToDouble(item -> Double.parseDouble(decimalFormat.format(item.getUnitValue()))).sum()))));
-        return glassItemDetails;
+        List<ProFormaInvoiceItemReportValue> itemsList = itemList.stream().map(this::toReportVal).toList();
+        BiFunction<String, String, String> calculateTotalUnitValue = (spec, thickness) ->
+                decimalFormat.format(itemList.stream().filter(item -> item.getGlassSpecificationName().equals(spec) && item.getGlassThicknessName().equals(thickness))
+                        .mapToDouble(ProFormaInvoiceItemValue::getUnitValue)
+                        .sum());
+        Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> grouped = itemsList.stream()
+                .collect(Collectors.groupingBy(item -> new PIReportHeaderDetails(item.getGlassSpecificationName(), item.getGlassThicknessName(),
+                        calculateTotalUnitValue.apply(item.getGlassSpecificationName(), item.getGlassThicknessName()))));
+        return grouped.entrySet().stream()
+                .sorted(Comparator.comparingDouble((Map.Entry<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> e) ->
+                        Double.parseDouble(e.getKey().getGlassThicknessName().replaceAll("[^\\d.]", ""))).reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (v1, v2) -> v1,
+                        LinkedHashMap::new));
     }
 
     public ProFormaInvoiceItemReportValue toReportVal(ProFormaInvoiceItemValue value) {

@@ -198,10 +198,14 @@
                 <div th:if="${piValue.getAdminCharges() > 0}">
                     <div><b>Admin Charges</b></div>
                 </div>
+                <div><b>CGST (9%)</b></div>
+                <div><b>SGST (9%)</b></div>
             </td>
             <td style="width: 20%;" colspan="2">
                 <div th:text="${piValue.getBasicAmount()}"></div>
                 <div th:if="${piValue.getAdminCharges() > 0}" th:text="${piValue.getAdminCharges()}"></div>
+                <div th:text="${reportDetails.getCGst()}"></div>
+                <div th:text="${reportDetails.getSGst()}"></div>
             </td>
         </tr>
         <tr>
