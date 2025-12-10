@@ -1,0 +1,2660 @@
+{
+	"info": {
+		"_postman_id": "1f051589-d0ef-40c4-9e6e-0dddee6d9ec7",
+		"name": "workflow-service LatestUpdated_19thApr2024",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6307504"
+	},
+	"item": [
+		{
+			"name": "TenantDeatails",
+			"item": [
+				{
+					"name": "Create Tenant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantName\": \"Sowermate Technologies Private Limited\",\n    \"address\": \"Swapnapurti CHS, Hadapsar\",\n    \"city\": \"Sangola,Pune\",\n    \"state\": \"Maharashtra\",\n    \"countryId\": 1,\n    \"pinCode\": \"413028\",\n    \"phoneNumber\": \"9049789010\",\n    \"emailId\": \"borage.suhas@gmail.com\",\n    \"activationDate\": \"2022-11-31T18:30:00.000+00:00\",\n    \"expiryDate\": \"2050-04-31T18:30:00.000+00:00\",\n    \"gracePeriod\": 31,\n    \"isActive\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/tenants",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"tenants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tenat Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/tenants/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"tenants",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tenant Details",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/tenants/1234bdcka5",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"tenants",
+								"1234bdcka5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Tenant Details",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid \" : \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"tenantName\": \"Sowermate Technologies Private Limited\",\n    \"address\": \"Swapnapurti CHS, Hadapsar\",\n    \"city\": \"Pune\",\n    \"state\": \"Maharashtra\",\n    \"countryId\": 1,\n    \"pinCode\": \"413028\",\n    \"phoneNumber\": \"9049789010\",\n    \"emailId\": \"borage.suhas@gmail.com\",\n    \"activationDate\": \"2022-11-31T18:30:00.000+00:00\",\n    \"expiryDate\": \"2050-04-31T18:30:00.000+00:00\",\n    \"gracePeriod\": 15,\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/tenants",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"tenants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All TenantDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/tenants",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"tenants"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "CreateCompany",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "workflowQA",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    //\"companyUuid\": \"7ad2af75-dbb4-435e-aa0a-1e5c6cbc136d\",\n    \"companyName\": \"Subsidery\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"companyTypeUuid\": \"d03351ec-3c0d-11ee-962a-14abc5fbd6fa\",\n    \"cin\": \"CIN0000001\",\n    \"gstin\": \"GSTIN0000000\",\n    \"tan\": \"TAN0000000\",\n    \"addresses\": [\n        {\n            //\"companyAddressUuid\": \"cdef2962-d56a-415a-a982-ba2061d34526\",\n            \"addressTypeUuid\": \"d0329283-3c0d-11ee-962a-14abc5fbd6fa\",\n            \"addressLine1\": \"Hadapsar, near Dmart\",\n            \"city\": \"Pune\",\n            \"email\":\"a@a.com\",\n            \"stateCode\": 123,\n            \"countryCode\": 1234,\n            \"pinCode\": 123,\n            \"primaryPhoneNumber\": \"9049989010\",\n            \"alternatePhoneNumber\": \"9049989010\",\n            \"isActive\": true\n        }\n    ],\n    \"pan\": \"PAN0000000\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/companies",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCompany",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"companyUuid\": \"a2dbf8fd-8ac3-4e4f-8538-4be9461d159c\",\n    \"companyTypeUuid\": \"d0335437-3c0d-11ee-962a-14abc5fbd6fa\",\n    \"companyName\": \"Test Company One\",\n    \"cin\": \"CIN0000001\",\n    \"gstin\": \"GSTIN0000000\",\n    \"tan\": \"TAN0000000\",\n    \"pan\": \"PAN0000000\",\n    \"addresses\": [\n        {\n            \"addressTypeUuid\": \"d0329283-3c0d-11ee-962a-14abc5fbd6fa\",\n            \"addressUuid\": \"ec1218f7-a9cf-4fb8-982e-638a6ac1e4c4\",\n            \"addressLine1\": \"Hadapsar, near Dmart\",\n            \"stateCode\": 123,\n            \"countryCode\": 1234,\n            \"pinCode\": 123,\n            \"primaryPhoneNumber\": \"9049989010\",\n            \"alternatePhoneNumber\": \"9049989010\",\n            \"isActive\": true\n        }\n    ],\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/companies",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46d29ya2Zsb3dRQQ==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/companies/7977ff91-64d4-490b-914f-61bbacf75f0f/e45a74f2-5f06-4646-9132-b354bc592505",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"e45a74f2-5f06-4646-9132-b354bc592505"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyUuid\": \"64a715e0-142c-44ea-b613-357c38d2a38a\",\n    \"companyName\": \"Sowermate Technologies Private Limited, Pune, Sangli\",\n    \"cin\": \"CIN0000001\",\n    \"gstin\": \"GSTIN0000000\",\n    \"tan\": \"TAN0000000\",\n    \"companyAddresses\": [\n        {\n            \"companyAddressUuid\": \"e58d3e1c-f8d3-4845-b7fe-ff772ea39525\",\n            \"addressTypeUuid\": \"c1344dd1-338c-11ee-96f9-ee87d69c8cea\",\n            \"isActive\": true,\n            \"address\": {\n                \"addressUuid\": \"dd63837b-6037-42b8-b5c9-48caacae3f1d\",\n                \"addressLine1\": \"Ingole plaza near new english school Sangola dist solapur..\",\n                \"stateCode\": 123,\n                \"countryCode\": 1234,\n                \"pinCode\": 123,\n                \"primaryPhoneNumber\": \"9049989010\",\n                \"alternatePhoneNumber\": \"9049989010\",\n                \"isActive\": true\n            }\n        }\n    ],\n    \"pan\": \"PAN0000000\",\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\",\n    \"isActive\": false,\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"companyTypeUuid\": \"a7dc8d6e-0de0-484f-a324-4f45ba6b508d\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/companies/7977ff91-64d4-490b-914f-61bbacf75f0f/2dc71856-ce6f-41a0-9732-ef97ae85eaf9",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"2dc71856-ce6f-41a0-9732-ef97ae85eaf9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All  Company",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Basic YWRtaW46d29ya2Zsb3dRQQ==",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{HOSTED_API}}/companies/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"companies",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Address",
+			"item": [
+				{
+					"name": "createAddress",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"addressLine1\": \"Sowermate\",\n    \"addressLine2\": \"sangola\",\n    \"addressLine3\": \"Near to New English School\",\n    \"city\": \"Snagola\",\n    \"stateCode\": \"1\",\n    \"countryCode\": \"1\",\n    \"pinCode\": \"3455\",\n    \"workPhone\": \"57789\",\n    \"fax\": \"41A04\",\n    \"primaryPhoneNumber\": \"12345\",\n    \"alternatePhoneNumber\": \"24156\",\n     \"email\": \"dasc@gamil.com\",\n     \"website\": \"dasc.com\",\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\",\n    \"isActive\":1 \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAddress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/2cc1e026-d9d6-45df-9bc5-c6861e42641d",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"2cc1e026-d9d6-45df-9bc5-c6861e42641d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Address",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addressUuid\": \"2cc1e026-d9d6-45df-9bc5-c6861e42641d\",\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"addressLine1\": \"Sowermate\",\n    \"addressLine2\": \"sangola\",\n    \"addressLine3\": \"Near to New English School\",\n    \"city\": \"Snagola\",\n    \"stateCode\": 1,\n    \"countryCode\": 1,\n    \"pinCode\": 416465,\n    \"workPhone\": \"57789\",\n    \"fax\": \"41A04\",\n    \"primaryPhoneNumber\": 12345,\n    \"alternatePhoneNumber\": 24156,\n    \"email\": \"dasc@gamil.com\",\n    \"website\": \"dasc.com\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Address",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/2cc1e026-d9d6-45df-9bc5-c6861e42641d",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"2cc1e026-d9d6-45df-9bc5-c6861e42641d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Address_Type",
+			"item": [
+				{
+					"name": "createAddress",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"addressLine1\": \"Sowermate\",\n    \"addressLine2\": \"sangola\",\n    \"addressLine3\": \"Near to New English School\",\n    \"city\": \"Snagola\",\n    \"stateCode\": \"1\",\n    \"countryCode\": \"1\",\n    \"pinCode\": \"3455\",\n    \"workPhone\": \"57789\",\n    \"fax\": \"41A04\",\n    \"primaryPhoneNumber\": \"12345\",\n    \"alternatePhoneNumber\": \"24156\",\n     \"email\": \"dasc@gamil.com\",\n     \"website\": \"dasc.com\",\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\",\n    \"isActive\":1 \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAddress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/2cc1e026-d9d6-45df-9bc5-c6861e42641d",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"2cc1e026-d9d6-45df-9bc5-c6861e42641d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Address",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addressUuid\": \"2cc1e026-d9d6-45df-9bc5-c6861e42641d\",\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"addressLine1\": \"Sowermate\",\n    \"addressLine2\": \"sangola\",\n    \"addressLine3\": \"Near to New English School\",\n    \"city\": \"Snagola\",\n    \"stateCode\": 1,\n    \"countryCode\": 1,\n    \"pinCode\": 416465,\n    \"workPhone\": \"57789\",\n    \"fax\": \"41A04\",\n    \"primaryPhoneNumber\": 12345,\n    \"alternatePhoneNumber\": 24156,\n    \"email\": \"dasc@gamil.com\",\n    \"website\": \"dasc.com\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/address-types/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"address-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Address",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/addresses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/2cc1e026-d9d6-45df-9bc5-c6861e42641d",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"addresses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"2cc1e026-d9d6-45df-9bc5-c6861e42641d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceRate",
+			"item": [
+				{
+					"name": "Create ServiceRate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Big Hole\",\n    \"rate\":\"100.2345\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"isActive\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rates",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ServiceRate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rates/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/aa1071e4-0aaa-4ee5-88e4-758d1bc8709d",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rates",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"aa1071e4-0aaa-4ee5-88e4-758d1bc8709d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All ServiceRate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rates/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rates",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update ServiceRate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"createdDttm\": \"2023-09-12T09:38:30.232357\",\n    \"updatedDttm\": \"2023-09-12T09:38:30.232389\",\n    \"createdBy\": \"ADMIN\",\n    \"updatedBy\": \"ADMIN\",\n    \"serviceRateId\": 4,\n    \"serviceRateUuid\": \"67486755-4c58-4a8b-8302-c186b89b2a62\",\n    \"name\": \"Small hole one\",\n    \"rate\": 100.2,\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rates",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ServiceRate",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rates/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/5f807630-c2f4-4fb1-8708-91d61d8a1b85",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rates",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"5f807630-c2f4-4fb1-8708-91d61d8a1b85"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceRateInvoice",
+			"item": [
+				{
+					"name": "Create ServiceRateInvoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": \"78\",\n    \"rate\": \"50.5\",\n    \"total\": \"100.75\",\n    \"proFormaInvoiceUuid\": \"3dc078af-3db2-447a-aa7a-b5a833571176\",\n    \"serviceRateUuid\": \"3c0f293b-c5bb-4f92-a138-4a8400716d01\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rate-invoices",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rate-invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ServiceRateInvoice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rate-invoices",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rate-invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All ServiceRateInvoice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rate-invoices/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rate-invoices",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update ServiceRateInvoice",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"proFormaInvoiceUuid\": \"c82fe9dc-f687-41db-ae34-78b92ca0f33e\",\n    \"serviceRateInvoiceUuid\": \"dfe4c75f-9b9f-4e33-bc9f-7c79cfa73500\",\n    \"serviceRateUuid\": \"5f807630-c2f4-4fb1-8708-91d61d8a1b85\",\n    \"quantity\": 50,\n    \"rate\": 50,\n    \"total\": 100,\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rate-invoices",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rate-invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ServiceRateInvoice",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/service-rate-invoices",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"service-rate-invoices"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Additional Charges",
+			"item": [
+				{
+					"name": "Create AdditonalCharges",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"extraMm\": \"45.88\",\n    \"insurance\": \"23\",\n    \"adminCharges\": \"56.5\",\n    \"forwardingCharges\": \"19.56\",\n    \"gst\":\"14.2\",\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/additional-charges",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"additional-charges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AdditionalCharges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/additional-charges/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/b632cf18-174c-467c-96fe-e373dd236a80",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"additional-charges",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"b632cf18-174c-467c-96fe-e373dd236a80"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All AdditionalCharges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/additional-charges/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"additional-charges",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update AdditionalCharges",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"additionalChargesUuid\": \"f0517700-92eb-4154-bd6d-1d785d76b917\",\n    \"extraMm\": 45.45,\n    \"insurance\": 23.0,\n    \"adminCharges\": 56.5,\n    \"forwardingCharges\": 19.56,\n    \"gst\": 14.2,\n    \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/additional-charges",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"additional-charges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete AdditionalCharges",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/additional-charges/b632cf18-174c-467c-96fe-e373dd236a80/cc877bb2-3e70-45b4-8767-8c6e9b788334",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"additional-charges",
+								"b632cf18-174c-467c-96fe-e373dd236a80",
+								"cc877bb2-3e70-45b4-8767-8c6e9b788334"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GlassType",
+			"item": [
+				{
+					"name": "Create Glass Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"glassName\": \"Glass door\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get GlassType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-types/7977ff91-64d4-490b-914f-61bbacf75f0f/49f0f958-6bc8-46c5-97ae-87a4ac07f251",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"49f0f958-6bc8-46c5-97ae-87a4ac07f251"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All GlassType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-types/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update GlassType",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"glassTypeUuid\": \"4e9e2ba4-bc6a-4749-a379-ef497c7eedd8\",\n    \"glassName\": \"Glass Two2\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete GlassType",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-types/7977ff91-64d4-490b-914f-61bbacf75f0f/4e9e2ba4-bc6a-4749-a379-ef497c7eedd8",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"4e9e2ba4-bc6a-4749-a379-ef497c7eedd8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"roleTypeUuid\": \"2f422f37-efc5-4eb1-974d-81cb30da2686\",\n    \"name\": \"User Two\",\n    \"password\": \"pass\",\n    \"salt\": \"pass\",\n    \"mobileNumber\": \"9049989010\",\n    \"emailId\": \"abc@abc.com\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/user",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/user/7977ff91-64d4-490b-914f-61bbacf75f0f/49f0f958-6bc8-46c5-97ae-87a4ac07f251",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"49f0f958-6bc8-46c5-97ae-87a4ac07f251"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/user/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"uuid\": \"5cddf2d3-52a0-4165-b7f1-c30389f0b7e0\",\n    \"roleTypeUuid\": \"7523cd45-d69d-443f-9621-a4bb7fa42f0e\",\n    \"name\": \"Sagar Borage\",\n    \"password\": \"pass\",\n    \"salt\": \"pass\",\n    \"mobileNumber\": \"9049989010\",\n    \"emailId\": \"abc@abc.com\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/user",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/user/7977ff91-64d4-490b-914f-61bbacf75f0f/5c19960a-f038-4b84-9d62-e082d2374005",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"5c19960a-f038-4b84-9d62-e082d2374005"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-authentication",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/user/auth/abhi/1234",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"abhi",
+								"1234"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RoleType",
+			"item": [
+				{
+					"name": "Create Role Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"name\": \"Admin\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/role-types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"role-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/role-types/7977ff91-64d4-490b-914f-61bbacf75f0f/c6f0bf3b-e769-4949-942d-eb18d2b8d458",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"role-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"c6f0bf3b-e769-4949-942d-eb18d2b8d458"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All RoleType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/role-types/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"role-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update GlassType",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"uuid\": \"c6f0bf3b-e769-4949-942d-eb18d2b8d458\",\n    \"name\": \"Admins\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/role-types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"role-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete GlassType",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/role-types/7977ff91-64d4-490b-914f-61bbacf75f0f/5c19960a-f038-4b84-9d62-e082d2374005",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"role-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"5c19960a-f038-4b84-9d62-e082d2374005"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Glass Specification",
+			"item": [
+				{
+					"name": "Create Glass Specification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"name\": \"Test Glass Specification\",\n    \"isActive\": true,\n    \"createdBy\":\"User\",\n    \"lastUpdatedBy\":\"User\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-specifications",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-specifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Glass Specification",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-specifications/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/7e130136-4806-4ccd-be26-4fa8c9292bbf",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-specifications",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"7e130136-4806-4ccd-be26-4fa8c9292bbf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Glass Specification",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-specifications/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-specifications",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Glass Specification",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-specifications/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/86f462d0-7fe4-49dc-b6d9-9e728bf97ed0",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-specifications",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"86f462d0-7fe4-49dc-b6d9-9e728bf97ed0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Glass Specification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"glassSpecificationId\": 1,\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"glassSpecificationUuid\": \"303013dc-25c1-4783-88bb-40f906d2f2b8\",\n    \"name\": \"Glass Specification Updated\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-specifications",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-specifications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pro Forma Invoice",
+			"item": [
+				{
+					"name": "Create ProFormaInvoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"firmUuid\": \"584bd17c-89a3-46ec-833b-f4502f046de4\",\n    \"companyBillToUuid\": \"2dc71856-ce6f-41a0-9732-ef97ae85eaf9\",\n    \"companyShipToUuid\": \"2dc71856-ce6f-41a0-9732-ef97ae85eaf9\",\n    \"piTypeUuid\": \"a5596194-a483-4240-aa73-3448c78176a1\",\n    /*\"proFormaInvoiceAmount\": \"34\",\n    \"serviceRateInvoiceAmount\": \"35\",\n    \"basicAmount\": \"693\",\n    \"adminCharges\": \"72\",\n    \"insurancePercent\": \"64\",\n    \"insurancePercentAmount\": \"626\",\n    \"urgencyPercent\": \"35\",\n    \"urgencyPercentAmount\": \"69\",\n    \"otherCharges\": \"76\",\n    \"transportCharges\": \"64\",\n    \"gstCharges\": \"34\",\n    \"grandTotal\": \"325\",\n    \"roundOffAmount\": \"629\",\n    \"payableAmount\": \"69\",\n    \"previousBalance\": \"746\",\n    \"adjustmentAmount\": \"64\",*/\n    \"status\": \"34\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ProFormaInvoice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/7977ff91-64d4-490b-914f-61bbacf75f0f/3dc078af-3db2-447a-aa7a-b5a833571176",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"3dc078af-3db2-447a-aa7a-b5a833571176"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All ProFormaInvoice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/7977ff91-64d4-490b-914f-61bbacf75f0f/2023-10-05/2023-10-10",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"2023-10-05",
+								"2023-10-10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ProFormaInvoice",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/2118bbc8-22ce-4795-842a-ee16861e47df",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"2118bbc8-22ce-4795-842a-ee16861e47df"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update ProFormaInvoice",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"proFormInvoiceUuid\": \"6e07a991-0067-41b1-bf37-eeacd65e012d\",\n    \"idBillToUuid\": \"79191d63-8c73-4d1b-94b0-d466cf8c0822\",\n    \"idShipToUuid\": \"79191d63-8c73-4d1b-94b0-d466cf8c0822\",\n    \"piNumber\": 10,\n    \"invoiceDate\": \"2022-11-08T18:30:00.000+00:00\",\n    \"proFormaInvoiceAmount\": 34.0,\n    \"serviceRateInvoiceAmount\": 35.0,\n    \"basicAmount\": 700.0,\n    \"adminCharges\": 70.0,\n    \"insurancePercent\": 64.0,\n    \"insurancePercentAmount\": 626.0,\n    \"urgencyPercent\": 35.0,\n    \"urgencyPercentAmount\": 69.0,\n    \"otherCharges\": 76.0,\n    \"transportCharges\": 64.0,\n    \"gstCharges\": 34.0,\n    \"grandTotal\": 325.0,\n    \"roundOffAmount\": 629,\n    \"payableAmount\": 69.0,\n    \"previousBalance\": 746.0,\n    \"adjustmentAmount\": 64,\n    \"status\": \"34\",\n    \"confirmThroughUuid\": \"203ec960-a5e2-42cc-b8fe-b403b9b1bf57\",\n    \"piTypeUuid\": \"47b72dd4-4fcb-481c-9d47-eeabb20e12f9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePIStatus",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQcm9mb3JtYUludm9pY2VAZ21haWwuY29tIiwicm9sZXMiOlsiUHJvZm9ybWFJbnZvaWNlIl0sImZ1bGxOYW1lIjoiUHJvZm9ybWFJbnZvaWNlIEJvcmFnZSIsImV4cCI6MTcxMzE3NzM0OH0.ZzyABt_2YgGsNRNaBp2KsMnqTOlhK66k3J-HC0Mgx0rweZEsdUP6LRP0JN03yGcWa_Z8X0Qq-Zag1T-p2lSrRQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/updatePIStatus/7977ff91-64d4-490b-914f-61bbacf75f0f/8ce01ff8-27ef-441a-847e-870857d6c143/HOLD?statusDetails=hello",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"updatePIStatus",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"8ce01ff8-27ef-441a-847e-870857d6c143",
+								"HOLD"
+							],
+							"query": [
+								{
+									"key": "statusDetails",
+									"value": "hello"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateConfirmThrough",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQcm9mb3JtYUludm9pY2VAZ21haWwuY29tIiwicm9sZXMiOlsiUHJvZm9ybWFJbnZvaWNlIl0sImZ1bGxOYW1lIjoiUHJvZm9ybWFJbnZvaWNlIEJvcmFnZSIsImV4cCI6MTcxMzE3NzM0OH0.ZzyABt_2YgGsNRNaBp2KsMnqTOlhK66k3J-HC0Mgx0rweZEsdUP6LRP0JN03yGcWa_Z8X0Qq-Zag1T-p2lSrRQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/updateConfirmThrough/7977ff91-64d4-490b-914f-61bbacf75f0f/85885ddc-7d05-474f-b2fd-e65ba66a1fbe/7ef3e64e-c66e-46a5-9766-bc8d46bebbe5",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"updateConfirmThrough",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"85885ddc-7d05-474f-b2fd-e65ba66a1fbe",
+								"7ef3e64e-c66e-46a5-9766-bc8d46bebbe5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateConfirmThrough Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQcm9mb3JtYUludm9pY2VAZ21haWwuY29tIiwicm9sZXMiOlsiUHJvZm9ybWFJbnZvaWNlIl0sImZ1bGxOYW1lIjoiUHJvZm9ybWFJbnZvaWNlIEJvcmFnZSIsImV4cCI6MTcxMzE3NzM0OH0.ZzyABt_2YgGsNRNaBp2KsMnqTOlhK66k3J-HC0Mgx0rweZEsdUP6LRP0JN03yGcWa_Z8X0Qq-Zag1T-p2lSrRQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/updateConfirmThrough/7977ff91-64d4-490b-914f-61bbacf75f0f/85885ddc-7d05-474f-b2fd-e65ba66a1fbe/7ef3e64e-c66e-46a5-9766-bc8d46bebbe5",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"updateConfirmThrough",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"85885ddc-7d05-474f-b2fd-e65ba66a1fbe",
+								"7ef3e64e-c66e-46a5-9766-bc8d46bebbe5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-order-list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQcm9mb3JtYUludm9pY2VAZ21haWwuY29tIiwicm9sZXMiOlsiUHJvZm9ybWFJbnZvaWNlIl0sImZ1bGxOYW1lIjoiUHJvZm9ybWFJbnZvaWNlIEJvcmFnZSIsImV4cCI6MTcxMzE3NzM0OH0.ZzyABt_2YgGsNRNaBp2KsMnqTOlhK66k3J-HC0Mgx0rweZEsdUP6LRP0JN03yGcWa_Z8X0Qq-Zag1T-p2lSrRQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/work-order-list/7977ff91-64d4-490b-914f-61bbacf75f0f/optimize",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"work-order-list",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"optimize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-individual-order-list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoices/work-order-individuals-list/7977ff91-64d4-490b-914f-61bbacf75f0f/eab9e047-ade5-4a60-9bca-e9f99d460836/optimize",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoices",
+								"work-order-individuals-list",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"eab9e047-ade5-4a60-9bca-e9f99d460836",
+								"optimize"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pro Forma Invoice Item",
+			"item": [
+				{
+					"name": "Create ProFormaInvoiceItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"widthInch\": \"23.34\",\n    \"widthMeasurement\": \"45.32\",\n    \"widthMeasurementLabel\": \"1/16 34\",\n    \"actualWidth\": \"56.43\",\n    \"chargeableWidth\": \"10.23\",\n    \"heightInch\": \"12.5\",\n    \"heightMeasurement\": \"35\",\n    \"heightMeasurementLabel\": \"1/8 34\",\n    \"actualHeight\": \"32\",\n    \"chargeableHeight\": \"14.35\",\n    \"extraMm\": \"24.35\",\n    \"quantity\": \"24\",\n    \"unitValue\": \"37.4\",\n    \"ratePerUnit\": \"24.4\",\n    \"unitMeasurementLabel\": \"10 78\",\n    \"amount\": \"900\",\n    \"isActive\": true,\n    \"proFormaInvoiceUuid\": \"3dc078af-3db2-447a-aa7a-b5a833571176\",\n    \"glassTypeUuid\": \"8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c\",\n    \"glassSpecificationUuid\": \"94771345-c309-4eb1-8e2b-bf147ec25f3f\",\n    \"glassThicknessUuid\": \"a15aa9f7-178a-44b6-b631-267bf4c3ca45\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ProFormaInvoiceItem",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/95b1987b-0131-4214-a901-f1235df235e0",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"95b1987b-0131-4214-a901-f1235df235e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All ProFormaInvoiceItem",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items/f2abd8fb-540d-4051-9093-853d11edec41",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items",
+								"f2abd8fb-540d-4051-9093-853d11edec41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  ProFormaInvoiceItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/95b1987b-0131-4214-a901-f1235df235e0",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"95b1987b-0131-4214-a901-f1235df235e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update  ProFormaInvoiceItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\":\"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"uuid\": \"796a5142-6265-4987-90b8-394a300976b2\",\n    \"widthInch\": \"34.44\",\n    \"widthMeasurement\": \"45.32\",\n    \"actualWidth\": \"56.43\",\n    \"chargeableWidth\": \"10.23\",\n    \"heightInch\": \"12.5\",\n    \"heghtMeasurement\": \"35\",\n    \"actualHeight\": \"32\",\n    \"chargeableHeight\": \"14.35\",\n    \"extraMm\": \"24.35\",\n    \"quantity\": \"24\",\n    \"sqft\": \"37.4\",\n    \"ratePerSqft\": \"24.4\",\n    \"amount\": \"900\",\n    \"proFormaInvoiceUuid\": \"4bfdacd7-6e55-4e43-be53-48730d51e41e\",\n    \"glassTypeUuid\": \"8d9c4ba2-7f6d-4635-a6a6-470c8b49f41c\",\n    \"glassSpecificationUuid\": \"94771345-c309-4eb1-8e2b-bf147ec25f3f\",\n    \"glassThicknessUuid\": \"a15aa9f7-178a-44b6-b631-267bf4c3ca45\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bucketManipulation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQcm9mb3JtYUludm9pY2VAZ21haWwuY29tIiwicm9sZXMiOlsiUHJvZm9ybWFJbnZvaWNlIl0sImZ1bGxOYW1lIjoiUHJvZm9ybWFJbnZvaWNlIEJvcmFnZSIsImV4cCI6MTcxMjIwOTk0OH0.hDg245Yje7LwpVqXKosLVbnh4EzZ9MGbJzR0K2kr79YOLfGrv-SFQqlES3yni7O-ptFPohXYn_QV9TeY9dsiYQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"proFormaInvoiceUUid\": \"eab9e047-ade5-4a60-9bca-e9f99d460836\",\n    \"proFormaInvoiceItemUUid\": \"41eeb213-fab9-46c4-931b-833b055702c6\",\n    \"currentBucket\": \"optimize\",\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/proforma-invoice-items/bucketManipulation/add",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"proforma-invoice-items",
+								"bucketManipulation",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Glass Thickness",
+			"item": [
+				{
+					"name": "Create Glass Thickness",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"name\": \"96mm\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-thickness",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-thickness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Glass Thickness",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-thickness/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/f5f80007-f304-4c57-9b92-42d25cf54564",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-thickness",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"f5f80007-f304-4c57-9b92-42d25cf54564"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Glass Thickness",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-thickness/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-thickness",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Glass Thickness",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-thickness/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/f5f80007-f304-4c57-9b92-42d25cf54564",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-thickness",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"f5f80007-f304-4c57-9b92-42d25cf54564"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Glass Thickness",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"glassThicknessUuid\": \"f5f80007-f304-4c57-9b92-42d25cf54564\",\n    \"name\": \"70mm\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/glass-thickness",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"glass-thickness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PiType",
+			"item": [
+				{
+					"name": "Create PiType",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n    \"piTypeName\" : \"MM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/pi-types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"pi-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get PiType",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/pi-types/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/c488ece7-5676-4f51-9abb-833acd5bf26b",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"pi-types",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"c488ece7-5676-4f51-9abb-833acd5bf26b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All PiType",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/pi-types/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"pi-types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PiType",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/pi-types/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/c488ece7-5676-4f51-9abb-833acd5bf26b",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"pi-types",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"c488ece7-5676-4f51-9abb-833acd5bf26b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update PiType",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"piTypeUuid\": \"c488ece7-5676-4f51-9abb-833acd5bf26b\",\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"mm\": 45.76,\n    \"sqft\": 43.67\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/pi-types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"pi-types"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "Create Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"name\": \"Satish\",\n    \"isActive\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/statuses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/statuses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/3bc2c495-b232-4bdf-b790-8cae154f4d3b",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"statuses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"3bc2c495-b232-4bdf-b790-8cae154f4d3b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/statuses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Status",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/statuses/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/3bc2c495-b232-4bdf-b790-8cae154f4d3b",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"statuses",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"3bc2c495-b232-4bdf-b790-8cae154f4d3b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"statusUuid\": \"3bc2c495-b232-4bdf-b790-8cae154f4d3b\",\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"name\": \"Ganesh\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/statuses",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Confirm Through",
+			"item": [
+				{
+					"name": "Create ConfirmThrough",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Call\",\n    \"tenantUuid\":\"7977ff91-64d4-490b-914f-61bbacf75f0f\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/confirm-through",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"confirm-through"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ConfirmThrough",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUUID\": \"1f8153ef-5c18-47c8-af56-46344918f0a0\",\n    \"companyName\": \"Sowermate Technologies Private Limited\",\n    \"cin\": \"34\", // \"CIN0000001\"\n    \"gstin\": \"01\",// \"GSTIN0000000\"\n    \"tan\": \"01\", // \"TAN0000000\"\n    \"pan\": \"01\", // \"PAN0000000\"\n    \"createdDttm\": \"2021-11-08T18:30:00.000+00:00\",\n    \"updatedDttm\": \"2023-04-21T18:30:00.000+00:00\",\n    \"createdBy\": \"Admin\",\n    \"updatedBy\": \"Admin\",\n    \"isActive\":1,\n    \"addressUUID\":\"9357e40f-0e2a-4479-bbf4-464a5640aed5\",\n    \"companyTypeUUID\":\"123e4567-e89b-12d3-a456-426614174000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/confirm-through/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/12d6dd0f-dcbc-4c5a-b38d-9368ce3a08b8",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"confirm-through",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"12d6dd0f-dcbc-4c5a-b38d-9368ce3a08b8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All ConfirmThrough",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/confirm-through/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"confirm-through",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  ConfirmThrough",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/confirm-through/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/e32b0ce1-e16c-4bb1-a49b-c4b996fd4a8b",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"confirm-through",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"e32b0ce1-e16c-4bb1-a49b-c4b996fd4a8b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update ConfirmThrough",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"confirmThroughUuid\": \"12d6dd0f-dcbc-4c5a-b38d-9368ce3a08b8\",\n    \"name\": \"Ganesh Dighole\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/confirm-through",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"confirm-through"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CompanyAddress",
+			"item": [
+				{
+					"name": "Create CompanyAddress",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"companyUuid\": \"fc4366e8-ecf5-4cec-878a-044f2cd23ccb\",\n    \"addressUuid\": \"2cc1e026-d9d6-45df-9bc5-c6861e42641d\",\n    \"addressTypeUuid\": \"abcd1234-34qn-reg65\",\n    \"isActive\":1 \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update CompanyAddress",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyAddressUuid\": \"e1e89724-1b1b-4ac8-97eb-5b90a71c9d6a\",\n    \"tenantUuid\": \"a91411ca-82bc-44ea-8e6b-a05bb1994fc7\",\n    \"companyUuid\": \"35eeabb9-a829-4321-93c0-285560287d1b\",\n    \"addressUuid\": \"2cc1e026-d9d6-45df-9bc5-c6861e42641d\",\n    \"addressTypeUuid\": \"abcd1234-34qn-reg65\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address/a91411ca-82bc-44ea-8e6b-a05bb1994fc7/e1e89724-1b1b-4ac8-97eb-5b90a71c9d6a",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+								"e1e89724-1b1b-4ac8-97eb-5b90a71c9d6a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All CompanyAddress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/company-address/a91411ca-82bc-44ea-8e6b-a05bb1994fc7",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company-address",
+								"a91411ca-82bc-44ea-8e6b-a05bb1994fc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete CompanyAddress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CompanyType",
+			"item": [
+				{
+					"name": "Create Company Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tenantUuid\": \"7977ff91-64d4-490b-914f-61bbacf75f0f\",\n  \"type\": \"Self\",\n  \"description\": \"subsidiary\",\n  \"isActive\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/company_types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company_types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company Type",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tenantUuid\": \"907eb1a8-091a-4517-bad3-f2568d353b19\",\n  \"companyTypeUuid\": \"a7dc8d6e-0de0-484f-a324-4f45ba6b508d\",\n  \"type\": \"Tri-Party\",\n  \"description\": \"\",\n  \"isActive\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOSTED_API}}/company_types",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company_types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/company_types/7977ff91-64d4-490b-914f-61bbacf75f0f/d03351ec-3c0d-11ee-962a-14abc5fbd6fa",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company_types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f",
+								"d03351ec-3c0d-11ee-962a-14abc5fbd6fa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Company Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOSTED_API}}/company_types/7977ff91-64d4-490b-914f-61bbacf75f0f",
+							"host": [
+								"{{HOSTED_API}}"
+							],
+							"path": [
+								"company_types",
+								"7977ff91-64d4-490b-914f-61bbacf75f0f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOSTED_API",
+			"value": "http://localhost:8080",
+			"type": "default"
+		},
+		{
+			"key": "LOCAL",
+			"value": "http://localhost:8080",
+			"type": "default"
+		},
+		{
+			"key": "QA_SERVER",
+			"value": "https://qa-workflow.sowermate.com",
+			"type": "default"
+		}
+	]
+}
