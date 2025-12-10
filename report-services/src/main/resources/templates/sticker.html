@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        /* Define the page size for PDF generation */
+               @page {
+                   size: 70mm 35mm;  /* Custom size for each sticker page */
+                   margin-top: 0.5mm;       /* Margin around the page */
+                   margin-right: 0.5mm;       /* Margin around the page */
+                   margin-bottom: 0.5mm;       /* Margin around the page */
+                   margin-left: 1mm;       /* Margin around the page */
+               }
+
+               /* Styling for the sticker itself */
+               .sticker {
+                   border: 0.5mm solid black;
+                   text-align: center;
+                   padding: 0;
+               }
+
+               /* Table styling inside each sticker */
+               table {
+                    width: 68mm;
+                    height: 33mm;
+                   border-collapse: collapse;
+               }
+
+               td {
+                   border: 0.5mm solid #000;
+                   text-align: center;
+                   vertical-align: middle;
+
+               }
+
+               body {
+                   margin: 0;  /* Remove default margin */
+               }
+    </style>
+</head>
+
+<body>
+<div th:each="stickerData : ${stickerDataList}">
+    <div class="sticker">
+        <table class="alignCenter font-sans-serif font-w-500 font-s-14 static-table">
+            <tr style="height: 14mm;">
+                <td class="alignCenter" colspan="1">
+                    <div class="font-s-7 font-sans-serif">IS 2553:2018:Part 1</div>
+                    <div class="alignCenter">
+                        <img th:src="@{classpath:static/images/ISO-logo.jpg}" style="height: 8mm;" width="14mm" alt="Logo" />
+                    </div>
+                    <div class="font-s-7 font-sans-serif">CM/L-7500262816</div>
+                    <div class="font-s-7 font-sans-serif">www.bis.gov.in</div>
+                </td>
+
+                <td class="alignCenter" colspan="2">
+                    <div class="alignCenter">
+                        <img th:src="@{classpath:static/images/HG_sticker_banner.png}" style="height: 13mm;" width="50mm" alt="Logo" />
+                    </div>
+                </td>
+            </tr>
+            <tr style="height: 6.35mm;">
+                <td colspan="1">
+                <div class="font-s-10">
+                    <span th:text="${stickerData.piNo}"></span>
+                </div>
+            </td>
+                <td colspan="2">TH:- <span th:text="${stickerData.thickness}"></span></td>
+            </tr>
+            <tr style="height: 10mm;">
+                <td colspan="1">
+                    <div class="font-s-16">
+                        <span th:text="${stickerData.stickerNumber}"></span>
+                    </div>
+                </td>
+
+                <td class="alignCenter" colspan="1">
+                    <div class="font-s-12">Size</div>
+                    <div class="font-s-16"><span th:text="${stickerData.size}"></span></div>
+                </td>
+                <td class="alignCenter" colspan="1">
+                    <div class="font-s-12">Date</div>
+                    <div class="font-s-16"><span th:text="${#dates.format(new java.util.Date(), 'dd-MM-yyyy')}"></span></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

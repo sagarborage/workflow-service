@@ -1,5 +1,6 @@
 # Spring Boot
 /target/
+/**/target/
 
 # Maven
 *.iml
@@ -25,6 +26,7 @@ build/
 *.iws
 .idea/
 out/
+*~
 
 # Logs
 *.log

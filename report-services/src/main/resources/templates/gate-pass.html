@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{classpath:static/css/styles.css}" rel="stylesheet" type="text/css"/>
+
+    <style>
+        table {
+        margin: 0 auto;
+        margin-top: 0 auto;
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        }
+        .font-helva
+        {
+          font-family: 'Helvetica', sans-serif;
+                    font-size: 14px;
+                    font-weight: bold;
+
+        }
+        td {
+        border: 1px solid black;
+        padding: 8px;
+        vertical-align: middle;
+        }
+        .alignCenter {
+        text-align: center;
+        }
+        .alignLeft {
+        text-align: left;
+        }
+
+    th, td {
+      border: 1px solid black;
+      padding: 0px;
+      text-align: center;
+      height: 30px; /* Adjust the height as needed */
+    }
+    </style>
+</head>
+
+<body>
+<div style="overflow-x: auto;">
+    <div th:each="gatePassType : ${gatePass.getGatePassTypes}">
+    <table class="alignCenter font-helva font-w-400 font-s-14"  style="border: 1.5px solid black;">
+        <tr>
+            <td style="width: 100%;font-weight: bold;font-size: 18px;" colspan="3">
+                  <span th:text="${gatePassType}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 40px;font-weight: bold;" colspan="1">
+                Gate Pass No.:<span th:text="${gatePass.getGatePassValue().getGatePassNo()}"></span>
+            </td>
+            <td style="width: 70%;height: 40px;font-weight: bold;font-size: 22px;" colspan="2">
+                <span th:text="${gatePass.getPartyName()}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 30px;" colspan="1">
+                Date: <span th:text="${#temporals.format(gatePass.getGatePassDate(), 'dd-MM-yy')}"></span>
+            </td>
+            <td style="width: 50%;height: 30px;" colspan="1">
+            Driver Name: <span
+                    th:text="${gatePass.getGatePassValue().getDriverName()}+' ('+${gatePass.getGatePassValue().getDriverContactNo()}+')'"></span>
+            </td>
+            <td style="width: 25%;height: 30px;" colspan="1">
+                Ref PI No.: <span th:text="${gatePass.getPiNo()}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 30px;" colspan="1">
+                Vehical No.
+            </td>
+            <td style="width: 70%;height: 30px;" colspan="2">
+                Party Name
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 30px;" colspan="1">
+                <span th:text="${gatePass.getGatePassValue().getVehicleNo()}"></span>
+            </td>
+            <td style="width: 70%;height: 30px;" colspan="2">
+                <span th:text="${gatePass.getPartyBillToName()} + '. '+ ${gatePass.getAddress()} "></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 30px;" colspan="1">Sr.No </td>
+            <td style="width: 50%;height: 30px;" colspan="1">Particulars</td>
+            <td style="width: 25%;height: 30px;" colspan="1">Quantity</td>
+        </tr>
+        <tr th:each="glassInfo,stat : ${gatePass.getGlassInfoProjections}" style="font-size: 16px;background-color: #ECECEC;">
+            <td style="width: 25%;height: 30px;" colspan="1">
+                <span th:text="${stat.index + 1}"></span>
+            </td>
+            <td style="width: 50%;height: 30px;" colspan="1">
+                <span th:text="${glassInfo.getGlassSpecification()} + ' Thickness '+${glassInfo.getThickness()}"></span>
+            </td>
+
+            <td style="width: 25%;height: 30px;" colspan="1">
+                <span th:text="${glassInfo.getGatePassItemQty()}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 30px;" colspan="1"></td>
+            <td style="width: 50%;height: 30px;" colspan="1">Total</td>
+            <td style="width: 25%;height: 30px;" colspan="1">
+                <span th:text="${gatePass.getTotalQuantity()}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;height: 60px;vertical-align: bottom;" colspan="1">Signature(Ofc.)</td>
+            <td style="width: 50%;height: 60px;vertical-align: bottom;" colspan="1">Signature(WH.)</td>
+            <td style="width: 25%;height: 60px;vertical-align: bottom;" colspan="1">Signature(Drv.)</td>
+        </tr>
+    </table>
+        </div>
+</div>
+</body>
+</html>

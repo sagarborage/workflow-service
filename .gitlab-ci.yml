@@ -1,70 +1,99 @@
 variables:
+  GIT_STRATEGY: clone
+  MAVEN_LOCAL_REPO: "/builds/.m2/repository"  # Custom local repo in container
+  APP_JAR_PATH: "$MAVEN_LOCAL_REPO/com/sowermate/workflow/workflow-app-services/0.0.1-SNAPSHOT"
+  SERVER_USER: "smuser"
+  SERVER_IP: "103.86.176.96"         # QA server IP (replace with actual IP)
+  SSH_FILE_PATH: "/ssh_keys/sowermate-qa.pem"  # SSH key path in container
+  SERVICE_NAME: "workflow-apis.service"
   APP_DEPLOY_DIR: "/opt/sowermate_apps/sm_qa_apps_java_running"
+  APP_JAR_NAME: "workflow-app-services-0.0.1-SNAPSHOT.jar"
+  APP_PORT: "8183"
+  APP_LOG_FILE_NAME: "workflow.log"
   APP_BACKUP_DIR: "/opt/sowermate_apps/sm_qa_apps_java_backup"
   DB_BACKUP_DIR: "/opt/sowermate_apps/sm_qa_apps_java_db_backup"
+  DB_BACKUP_FILE_NAME_PREFIX: "hrms"
 
   DB_NAME_QA: "workflow"
   DB_USER_QA: "workflow"
   DB_PASS_QA: "C3586C92611157ED681FF05170496815"
-  BACKUP_AND_DROP_DB: "false" # Default value
-
+  BACKUP_AND_DROP_DB: "false"  # Default, override in CI settings
 stages:
   - build
-  - deploy
-  - cleanup
+  - deploy-qa
+  - deploy-prod
 
 build:
   stage: build
-  before_script:
-  - export PATH=$PATH:/opt/apache-maven-3.6.3/bin
+  image: maven:3.9.6-eclipse-temurin-17
   script:
-    - mvn clean install -DskipTests
+    - echo "Building Java app..."
+    - mvn clean install -DskipTests -Dmaven.repo.local="$MAVEN_LOCAL_REPO"
 
-deploy:
-  stage: deploy
-  script:
-    - echo "Deploying application..."
-    - if lsof -Pi :8183 -sTCP:LISTEN -t >/dev/null ; then
-        echo "Port 8183 is in use, terminating the process";
-        kill $(lsof -t -i:8183);
-      else
-        echo "Port 8183 is available";
-      fi
-    # Create the app backup directory if it doesn't exist
-    #- mkdir -p $APP_BACKUP_DIR
-    - if [ -f "$APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar" ]; then
-        mv "$APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar" "$APP_BACKUP_DIR/workflow-service-0.0.1-SNAPSHOT.jar";
-      else
-        echo "File does not exist. Skipping move operation.";
-      fi
-
-    # Create the database backup directory if it doesn't exist
-    #- mkdir -p $DB_BACKUP_DIR
-
-    # Conditionally backup and drop the database if BACKUP_AND_DROP_DB is true
-    - if [ "$BACKUP_AND_DROP_DB" == "true" ]; then
-        TIMESTAMP=$(date +"%Y%m%d%H%M%S");
-        mysqldump -u $DB_USER_QA -p$DB_PASS_QA $DB_NAME_QA | gzip > "$DB_BACKUP_DIR/flexipunch_${TIMESTAMP}.sql.gz";
-        mysql -u $DB_USER_QA -p$DB_PASS_QA -e "DROP DATABASE IF EXISTS $DB_NAME_QA; CREATE DATABASE $DB_NAME_QA;";
-      fi
-
-    - cp /home/gitlab-runner/.m2/repository/com/sowermate/workflow-service/0.0.1-SNAPSHOT/workflow-service-0.0.1-SNAPSHOT.jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar  # Copy new jar
-    #- java -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar &  # Start the application
-    #- nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar & # Start the application
-    - nohup java -Dserver.port=8183 -Dspring.profiles.active=qa -jar $APP_DEPLOY_DIR/workflow-service-0.0.1-SNAPSHOT.jar > $APP_DEPLOY_DIR/workflow.log 2>&1 &
   only:
-    refs:
-      - integration
+    - integration
+    - merge_requests
+
+deploy-qa:
+  stage: deploy-qa
+  image: maven:3.8.6-openjdk-11
+  before_script:
+    - apt-get update && apt-get install -y openssh-client
+    - chmod 600 "$SSH_FILE_PATH"
+    - mkdir -p /root/.ssh
+    - ssh-keyscan -H "$SERVER_IP" >> /root/.ssh/known_hosts
+  script:
+    - echo "Deploying to QA server..."
+    # Create backup dirs
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "mkdir -p $APP_BACKUP_DIR $DB_BACKUP_DIR"
+    # Backup existing JAR
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if [ -f '$APP_DEPLOY_DIR/$APP_JAR_NAME' ]; then mv '$APP_DEPLOY_DIR/$APP_JAR_NAME' '$APP_BACKUP_DIR/$APP_JAR_NAME'; else echo 'JAR not found, skipping backup'; fi"
+    # Backup and drop DB if enabled
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if [ '$BACKUP_AND_DROP_DB' = 'true' ]; then TIMESTAMP=\$(date +'%Y%m%d%H%M%S'); mysqldump -u $DB_USER_QA -p'$DB_PASS_QA' $DB_NAME_QA | gzip > '$DB_BACKUP_DIR/$DB_BACKUP_FILE_NAME_PREFIX_\${TIMESTAMP}.sql.gz'; mysql -u $DB_USER_QA -p'$DB_PASS_QA' -e 'DROP DATABASE IF EXISTS $DB_NAME_QA; CREATE DATABASE $DB_NAME_QA;'; fi"
+    # Deploy new JAR
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "mkdir -p $APP_DEPLOY_DIR"
+    - scp -i "$SSH_FILE_PATH" "$APP_JAR_PATH/$APP_JAR_NAME" "$SERVER_USER@$SERVER_IP:$APP_DEPLOY_DIR"
+    # Set permissions
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo chmod -R g+w $APP_DEPLOY_DIR/ && sudo chown -R www-data:www-data $APP_DEPLOY_DIR/"
+    # Restart service
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo systemctl restart \"$SERVICE_NAME\""
+  dependencies:
+    - build
+  only:
+    - integration
   when: manual
   allow_failure: false
-  #variables:
-  #  BACKUP_AND_DROP_DB: "false"  # Override at trigger time if needed
 
-cleanup:
-  stage: cleanup
+deploy-prod:
+  stage: deploy-prod
+  image: maven:3.8.6-openjdk-11
+  before_script:
+    - apt-get update && apt-get install -y openssh-client
+    - chmod 600 "$SSH_FILE_PATH"
+    - mkdir -p /root/.ssh
+    - ssh-keyscan -H "$SERVER_IP" >> /root/.ssh/known_hosts
   script:
-    - ls -1tr $APP_BACKUP_DIR | head -n -5 | xargs -d '\n' rm -f --
-    - ls -1tr $DB_BACKUP_DIR | head -n -5 | xargs -d '\n' rm -f --
-    - rm -rf target/
-    - rm -f *.log
-  when: always
+    - echo "Deploying to Prod server..."
+    # Check and kill process on port $APP_PORT
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if lsof -Pi :$APP_PORT -sTCP:LISTEN -t >/dev/null; then echo 'Port $APP_PORT in use, terminating'; kill \$(lsof -t -i:$APP_PORT); else echo 'Port $APP_PORT available'; fi"
+    # Create backup dirs
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "mkdir -p $APP_BACKUP_DIR $DB_BACKUP_DIR"
+    # Backup existing JAR
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if [ -f '$APP_DEPLOY_DIR/$APP_JAR_NAME' ]; then mv '$APP_DEPLOY_DIR/$APP_JAR_NAME' '$APP_BACKUP_DIR/$APP_JAR_NAME'; else echo 'JAR not found, skipping backup'; fi"
+    # Backup and drop DB if enabled
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "if [ '$BACKUP_AND_DROP_DB' = 'true' ]; then TIMESTAMP=\$(date +'%Y%m%d%H%M%S'); mysqldump -u $DB_USER_QA -p'$DB_PASS_QA' $DB_NAME_QA | gzip > '$DB_BACKUP_DIR/$DB_BACKUP_FILE_NAME_PREFIX_\${TIMESTAMP}.sql.gz'; mysql -u $DB_USER_QA -p'$DB_PASS_QA' -e 'DROP DATABASE IF EXISTS $DB_NAME_QA; CREATE DATABASE $DB_NAME_QA;'; fi"
+    # Deploy new JAR
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "mkdir -p $APP_DEPLOY_DIR"
+    - scp -i "$SSH_FILE_PATH" "$APP_JAR_PATH/$APP_JAR_NAME" "$SERVER_USER@$SERVER_IP:$APP_DEPLOY_DIR"
+    # Set permissions
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo chmod -R g+w $APP_DEPLOY_DIR/ && sudo chown -R www-data:www-data $APP_DEPLOY_DIR/"
+    # Restart service
+    - ssh -i "$SSH_FILE_PATH" "$SERVER_USER@$SERVER_IP" "sudo systemctl restart \"$SERVICE_NAME\""
+  dependencies:
+    - build
+  when: manual
+  allow_failure: false
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "integration" && $GITLAB_USER_LOGIN =~ /^(sborage|sborage1|pborage)$/'
+      when: manual
+    - when: never  # Prevents the job from appearing for other users

@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>TOUGHEN REPORT</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+            font-family: "Aptos", sans-serif;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <td colspan="7">TOUGHEN REPORT</td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+        <td colspan="5" style="text-align: left; font-weight: 700">
+            HIMYOUG TUFF GLASS INDUSTRIES PVT. LTD
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" th:text="'Date: ' + ${toughen.date}"></td>
+    </tr>
+    <tr>
+        <td colspan="2">WORK ORDER</td>
+        <td colspan="2">JB</td>
+        <td colspan="2">REJECT</td>
+        <td>TOTAL COMPLETED</td>
+    </tr>
+    <tr>
+        <td colspan="2" th:text="${toughen.workOrder} + ' Sqft'"></td>
+        <td colspan="2" th:text="${toughen.jb} + ' Sqft'"></td>
+        <td colspan="2" th:text="${toughen.reject} + ' Sqft'"></td>
+        <td th:text="${toughen.totalCompleted} + ' Sqft'"></td>
+    </tr>
+    <tr>
+        <td colspan="2">Work Order</td>
+        <td colspan="2">JB</td>
+        <td colspan="2">Reject</td>
+        <td>Total</td>
+    </tr>
+    <tr style="background-color: rgb(232, 227, 227)">
+        <th>Thickness</th>
+        <th>Sqft</th>
+        <th>Thickness</th>
+        <th>Sqft</th>
+        <th>Thickness</th>
+        <th>Sqft</th>
+        <th>Total</th>
+    </tr>
+    <tr th:each="thickness : ${toughen.getThickness()}">
+        <!-- Work Order Sqft -->
+        <td th:text="${thickness}"></td>
+        <td th:text="${toughen.getWorkOrderSqft.get(thickness)}"></td>
+
+        <!-- JB Sqft -->
+        <td th:text="${thickness}"></td>
+        <td th:text="${toughen.getJbSqft.get(thickness)}"></td>
+
+        <!-- Reject Sqft -->
+        <td th:text="${thickness}"></td>
+        <td th:text="${toughen.getRejectSqft.get(thickness)}"></td>
+
+        <!-- Total Sqft (No Thickness) -->
+        <td th:text="${toughen.getTotalSqft().get(thickness)}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,4 @@
+INSERT INTO `user_auth` (`id`, `uuid`, `tenant_id`, `role_id`, `first_name`, `last_name`, `phone`, `username`, `password_hash`, `is_enabled`, `is_email_verified`, `is_phone_verified`, `is_account_non_expired`,
+`is_account_non_locked`, `is_credentials_non_expired`, `failed_attempt`, `is_active`, `created_by`, `created_datetime`, `last_updated_by`, `last_updated_datetime`, `version`) VALUES
+(15, UUID(), 1, 5, 'Pankaj', '', '9999999911', 'Pankaj', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-03-08 23:24:45', 'System', '2024-03-08 10:30:58', 1),
+(16, UUID(), 1, 5, 'Pramila', '', '9999999912', 'Pramila', '$2a$12$lpzxVmw2gj4oEOpSAqwYpOVxC9W1bnGYoTXE3ndr1Se51oRKF/3QK', 0, 0, 0, 1, 1, 1, 1, 1, 'System', '2024-03-08 23:24:45', 'System', '2024-03-08 10:30:58', 1);
