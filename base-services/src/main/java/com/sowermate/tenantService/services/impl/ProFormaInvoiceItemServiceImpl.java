@@ -252,20 +252,23 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                     throw new ResourceNotFoundException();
             }
         } else if (actionType.equals("broken")) {
-            switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
-                case TOUGHEN:
-                    proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket() - quantity);
-                    proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - quantity);
-                    proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + quantity);
-                    break;
-                case DISPATCH:
-                    proFormaInvoiceItemEntity.setDispatchBucket(proFormaInvoiceItemEntity.getDispatchBucket() - quantity);
-                    proFormaInvoiceItemEntity.setToughenCompleted(proFormaInvoiceItemEntity.getToughenCompleted() - quantity);
-                    proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - quantity);
-                    proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + quantity);
-                    break;
-                default:
-                    throw new ResourceNotFoundException();
+            //if not rough glass
+            if (!proFormaInvoiceItemEntity.getProFormaInvoiceEntity().getPiNumber().contains("K/")) {
+                switch (DeptTypeEnum.valueOf(deptType.toUpperCase())) {
+                    case TOUGHEN:
+                        proFormaInvoiceItemEntity.setToughenBucket(proFormaInvoiceItemEntity.getToughenBucket() - quantity);
+                        proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - quantity);
+                        proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + quantity);
+                        break;
+                    case DISPATCH:
+                        proFormaInvoiceItemEntity.setDispatchBucket(proFormaInvoiceItemEntity.getDispatchBucket() - quantity);
+                        proFormaInvoiceItemEntity.setToughenCompleted(proFormaInvoiceItemEntity.getToughenCompleted() - quantity);
+                        proFormaInvoiceItemEntity.setCuttingCompleted(proFormaInvoiceItemEntity.getCuttingCompleted() - quantity);
+                        proFormaInvoiceItemEntity.setCuttingBucket(proFormaInvoiceItemEntity.getCuttingBucket() + quantity);
+                        break;
+                    default:
+                        throw new ResourceNotFoundException();
+                }
             }
             GlassBreakageDetailsValue glassBreakageDetailsValue = getGlassBreakageDetailsValue(bucketManipulationValue, deptType);
             glassBreakageDetailsService.createGlassBreakageDetails(glassBreakageDetailsValue);

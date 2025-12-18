@@ -383,7 +383,11 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
             if (proFormaInvoiceEntityUpdated.getConfirmThroughEntity() != null) {
                 List<ProFormaInvoiceItemEntity> proFormaInvoiceItemEntityList = proFormaInvoiceItemRepository.findAllByProFormaInvoiceEntity_uuid(proFormaInvoiceEntity.getUuid());
                 proFormaInvoiceItemEntityList.stream().map(item -> {
-                    item.setOptimizeBucket(item.getQuantity());
+                    if(proFormaInvoiceEntity.getCreationType().equalsIgnoreCase("rg")) {
+                        item.setDispatchBucket(item.getQuantity());
+                    } else {
+                        item.setOptimizeBucket(item.getQuantity());
+                    }
                     return proFormaInvoiceEntity;
                 }).collect(Collectors.toList());
                 proFormaInvoiceItemRepository.saveAll(proFormaInvoiceItemEntityList);
