@@ -308,6 +308,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 }
             }
         }
+        itemEntity.setProxQty(itemValue.getProxQty());
         itemEntity.setGlassSpecificationEntity(specificationEntityMap.get(itemValue.getGlassSpecificationUuid()));
         itemEntity.setGlassThicknessEntity(thicknessEntityMap.get(itemValue.getGlassThicknessUuid()));
         itemEntity.setWidthInch(itemValue.getWidthInch());

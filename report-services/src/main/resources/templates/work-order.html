@@ -74,7 +74,7 @@ font-weight: bold;
             <td style="width: 46%;" colspan="5">
                 <b>Work Order No:
                     <span th:text="${piValue.getWorkOrderValue().getWorkOrderNo()}"></span>
-                    <span th:if="${piValue.getProxCharges()} > 0"> PROX</span>
+                    <span th:if="${piValue.getProxCharges() != null and piValue.getProxCharges() > 0 and piValue.getProxCharges() > 0.0 }"> PROX</span>
                     (<span th:text="${reportDetails.getFormattedWorkOrderDate()}"></span>)
                 </b>
             </td>

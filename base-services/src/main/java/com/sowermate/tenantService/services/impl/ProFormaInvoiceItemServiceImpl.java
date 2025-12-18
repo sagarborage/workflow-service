@@ -164,6 +164,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 .chargeableHeight(proFormaInvoiceItemValue.getChargeableHeight() == null ? tempProFormaInvoiceItemEntity.getChargeableHeight() : proFormaInvoiceItemValue.getChargeableHeight())
                 .extraMm(proFormaInvoiceItemValue.getExtraMm() == null ? tempProFormaInvoiceItemEntity.getExtraMm() : proFormaInvoiceItemValue.getExtraMm())
                 .quantity(proFormaInvoiceItemValue.getQuantity() == null ? tempProFormaInvoiceItemEntity.getQuantity() : proFormaInvoiceItemValue.getQuantity())
+                .quantity(proFormaInvoiceItemValue.getProxQty() == null ? tempProFormaInvoiceItemEntity.getProxQty() : proFormaInvoiceItemValue.getProxQty())
                 .unitValue(proFormaInvoiceItemValue.getUnitValue() == null ? tempProFormaInvoiceItemEntity.getUnitValue() : proFormaInvoiceItemValue.getUnitValue())
                 .ratePerUnit(proFormaInvoiceItemValue.getRatePerUnit() == null ? tempProFormaInvoiceItemEntity.getRatePerUnit() : proFormaInvoiceItemValue.getRatePerUnit())
                 .unitMeasurementLabel(proFormaInvoiceItemValue.getUnitMeasurementLabel() == null ? tempProFormaInvoiceItemEntity.getUnitMeasurementLabel() : proFormaInvoiceItemValue.getUnitMeasurementLabel())

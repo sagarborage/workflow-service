@@ -38,6 +38,7 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private Float chargeableHeight;
     private Float extraMm;
     private Integer quantity;
+    private Integer proxQty;
     private Float unitValue;
     private Double ratePerUnit;
     private String unitMeasurementLabel;
@@ -73,6 +74,7 @@ public class ProFormaInvoiceItemValue extends BaseDto {
                 .chargeableHeight(getChargeableHeight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
+                .proxQty(getProxQty())
                 .unitValue(getUnitValue())
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())

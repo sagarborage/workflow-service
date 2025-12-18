@@ -54,6 +54,9 @@ public class ProFormaInvoiceItemEntity extends Base {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "proxQty")
+    private Integer proxQty;
+
     @Column(name = "unit_value")
     private Float unitValue;
 
@@ -153,6 +156,7 @@ public class ProFormaInvoiceItemEntity extends Base {
                 .chargeableHeight(getChargeableHeight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
+                .proxQty(getProxQty())
                 .unitValue(getUnitValue())
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())
