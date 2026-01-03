@@ -62,13 +62,13 @@ public class ProFormaInvoiceEntity extends Base {
     private Float insurancePercentAmount;
 
     @Column(name = "prox_sqft")
-    private Float proxSqft;
+    private Float frostSqft;
 
     @Column(name = "prox_per_sqft_rate")
-    private Float proxPerSqftRate;
+    private Float frostPerSqftRate;
 
     @Column(name = "prox_charges")
-    private Float proxCharges;
+    private Float frostCharges;
 
     @Column(name = "other_charges")
     private Double otherCharges;
@@ -84,10 +84,10 @@ public class ProFormaInvoiceEntity extends Base {
 
 
     @Column(name = "is_prox_gst_applicable")
-    private Boolean isProxGstApplicable;
+    private Boolean isFrostGstApplicable;
 
     @Column(name = "prox_gst_charges")
-    private Float proxGstCharges;
+    private Float frostGstCharges;
 
     @Column(name = "grand_total")
     private Double grandTotal;
@@ -183,13 +183,13 @@ public class ProFormaInvoiceEntity extends Base {
                 .adminCharges(getAdminCharges())
                 .insurancePercent(getInsurancePercent())
                 .insurancePercentAmount(getInsurancePercentAmount())
-                .proxSqft(getProxSqft())
-                .proxPerSqftRate(getProxPerSqftRate())
-                .proxCharges(getProxCharges())
+                .frostSqft(getFrostSqft())
+                .frostPerSqftRate(getFrostPerSqftRate())
+                .frostCharges(getFrostCharges())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
-                .isProxGstApplicable(getIsProxGstApplicable())
-                .proxGstCharges(getProxGstCharges())
+                .isFrostGstApplicable(getIsFrostGstApplicable())
+                .frostGstCharges(getFrostGstCharges())
                 .isGstApplicable(getIsGstApplicable())
                 .gstCharges(getGstCharges())
                 .grandTotal(getGrandTotal())

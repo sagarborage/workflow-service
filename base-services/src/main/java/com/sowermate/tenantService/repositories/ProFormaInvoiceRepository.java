@@ -286,7 +286,7 @@ public interface ProFormaInvoiceRepository extends JpaRepository<ProFormaInvoice
             "join pi.piTypeEntity pt " +
             "join pi.proFormaInvoiceItemEntities pit " +
             "where (:workOrderUuid IS NULL OR wo.uuid = :workOrderUuid) " +
-            "and pi.createdDateTime between :fromDate and :toDate " +
+            "and wo.createdDateTime between :fromDate and :toDate " +
             "and pi.tenantEntity.uuid = :tenantUuid " +
             "GROUP BY pi.uuid")
     List<ProformaInvoiceWithWorkOrderProjection> findAllPiOrdersDetailsWithWorkOrderDetails(

@@ -22,6 +22,7 @@ public class PIReportDetails {
     Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails;
     List<ServiceRateInvoiceValue> serviceRateDetails;
     String totalQuantity;
+    String frostTotalQuantity;
     String totalUnitTotal;
     String sumSqFtTotal;
     String totalRatePerUnit;
@@ -33,9 +34,9 @@ public class PIReportDetails {
     String sGst;
     String iPercent;
     String iPercentAmount;
-    String proxSqft;
-    String proxSqftRate;
-    String proxAmount;
+    String frostSqft;
+    String frostSqftRate;
+    String frostAmount;
     Double grandTotal;
     String formattedInvoiceDate;
     String formattedWorkOrderDate;

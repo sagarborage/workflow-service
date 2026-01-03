@@ -164,7 +164,7 @@ public class ProFormaInvoiceItemServiceImpl implements ProFormaInvoiceItemServic
                 .chargeableHeight(proFormaInvoiceItemValue.getChargeableHeight() == null ? tempProFormaInvoiceItemEntity.getChargeableHeight() : proFormaInvoiceItemValue.getChargeableHeight())
                 .extraMm(proFormaInvoiceItemValue.getExtraMm() == null ? tempProFormaInvoiceItemEntity.getExtraMm() : proFormaInvoiceItemValue.getExtraMm())
                 .quantity(proFormaInvoiceItemValue.getQuantity() == null ? tempProFormaInvoiceItemEntity.getQuantity() : proFormaInvoiceItemValue.getQuantity())
-                .proxQty(proFormaInvoiceItemValue.getProxQty() == null ? tempProFormaInvoiceItemEntity.getProxQty() : proFormaInvoiceItemValue.getProxQty())
+                .frostQty(proFormaInvoiceItemValue.getFrostQty() == null ? tempProFormaInvoiceItemEntity.getFrostQty() : proFormaInvoiceItemValue.getFrostQty())
                 .unitValue(proFormaInvoiceItemValue.getUnitValue() == null ? tempProFormaInvoiceItemEntity.getUnitValue() : proFormaInvoiceItemValue.getUnitValue())
                 .ratePerUnit(proFormaInvoiceItemValue.getRatePerUnit() == null ? tempProFormaInvoiceItemEntity.getRatePerUnit() : proFormaInvoiceItemValue.getRatePerUnit())
                 .unitMeasurementLabel(proFormaInvoiceItemValue.getUnitMeasurementLabel() == null ? tempProFormaInvoiceItemEntity.getUnitMeasurementLabel() : proFormaInvoiceItemValue.getUnitMeasurementLabel())

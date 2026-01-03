@@ -257,16 +257,16 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
         existingInvoice.setAdminCharges(proFormaInvoiceValue.getAdminCharges());
         existingInvoice.setInsurancePercent(proFormaInvoiceValue.getInsurancePercent());
         existingInvoice.setInsurancePercentAmount(proFormaInvoiceValue.getInsurancePercentAmount());
-        existingInvoice.setProxSqft(proFormaInvoiceValue.getProxSqft());
-        existingInvoice.setProxPerSqftRate(proFormaInvoiceValue.getProxPerSqftRate());
-        existingInvoice.setProxCharges(proFormaInvoiceValue.getProxCharges());
+        existingInvoice.setFrostSqft(proFormaInvoiceValue.getFrostSqft());
+        existingInvoice.setFrostPerSqftRate(proFormaInvoiceValue.getFrostPerSqftRate());
+        existingInvoice.setFrostCharges(proFormaInvoiceValue.getFrostCharges());
         existingInvoice.setOtherCharges(proFormaInvoiceValue.getOtherCharges());
         existingInvoice.setTransportCharges(proFormaInvoiceValue.getTransportCharges());
         existingInvoice.setIsGstApplicable(proFormaInvoiceValue.getIsGstApplicable());
         existingInvoice.setGstCharges(proFormaInvoiceValue.getGstCharges());
         existingInvoice.setGrandTotal(proFormaInvoiceValue.getGrandTotal());
-        existingInvoice.setIsProxGstApplicable(proFormaInvoiceValue.getIsProxGstApplicable());
-        existingInvoice.setProxGstCharges(proFormaInvoiceValue.getProxGstCharges());
+        existingInvoice.setIsFrostGstApplicable(proFormaInvoiceValue.getIsFrostGstApplicable());
+        existingInvoice.setFrostGstCharges(proFormaInvoiceValue.getFrostGstCharges());
         existingInvoice.setRoundOffAmount(proFormaInvoiceValue.getRoundOffAmount());
         existingInvoice.setPayableAmount(proFormaInvoiceValue.getPayableAmount());
         existingInvoice.setPreviousBalance(proFormaInvoiceValue.getPreviousBalance());
@@ -308,7 +308,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
                 }
             }
         }
-        itemEntity.setProxQty(itemValue.getProxQty());
+        itemEntity.setFrostQty(itemValue.getFrostQty());
         itemEntity.setGlassSpecificationEntity(specificationEntityMap.get(itemValue.getGlassSpecificationUuid()));
         itemEntity.setGlassThicknessEntity(thicknessEntityMap.get(itemValue.getGlassThicknessUuid()));
         itemEntity.setWidthInch(itemValue.getWidthInch());

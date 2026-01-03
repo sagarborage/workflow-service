@@ -38,15 +38,15 @@ public class ProFormaInvoiceValue extends BaseDto {
     private Double adminCharges;
     private Float insurancePercent;
     private Float insurancePercentAmount;
-    private Float proxSqft;
-    private Float proxPerSqftRate;
-    private Float proxCharges;
+    private Float frostSqft;
+    private Float frostPerSqftRate;
+    private Float frostCharges;
     private Double otherCharges;
     private Double transportCharges;
     private Boolean isGstApplicable;
     private Float gstCharges;
-    private Boolean isProxGstApplicable;
-    private Float proxGstCharges;
+    private Boolean isFrostGstApplicable;
+    private Float frostGstCharges;
     private Double grandTotal;
     private Float roundOffAmount;
     private Float payableAmount;
@@ -74,13 +74,13 @@ public class ProFormaInvoiceValue extends BaseDto {
                 .adminCharges(getAdminCharges())
                 .insurancePercent(getInsurancePercent())
                 .insurancePercentAmount(getInsurancePercentAmount())
-                .proxSqft(getProxSqft())
-                .proxPerSqftRate(getProxPerSqftRate())
-                .proxCharges(getProxCharges())
+                .frostSqft(getFrostSqft())
+                .frostPerSqftRate(getFrostPerSqftRate())
+                .frostCharges(getFrostCharges())
                 .otherCharges(getOtherCharges())
                 .transportCharges(getTransportCharges())
-                .isProxGstApplicable(getIsProxGstApplicable())
-                .proxGstCharges(getProxGstCharges())
+                .isFrostGstApplicable(getIsFrostGstApplicable())
+                .frostGstCharges(getFrostGstCharges())
                 .isGstApplicable(getIsGstApplicable() != null && getIsGstApplicable())
                 .gstCharges(getGstCharges())
                 .grandTotal(getGrandTotal())

@@ -1,6 +1,5 @@
 package com.sowermate.tenantService.entities.value;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sowermate.base.dtos.BaseDto;
 import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.enums.ProformaInvoiceItemStatusEnum;
@@ -38,7 +37,7 @@ public class ProFormaInvoiceItemValue extends BaseDto {
     private Float chargeableHeight;
     private Float extraMm;
     private Integer quantity;
-    private Integer proxQty;
+    private Integer frostQty;
     private Float unitValue;
     private Double ratePerUnit;
     private String unitMeasurementLabel;
@@ -74,7 +73,7 @@ public class ProFormaInvoiceItemValue extends BaseDto {
                 .chargeableHeight(getChargeableHeight())
                 .extraMm(getExtraMm())
                 .quantity(getQuantity())
-                .proxQty(getProxQty())
+                .frostQty(getFrostQty())
                 .unitValue(getUnitValue())
                 .ratePerUnit(getRatePerUnit())
                 .unitMeasurementLabel(getUnitMeasurementLabel())

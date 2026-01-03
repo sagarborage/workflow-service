@@ -1,7 +1,6 @@
 package com.sowermate.tenantService.entities.value;
 
 import com.sowermate.base.dtos.BaseDto;
-import com.sowermate.tenantService.entities.ProFormaInvoiceItemEntity;
 import com.sowermate.tenantService.enums.ProformaInvoiceItemStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +8,6 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 @Getter
 @Setter
@@ -43,6 +40,7 @@ public class ProFormaInvoiceItemReportValue extends BaseDto {
     private Integer quantity;
     private BigDecimal unitValue;//
     private String sqFt;//
+    private Integer frostQty;
     private Double ratePerUnit;
     private String unitMeasurementLabel;
     private Double amount;

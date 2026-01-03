@@ -235,8 +235,8 @@
                 <div th:if="${reportDetails.getIPercent() != '0'}">
                     <div><b th:text="'Insurance (' + ${reportDetails.getIPercent()} + '%)'"></b></div>
                 </div>
-                <div th:if="${reportDetails.getProxSqft() != '0' and reportDetails.getProxSqft() != '0.0'}">
-                    <b th:utext="'Prox Sqft/Rate (' + ${reportDetails.getProxSqft()} + '/' + ${reportDetails.getProxSqftRate()} + ')'"></b>
+                <div th:if="${reportDetails.getFrostSqft() != '0' and reportDetails.getFrostSqft() != '0.0'}">
+                    <b th:utext="'Frost Sqft/Rate (' + ${reportDetails.getFrostSqft()} + '/' + ${reportDetails.getFrostSqftRate()} + ')'"></b>
                 </div>
                 <div th:if="${reportDetails.getGstType() == 'IGST' && reportDetails.getIGst() != '0.0'}">
                     <div><b>IGST (18%)</b></div>
@@ -253,7 +253,7 @@
                 <div th:if="${piValue.getOtherCharges() > 0}" th:text="${piValue.getOtherCharges()}"></div>
                 <div th:if="${piValue.getTransportCharges() > 0}" th:text="${piValue.getTransportCharges()}"></div>
                 <div th:if="${reportDetails.getIPercent() != '0'}" th:text="${reportDetails.getIPercentAmount()}"></div>
-                <div th:if="${reportDetails.getProxAmount() != '0' and reportDetails.getProxAmount() != '0.0'}" th:text="${reportDetails.getProxAmount()}"></div>
+                <div th:if="${reportDetails.getFrostAmount() != '0' and reportDetails.getFrostAmount() != '0.0'}" th:text="${reportDetails.getFrostAmount()}"></div>
                 <div th:if="${reportDetails.getGstType() == 'IGST' && reportDetails.getIGst() != '0.0'}" th:text="${reportDetails.getIGst()}"></div>
                 <div th:if="${reportDetails.getGstType() == 'SGST-CGST' && (reportDetails.getSGst() != '0.0' || reportDetails.getCGst() != '0.0')}">
                     <div th:text="${reportDetails.getSGst()}"></div>

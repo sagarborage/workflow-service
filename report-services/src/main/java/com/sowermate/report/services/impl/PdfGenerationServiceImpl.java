@@ -51,7 +51,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -379,6 +378,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     private void extractCommonLogic(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails) {
         double totalQuantity = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getQuantity).sum();
+        double frostTotalQuantity = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getFrostQty).sum();
         BigDecimal totalUnitTotal = BigDecimal.ZERO;
         BigDecimal sumSqFtTotal = BigDecimal.ZERO;
         for (List<ProFormaInvoiceItemReportValue> itemList : glassItemDetails.values()) {
@@ -393,6 +393,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String formattedTotalQuantity = decimalFormat.format(totalQuantity);
+        String formattedFrostTotalQuantity = decimalFormat.format(frostTotalQuantity);
         String formattedTotalUnitTotal = decimalFormat.format(totalUnitTotal);
         String formattedSumSqFtTotal = decimalFormat.format(sumSqFtTotal);
         String formattedTotalRatePerUnit = decimalFormat.format(totalRatePerUnit);
@@ -401,6 +402,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setGlassItemDetails(glassItemDetails);
         reportDetails.setServiceRateDetails(serviceRateDetails(piValue));
         reportDetails.setTotalQuantity(formattedTotalQuantity);
+        reportDetails.setFrostTotalQuantity(formattedFrostTotalQuantity);
         reportDetails.setTotalUnitTotal(formattedTotalUnitTotal);
         reportDetails.setSumSqFtTotal(formattedSumSqFtTotal);
         reportDetails.setTotalRatePerUnit(formattedTotalRatePerUnit);
@@ -409,19 +411,19 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         reportDetails.setUnitLabel("MM".equals(piValue.getPiTypeName()) ? "Sq.mtr" : "Sq.ft");
 
         float gstCharges = piValue.getGstCharges() != null ? piValue.getGstCharges() : 0f;
-        if (piValue.getIsProxGstApplicable() && piValue.getProxGstCharges() > 0) {
-            gstCharges = gstCharges + piValue.getProxGstCharges();
+        if (piValue.getIsFrostGstApplicable() && piValue.getFrostGstCharges() > 0) {
+            gstCharges = gstCharges + piValue.getFrostGstCharges();
         }
         reportDetails.setGstType("MH".equalsIgnoreCase(reportDetails.getBillToPartyStateCode()) ? "SGST-CGST" : "IGST");
         reportDetails.setIGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges : 0)));
         reportDetails.setSGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges / 2 : 0)));
         reportDetails.setCGst(new DecimalFormat("#.##").format((!ObjectUtils.isEmpty(gstCharges) ? gstCharges / 2 : 0)));
         reportDetails.setIPercent((!ObjectUtils.isEmpty(piValue.getInsurancePercent()) && piValue.getInsurancePercent() > 0) ? piValue.getInsurancePercent() + "" : "0");
-        reportDetails.setProxSqft((piValue.getProxSqft() != null ? piValue.getProxSqft() + "" : "0"));
+        reportDetails.setFrostSqft((piValue.getFrostSqft() != null ? piValue.getFrostSqft() + "" : "0"));
         reportDetails.setIPercentAmount((ObjectUtils.isEmpty(piValue.getInsurancePercentAmount()) ? "0" : piValue.getInsurancePercentAmount() + ""));
-        reportDetails.setProxSqftRate(piValue.getProxPerSqftRate() == null ? "0" : piValue.getProxPerSqftRate() + "");
-        float proxAmount = piValue.getProxCharges() != null ? piValue.getProxCharges() : 0f;
-        reportDetails.setProxAmount(String.valueOf(proxAmount));
+        reportDetails.setFrostSqftRate(piValue.getFrostPerSqftRate() == null ? "0" : piValue.getFrostPerSqftRate() + "");
+        float frostAmount = piValue.getFrostCharges() != null ? piValue.getFrostCharges() : 0f;
+        reportDetails.setFrostAmount(String.valueOf(frostAmount));
         reportDetails.setGrandTotal(ObjectUtils.isEmpty(piValue.getGrandTotal()) ? 0.0 : Math.round(piValue.getGrandTotal()));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -475,6 +477,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
     public ProFormaInvoiceItemReportValue toReportVal(ProFormaInvoiceItemValue value) {
         return ProFormaInvoiceItemReportValue.newBuilder().id(value.getProFormaInvoiceItemId()).uuid(value.getUuid()).widthInch(value.getWidthInch()).widthMeasurement(value.getWidthMeasurement()).widthMeasurementLabel(value.getWidthMeasurementLabel()) //onPrintProformaInvoicePdf onDownloadWorkorderdetails
                 .actualWidth(Math.round(value.getActualWidth()) + "").chargeableWidth(value.getChargeableWidth()).heightInch(value.getHeightInch()).heightMeasurement(value.getHeightMeasurement()).heightMeasurementLabel(value.getHeightMeasurementLabel()).actualHeight(Math.round(value.getActualHeight()) + "").chargeableHeight(value.getChargeableHeight()).extraMm(value.getExtraMm()).quantity(value.getQuantity()).unitValue(BigDecimal.valueOf(value.getUnitValue()).setScale(2, RoundingMode.HALF_UP)).ratePerUnit(value.getRatePerUnit()).unitMeasurementLabel(value.getUnitMeasurementLabel()).amount(value.getAmount()).sqFt(new DecimalFormat("#.00").format(value.getActualHeight() * value.getActualWidth() / 92903 * value.getQuantity()))
+                .frostQty(value.getFrostQty())
                 //added below condition to initially inset 0 value in bucket
                 .optimizeBucket(value.getOptimizeBucket() == null ? 0 : value.getOptimizeBucket()).cuttingBucket(value.getCuttingBucket() == null ? 0 : value.getCuttingBucket()).toughenBucket(value.getToughenBucket() == null ? 0 : value.getToughenBucket()).dispatchBucket(value.getDispatchBucket() == null ? 0 : value.getDispatchBucket()).gatePassBucket(value.getGatePassBucket() == null ? 0 : value.getGatePassBucket()).optimizeCompleted(value.getOptimizeCompleted() == null ? 0 : value.getOptimizeCompleted()).cuttingCompleted(value.getCuttingCompleted() == null ? 0 : value.getCuttingCompleted()).toughenCompleted(value.getToughenCompleted() == null ? 0 : value.getToughenCompleted()).dispatchCompleted(value.getDispatchCompleted() == null ? 0 : value.getDispatchCompleted()).gatePassCompleted(value.getGatePassCompleted() == null ? 0 : value.getGatePassCompleted()).glassSpecificationName(value.getGlassSpecificationName()).glassThicknessName(value.getGlassThicknessName()).glassTypeName(value.getGlassTypeName())
                 //.tenantEntity(getTenantValue().toEntity())
