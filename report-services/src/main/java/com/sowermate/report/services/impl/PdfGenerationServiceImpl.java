@@ -378,7 +378,11 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
     private void extractCommonLogic(ProFormaInvoiceValue piValue, PIReportDetails reportDetails, Map<PIReportHeaderDetails, List<ProFormaInvoiceItemReportValue>> glassItemDetails) {
         double totalQuantity = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getQuantity).sum();
-        double frostTotalQuantity = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getFrostQty).sum();
+        double frostTotalQuantity = glassItemDetails.values()
+                .stream()
+                .flatMap(List::stream)
+                .mapToDouble(item -> item.getFrostQty() == null ? 0.0 : item.getFrostQty())
+                .sum();
         BigDecimal totalUnitTotal = BigDecimal.ZERO;
         BigDecimal sumSqFtTotal = BigDecimal.ZERO;
         for (List<ProFormaInvoiceItemReportValue> itemList : glassItemDetails.values()) {
@@ -388,7 +392,9 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             }
         }
 
-        double totalRatePerUnit = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getRatePerUnit).sum();
+        //handle this from ui side
+        double totalRatePerUnit = glassItemDetails.values().stream().flatMap(List::stream)
+                .mapToDouble(item -> item.getFrostQty() == null ? 0.0 : item.getRatePerUnit()).sum();
         double totalAmount = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getAmount).sum();
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
