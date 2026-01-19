@@ -43,10 +43,10 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/cancelBatchItem/{uuid}/{companyUuid}")
+    @RequestMapping(method = RequestMethod.PUT, path = "/cancelBatchItem/{uuid}/{tenantUuid}")
     @ResponseBody
-    public ResponseEntity<ToughenBatchProcessDetailsValue> toughenBatchProcessItemCancel(@PathVariable("uuid") String uuid,@PathVariable("companyUuid") String companyUuid) {
-        ToughenBatchProcessDetailsValue toughenBatchProcessDetailsValue = toughenBatchProcessService.toughenBatchProcessItemCancel(uuid,companyUuid);
+    public ResponseEntity<ToughenBatchProcessDetailsValue> toughenBatchProcessItemCancel(@PathVariable("uuid") String uuid,@PathVariable("tenantUuid") String tenantUuid) {
+        ToughenBatchProcessDetailsValue toughenBatchProcessDetailsValue = toughenBatchProcessService.toughenBatchProcessItemCancel(uuid, tenantUuid);
         return new ResponseEntity<>(toughenBatchProcessDetailsValue, HttpStatus.CREATED);
     }
 
@@ -65,10 +65,10 @@ public class ToughenBatchProcessController {
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/getToughenBatchProcessByStatus/{companyUuid}/{status}")
+    @RequestMapping(method = RequestMethod.GET, path = "/getToughenBatchProcessByStatus/{tenantUuid}/{status}")
     @ResponseBody
-    public ResponseEntity<List<ToughenBatchProcessProjection>> getToughenBatchProcessByStatus(@PathVariable("companyUuid") String companyUuid, @PathVariable("status") ToughenBatchProcessStatusEnum status) {
-        List<ToughenBatchProcessProjection> list = toughenBatchProcessService.getToughenBatchProcessByStatus(companyUuid,status);
+    public ResponseEntity<List<ToughenBatchProcessProjection>> getToughenBatchProcessByStatus(@PathVariable("tenantUuid") String tenantUuid, @PathVariable("status") ToughenBatchProcessStatusEnum status) {
+        List<ToughenBatchProcessProjection> list = toughenBatchProcessService.getToughenBatchProcessByStatus(tenantUuid, status);
         return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 

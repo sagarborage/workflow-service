@@ -58,8 +58,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyInfoProjection getCompanyInfo(String companyUuid, String tenantUuid) {
-        return companyRepository.getCompanyInfo(companyUuid, tenantUuid);
+    public CompanyInfoProjection getCompanyInfo(String tenantUuid, String companyUuid) {
+        return companyRepository.getCompanyInfo(tenantUuid, companyUuid);
     }
 
     @Override

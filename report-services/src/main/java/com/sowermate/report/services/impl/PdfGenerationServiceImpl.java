@@ -392,7 +392,7 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             }
         }
 
-        //handle this from ui side
+        //TODO: for raw-glass UI, handle this from ui side, item should not get added without entering glass rate
         double totalRatePerUnit = glassItemDetails.values().stream().flatMap(List::stream)
                 .mapToDouble(item -> item.getFrostQty() == null ? 0.0 : item.getRatePerUnit()).sum();
         double totalAmount = glassItemDetails.values().stream().flatMap(List::stream).mapToDouble(ProFormaInvoiceItemReportValue::getAmount).sum();

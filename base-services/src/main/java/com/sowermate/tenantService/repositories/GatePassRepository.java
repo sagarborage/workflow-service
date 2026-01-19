@@ -46,10 +46,10 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "JOIN pi.firm c " +
             "JOIN pi.proFormaInvoiceItemEntities p " +
             "WHERE " +
-            //"c.uuid = :companyUuid AND " + //TODO: Sagar
+            "c.uuid = :companyUuid AND " + //TODO: Sagar
             "pi.uuid = :proformaInvoiceUuid " +
             "GROUP BY pi.uuid ")
-    GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(/*String companyUuid,*/ String proformaInvoiceUuid);
+    GatePassInfoProjection findGatePassInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
 
     @Query("SELECT " +
             "p.companyIdBill.companyName as partyName, " +
@@ -61,10 +61,10 @@ public interface GatePassRepository extends JpaRepository<GatePassEntity, String
             "JOIN p.gatePassEntities g "+
             "JOIN g.gatePassDetailsEntities gd "+
             "WHERE " +
-            //"c.uuid = :companyUuid AND " + //TODO: Sagar
+            "c.uuid = :companyUuid AND " + //TODO: Sagar
             "p.uuid = :proformaInvoiceUuid " +
             "GROUP BY g.uuid ")
-    List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(/*String companyUuid,*/ String proformaInvoiceUuid);
+    List<GatePassDetailsInfoProjection> findGatePassDetailsInfoByProformaInvoiceUuid(String companyUuid, String proformaInvoiceUuid);
 
     @Query("SELECT " +
             "gs.name as glassSpecification , " +

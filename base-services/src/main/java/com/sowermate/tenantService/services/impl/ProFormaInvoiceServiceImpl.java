@@ -439,6 +439,7 @@ public class ProFormaInvoiceServiceImpl implements ProFormaInvoiceService {
     private ProFormaInvoiceHomeDetails getProFormaInvoiceHomeDetails(ProFormaInvoiceEntity proFormaInvoiceEntity) {
         return ProFormaInvoiceHomeDetails.newBuilder()
                 .uuid(proFormaInvoiceEntity.getUuid())
+                .companyUuid(proFormaInvoiceEntity.getFirm().getUuid())
                 .invoiceDate(proFormaInvoiceEntity.getInvoiceDate())
                 .confirmThroughUuid(null == proFormaInvoiceEntity.getConfirmThroughEntity() ? null : proFormaInvoiceEntity.getConfirmThroughEntity().getUuid())
                 .partyName(proFormaInvoiceEntity.getCompanyIdBill().getCompanyName())
