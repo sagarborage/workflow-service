@@ -14,6 +14,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 
     private final ObjectMapper objectMapper;
     private final CustomResponseHeaderWriter responseHeaderWriter;
+
     public AuthenticationFailureHandler(ObjectMapper objectMapper, CustomResponseHeaderWriter responseHeaderWriter) {
         this.objectMapper = objectMapper;
         this.responseHeaderWriter = responseHeaderWriter;
@@ -23,7 +24,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
 
-        responseHeaderWriter.writeCommonHeaders(response);
+        responseHeaderWriter.writeCommonHeaders(request, response);
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Set HTTP status code
 

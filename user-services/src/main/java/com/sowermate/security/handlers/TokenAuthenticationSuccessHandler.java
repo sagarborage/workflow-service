@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * The class handles authentication success scenario.
+ *
  * @author sborage
  */
 public class TokenAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -37,7 +38,7 @@ public class TokenAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
     }
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        this.responseHeaderWriter.writeCommonHeaders(response);
+        this.responseHeaderWriter.writeCommonHeaders(request, response);
         JwtResponse jwtResponse = this.generateJwtTokens(authentication);
         response.getWriter().write(objectMapper.writeValueAsString(jwtResponse));
         response.getWriter().flush();
